@@ -1,9 +1,31 @@
-import {Text} from "react-native";
+import {StyleSheet, Text, View} from "react-native";
+import {Theme} from "@/constants/Theme";
+
 
 export default function PickPlace() {
+    // const [places, setPlaces] = useState([])
+    // useEffect(() => {
+    //     const fetchPlaces = async () => {
+    //         const data = await searchPlaces("pizza");
+    //         setPlaces(data);
+    //         console.log(data);
+    //     };
+    //     fetchPlaces();
+    // }, []);
     return (
-        <Text>
-            this is the place form
-        </Text>
+        <View>
+            <Text style={styles.heading}>
+                Pick a Place
+            </Text>
+        </View>
     )
+
 }
+const styles = StyleSheet.create({
+    heading: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        color: Theme.colors.primary,
+        fontFamily: Theme.typography.meaCulpa
+    },
+})

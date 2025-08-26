@@ -1,5 +1,5 @@
 import {StyleSheet, View, ViewProps} from "react-native";
-import {Colors} from "@/constants/Colors";
+import {Theme} from "@/constants/Theme";
 
 export default function Toolbar(props: ViewProps) {
     return (
@@ -10,7 +10,7 @@ export default function Toolbar(props: ViewProps) {
 }
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: Colors.background,
+        backgroundColor: Theme.colors.background,
         padding: 10,
         display: 'flex',
         flexDirection: 'row-reverse',

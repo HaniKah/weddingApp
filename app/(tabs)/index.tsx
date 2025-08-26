@@ -1,6 +1,6 @@
 import Toolbar from "@/components/Toolbar";
 import {IconSymbol} from "@/components/ui/IconSymbol";
-import {Colors} from "@/constants/Colors";
+import {Theme} from "@/constants/Theme";
 import {View} from "react-native";
 import Wizard, {WizardSteps} from "@/components/wizard/Wizard";
 import {useState} from "react";
@@ -12,7 +12,7 @@ export default function Index() {
     return (
         <>
             <Toolbar>
-                <IconSymbol size={24} name="checklist" color={Colors.primary}/>
+                <IconSymbol size={24} name="checklist" color={Theme.colors.primary}/>
             </Toolbar>
             <View>
                 <Wizard currentStep={currentStep}/>

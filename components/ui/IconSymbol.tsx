@@ -18,6 +18,7 @@ const MAPPING = {
     'person.3.fill': 'groups',
     'heart.text.clipboard.fill': 'description',
     'gearshape.fill': 'settings',
+    'checklist': 'checklist',
 } as IconMapping;
 
 /**

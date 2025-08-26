@@ -7,6 +7,6 @@ export const Theme = {
         gold2: '#A97E65',
     },
     typography: {
-        meaCulpa: 'meaCulpa-Regular',
+        meaCulpa: 'Mea Culpa, cursive',
     }
 };

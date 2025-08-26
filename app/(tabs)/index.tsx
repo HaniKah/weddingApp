@@ -1,17 +1,22 @@
 import Toolbar from "@/components/Toolbar";
 import {IconSymbol} from "@/components/ui/IconSymbol";
 import {Colors} from "@/constants/Colors";
-import {Text} from "react-native";
+import {View} from "react-native";
+import Wizard, {WizardSteps} from "@/components/wizard/Wizard";
+import {useState} from "react";
 
 export default function Index() {
+
+
+    const [currentStep, setCurrentStep] = useState<WizardSteps>(WizardSteps.Place)
     return (
         <>
             <Toolbar>
                 <IconSymbol size={24} name="checklist" color={Colors.primary}/>
             </Toolbar>
-            <Text>
-                here should come the wizard
-            </Text>
+            <View>
+                <Wizard currentStep={currentStep}/>
+            </View>
 
         </>)
 

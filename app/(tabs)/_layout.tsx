@@ -38,6 +38,7 @@ export default function TabsLayout() {
                              tabBarInactiveTintColor: Colors.primaryInactive,
                              tabBarIcon: ({color}) => <IconSymbol size={28} name="gearshape.fill" color={color}/>,
                          }}/>
+     
         </Tabs>
     </>)
 }

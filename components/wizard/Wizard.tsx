@@ -49,7 +49,7 @@ export default function Wizard({currentStep}: WizardProps) {
 
     const getPlaces = async () => {
         try {
-            const response = await fetch(API_URL + `api/places/getPlace?step=${currentStep}`)
+            const response = await fetch(API_URL + `api/places/getDummyPlaces?step=${currentStep}`)
             const json = await response.json()
             setData(json.places)
         } catch (err) {

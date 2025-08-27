@@ -16,7 +16,6 @@ export default function PickPlace({data}: { data: PlacesDto[] | null }) {
             </Text>
             <View style={styles.listContainer}>
                 <FlatList data={data} renderItem={PlaceItem}/>
-
             </View>
         </View>
     )
@@ -26,6 +25,8 @@ const styles = StyleSheet.create({
 
     listContainer: {
         marginTop: 30,
+        marginBottom: 460,
+   
     },
     heading: {
         textAlign: 'center',

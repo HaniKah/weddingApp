@@ -45,11 +45,11 @@ export default function Wizard({currentStep}: WizardProps) {
 
     const [isLoading, setLoading] = useState(true)
     const [data, setData] = useState(null)
-    const SERVER_URL = process.env.EXPO_PUBLIC_API_URL
+    const API_URL = process.env.EXPO_PUBLIC_API_URL
 
     const getPlaces = async () => {
         try {
-            const response = await fetch(SERVER_URL + `api/places/getPlace?step=${currentStep}`)
+            const response = await fetch(API_URL + `api/places/getPlace?step=${currentStep}`)
             const json = await response.json()
             setData(json.places)
         } catch (err) {

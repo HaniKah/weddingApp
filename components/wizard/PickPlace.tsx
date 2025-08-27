@@ -14,13 +14,19 @@ export default function PickPlace({data}: { data: PlacesDto[] | null }) {
             <Text style={styles.question}>
                 WHERE SHOULD THE WEDDING TAKE A PLACE ?
             </Text>
-            <FlatList data={data} renderItem={PlaceItem}/>
+            <View style={styles.listContainer}>
+                <FlatList data={data} renderItem={PlaceItem}/>
+
+            </View>
         </View>
     )
 
 }
 const styles = StyleSheet.create({
 
+    listContainer: {
+        marginTop: 30,
+    },
     heading: {
         textAlign: 'center',
         fontSize: 24,

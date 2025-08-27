@@ -9,7 +9,7 @@ import {StyleSheet} from "react-native";
 export default function RootLayout() {
 
     const [loaded] = useFonts({
-        SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+        SpaceMono: require('../assets/fonts/MeaCulpa-Regular.ttf'),
     });
 
     if (!loaded) {
@@ -25,6 +25,7 @@ export default function RootLayout() {
                     <Stack.Screen name="(tabs)" options={{headerShown: false}}/>
                     <Stack.Screen name="+not-found"/>
                 </Stack>
+
                 <StatusBar style="auto"/>
             </SafeAreaView>
         </SafeAreaProvider>
@@ -36,6 +37,8 @@ export default function RootLayout() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: 'red',
     },
+   
 
 });

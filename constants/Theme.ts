@@ -8,5 +8,9 @@ export const Theme = {
     },
     typography: {
         meaCulpa: 'Mea Culpa, cursive', // this is not final , it needs to be configured correctly: https://docs.expo.dev/develop/user-interface/fonts/
+    },
+    spaces: {
+        padding: 10,
+        cornerRadius: 10,
     }
 };

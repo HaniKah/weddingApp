@@ -1,15 +1,15 @@
 import {Image, StyleSheet, Text, View} from "react-native";
 import {PlacesDto} from "@/components/wizard/Wizard";
+import {Theme} from "@/constants/Theme";
 
 
 export default function PlaceItem({item}: { item: PlacesDto }) {
 
     return (
         <View style={styles.container}>
-            <Image style={styles.image} source={{uri: 'https://reactnative.dev/docs/assets/p_cat2.png'}}>
-            </Image>
+            <Image style={styles.image} source={{uri: 'https://reactnative.dev/docs/assets/p_cat2.png'}}/>
             <View>
-                <Text>
+                <Text style={styles.name}>
                     {item.name}
                 </Text>
                 <Text>
@@ -22,13 +22,19 @@ export default function PlaceItem({item}: { item: PlacesDto }) {
 }
 const styles = StyleSheet.create({
     container: {
-        padding: 4,
-        height: 40,
+        padding: 15,
         display: "flex",
-        gap: 4
+        flexDirection: "row",
+        gap: 10,
+        marginBottom: 10,
+        backgroundColor: "white",
+        borderRadius: Theme.spaces.cornerRadius,
     },
     image: {
         width: 40,
         height: 40,
+    },
+    name: {
+        fontWeight: "bold"
     }
 })

@@ -24,9 +24,7 @@ export default function PickPlace({data}: { data: PlacesDto[] | null }) {
 const styles = StyleSheet.create({
 
     listContainer: {
-        marginTop: 30,
-        marginBottom: 460,
-   
+        marginBottom: 620,
     },
     heading: {
         textAlign: 'center',
@@ -38,6 +36,7 @@ const styles = StyleSheet.create({
     question: {
         color: Theme.colors.primary,
         marginTop: 20,
+        padding: 20,
         textAlign: 'center',
         fontSize: 24,
     }

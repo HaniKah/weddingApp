@@ -4,6 +4,7 @@ import {StatusBar} from 'expo-status-bar';
 import 'react-native-reanimated';
 import {SafeAreaProvider, SafeAreaView} from "react-native-safe-area-context";
 import {StyleSheet} from "react-native";
+import {Theme} from "@/constants/Theme";
 
 
 export default function RootLayout() {
@@ -37,8 +38,9 @@ export default function RootLayout() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'red',
+        backgroundColor: Theme.colors.background,
+
     },
-   
+
 
 });

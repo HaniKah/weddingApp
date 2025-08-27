@@ -1,17 +1,11 @@
-import {StyleSheet, Text, View} from "react-native";
+import {FlatList, StyleSheet, Text, View} from "react-native";
 import {Theme} from "@/constants/Theme";
+import {PlacesDto} from "@/components/wizard/Wizard";
+import PlaceItem from "@/components/wizard/PlaceItem";
 
 
-export default function PickPlace() {
-    // const [places, setPlaces] = useState([])
-    // useEffect(() => {
-    //     const fetchPlaces = async () => {
-    //         const data = await searchPlaces("pizza");
-    //         setPlaces(data);
-    //         console.log(data);
-    //     };
-    //     fetchPlaces();
-    // }, []);
+export default function PickPlace({data}: { data: PlacesDto[] | null }) {
+
     return (
         <View>
             <Text style={styles.heading}>
@@ -20,6 +14,7 @@ export default function PickPlace() {
             <Text style={styles.question}>
                 WHERE SHOULD THE WEDDING TAKE A PLACE ?
             </Text>
+            <FlatList data={data} renderItem={PlaceItem}/>
         </View>
     )
 

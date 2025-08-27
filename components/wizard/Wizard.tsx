@@ -1,48 +1,70 @@
 import {View} from "react-native";
 import PickDate from "@/components/wizard/PickDate";
 import PickPlace from "@/components/wizard/PickPlace";
-import PickDress from "@/components/wizard/PickDress";
-import PickPhotographer from "@/components/wizard/PickPhotographer";
+import {useEffect, useState} from "react";
 
-export enum WizardSteps {
-    Date,
-    Place,
-    Dress,
-    Photographer,
-    DJ,
+interface LatLng {
+    lng: number
+    lat: number
 }
 
-type ActiveComponentProps = {
-    step: WizardSteps
+export interface PlacesDto {
+    placeId?: string;
+    businessStatus?: string;
+    location?: LatLng;
+    name?: string;
+    formatted_address?: string;
+    formatted_phone_number?: string;
+}
+
+export enum WizardSteps {
+    Date = "Date",
+    Place = "Wedding Hall",
+    Dress = "Wedding Dress",
+    Photographer = "Photographer",
+    DJ = "DJ",
+}
+
+export type ActiveComponentProps = {
+    currentStep: WizardSteps
+    data: PlacesDto[] | null
 }
 type WizardProps = {
     currentStep: WizardSteps
 }
 
-function ActiveComponent({step}: ActiveComponentProps) {
-    console.log(step)
-    if (step === WizardSteps.Date) {
+
+function ActiveComponent({currentStep, data}: ActiveComponentProps) {
+    if (currentStep === WizardSteps.Date) {
         return <PickDate/>
     }
-    if (step === WizardSteps.Place) {
-        return <PickPlace/>
-    }
-    if (step === WizardSteps.Dress) {
-        return <PickDress/>
-    }
-    if (step === WizardSteps.Photographer) {
-        return <PickPhotographer/>
-    }
-    if (step === WizardSteps.DJ) {
-        return <PickPhotographer/>
-    }
-    //todo : return fallback
+    return <PickPlace data={data}/>
 }
 
 export default function Wizard({currentStep}: WizardProps) {
+
+    const [isLoading, setLoading] = useState(true)
+    const [data, setData] = useState(null)
+    const SERVER_URL = process.env.EXPO_PUBLIC_API_URL
+
+    const getPlaces = async () => {
+        try {
+            const response = await fetch(SERVER_URL + `api/places/getPlace?step=${currentStep}`)
+            const json = await response.json()
+            setData(json.places)
+        } catch (err) {
+            console.error(err)
+        } finally {
+            setLoading(false)
+        }
+
+    }
+    useEffect(() => {
+        getPlaces()
+    }, [])
     return (
         <View>
-            <ActiveComponent step={currentStep}/>
+            <ActiveComponent data={data} currentStep={currentStep}/>
         </View>
     )
 }

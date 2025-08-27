@@ -5,10 +5,11 @@ import {View} from "react-native";
 import Wizard, {WizardSteps} from "@/components/wizard/Wizard";
 import {useState} from "react";
 
+
 export default function Index() {
 
 
-    const [currentStep, setCurrentStep] = useState<WizardSteps>(WizardSteps.Place)
+    const [currentStep, setCurrentStep] = useState<WizardSteps>(WizardSteps.Photographer)
     return (
         <>
             <Toolbar>

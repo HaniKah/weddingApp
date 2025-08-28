@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
         gap: 10,
         marginBottom: 10,
         backgroundColor: "white",
-        borderRadius: Theme.spaces.cornerRadius,
+        borderRadius: 10,
     },
     image: {
         width: 40,

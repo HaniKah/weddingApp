@@ -1,3 +1,5 @@
+import {StyleSheet} from "react-native";
+
 export const Theme = {
     colors: {
         primary: '#8D6A3C',
@@ -9,8 +11,29 @@ export const Theme = {
     typography: {
         meaCulpa: 'Mea Culpa, cursive', // this is not final , it needs to be configured correctly: https://docs.expo.dev/develop/user-interface/fonts/
     },
-    spaces: {
-        padding: 10,
-        cornerRadius: 10,
-    }
+
 };
+
+export const ComponentStyles = StyleSheet.create({
+    primaryButton: {
+        backgroundColor: Theme.colors.primary,
+        color: 'white',
+        fontWeight: 'bold',
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        width: 100,
+        textAlign: 'center',
+        borderRadius: 5,
+    },
+    outlinedButton: {
+        backgroundColor: "transparent",
+        color: Theme.colors.primary,
+        borderStyle: 'solid',
+        fontWeight: 'bold',
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        width: 100,
+        textAlign: 'center',
+        borderRadius: 5,
+    }
+})

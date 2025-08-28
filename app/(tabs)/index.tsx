@@ -25,6 +25,6 @@ export default function Index() {
 }
 const styles = StyleSheet.create({
     container: {
-        padding: Theme.spaces.padding,
+        padding: 10,
     },
 })

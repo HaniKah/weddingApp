@@ -1,6 +1,6 @@
 import {View} from "react-native";
 import PickDate from "@/components/wizard/PickDate";
-import PickPlace from "@/components/wizard/PickPlace";
+import {PickPlace} from "@/components/wizard/PickPlace";
 import {useEffect, useState} from "react";
 
 interface LatLng {
@@ -55,6 +55,7 @@ export default function Wizard({currentStep}: WizardProps) {
         } catch (err) {
             console.error(err)
         } finally {
+            
             setLoading(false)
         }
 

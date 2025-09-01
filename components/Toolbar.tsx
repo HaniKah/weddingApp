@@ -10,9 +10,8 @@ export default function Toolbar(props: ViewProps) {
 }
 const styles = StyleSheet.create({
     container: {
-
         padding: 10,
         display: 'flex',
-        flexDirection: 'row-reverse',
+
     },
 })

@@ -1,5 +1,5 @@
-import {FlatList, Pressable, StyleSheet, Text, View} from "react-native";
-import {ComponentStyles, Theme} from "@/constants/Theme";
+import {FlatList, StyleSheet, Text, View} from "react-native";
+import {Theme} from "@/constants/Theme";
 import {PlacesDto} from "@/components/wizard/Wizard";
 import PlaceItem from "@/components/wizard/PlaceItem";
 
@@ -15,16 +15,6 @@ export function PickPlace({data}: { data: PlacesDto[] | null }) {
                 <Text style={styles.question}>
                     WHERE SHOULD THE WEDDING TAKE A PLACE ?
                 </Text></>}/>
-
-            <View style={styles.buttonsWrapper}>
-                <Pressable>
-                    <Text style={ComponentStyles.outlinedButton}>Skip</Text>
-                </Pressable>
-                <Pressable>
-                    <Text style={ComponentStyles.primaryButton}>Next</Text>
-                </Pressable>
-            </View>
-
         </View>
     )
 

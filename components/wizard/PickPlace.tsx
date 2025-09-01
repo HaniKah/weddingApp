@@ -1,7 +1,8 @@
 import {FlatList, StyleSheet, Text, View} from "react-native";
 import {Theme} from "@/constants/Theme";
-import {PlacesDto} from "@/components/wizard/Wizard";
+
 import PlaceItem from "@/components/wizard/PlaceItem";
+import {PlacesDto} from "@/app/(tabs)";
 
 
 export function PickPlace({data}: { data: PlacesDto[] | null }) {
@@ -25,7 +26,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     scrollContent: {
-        height: 600
+        marginBottom: 55
     },
 
     heading: {

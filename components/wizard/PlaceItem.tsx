@@ -1,6 +1,6 @@
 import {Image, StyleSheet, Text, View} from "react-native";
-import {PlacesDto} from "@/components/wizard/Wizard";
 import {Theme} from "@/constants/Theme";
+import {PlacesDto} from "@/app/(tabs)";
 
 
 export default function PlaceItem({item}: { item: PlacesDto }) {

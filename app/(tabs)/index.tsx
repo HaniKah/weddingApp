@@ -1,16 +1,97 @@
 import {StyleSheet, View} from "react-native";
-import Wizard, {WizardSteps} from "@/components/wizard/Wizard";
-import {useState} from "react";
 
+import {useEffect, useState} from "react";
+import PlannerToolbar from "@/components/toolbars/PlannerToolbar";
+import PickDate from "@/components/wizard/PickDate";
+import {PickPlace} from "@/components/wizard/PickPlace";
+
+export type ActiveComponentProps = {
+    currentStep: WizardSteps
+    data: PlacesDto[] | null
+}
+type WizardProps = {
+    currentStep: WizardSteps
+}
+
+export enum WizardSteps {
+    Date = "Date",
+    Place = "Wedding Hall",
+    Dress = "Wedding Dress",
+    Photographer = "Photographer",
+    DJ = "DJ",
+}
+
+interface LatLng {
+    lng: number
+    lat: number
+}
+
+export interface PlacesDto {
+    placeId?: string;
+    businessStatus?: string;
+    location?: LatLng;
+    name?: string;
+    formatted_address?: string;
+    formatted_phone_number?: string;
+}
+
+const steps: WizardSteps[] = Object.values(WizardSteps)
 
 export default function Index() {
+    const [currentStep, setCurrentStep] = useState<WizardSteps>(WizardSteps.Date)
+    const [isLastStep, setIsLastStep] = useState(false)
+    const [isLoading, setLoading] = useState(true)
+    const [data, setData] = useState(null)
+    const API_URL = process.env.EXPO_PUBLIC_API_URL
+
+    const getPlaces = async () => {
+        try {
+            const response = await fetch(API_URL + `api/places/getDummyPlaces?step=${currentStep}`)
+            const json = await response.json()
+            setData(json.places)
+        } catch (err) {
+            console.error(err)
+        } finally {
+
+            setLoading(false)
+        }
+
+    }
+    useEffect(() => {
+        getPlaces()
+        checkLastStep()
+    }, [currentStep])
 
 
-    const [currentStep, setCurrentStep] = useState<WizardSteps>(WizardSteps.Photographer)
+    function ActiveComponent({currentStep, data}: ActiveComponentProps) {
+        if (currentStep === WizardSteps.Date) {
+            return <PickDate/>
+        }
+        return <PickPlace data={data}/>
+    }
+
+    function handleSkipEvent() {
+        if (currentStep !== steps[steps.length - 1]) {
+            const index = steps.indexOf(currentStep)
+            const nextStep = steps[index + 1]
+            setCurrentStep(nextStep)
+        }
+    }
+
+    function checkLastStep() {
+        if (currentStep === steps[steps.length - 1]) {
+            setIsLastStep(true)
+        } else {
+            setIsLastStep(false)
+        }
+    }
+
+
     return (
         <>
             <View style={styles.container}>
-                <Wizard/>
+                <PlannerToolbar currentStep={currentStep} onSkipStep={handleSkipEvent} isLastStep={isLastStep}/>
+                <ActiveComponent currentStep={currentStep} data={data}/>
             </View>
 
         </>)

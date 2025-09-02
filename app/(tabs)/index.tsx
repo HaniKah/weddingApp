@@ -6,17 +6,6 @@ import PickDate from "@/components/wizard/PickDate";
 import {PickPlace} from "@/components/wizard/PickPlace";
 import {Api, PlacesViewModel, WeddingSteps} from "@/types/open-api";
 
-export type ActiveComponentProps = {
-    currentStep: WeddingSteps
-    data: PlacesViewModel
-}
-
-
-interface LatLng {
-    lng: number
-    lat: number
-}
-
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL
 const {api} = new Api({baseURL: API_URL, withCredentials: true})

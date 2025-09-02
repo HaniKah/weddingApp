@@ -44,6 +44,7 @@ export default function Index() {
         const getPlaces = async (): Promise<void> => {
             const response = await api.placesControllerGetPlaces({step: currentStep})
             setData(response.data)
+            setLoading(false)
 
         }
 

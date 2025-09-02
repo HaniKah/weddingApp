@@ -56,7 +56,7 @@ export default function Index() {
         }
         getPlaces()
         checkLastStep()
-    }, [currentStep]);
+    }, [currentStep, steps]);
 
 
     function ActiveComponent({currentStep, data}: { currentStep: WeddingSteps, data: PlacesViewModel | undefined }) {

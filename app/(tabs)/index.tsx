@@ -47,7 +47,6 @@ export default function Index() {
             try {
                 const response = await fetch(API_URL + `api/places/getDummyPlaces?step=${currentStep}`)
                 const json = await response.json()
-                console.log(json)
                 setData(json.result)
             } catch (err) {
                 console.error(err)
@@ -95,9 +94,8 @@ export default function Index() {
             </View>
 
         </>)
-
-
 }
+
 const styles = StyleSheet.create({
     container: {
         padding: 10,

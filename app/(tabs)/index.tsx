@@ -9,16 +9,13 @@ export type ActiveComponentProps = {
     currentStep: WizardSteps
     data: PlacesDto[] | null
 }
-type WizardProps = {
-    currentStep: WizardSteps
-}
 
 export enum WizardSteps {
     Date = "Date",
-    Place = "Wedding Hall",
-    Dress = "Wedding Dress",
+    Host = "Host",
+    Dress = "Dress",
     Photographer = "Photographer",
-    DJ = "DJ",
+
 }
 
 interface LatLng {
@@ -48,7 +45,8 @@ export default function Index() {
         try {
             const response = await fetch(API_URL + `api/places/getDummyPlaces?step=${currentStep}`)
             const json = await response.json()
-            setData(json.places)
+            console.log(json)
+            setData(json.result)
         } catch (err) {
             console.error(err)
         } finally {
@@ -57,6 +55,7 @@ export default function Index() {
         }
 
     }
+
     useEffect(() => {
         getPlaces()
         checkLastStep()

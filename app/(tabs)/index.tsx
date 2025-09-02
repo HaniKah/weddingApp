@@ -4,6 +4,7 @@ import {useEffect, useState} from "react";
 import PlannerToolbar from "@/components/toolbars/PlannerToolbar";
 import PickDate from "@/components/wizard/PickDate";
 import {PickPlace} from "@/components/wizard/PickPlace";
+import {Api} from "@/types/open-api";
 
 export type ActiveComponentProps = {
     currentStep: WizardSteps
@@ -40,9 +41,12 @@ export default function Index() {
     const [isLastStep, setIsLastStep] = useState(false)
     const [isLoading, setLoading] = useState(true)
     const [data, setData] = useState(null)
+    const {api} = new Api({baseURL: API_URL, withCredentials: true})
 
 
     useEffect(() => {
+
+
         const getPlaces = async () => {
             try {
                 const response = await fetch(API_URL + `api/places/getDummyPlaces?step=${currentStep}`)

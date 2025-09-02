@@ -8,7 +8,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "swagger-axios": "npx swagger-typescript-api generate -p http://localhost:3000/swagger/json -o ./types -n open-api.ts --http-client axios"
   },
   "dependencies": {
     "@expo/vector-icons": "^14.1.0",

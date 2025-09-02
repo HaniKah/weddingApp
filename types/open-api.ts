@@ -10,6 +10,14 @@
  * ---------------------------------------------------------------
  */
 
+export enum WeddingSteps {
+  Date = "Date",
+  Host = "Host",
+  Dress = "Dress",
+  Photographer = "Photographer",
+  Dj = "Dj",
+}
+
 export type LatLng = object;
 
 export interface PlacesDto {
@@ -23,6 +31,11 @@ export interface PlacesDto {
 
 export interface PlacesViewModel {
   result: PlacesDto[];
+}
+
+export interface StepsDto {
+  currentStep: WeddingSteps;
+  steps: WeddingSteps[];
 }
 
 import type {
@@ -251,19 +264,34 @@ export class Api<
      * No description
      *
      * @tags Places
-     * @name PlacesControllerGetDummyPlaces
-     * @request GET:/api/places/getDummyPlaces
+     * @name PlacesControllerGetPlaces
+     * @request GET:/api/places/getPlaces
      */
-    placesControllerGetDummyPlaces: (
+    placesControllerGetPlaces: (
       query: {
         step: string;
       },
       params: RequestParams = {},
     ) =>
       this.request<PlacesViewModel, any>({
-        path: `/api/places/getDummyPlaces`,
+        path: `/api/places/getPlaces`,
         method: "GET",
         query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Places
+     * @name PlacesControllerGetSteps
+     * @request GET:/api/places/getSteps
+     */
+    placesControllerGetSteps: (params: RequestParams = {}) =>
+      this.request<StepsDto, any>({
+        path: `/api/places/getSteps`,
+        method: "GET",
         format: "json",
         ...params,
       }),

@@ -10,6 +10,21 @@
  * ---------------------------------------------------------------
  */
 
+export type LatLng = object;
+
+export interface PlaceViewModel {
+  placeId: string;
+  businessStatus: string;
+  location: LatLng;
+  name: string;
+  formatted_address: string;
+  formatted_phone_number: string;
+}
+
+export interface PlacesViewModel {
+  result: PlaceViewModel[];
+}
+
 import type {
   AxiosInstance,
   AxiosRequestConfig,
@@ -204,9 +219,10 @@ export class Api<
      * @request GET:/api
      */
     appControllerGetHello: (params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<string, any>({
         path: `/api`,
         method: "GET",
+        format: "json",
         ...params,
       }),
 
@@ -223,10 +239,11 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<void, any>({
+      this.request<PlacesViewModel, any>({
         path: `/api/places/getGooglePlaces`,
         method: "GET",
         query: query,
+        format: "json",
         ...params,
       }),
 
@@ -243,10 +260,11 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<void, any>({
+      this.request<PlacesViewModel, any>({
         path: `/api/places/getDummyPlaces`,
         method: "GET",
         query: query,
+        format: "json",
         ...params,
       }),
   };

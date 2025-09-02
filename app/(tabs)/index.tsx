@@ -4,11 +4,11 @@ import {useEffect, useState} from "react";
 import PlannerToolbar from "@/components/toolbars/PlannerToolbar";
 import PickDate from "@/components/wizard/PickDate";
 import {PickPlace} from "@/components/wizard/PickPlace";
-import {Api} from "@/types/open-api";
+import {Api, PlacesViewModel} from "@/types/open-api";
 
 export type ActiveComponentProps = {
     currentStep: WizardSteps
-    data: PlacesDto[] | null
+    data: PlacesViewModel
 }
 
 export enum WizardSteps {
@@ -24,40 +24,22 @@ interface LatLng {
     lat: number
 }
 
-export interface PlacesDto {
-    placeId?: string;
-    businessStatus?: string;
-    location?: LatLng;
-    name?: string;
-    formatted_address?: string;
-    formatted_phone_number?: string;
-}
 
 const steps: WizardSteps[] = Object.values(WizardSteps)
 const API_URL = process.env.EXPO_PUBLIC_API_URL
+const {api} = new Api({baseURL: API_URL, withCredentials: true})
 
 export default function Index() {
     const [currentStep, setCurrentStep] = useState<WizardSteps>(WizardSteps.Date)
     const [isLastStep, setIsLastStep] = useState(false)
     const [isLoading, setLoading] = useState(true)
-    const [data, setData] = useState(null)
-    const {api} = new Api({baseURL: API_URL, withCredentials: true})
+    const [data, setData] = useState<PlacesViewModel>()
 
 
     useEffect(() => {
-
-
-        const getPlaces = async () => {
-            try {
-                const response = await fetch(API_URL + `api/places/getDummyPlaces?step=${currentStep}`)
-                const json = await response.json()
-                setData(json.result)
-            } catch (err) {
-                console.error(err)
-            } finally {
-
-                setLoading(false)
-            }
+        const getPlaces = async (): Promise<void> => {
+            const response = await api.placesControllerGetDummyPlaces({step: currentStep})
+            setData(response.data)
 
         }
 
@@ -74,11 +56,11 @@ export default function Index() {
     }, [currentStep])
 
 
-    function ActiveComponent({currentStep, data}: ActiveComponentProps) {
+    function ActiveComponent({currentStep, data}: { currentStep: WizardSteps, data: PlacesViewModel | undefined }) {
         if (currentStep === WizardSteps.Date) {
             return <PickDate/>
         }
-        return <PickPlace data={data}/>
+        return <PickPlace data={data?.result}/>
     }
 
     function handleSkipEvent() {

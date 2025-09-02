@@ -12,17 +12,17 @@
 
 export type LatLng = object;
 
-export interface PlaceViewModel {
-  placeId: string;
-  businessStatus: string;
-  location: LatLng;
-  name: string;
-  formatted_address: string;
-  formatted_phone_number: string;
+export interface PlacesDto {
+  placeId?: string;
+  businessStatus?: string;
+  location?: LatLng;
+  name?: string;
+  formatted_address?: string;
+  formatted_phone_number?: string;
 }
 
 export interface PlacesViewModel {
-  result: PlaceViewModel[];
+  result: PlacesDto[];
 }
 
 import type {

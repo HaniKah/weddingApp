@@ -2,10 +2,10 @@ import {FlatList, StyleSheet, Text, View} from "react-native";
 import {Theme} from "@/constants/Theme";
 
 import PlaceItem from "@/components/wizard/PlaceItem";
-import {PlaceViewModel} from "@/types/open-api";
+import {PlacesDto} from "@/types/open-api";
 
 
-export function PickPlace({data}: { data: PlaceViewModel[] | undefined }) {
+export function PickPlace({data}: { data: PlacesDto[] | undefined }) {
 
     return (
         <View>

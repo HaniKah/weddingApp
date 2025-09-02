@@ -33,13 +33,13 @@ export interface PlacesDto {
 }
 
 const steps: WizardSteps[] = Object.values(WizardSteps)
+const API_URL = process.env.EXPO_PUBLIC_API_URL
 
 export default function Index() {
     const [currentStep, setCurrentStep] = useState<WizardSteps>(WizardSteps.Date)
     const [isLastStep, setIsLastStep] = useState(false)
     const [isLoading, setLoading] = useState(true)
     const [data, setData] = useState(null)
-    const API_URL = process.env.EXPO_PUBLIC_API_URL
 
 
     useEffect(() => {
@@ -57,7 +57,7 @@ export default function Index() {
             }
 
         }
-        
+
         const checkLastStep = () => {
             if (currentStep === steps[steps.length - 1]) {
                 setIsLastStep(true)
@@ -68,7 +68,7 @@ export default function Index() {
 
         getPlaces()
         checkLastStep()
-    }, [currentStep, API_URL])
+    }, [currentStep])
 
 
     function ActiveComponent({currentStep, data}: ActiveComponentProps) {

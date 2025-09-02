@@ -41,25 +41,34 @@ export default function Index() {
     const [data, setData] = useState(null)
     const API_URL = process.env.EXPO_PUBLIC_API_URL
 
-    const getPlaces = async () => {
-        try {
-            const response = await fetch(API_URL + `api/places/getDummyPlaces?step=${currentStep}`)
-            const json = await response.json()
-            console.log(json)
-            setData(json.result)
-        } catch (err) {
-            console.error(err)
-        } finally {
-
-            setLoading(false)
-        }
-
-    }
 
     useEffect(() => {
+        const getPlaces = async () => {
+            try {
+                const response = await fetch(API_URL + `api/places/getDummyPlaces?step=${currentStep}`)
+                const json = await response.json()
+                console.log(json)
+                setData(json.result)
+            } catch (err) {
+                console.error(err)
+            } finally {
+
+                setLoading(false)
+            }
+
+        }
+        
+        const checkLastStep = () => {
+            if (currentStep === steps[steps.length - 1]) {
+                setIsLastStep(true)
+            } else {
+                setIsLastStep(false)
+            }
+        }
+
         getPlaces()
         checkLastStep()
-    }, [currentStep])
+    }, [currentStep, API_URL])
 
 
     function ActiveComponent({currentStep, data}: ActiveComponentProps) {
@@ -74,14 +83,6 @@ export default function Index() {
             const index = steps.indexOf(currentStep)
             const nextStep = steps[index + 1]
             setCurrentStep(nextStep)
-        }
-    }
-
-    function checkLastStep() {
-        if (currentStep === steps[steps.length - 1]) {
-            setIsLastStep(true)
-        } else {
-            setIsLastStep(false)
         }
     }
 

@@ -1,6 +1,5 @@
 import {Image, StyleSheet, Text, View} from "react-native";
-import {Theme} from "@/constants/Theme";
-import {PlacesDto} from "@/app/(tabs)";
+import {PlacesDto} from "@/types/open-api";
 
 
 export default function PlaceItem({item}: { item: PlacesDto }) {

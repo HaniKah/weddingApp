@@ -22,7 +22,6 @@ export default function Index() {
     useEffect(() => {
         const getSteps = async () => {
             const response = await api.placesControllerGetSteps()
-            console.log("currentStep", response.data.currentStep)
             setCurrentStep(response.data.currentStep)
             setSteps(response.data.steps)
         }

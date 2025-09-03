@@ -23,7 +23,7 @@ export default function RootLayout() {
         <SafeAreaProvider>
             <SafeAreaView style={styles.container} edges={['top']}>
                 <Stack>
-                    <Stack.Screen name="(tabs)" options={{headerShown: false}}/>
+                    <Stack.Screen name="(tabs)" options={{headerShown: true}}/>
                     <Stack.Screen name="+not-found"/>
                 </Stack>
 

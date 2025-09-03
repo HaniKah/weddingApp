@@ -7,6 +7,7 @@ export const Theme = {
         background: '#F0F0F0',
         gold1: '#E5C280',
         gold2: '#A97E65',
+        iconBackground: '#e5e2df'
     },
     typography: {
         meaCulpa: 'Mea Culpa, cursive', // this is not final , it needs to be configured correctly: https://docs.expo.dev/develop/user-interface/fonts/
@@ -15,7 +16,7 @@ export const Theme = {
 };
 
 export const ComponentStyles = StyleSheet.create({
-    primaryButton: {
+    primaryBtn: {
         backgroundColor: Theme.colors.primary,
         color: 'white',
         fontWeight: 'bold',
@@ -25,7 +26,7 @@ export const ComponentStyles = StyleSheet.create({
         textAlign: 'center',
         borderRadius: 5,
     },
-    outlinedButton: {
+    outlinedBtn: {
         backgroundColor: "transparent",
         color: Theme.colors.primary,
         borderStyle: 'solid',
@@ -35,5 +36,16 @@ export const ComponentStyles = StyleSheet.create({
         width: 100,
         textAlign: 'center',
         borderRadius: 5,
+    },
+    iconBtn: {
+        width: 30,
+        height: 30,
+        padding: 4,
+        backgroundColor: Theme.colors.iconBackground,
+        color: Theme.colors.primary,
+        borderRadius: 100,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
     }
 })

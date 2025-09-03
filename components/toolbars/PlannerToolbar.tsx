@@ -16,7 +16,7 @@ export default function PlannerToolbar({currentStep, onSkipStep, isLastStep}: {
     return (
         <>
             <Toolbar>
-                <Link href="/(tabs)/(planner)/guest-list">
+                <Link href="/(tabs)/(planner)/checklist">
                     <View style={ComponentStyles.iconBtn}>
                         <IconSymbol name="checklist" color={Theme.colors.primary} size={20} weight={'bold'}/>
                     </View>

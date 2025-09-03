@@ -1,5 +1,5 @@
 import {useFonts} from 'expo-font';
-import {Stack} from 'expo-router';
+import {Stack, usePathname} from 'expo-router';
 import {StatusBar} from 'expo-status-bar';
 import 'react-native-reanimated';
 import {SafeAreaProvider, SafeAreaView} from "react-native-safe-area-context";
@@ -8,6 +8,9 @@ import {Theme} from "@/constants/Theme";
 
 
 export default function RootLayout() {
+
+    const pathName = usePathname()
+    console.log(pathName)
 
     const [loaded] = useFonts({
         SpaceMono: require('../assets/fonts/MeaCulpa-Regular.ttf'),

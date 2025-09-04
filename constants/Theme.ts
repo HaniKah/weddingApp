@@ -10,7 +10,8 @@ export const Theme = {
         iconBackground: '#e5e2df'
     },
     typography: {
-        meaCulpa: 'MeaCulpa-Regular', // this is not final , it needs to be configured correctly: https://docs.expo.dev/develop/user-interface/fonts/
+        meaCulpa: 'MeaCulpa-Regular',
+        aboreto: "Aboreto-Regular"// this is not final , it needs to be configured correctly: https://docs.expo.dev/develop/user-interface/fonts/
     },
 
 };

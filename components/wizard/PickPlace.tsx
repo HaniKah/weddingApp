@@ -10,9 +10,11 @@ export function PickPlace({data}: { data: PlacesDto[] | undefined }) {
     return (
         <View>
             <FlatList style={styles.scrollContent} data={data} renderItem={PlaceItem} ListHeaderComponent={<>
+
                 <Text style={styles.heading}>
                     Pick a Place
                 </Text>
+
                 <Text style={styles.question}>
                     WHERE SHOULD THE WEDDING TAKE A PLACE ?
                 </Text></>}/>
@@ -22,25 +24,25 @@ export function PickPlace({data}: { data: PlacesDto[] | undefined }) {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1
-    },
+
     scrollContent: {
         marginBottom: 55
     },
 
     heading: {
         textAlign: 'center',
-        fontSize: 24,
+        fontSize: 40,
         fontWeight: "bold",
         color: Theme.colors.primary,
         fontFamily: Theme.typography.meaCulpa
     },
     question: {
         color: Theme.colors.primary,
-        padding: 20,
+        paddingVertical: 20,
+        paddingHorizontal: 50,
         textAlign: 'center',
-        fontSize: 24,
+        fontSize: 20,
+        fontFamily: Theme.typography.aboreto,
 
     },
     buttonsWrapper: {

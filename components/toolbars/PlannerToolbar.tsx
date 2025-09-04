@@ -1,6 +1,6 @@
 import Toolbar from "@/components/toolbars/Toolbar";
 
-import {Pressable, StyleSheet, Text, View} from "react-native";
+import {StyleSheet, View} from "react-native";
 import {ComponentStyles, Theme} from "@/constants/Theme";
 import {WeddingSteps} from "@/types/open-api";
 import * as Progress from 'react-native-progress';
@@ -16,29 +16,37 @@ export default function PlannerToolbar({currentStep, onSkipStep, isLastStep}: {
     return (
         <>
             <Toolbar>
-                <Link push href="/(tabs)/(planner)/checklist">
+
+
+                <Progress.Pie style={styles.pie} progress={0.4} size={25} color={Theme.colors.primary}
+                              borderWidth={2}/>
+
+
+                {/*{!isLastStep &&*/}
+                {/*    <Pressable style={styles.skipBtn} onPress={() => onSkipStep()}>*/}
+                {/*        <Text>Skip</Text>*/}
+                {/*    </Pressable>*/}
+                {/*}*/}
+
+                <Link style={styles.checklistBtn} push href="/(tabs)/(planner)/checklist">
                     <View style={ComponentStyles.iconBtn}>
                         <IconSymbol name="checklist" color={Theme.colors.primary} size={20} weight={'bold'}/>
                     </View>
                 </Link>
-
-
-                <Progress.Pie progress={0.4} size={20} color={Theme.colors.primary} borderWidth={2}/>
-                {!isLastStep &&
-                    <Pressable style={styles.skipBtn} onPress={() => onSkipStep()}>
-                        <Text style={styles.skipTxt}>Skip</Text>
-                    </Pressable>
-                }
             </Toolbar>
 
         </>
     )
 }
 const styles = StyleSheet.create({
-    skipBtn: {
-        alignSelf: 'flex-end',
+
+    pie: {
+        alignSelf: "center",
     },
-    skipTxt: {
-        color: Theme.colors.primary
+    checklistBtn: {
+        marginLeft: "auto",
+    },
+    skipBtn: {
+        alignSelf: "flex-end",
     }
 })

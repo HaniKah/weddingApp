@@ -1,20 +1,27 @@
 import {useFonts} from 'expo-font';
-import {Stack} from 'expo-router';
+import {SplashScreen, Stack} from 'expo-router';
 import {StatusBar} from 'expo-status-bar';
 import 'react-native-reanimated';
 import {SafeAreaProvider, SafeAreaView} from "react-native-safe-area-context";
 import {StyleSheet} from "react-native";
 import {Theme} from "@/constants/Theme";
+import {useEffect} from "react";
 
 
 export default function RootLayout() {
 
     // const pathName = usePathname()
     // console.log(pathName)
+    SplashScreen.preventAutoHideAsync();
 
-    const [loaded] = useFonts({
-        SpaceMono: require('../assets/fonts/MeaCulpa-Regular.ttf'),
+    const [loaded, error] = useFonts({
+        'MeaCulpa-Regular': require('../assets/fonts/MeaCulpa-Regular.ttf'),
     });
+    useEffect(() => {
+        if (loaded || error) {
+            SplashScreen.hideAsync();
+        }
+    }, [loaded, error]);
 
     if (!loaded) {
         // Async font loading only occurs in development.
@@ -26,7 +33,7 @@ export default function RootLayout() {
         <SafeAreaProvider>
             <SafeAreaView style={styles.container} edges={['top']}>
                 <Stack>
-                    <Stack.Screen name="(tabs)" options={{headerShown: true}}/>
+                    <Stack.Screen name="(tabs)" options={{headerShown: false}}/>
                     <Stack.Screen name="+not-found"/>
                 </Stack>
 

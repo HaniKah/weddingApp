@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     heading: {
         textAlign: 'center',
         fontSize: 24,
-        fontWeight: 'bold',
+        fontWeight: "bold",
         color: Theme.colors.primary,
         fontFamily: Theme.typography.meaCulpa
     },
@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
         padding: 20,
         textAlign: 'center',
         fontSize: 24,
+
     },
     buttonsWrapper: {
         display: "flex",

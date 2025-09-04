@@ -5,8 +5,9 @@ import {Link} from "expo-router";
 
 export default function PlaceItem({item}: { item: PlacesDto }) {
 
+
     return (
-        <Link style={styles.link} href={{
+        <Link push asChild style={styles.link} href={{
             pathname: '/[id]',
             params: {id: item.placeId}
         }}>

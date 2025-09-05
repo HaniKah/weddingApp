@@ -1,19 +1,33 @@
-import {FlatList, StyleSheet, Text, View} from "react-native";
+import {FlatList, Pressable, StyleSheet, Text, View} from "react-native";
 import {Theme} from "@/constants/Theme";
 
 import PlaceItem from "@/components/wizard/PlaceItem";
 import {PlacesDto} from "@/types/open-api";
+import {IconSymbol} from "@/components/ui/IconSymbol";
 
 
-export function PickPlace({data}: { data: PlacesDto[] | undefined }) {
+export function PickPlace({data, onNextStep, onPreviousStep}: {
+    data: PlacesDto[] | undefined,
+    onNextStep: () => void,
+    onPreviousStep: () => void
+}) {
+
 
     return (
         <View>
             <FlatList style={styles.scrollContent} data={data} renderItem={PlaceItem} ListHeaderComponent={<>
 
-                <Text style={styles.heading}>
-                    Pick a Place
-                </Text>
+                <View style={styles.headingContainer}>
+                    <Pressable onPress={onNextStep}>
+                        <IconSymbol name="arrow.left" color={Theme.colors.primary} weight="thin"/>
+                    </Pressable>
+                    <Text style={styles.headingText}>
+                        Pick a Place
+                    </Text>
+                    <Pressable onPress={onPreviousStep}>
+                        <IconSymbol name="arrow.right" color={Theme.colors.primary} weight="thin"/>
+                    </Pressable>
+                </View>
 
                 <Text style={styles.question}>
                     WHERE SHOULD THE WEDDING TAKE A PLACE ?
@@ -28,13 +42,20 @@ const styles = StyleSheet.create({
     scrollContent: {
         marginBottom: 55
     },
-
-    heading: {
+    headingContainer: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        paddingHorizontal: 30,
+    },
+    headingText: {
         textAlign: 'center',
         fontSize: 40,
         fontWeight: "bold",
         color: Theme.colors.primary,
-        fontFamily: Theme.typography.meaCulpa
+        fontFamily: Theme.typography.meaCulpa,
+        paddingVertical: 10,
     },
     question: {
         color: Theme.colors.primary,

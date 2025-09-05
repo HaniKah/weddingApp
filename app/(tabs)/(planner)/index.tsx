@@ -52,10 +52,11 @@ export default function Index() {
         if (currentStep === WeddingSteps.Date) {
             return <PickDate/>
         }
-        return <PickPlace data={data?.result}/>
+        return <PickPlace data={data?.result} onNextStep={nextStep}
+                          onPreviousStep={previousStep}/>
     }
 
-    function handleSkipEvent() {
+    function nextStep() {
         if (currentStep !== steps[steps.length - 1]) {
             const index = steps.indexOf(currentStep)
             const nextStep = steps[index + 1]
@@ -63,11 +64,21 @@ export default function Index() {
         }
     }
 
+    function previousStep() {
+        if (currentStep !== steps[0]) {
+            const index = steps.indexOf(currentStep)
+            const previousStep = steps[index - 1]
+            setCurrentStep(previousStep)
+        } else {
+            console.log('first step')
+        }
+    }
+
 
     return (
         <>
             <View style={styles.container}>
-                <PlannerToolbar currentStep={currentStep} onSkipStep={handleSkipEvent} isLastStep={isLastStep}/>
+                <PlannerToolbar currentStep={currentStep} onSkipStep={nextStep} isLastStep={isLastStep}/>
                 <ActiveComponent currentStep={currentStep} data={data}/>
             </View>
 

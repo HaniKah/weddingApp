@@ -2,31 +2,19 @@ import Toolbar from "@/components/toolbars/Toolbar";
 
 import {StyleSheet, View} from "react-native";
 import {ComponentStyles, Theme} from "@/constants/Theme";
-import {WeddingSteps} from "@/types/open-api";
 import * as Progress from 'react-native-progress';
 import {IconSymbol} from "@/components/ui/IconSymbol";
 import {Link} from "expo-router";
 
 
-export default function PlannerToolbar({currentStep, onSkipStep, isLastStep}: {
-    currentStep: WeddingSteps,
-    onSkipStep: () => void,
-    isLastStep: boolean,
-}) {
+export default function PlannerToolbar() {
     return (
         <>
             <Toolbar>
-
-
+                
                 <Progress.Pie style={styles.pie} progress={0.4} size={25} color={Theme.colors.primary}
                               borderWidth={2}/>
 
-
-                {/*{!isLastStep &&*/}
-                {/*    <Pressable style={styles.skipBtn} onPress={() => onSkipStep()}>*/}
-                {/*        <Text>Skip</Text>*/}
-                {/*    </Pressable>*/}
-                {/*}*/}
 
                 <Link style={styles.checklistBtn} push href="/(tabs)/(planner)/checklist">
                     <View style={ComponentStyles.iconBtn}>

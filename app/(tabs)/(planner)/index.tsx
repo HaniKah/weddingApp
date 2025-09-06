@@ -59,10 +59,11 @@ export default function Index() {
     function ActiveComponent({currentStep, data}: { currentStep: StepsDto, data: PlacesViewModel | undefined }) {
         if (currentStep.step === WeddingSteps.Date) {
             return <PickDate onNextStep={nextStep} onPreviousStep={previousStep} isFirstStep={isFirstStep}
-                             isLastStep={isLastStep}/>
+                             isLastStep={isLastStep} currentStep={currentStep}/>
         }
         return <PickPlace data={data?.result} onNextStep={nextStep}
-                          onPreviousStep={previousStep} isLastStep={isLastStep} isFirstStep={isFirstStep}/>
+                          onPreviousStep={previousStep} isLastStep={isLastStep} isFirstStep={isFirstStep}
+                          currentStep={currentStep}/>
     }
 
     function nextStep() {

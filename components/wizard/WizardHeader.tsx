@@ -1,12 +1,14 @@
 import {Pressable, StyleSheet, Text, View} from "react-native";
 import {IconSymbol} from "@/components/ui/IconSymbol";
 import {Theme} from "@/constants/Theme";
+import {StepsDto} from "@/types/open-api";
 
-export default function WizardHeader({onNextStep, onPreviousStep, isFirstStep, isLastStep}: {
+export default function WizardHeader({onNextStep, onPreviousStep, isFirstStep, isLastStep, currentStep}: {
     onNextStep: () => void,
     onPreviousStep: () => void
     isFirstStep: boolean,
     isLastStep: boolean,
+    currentStep: StepsDto
 }) {
     return (
         <>
@@ -16,7 +18,7 @@ export default function WizardHeader({onNextStep, onPreviousStep, isFirstStep, i
                 </Pressable>}
 
                 <Text style={styles.headingText}>
-                    Pick a Place
+                    {currentStep.title}
                 </Text>
 
                 {!isLastStep && <Pressable onPress={onNextStep}>
@@ -25,8 +27,8 @@ export default function WizardHeader({onNextStep, onPreviousStep, isFirstStep, i
 
             </View>
 
-            <Text style={styles.question}>
-                WHERE SHOULD THE WEDDING TAKE A PLACE ?
+            <Text style={styles.description}>
+                {currentStep.description}
             </Text>
 
         </>
@@ -49,7 +51,7 @@ const styles = StyleSheet.create({
         fontFamily: Theme.typography.meaCulpa,
         paddingVertical: 10,
     },
-    question: {
+    description: {
         color: Theme.colors.primary,
         paddingVertical: 20,
         paddingHorizontal: 50,

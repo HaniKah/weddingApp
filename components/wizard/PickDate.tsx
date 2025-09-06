@@ -1,9 +1,15 @@
-import {Text} from "react-native";
+import WizardHeader from "@/components/wizard/WizardHeader";
 
-export default function PickDate() {
+export default function PickDate({onNextStep, onPreviousStep, isFirstStep, isLastStep}: {
+    onNextStep: () => void,
+    onPreviousStep: () => void,
+    isFirstStep: boolean,
+    isLastStep: boolean
+}) {
     return (
-        <Text>
-            this is the date form
-        </Text>
+        <>
+            <WizardHeader onNextStep={onNextStep} onPreviousStep={onPreviousStep} isFirstStep={isFirstStep}
+                          isLastStep={isLastStep}/>
+        </>
     )
 }

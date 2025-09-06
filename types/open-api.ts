@@ -11,200 +11,208 @@
  */
 
 export enum WeddingSteps {
-    Date = "Date",
-    Host = "Host",
-    Dress = "Dress",
-    Photographer = "Photographer",
-    Dj = "Dj",
+  Date = "Date",
+  Host = "Host",
+  Dress = "Dress",
+  Photographer = "Photographer",
+  Dj = "Dj",
+}
+
+export interface StepsDto {
+  fullfilled: boolean;
+  title: string;
+  description: string;
+  step: WeddingSteps;
 }
 
 export type LatLng = object;
 
 export interface PlacesDto {
-    placeId: string;
-    businessStatus?: string;
-    location?: LatLng;
-    name?: string;
-    formatted_address?: string;
-    formatted_phone_number?: string;
+  placeId?: string;
+  businessStatus?: string;
+  location?: LatLng;
+  name?: string;
+  formatted_address?: string;
+  formatted_phone_number?: string;
 }
 
 export interface PlacesViewModel {
-    result: PlacesDto[];
+  result: PlacesDto[];
 }
 
-export interface StepsDto {
-    currentStep: WeddingSteps;
-    steps: WeddingSteps[];
-}
-
-import type {AxiosInstance, AxiosRequestConfig, AxiosResponse, HeadersDefaults, ResponseType,} from "axios";
+import type {
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosResponse,
+  HeadersDefaults,
+  ResponseType,
+} from "axios";
 import axios from "axios";
 
 export type QueryParamsType = Record<string | number, any>;
 
 export interface FullRequestParams
-    extends Omit<AxiosRequestConfig, "data" | "params" | "url" | "responseType"> {
-    /** set parameter to `true` for call `securityWorker` for this request */
-    secure?: boolean;
-    /** request path */
-    path: string;
-    /** content type of request body */
-    type?: ContentType;
-    /** query params */
-    query?: QueryParamsType;
-    /** format of response (i.e. response.json() -> format: "json") */
-    format?: ResponseType;
-    /** request body */
-    body?: unknown;
+  extends Omit<AxiosRequestConfig, "data" | "params" | "url" | "responseType"> {
+  /** set parameter to `true` for call `securityWorker` for this request */
+  secure?: boolean;
+  /** request path */
+  path: string;
+  /** content type of request body */
+  type?: ContentType;
+  /** query params */
+  query?: QueryParamsType;
+  /** format of response (i.e. response.json() -> format: "json") */
+  format?: ResponseType;
+  /** request body */
+  body?: unknown;
 }
 
 export type RequestParams = Omit<
-    FullRequestParams,
-    "body" | "method" | "query" | "path"
+  FullRequestParams,
+  "body" | "method" | "query" | "path"
 >;
 
 export interface ApiConfig<SecurityDataType = unknown>
-    extends Omit<AxiosRequestConfig, "data" | "cancelToken"> {
-    securityWorker?: (
-        securityData: SecurityDataType | null,
-    ) => Promise<AxiosRequestConfig | void> | AxiosRequestConfig | void;
-    secure?: boolean;
-    format?: ResponseType;
+  extends Omit<AxiosRequestConfig, "data" | "cancelToken"> {
+  securityWorker?: (
+    securityData: SecurityDataType | null,
+  ) => Promise<AxiosRequestConfig | void> | AxiosRequestConfig | void;
+  secure?: boolean;
+  format?: ResponseType;
 }
 
 export enum ContentType {
-    Json = "application/json",
-    JsonApi = "application/vnd.api+json",
-    FormData = "multipart/form-data",
-    UrlEncoded = "application/x-www-form-urlencoded",
-    Text = "text/plain",
+  Json = "application/json",
+  JsonApi = "application/vnd.api+json",
+  FormData = "multipart/form-data",
+  UrlEncoded = "application/x-www-form-urlencoded",
+  Text = "text/plain",
 }
 
 export class HttpClient<SecurityDataType = unknown> {
-    public instance: AxiosInstance;
-    private securityData: SecurityDataType | null = null;
-    private securityWorker?: ApiConfig<SecurityDataType>["securityWorker"];
-    private secure?: boolean;
-    private format?: ResponseType;
+  public instance: AxiosInstance;
+  private securityData: SecurityDataType | null = null;
+  private securityWorker?: ApiConfig<SecurityDataType>["securityWorker"];
+  private secure?: boolean;
+  private format?: ResponseType;
 
-    constructor({
-                    securityWorker,
-                    secure,
-                    format,
-                    ...axiosConfig
-                }: ApiConfig<SecurityDataType> = {}) {
-        this.instance = axios.create({
-            ...axiosConfig,
-            baseURL: axiosConfig.baseURL || "",
-        });
-        this.secure = secure;
-        this.format = format;
-        this.securityWorker = securityWorker;
-    }
+  constructor({
+    securityWorker,
+    secure,
+    format,
+    ...axiosConfig
+  }: ApiConfig<SecurityDataType> = {}) {
+    this.instance = axios.create({
+      ...axiosConfig,
+      baseURL: axiosConfig.baseURL || "",
+    });
+    this.secure = secure;
+    this.format = format;
+    this.securityWorker = securityWorker;
+  }
 
-    public setSecurityData = (data: SecurityDataType | null) => {
-        this.securityData = data;
+  public setSecurityData = (data: SecurityDataType | null) => {
+    this.securityData = data;
+  };
+
+  protected mergeRequestParams(
+    params1: AxiosRequestConfig,
+    params2?: AxiosRequestConfig,
+  ): AxiosRequestConfig {
+    const method = params1.method || (params2 && params2.method);
+
+    return {
+      ...this.instance.defaults,
+      ...params1,
+      ...(params2 || {}),
+      headers: {
+        ...((method &&
+          this.instance.defaults.headers[
+            method.toLowerCase() as keyof HeadersDefaults
+          ]) ||
+          {}),
+        ...(params1.headers || {}),
+        ...((params2 && params2.headers) || {}),
+      },
     };
+  }
 
-    public request = async <T = any, _E = any>({
-                                                   secure,
-                                                   path,
-                                                   type,
-                                                   query,
-                                                   format,
-                                                   body,
-                                                   ...params
-                                               }: FullRequestParams): Promise<AxiosResponse<T>> => {
-        const secureParams =
-            ((typeof secure === "boolean" ? secure : this.secure) &&
-                this.securityWorker &&
-                (await this.securityWorker(this.securityData))) ||
-            {};
-        const requestParams = this.mergeRequestParams(params, secureParams);
-        const responseFormat = format || this.format || undefined;
+  protected stringifyFormItem(formItem: unknown) {
+    if (typeof formItem === "object" && formItem !== null) {
+      return JSON.stringify(formItem);
+    } else {
+      return `${formItem}`;
+    }
+  }
 
-        if (
-            type === ContentType.FormData &&
-            body &&
-            body !== null &&
-            typeof body === "object"
-        ) {
-            body = this.createFormData(body as Record<string, unknown>);
-        }
+  protected createFormData(input: Record<string, unknown>): FormData {
+    if (input instanceof FormData) {
+      return input;
+    }
+    return Object.keys(input || {}).reduce((formData, key) => {
+      const property = input[key];
+      const propertyContent: any[] =
+        property instanceof Array ? property : [property];
 
-        if (
-            type === ContentType.Text &&
-            body &&
-            body !== null &&
-            typeof body !== "string"
-        ) {
-            body = JSON.stringify(body);
-        }
+      for (const formItem of propertyContent) {
+        const isFileType = formItem instanceof Blob || formItem instanceof File;
+        formData.append(
+          key,
+          isFileType ? formItem : this.stringifyFormItem(formItem),
+        );
+      }
 
-        return this.instance.request({
-            ...requestParams,
-            headers: {
-                ...(requestParams.headers || {}),
-                ...(type ? {"Content-Type": type} : {}),
-            },
-            params: query,
-            responseType: responseFormat,
-            data: body,
-            url: path,
-        });
-    };
+      return formData;
+    }, new FormData());
+  }
 
-    protected mergeRequestParams(
-        params1: AxiosRequestConfig,
-        params2?: AxiosRequestConfig,
-    ): AxiosRequestConfig {
-        const method = params1.method || (params2 && params2.method);
+  public request = async <T = any, _E = any>({
+    secure,
+    path,
+    type,
+    query,
+    format,
+    body,
+    ...params
+  }: FullRequestParams): Promise<AxiosResponse<T>> => {
+    const secureParams =
+      ((typeof secure === "boolean" ? secure : this.secure) &&
+        this.securityWorker &&
+        (await this.securityWorker(this.securityData))) ||
+      {};
+    const requestParams = this.mergeRequestParams(params, secureParams);
+    const responseFormat = format || this.format || undefined;
 
-        return {
-            ...this.instance.defaults,
-            ...params1,
-            ...(params2 || {}),
-            headers: {
-                ...((method &&
-                        this.instance.defaults.headers[
-                            method.toLowerCase() as keyof HeadersDefaults
-                            ]) ||
-                    {}),
-                ...(params1.headers || {}),
-                ...((params2 && params2.headers) || {}),
-            },
-        };
+    if (
+      type === ContentType.FormData &&
+      body &&
+      body !== null &&
+      typeof body === "object"
+    ) {
+      body = this.createFormData(body as Record<string, unknown>);
     }
 
-    protected stringifyFormItem(formItem: unknown) {
-        if (typeof formItem === "object" && formItem !== null) {
-            return JSON.stringify(formItem);
-        } else {
-            return `${formItem}`;
-        }
+    if (
+      type === ContentType.Text &&
+      body &&
+      body !== null &&
+      typeof body !== "string"
+    ) {
+      body = JSON.stringify(body);
     }
 
-    protected createFormData(input: Record<string, unknown>): FormData {
-        if (input instanceof FormData) {
-            return input;
-        }
-        return Object.keys(input || {}).reduce((formData, key) => {
-            const property = input[key];
-            const propertyContent: any[] =
-                property instanceof Array ? property : [property];
-
-            for (const formItem of propertyContent) {
-                const isFileType = formItem instanceof Blob || formItem instanceof File;
-                formData.append(
-                    key,
-                    isFileType ? formItem : this.stringifyFormItem(formItem),
-                );
-            }
-
-            return formData;
-        }, new FormData());
-    }
+    return this.instance.request({
+      ...requestParams,
+      headers: {
+        ...(requestParams.headers || {}),
+        ...(type ? { "Content-Type": type } : {}),
+      },
+      params: query,
+      responseType: responseFormat,
+      data: body,
+      url: path,
+    });
+  };
 }
 
 /**
@@ -212,82 +220,91 @@ export class HttpClient<SecurityDataType = unknown> {
  * @version 1.0
  * @contact
  *
- * this is the Open Api docs for the wedding (planner)
+ * this is the Open Api docs for the wedding planner
  */
 export class Api<
-    SecurityDataType extends unknown,
+  SecurityDataType extends unknown,
 > extends HttpClient<SecurityDataType> {
-    api = {
-        /**
-         * No description
-         *
-         * @tags App
-         * @name AppControllerGetHello
-         * @request GET:/api
-         */
-        appControllerGetHello: (params: RequestParams = {}) =>
-            this.request<string, any>({
-                path: `/api`,
-                method: "GET",
-                format: "json",
-                ...params,
-            }),
+  api = {
+    /**
+     * No description
+     *
+     * @tags App
+     * @name AppControllerGetHello
+     * @request GET:/api
+     */
+    appControllerGetHello: (params: RequestParams = {}) =>
+      this.request<string, any>({
+        path: `/api`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
 
-        /**
-         * No description
-         *
-         * @tags Places
-         * @name PlacesControllerGetGooglePlaces
-         * @request GET:/api/places/getGooglePlaces
-         */
-        placesControllerGetGooglePlaces: (
-            query: {
-                step: string;
-            },
-            params: RequestParams = {},
-        ) =>
-            this.request<PlacesViewModel, any>({
-                path: `/api/places/getGooglePlaces`,
-                method: "GET",
-                query: query,
-                format: "json",
-                ...params,
-            }),
+    /**
+     * No description
+     *
+     * @tags Places
+     * @name PlacesControllerGetGooglePlaces
+     * @request GET:/api/places/getGooglePlaces
+     */
+    placesControllerGetGooglePlaces: (
+      query: {
+        step: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<PlacesViewModel, any>({
+        path: `/api/places/getGooglePlaces`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      }),
 
-        /**
-         * No description
-         *
-         * @tags Places
-         * @name PlacesControllerGetPlaces
-         * @request GET:/api/places/getPlaces
-         */
-        placesControllerGetPlaces: (
-            query: {
-                step: string;
-            },
-            params: RequestParams = {},
-        ) =>
-            this.request<PlacesViewModel, any>({
-                path: `/api/places/getPlaces`,
-                method: "GET",
-                query: query,
-                format: "json",
-                ...params,
-            }),
+    /**
+     * No description
+     *
+     * @tags Places
+     * @name PlacesControllerGetPlaces
+     * @request GET:/api/places/getPlaces
+     */
+    placesControllerGetPlaces: (
+      query: {
+        step: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<PlacesViewModel, any>({
+        path: `/api/places/getPlaces`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      }),
 
-        /**
-         * No description
-         *
-         * @tags Places
-         * @name PlacesControllerGetSteps
-         * @request GET:/api/places/getSteps
-         */
-        placesControllerGetSteps: (params: RequestParams = {}) =>
-            this.request<StepsDto, any>({
-                path: `/api/places/getSteps`,
-                method: "GET",
-                format: "json",
-                ...params,
-            }),
-    };
+    /**
+     * No description
+     *
+     * @tags Places
+     * @name PlacesControllerGetSteps
+     * @request GET:/api/places/getSteps
+     */
+    placesControllerGetSteps: (params: RequestParams = {}) =>
+      this.request<
+        {
+          Date: StepsDto;
+          Host: StepsDto;
+          Dress: StepsDto;
+          Photographer: StepsDto;
+          Dj: StepsDto;
+        },
+        any
+      >({
+        path: `/api/places/getSteps`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+  };
 }

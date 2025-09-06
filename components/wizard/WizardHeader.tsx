@@ -13,17 +13,17 @@ export default function WizardHeader({onNextStep, onPreviousStep, isFirstStep, i
     return (
         <>
             <View style={styles.headingContainer}>
-                {!isFirstStep && <Pressable onPress={onPreviousStep}>
+                <Pressable style={isFirstStep && styles.buttonsHidden} onPress={onPreviousStep}>
                     <IconSymbol name="arrow.left" color={Theme.colors.primary} weight="thin"/>
-                </Pressable>}
+                </Pressable>
 
                 <Text style={styles.headingText}>
                     {currentStep.title}
                 </Text>
 
-                {!isLastStep && <Pressable onPress={onNextStep}>
+                <Pressable style={isLastStep && styles.buttonsHidden} onPress={onNextStep}>
                     <IconSymbol name="arrow.right" color={Theme.colors.primary} weight="thin"/>
-                </Pressable>}
+                </Pressable>
 
             </View>
 
@@ -66,5 +66,9 @@ const styles = StyleSheet.create({
         justifyContent: "space-evenly",
         marginTop: 10
 
+    },
+    buttonsHidden: {
+        opacity: 0,
+        pointerEvents: "none"
     }
 })

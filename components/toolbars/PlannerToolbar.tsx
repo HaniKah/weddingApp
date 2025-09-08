@@ -7,17 +7,23 @@ import {IconSymbol} from "@/components/ui/IconSymbol";
 import {Link} from "expo-router";
 
 
-export default function PlannerToolbar({progress, note}: {
+export default function PlannerToolbar({progress, note, fullfilled}: {
     progress: number,
-    note: string
+    note: string,
+    fullfilled: boolean,
 }) {
     return (
         <>
             <Toolbar>
                 <View style={styles.progressContainer}>
-                    <Progress.Pie style={styles.pie} progress={progress} size={25} color={Theme.colors.primary}
-                                  borderWidth={2}/>
-                    <Text style={styles.note}>{note}</Text>
+                    {fullfilled ?
+                        <IconSymbol color={Theme.colors.green["100"]} name="checkmark.circle.fill"/> :
+
+                        <Progress.Pie style={styles.pie} progress={progress} size={20} color={Theme.colors.primary}
+                                      borderWidth={2}/>
+                    }
+
+                    <Text style={[styles.note, fullfilled && styles.filled]}>{note}</Text>
                 </View>
 
 
@@ -36,7 +42,7 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
-        gap: 10
+        gap: 7
     },
     note: {
         color: Theme.colors.primary,
@@ -49,5 +55,8 @@ const styles = StyleSheet.create({
     },
     skipBtn: {
         alignSelf: "flex-end",
+    },
+    filled: {
+        color: Theme.colors.green["100"]
     }
 })

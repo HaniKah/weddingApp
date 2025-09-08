@@ -7,7 +7,10 @@ export const Theme = {
         background: '#F0F0F0',
         gold1: '#E5C280',
         gold2: '#A97E65',
-        iconBackground: '#e5e2df'
+        iconBackground: '#e5e2df',
+        green: {
+            "100": '#4B6D0B',
+        }
     },
     typography: {
         meaCulpa: 'MeaCulpa-Regular',

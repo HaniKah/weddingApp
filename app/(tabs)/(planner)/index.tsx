@@ -96,7 +96,8 @@ export default function Index() {
         <>
             {steps && currentStep &&
                 <View style={styles.container}>
-                    <PlannerToolbar progress={steps?.progress} note={currentStep.note}/>
+                    <PlannerToolbar progress={steps?.progress} note={currentStep.note}
+                                    fullfilled={currentStep.fullfilled}/>
                     <ActiveComponent/>
                 </View>}
         </>)

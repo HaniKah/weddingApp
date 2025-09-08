@@ -47,6 +47,7 @@ export default function Index() {
             setIsLastStep(currentStep?.step === WeddingSteps.Dj)
         }
         const checkFirstStep = () => {
+            //since we preserve the order , we can hardcode it
             setIsFirstStep(currentStep?.step === WeddingSteps.Date)
         }
         console.log(currentStep?.step)
@@ -56,14 +57,17 @@ export default function Index() {
     }, [currentStep, steps]);
 
 
-    function ActiveComponent({currentStep, data}: { currentStep: StepInfo, data: PlacesViewModel | undefined }) {
-        if (currentStep.step === WeddingSteps.Date) {
-            return <PickDate onNextStep={nextStep} onPreviousStep={previousStep} isFirstStep={isFirstStep}
-                             isLastStep={isLastStep} currentStep={currentStep}/>
+    function ActiveComponent() {
+        if (currentStep) {
+            if (currentStep.step === WeddingSteps.Date) {
+                return <PickDate onNextStep={nextStep} onPreviousStep={previousStep} isFirstStep={isFirstStep}
+                                 isLastStep={isLastStep} currentStep={currentStep}/>
+            }
+            return <PickPlace data={data?.result} onNextStep={nextStep}
+                              onPreviousStep={previousStep} isLastStep={isLastStep} isFirstStep={isFirstStep}
+                              currentStep={currentStep}/>
         }
-        return <PickPlace data={data?.result} onNextStep={nextStep}
-                          onPreviousStep={previousStep} isLastStep={isLastStep} isFirstStep={isFirstStep}
-                          currentStep={currentStep}/>
+
     }
 
     function nextStep() {
@@ -90,11 +94,11 @@ export default function Index() {
 
     return (
         <>
-            <View style={styles.container}>
-                <PlannerToolbar/>
-                {currentStep && <ActiveComponent currentStep={currentStep} data={data}/>}
-            </View>
-
+            {steps && currentStep &&
+                <View style={styles.container}>
+                    <PlannerToolbar progress={steps?.progress} note={currentStep.note}/>
+                    <ActiveComponent/>
+                </View>}
         </>)
 }
 

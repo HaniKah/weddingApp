@@ -33,14 +33,10 @@ export interface PlacesViewModel {
   result: PlacesDto[];
 }
 
-export interface FullfilledStep {
-  placeId: string;
-  placeName: string;
-}
-
 export interface StepInfo {
   step: WeddingSteps;
-  fullfilled: FullfilledStep | null;
+  fullfilled: boolean;
+  note: string;
   title: string;
   description: string;
 }

@@ -1,19 +1,24 @@
 import Toolbar from "@/components/toolbars/Toolbar";
 
-import {StyleSheet, View} from "react-native";
+import {StyleSheet, Text, View} from "react-native";
 import {ComponentStyles, Theme} from "@/constants/Theme";
 import * as Progress from 'react-native-progress';
 import {IconSymbol} from "@/components/ui/IconSymbol";
 import {Link} from "expo-router";
 
 
-export default function PlannerToolbar() {
+export default function PlannerToolbar({progress, note}: {
+    progress: number,
+    note: string
+}) {
     return (
         <>
             <Toolbar>
-                
-                <Progress.Pie style={styles.pie} progress={0.4} size={25} color={Theme.colors.primary}
-                              borderWidth={2}/>
+                <View style={styles.progressContainer}>
+                    <Progress.Pie style={styles.pie} progress={progress} size={25} color={Theme.colors.primary}
+                                  borderWidth={2}/>
+                    <Text style={styles.note}>{note}</Text>
+                </View>
 
 
                 <Link style={styles.checklistBtn} push href="/(tabs)/(planner)/checklist">
@@ -27,7 +32,15 @@ export default function PlannerToolbar() {
     )
 }
 const styles = StyleSheet.create({
-
+    progressContainer: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 10
+    },
+    note: {
+        color: Theme.colors.primary,
+    },
     pie: {
         alignSelf: "center",
     },

@@ -18,13 +18,6 @@ export enum WeddingSteps {
   Dj = "Dj",
 }
 
-export interface StepsDto {
-  fullfilled: boolean;
-  title: string;
-  description: string;
-  step: WeddingSteps;
-}
-
 export type LatLng = object;
 
 export interface PlacesDto {
@@ -38,6 +31,23 @@ export interface PlacesDto {
 
 export interface PlacesViewModel {
   result: PlacesDto[];
+}
+
+export interface FullfilledStep {
+  placeId: string;
+  placeName: string;
+}
+
+export interface StepInfo {
+  step: WeddingSteps;
+  fullfilled: FullfilledStep | null;
+  title: string;
+  description: string;
+}
+
+export interface StepsDto {
+  progress: number;
+  steps: StepInfo[];
 }
 
 import type {
@@ -244,11 +254,11 @@ export class Api<
     /**
      * No description
      *
-     * @tags Places
-     * @name PlacesControllerGetGooglePlaces
+     * @tags Planner
+     * @name PlannerControllerGetGooglePlaces
      * @request GET:/api/places/getGooglePlaces
      */
-    placesControllerGetGooglePlaces: (
+    plannerControllerGetGooglePlaces: (
       query: {
         step: string;
       },
@@ -265,11 +275,11 @@ export class Api<
     /**
      * No description
      *
-     * @tags Places
-     * @name PlacesControllerGetPlaces
+     * @tags Planner
+     * @name PlannerControllerGetPlaces
      * @request GET:/api/places/getPlaces
      */
-    placesControllerGetPlaces: (
+    plannerControllerGetPlaces: (
       query: {
         step: string;
       },
@@ -286,21 +296,12 @@ export class Api<
     /**
      * No description
      *
-     * @tags Places
-     * @name PlacesControllerGetSteps
+     * @tags Planner
+     * @name PlannerControllerGetSteps
      * @request GET:/api/places/getSteps
      */
-    placesControllerGetSteps: (params: RequestParams = {}) =>
-      this.request<
-        {
-          Date: StepsDto;
-          Host: StepsDto;
-          Dress: StepsDto;
-          Photographer: StepsDto;
-          Dj: StepsDto;
-        },
-        any
-      >({
+    plannerControllerGetSteps: (params: RequestParams = {}) =>
+      this.request<StepsDto, any>({
         path: `/api/places/getSteps`,
         method: "GET",
         format: "json",

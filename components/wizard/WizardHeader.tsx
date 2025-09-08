@@ -1,14 +1,14 @@
 import {Pressable, StyleSheet, Text, View} from "react-native";
 import {IconSymbol} from "@/components/ui/IconSymbol";
 import {Theme} from "@/constants/Theme";
-import {StepsDto} from "@/types/open-api";
+import {StepInfo} from "@/types/open-api";
 
 export default function WizardHeader({onNextStep, onPreviousStep, isFirstStep, isLastStep, currentStep}: {
     onNextStep: () => void,
     onPreviousStep: () => void
     isFirstStep: boolean,
     isLastStep: boolean,
-    currentStep: StepsDto
+    currentStep: StepInfo
 }) {
     return (
         <>

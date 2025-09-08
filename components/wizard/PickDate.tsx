@@ -1,12 +1,12 @@
 import WizardHeader from "@/components/wizard/WizardHeader";
-import {StepsDto} from "@/types/open-api";
+import {StepInfo} from "@/types/open-api";
 
 export default function PickDate({onNextStep, onPreviousStep, isFirstStep, isLastStep, currentStep}: {
     onNextStep: () => void,
     onPreviousStep: () => void,
     isFirstStep: boolean,
     isLastStep: boolean,
-    currentStep: StepsDto
+    currentStep: StepInfo
 }) {
     return (
         <>

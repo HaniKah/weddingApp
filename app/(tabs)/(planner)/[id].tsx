@@ -24,7 +24,7 @@ export default function PlaceId() {
     return (
         <View>
             <Text>{placeDetails?.placeId}</Text>
-            <Text>{placeDetails?.name.text}</Text>
+            <Text>{placeDetails?.name}</Text>
             <Text>{placeDetails?.formattedAddress}</Text>
             <Text>{placeDetails?.internationalNumber}</Text>
             <Text>{placeDetails?.nationalNumber}</Text>

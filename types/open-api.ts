@@ -34,14 +34,14 @@ export interface PlacesViewModel {
 }
 
 export interface PlaceDetailsDto {
-  placeId: string;
-  name: object;
-  nationalNumber: object;
-  internationalNumber: object;
-  formattedAddress: object;
-  rating: object;
-  userRatingCount: object;
-  googleMapsUri: object;
+  placeId: string | null;
+  name: string | null;
+  nationalNumber: string | null;
+  internationalNumber: string | null;
+  formattedAddress: string | null;
+  rating: number | null;
+  userRatingCount: number | null;
+  googleMapsUri: string | null;
 }
 
 export interface StepInfo {

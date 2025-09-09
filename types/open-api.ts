@@ -33,6 +33,17 @@ export interface PlacesViewModel {
   result: PlacesDto[];
 }
 
+export interface PlaceDetailsDto {
+  placeId: string;
+  name: object;
+  nationalNumber: object;
+  internationalNumber: object;
+  formattedAddress: object;
+  rating: object;
+  userRatingCount: object;
+  googleMapsUri: object;
+}
+
 export interface StepInfo {
   step: WeddingSteps;
   fullfilled: boolean;
@@ -262,6 +273,27 @@ export class Api<
     ) =>
       this.request<PlacesViewModel, any>({
         path: `/api/places/getGooglePlaces`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Planner
+     * @name PlannerControllerGetGooglePlaceById
+     * @request GET:/api/places/getGooglePlaceById
+     */
+    plannerControllerGetGooglePlaceById: (
+      query: {
+        placeId: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<PlaceDetailsDto, any>({
+        path: `/api/places/getGooglePlaceById`,
         method: "GET",
         query: query,
         format: "json",

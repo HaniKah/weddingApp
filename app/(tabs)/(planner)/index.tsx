@@ -7,8 +7,7 @@ import {PickPlace} from "@/components/wizard/PickPlace";
 import {Api, PlacesViewModel, StepInfo, StepsDto, WeddingSteps} from "@/types/open-api";
 
 
-const API_URL = process.env.EXPO_PUBLIC_API_URL
-const {api} = new Api({baseURL: API_URL, withCredentials: true})
+const {api} = new Api({baseURL: process.env.EXPO_PUBLIC_API_URL, withCredentials: true})
 
 
 export default function Index() {
@@ -28,7 +27,7 @@ export default function Index() {
             setSteps(response.data)
             setStepsOrder(response.data.steps.map(s => s.step))
             setCurrentStep(response.data.steps.find(s => !s.fullfilled))
-            console.log(response.data)
+          
         }
 
         getSteps()
@@ -50,7 +49,7 @@ export default function Index() {
             //since we preserve the order , we can hardcode it
             setIsFirstStep(currentStep?.step === WeddingSteps.Date)
         }
-        console.log(currentStep?.step)
+
         getPlaces()
         checkLastStep()
         checkFirstStep()

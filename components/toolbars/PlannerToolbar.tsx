@@ -57,6 +57,7 @@ const styles = StyleSheet.create({
         alignSelf: "flex-end",
     },
     filled: {
-        color: Theme.colors.green["100"]
+        color: Theme.colors.green["100"],
+        fontWeight: "bold"
     }
 })

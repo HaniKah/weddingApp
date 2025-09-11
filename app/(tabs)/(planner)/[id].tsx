@@ -14,12 +14,14 @@ export default function PlaceId() {
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const [placeDetails, setPlaceDetails] = useState<PlaceDetailsDto>()
     const [photoUri, setPhotoUri] = useState<PhotosDto>()
+    const [photosOrder, setPhotosOrder] = useState<string[]>([])
 
     useEffect(() => {
         const getPlaceDetails = async () => {
             try {
                 const response = await api.plannerControllerGetPlaceById({placeId: id})
                 setPlaceDetails(response.data)
+                setPhotosOrder(response.data?.photos?.map((p) => p.photoRef))
             } catch (err) {
                 console.error(err)
             } finally {
@@ -32,7 +34,7 @@ export default function PlaceId() {
     useEffect(() => {
         const getPhoto = async () => {
             try {
-                const res = await api.plannerControllerGetPhotoByRef({photoRef: ref})
+                const res = await api.plannerControllerGetPhotoByRef({photoRef: photosOrder[0]})
                 setPhotoUri(res.data)
             } catch (err) {
                 console.error(err)
@@ -41,7 +43,7 @@ export default function PlaceId() {
             }
         }
         getPhoto()
-    }, []);
+    }, [photosOrder]);
 
 
     //

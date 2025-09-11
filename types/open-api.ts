@@ -39,7 +39,7 @@ export interface AuthorAttributionDto {
 }
 
 export interface PlacePhotoDto {
-  photoRef: string | null;
+  photoRef: string;
   width: number | null;
   height: number | null;
   attributions: AuthorAttributionDto[] | null;

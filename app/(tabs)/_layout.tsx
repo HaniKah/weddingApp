@@ -1,7 +1,7 @@
 import {Tabs} from "expo-router";
 import {IconSymbol} from "@/components/ui/IconSymbol";
 import React from "react";
-import {Theme} from "@/constants/Theme";
+import {Theme} from "@/styles/Theme";
 
 export default function TabsLayout() {
     return (

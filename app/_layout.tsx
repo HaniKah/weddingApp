@@ -4,7 +4,7 @@ import {StatusBar} from 'expo-status-bar';
 import 'react-native-reanimated';
 import {SafeAreaProvider, SafeAreaView} from "react-native-safe-area-context";
 import {StyleSheet} from "react-native";
-import {Theme} from "@/constants/Theme";
+import {Theme} from "@/styles/Theme";
 import {useEffect} from "react";
 
 

@@ -1,34 +1,16 @@
 import {StyleSheet} from "react-native";
+import {Theme} from "@/styles/Theme";
 
-export const Theme = {
-    colors: {
-        primary: '#8D6A3C',
-        primaryInactive: '#c2b39f',
-        background: '#F0F0F0',
-        gold1: '#E5C280',
-        gold2: '#A97E65',
-        iconBackground: '#e5e2df',
-        green: {
-            "100": '#4B6D0B',
-        }
-    },
-    typography: {
-        meaCulpa: 'MeaCulpa-Regular',
-        aboreto: "Aboreto-Regular"// this is not final , it needs to be configured correctly: https://docs.expo.dev/develop/user-interface/fonts/
-    },
-
-};
-
-export const ComponentStyles = StyleSheet.create({
+export const ButtonStyles = StyleSheet.create({
     primaryBtn: {
         backgroundColor: Theme.colors.primary,
         color: 'white',
         fontWeight: 'bold',
         paddingHorizontal: 20,
-        paddingVertical: 10,
+        paddingVertical: 14,
         width: 100,
         textAlign: 'center',
-        borderRadius: 5,
+        borderRadius: 8,
     },
     outlinedBtn: {
         backgroundColor: "transparent",

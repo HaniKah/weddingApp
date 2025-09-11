@@ -1,6 +1,6 @@
 import {Pressable, StyleSheet, Text, View} from "react-native";
 import {IconSymbol} from "@/components/ui/IconSymbol";
-import {Theme} from "@/constants/Theme";
+import {Theme} from "@/styles/Theme";
 import {StepInfo} from "@/types/open-api";
 
 export default function WizardHeader({onNextStep, onPreviousStep, isFirstStep, isLastStep, currentStep}: {
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
         fontSize: 40,
         fontWeight: "bold",
         color: Theme.colors.primary,
-        fontFamily: Theme.typography.meaCulpa,
+        fontFamily: Theme.typographies.meaCulpa,
         paddingVertical: 10,
     },
     description: {
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 50,
         textAlign: 'center',
         fontSize: 20,
-        fontFamily: Theme.typography.aboreto,
+        fontFamily: Theme.typographies.aboreto,
 
     },
     buttonsWrapper: {

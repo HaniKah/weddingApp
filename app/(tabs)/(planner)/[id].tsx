@@ -1,7 +1,12 @@
-import {ActivityIndicator, Image, Text, View} from "react-native";
+import {ActivityIndicator, Animated, Image, Pressable, StyleSheet, Text, View} from "react-native";
 import {Api, PhotosDto, PlaceDetailsDto} from "@/types/open-api";
 import {useEffect, useState} from "react";
 import {useLocalSearchParams} from "expo-router";
+import IconRatingStar from "@/components/ui/IconRatingStar";
+import {IconSymbol} from "@/components/ui/IconSymbol";
+import {Theme} from "@/styles/Theme";
+import {ButtonStyles} from "@/styles/Button";
+import ScrollView = Animated.ScrollView;
 
 // const key = "AIzaSyAKqIgtmbkopCIEfv4l6DZ77ip8ijZZick"
 const ref = "places/ChIJ51i9R_pfGxUR7vY7QzR16FA/photos/AciIO2fiRVp7wYjFjV2H2PVQD88830v1trjyS2vhOz0Ho9MEFRJKtOvzGsXfV-08377RY7kJcRF9hazfj0H7YVjtPlPKUgBgeSEzR0g60iR76Mn_6B8HiW5PsmsihYPb1FqNqV0nJaPdAofoDwk78zTseLcAYfQoyXwYfh87ccBUjyx2qJK1jtqD-zBmNKmwJ6ahdVy3W9_cwFynGhEhA1rtMLpfWkz3AWe7c99pnL6UPZdDN7brT7r8SMuJi8uSEtEvUCbM5EpGpPhtcuJJ6DFEQrsfffNKp1KMK2dztixNh_If6w"
@@ -54,15 +59,58 @@ export default function PlaceId() {
     // }
     if (!isLoading) {
         return (
-            <View>
-                <Image source={{uri: photoUri?.uri}} style={{width: 200, height: 200}}/>
-                <Text>{placeDetails?.placeId}</Text>
-                <Text>{placeDetails?.name}</Text>
-                <Text>{placeDetails?.name}</Text>
-                <Text>{placeDetails?.internationalPhoneNumber}</Text>
-                <Text>{placeDetails?.nationalPhoneNumber}</Text>
-                <Text>{placeDetails?.rating}</Text>
-            </View>
+            <ScrollView>
+                <Image source={{uri: photoUri?.uri}} style={{height: 400}}/>
+                <View style={styles.infosContainer}>
+
+                    <View style={styles.titleContainer}>
+                        <Text style={styles.title}>{placeDetails?.name}</Text>
+                        <IconRatingStar rating={placeDetails?.rating}/>
+                    </View>
+
+                    <View style={styles.infoContainer}>
+                        <IconSymbol name="location.circle" color={Theme.colors.black} size={Theme.sizes.iconSymbol}
+                                    weight={'thin'}/>
+                        <Text style={styles.info}>{placeDetails?.formattedAddress}</Text>
+                    </View>
+
+                    {
+                        placeDetails?.internationalPhoneNumber &&
+                        <View style={styles.infoContainer}>
+                            <IconSymbol name="phone.circle" color={Theme.colors.black} size={Theme.sizes.iconSymbol}
+                                        weight={'thin'}/>
+                            <Text style={styles.info}>{placeDetails?.internationalPhoneNumber}</Text>
+                        </View>
+                    }
+
+                    {
+                        !placeDetails?.internationalPhoneNumber && placeDetails?.nationalPhoneNumber &&
+                        <View style={styles.infoContainer}>
+                            <Text style={styles.info}> {placeDetails?.nationalPhoneNumber}</Text>
+                        </View>
+                    }
+
+                    {
+                        placeDetails?.website &&
+                        <View style={{backgroundColor: "red"}}>
+                            <Text style={styles.info}>
+                                {placeDetails?.website}
+                            </Text>
+                        </View>
+                    }
+                    <View style={styles.saveForLaterContainer}>
+                        <Pressable style={styles.saveForLaterBtn}>
+                            <Text style={styles.saveForLaterTxt}>save for later</Text>
+                        </Pressable>
+                    </View>
+
+                    <Pressable style={[ButtonStyles.primaryBtn, styles.pickPlaceBtn]}>
+                        <Text style={styles.pickBtnTxt}>Pick this place</Text>
+                    </Pressable>
+
+                </View>
+
+            </ScrollView>
 
         )
     } else {
@@ -73,3 +121,57 @@ export default function PlaceId() {
         )
     }
 }
+const styles = StyleSheet.create({
+    infosContainer: {
+        padding: 20
+    },
+    titleContainer: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        marginBottom: 20,
+    },
+    title: {
+        fontSize: 24,
+        fontWeight: "bold",
+    },
+    infoContainer: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        marginBottom: 10,
+        gap: 10,
+    },
+    info: {
+        paddingHorizontal: 10,
+        fontSize: 18,
+    },
+    pickPlaceBtn: {
+        width: "100%",
+        marginTop: 20,
+    },
+    pickBtnTxt: {
+        color: Theme.colors.white,
+        fontSize: 18,
+        fontWeight: "bold",
+        textAlign: "center",
+    },
+    saveForLaterBtn: {
+        width: 100,
+    },
+    saveForLaterTxt: {
+        textAlign: "center",
+        textDecorationLine: "underline",
+        marginTop: 20,
+        color: Theme.colors.primary,
+    },
+    saveForLaterContainer: {
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+
+    }
+
+})

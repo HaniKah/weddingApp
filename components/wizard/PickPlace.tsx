@@ -6,7 +6,7 @@ import WizardHeader from "@/components/wizard/WizardHeader";
 
 
 export function PickPlace({data, onNextStep, onPreviousStep, isLastStep, isFirstStep, currentStep}: {
-    data: PlacesDto[] | undefined,
+    data: PlacesDto[] | undefined | null,
     onNextStep: () => void,
     onPreviousStep: () => void
     isLastStep: boolean,

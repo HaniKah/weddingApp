@@ -18,7 +18,7 @@ export default function PlaceItem({item}: { item: PlacesDto }) {
                         {item.name}
                     </Text>
                     <Text>
-                        {item.formatted_address}
+                        {item.formattedAddress}
                     </Text>
                 </View>
             </View>

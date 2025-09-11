@@ -22,23 +22,37 @@ export default function Index() {
 
 
     useEffect(() => {
+
         const getSteps = async () => {
-            const response = await api.plannerControllerGetDummySteps()
-            setSteps(response.data)
-            setStepsOrder(response.data.steps.map(s => s.step))
-            setCurrentStep(response.data.steps.find(s => !s.fullfilled))
+            try {
+                const response = await api.plannerControllerGetDummySteps()
+                setSteps(response.data)
+                setStepsOrder(response.data.steps.map(s => s.step))
+                setCurrentStep(response.data.steps.find(s => !s.fullfilled))
 
+            } catch (err) {
+                console.error(err)
+            } finally {
+                setLoading(false)
+            }
         }
-
         getSteps()
 
     }, [])
-    useEffect(() => {
-        const getPlaces = async (): Promise<void> => {
-            const response = await api.plannerControllerGetDummyPlaces({step: currentStep?.step || WeddingSteps.Date}) //todo : doesnt make sense , rethink it
-            setData(response.data)
-            setLoading(false)
 
+
+    useEffect(() => {
+        if (!currentStep) return
+        const getPlaces = async (): Promise<void> => {
+            try {
+                const response = await api.plannerControllerGetPlaces({step: currentStep?.step}) //todo : doesnt make sense , rethink it
+                setData(response.data)
+                
+            } catch (err) {
+                console.error(err)
+            } finally {
+                setLoading(false)
+            }
         }
 
         const checkLastStep = () => {
@@ -49,8 +63,10 @@ export default function Index() {
             //since we preserve the order , we can hardcode it
             setIsFirstStep(currentStep?.step === WeddingSteps.Date)
         }
+        if (currentStep) {
+            getPlaces()
+        }
 
-        getPlaces()
         checkLastStep()
         checkFirstStep()
     }, [currentStep, steps]);

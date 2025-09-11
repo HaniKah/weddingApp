@@ -1,5 +1,5 @@
-import {ActivityIndicator, Text, View} from "react-native";
-import {Api, PlaceDetailsDto} from "@/types/open-api";
+import {ActivityIndicator, Image, Text, View} from "react-native";
+import {Api, PhotosDto, PlaceDetailsDto} from "@/types/open-api";
 import {useEffect, useState} from "react";
 import {useLocalSearchParams} from "expo-router";
 
@@ -13,6 +13,7 @@ export default function PlaceId() {
 
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const [placeDetails, setPlaceDetails] = useState<PlaceDetailsDto>()
+    const [photoUri, setPhotoUri] = useState<PhotosDto>()
 
     useEffect(() => {
         const getPlaceDetails = async () => {
@@ -28,6 +29,20 @@ export default function PlaceId() {
         getPlaceDetails()
     }, [id]);
 
+    useEffect(() => {
+        const getPhoto = async () => {
+            try {
+                const res = await api.plannerControllerGetPhotoByRef({photoRef: ref})
+                setPhotoUri(res.data)
+            } catch (err) {
+                console.error(err)
+            } finally {
+                setIsLoading(false)
+            }
+        }
+        getPhoto()
+    }, []);
+
 
     //
     // function nextPhoto() {
@@ -38,6 +53,7 @@ export default function PlaceId() {
     if (!isLoading) {
         return (
             <View>
+                <Image source={{uri: photoUri?.uri}} style={{width: 200, height: 200}}/>
                 <Text>{placeDetails?.placeId}</Text>
                 <Text>{placeDetails?.name}</Text>
                 <Text>{placeDetails?.name}</Text>

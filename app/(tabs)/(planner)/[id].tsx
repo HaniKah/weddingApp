@@ -1,33 +1,57 @@
-import {Text, View} from "react-native";
-import {useLocalSearchParams} from "expo-router";
+import {ActivityIndicator, Text, View} from "react-native";
 import {Api, PlaceDetailsDto} from "@/types/open-api";
 import {useEffect, useState} from "react";
+import {useLocalSearchParams} from "expo-router";
+
+// const key = "AIzaSyAKqIgtmbkopCIEfv4l6DZ77ip8ijZZick"
+const ref = "places/ChIJ51i9R_pfGxUR7vY7QzR16FA/photos/AciIO2fiRVp7wYjFjV2H2PVQD88830v1trjyS2vhOz0Ho9MEFRJKtOvzGsXfV-08377RY7kJcRF9hazfj0H7YVjtPlPKUgBgeSEzR0g60iR76Mn_6B8HiW5PsmsihYPb1FqNqV0nJaPdAofoDwk78zTseLcAYfQoyXwYfh87ccBUjyx2qJK1jtqD-zBmNKmwJ6ahdVy3W9_cwFynGhEhA1rtMLpfWkz3AWe7c99pnL6UPZdDN7brT7r8SMuJi8uSEtEvUCbM5EpGpPhtcuJJ6DFEQrsfffNKp1KMK2dztixNh_If6w"
+// const photoUri = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${ref}&key=${key}`
 
 const {api} = new Api({baseURL: process.env.EXPO_PUBLIC_API_URL, withCredentials: true})
 export default function PlaceId() {
     const {id} = useLocalSearchParams<{ id: string }>();
+
+    const [isLoading, setIsLoading] = useState<boolean>(true)
     const [placeDetails, setPlaceDetails] = useState<PlaceDetailsDto>()
 
     useEffect(() => {
-        const fetchPlaceDetails = async () => {
-
-            const response = await api.plannerControllerGetGooglePlaceById({placeId: id})
-            setPlaceDetails(response.data)
-            console.log("id :", id)
-            console.log("response data in details:", response.data)
-
+        const getPlaceDetails = async () => {
+            try {
+                const response = await api.plannerControllerGetPlaceById({placeId: id})
+                setPlaceDetails(response.data)
+            } catch (err) {
+                console.error(err)
+            } finally {
+                setIsLoading(false)
+            }
         }
-        fetchPlaceDetails()
+        getPlaceDetails()
     }, [id]);
 
 
-    return (
-        <View>
-            <Text>{placeDetails?.placeId}</Text>
-            <Text>{placeDetails?.name}</Text>
-            <Text>{placeDetails?.formattedAddress}</Text>
-            <Text>{placeDetails?.internationalNumber}</Text>
-            <Text>{placeDetails?.nationalNumber}</Text>
-        </View>
-    )
+    //
+    // function nextPhoto() {
+    //     if (!photosOrder) return
+    //     const index = currentPhotoIndex % photosOrder.length
+    //     setCurrentPhotoIndex(index)
+    // }
+    if (!isLoading) {
+        return (
+            <View>
+                <Text>{placeDetails?.placeId}</Text>
+                <Text>{placeDetails?.name}</Text>
+                <Text>{placeDetails?.name}</Text>
+                <Text>{placeDetails?.internationalPhoneNumber}</Text>
+                <Text>{placeDetails?.nationalPhoneNumber}</Text>
+                <Text>{placeDetails?.rating}</Text>
+            </View>
+
+        )
+    } else {
+        return (
+            <View>
+                <ActivityIndicator size="large"/>
+            </View>
+        )
+    }
 }

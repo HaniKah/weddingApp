@@ -23,11 +23,11 @@ export default function Index() {
 
     useEffect(() => {
         const getSteps = async () => {
-            const response = await api.plannerControllerGetSteps()
+            const response = await api.plannerControllerGetDummySteps()
             setSteps(response.data)
             setStepsOrder(response.data.steps.map(s => s.step))
             setCurrentStep(response.data.steps.find(s => !s.fullfilled))
-          
+
         }
 
         getSteps()
@@ -35,7 +35,7 @@ export default function Index() {
     }, [])
     useEffect(() => {
         const getPlaces = async (): Promise<void> => {
-            const response = await api.plannerControllerGetPlaces({step: currentStep?.step || WeddingSteps.Date}) //todo : doesnt make sense , rethink it
+            const response = await api.plannerControllerGetDummyPlaces({step: currentStep?.step || WeddingSteps.Date}) //todo : doesnt make sense , rethink it
             setData(response.data)
             setLoading(false)
 

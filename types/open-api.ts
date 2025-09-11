@@ -21,27 +21,44 @@ export enum WeddingSteps {
 export type LatLng = object;
 
 export interface PlacesDto {
-  placeId?: string;
-  businessStatus?: string;
-  location?: LatLng;
-  name?: string;
-  formatted_address?: string;
-  formatted_phone_number?: string;
+  placeId: string | null;
+  location?: LatLng | null;
+  name?: string | null;
+  formattedAddress?: string | null;
+  internationalPhoneNumber?: string | null;
 }
 
 export interface PlacesViewModel {
   result: PlacesDto[];
 }
 
+export interface AuthorAttributionDto {
+  displayName?: string | null;
+  uri?: string | null;
+  photoUri?: string | null;
+}
+
+export interface PlacePhotoDto {
+  photoRef: string | null;
+  width: number | null;
+  height: number | null;
+  attributions: AuthorAttributionDto[] | null;
+}
+
 export interface PlaceDetailsDto {
-  placeId: string | null;
+  placeId: string;
   name: string | null;
-  nationalNumber: string | null;
-  internationalNumber: string | null;
+  nationalPhoneNumber: string | null;
+  internationalPhoneNumber: string | null;
+  website: string | null;
   formattedAddress: string | null;
   rating: number | null;
   userRatingCount: number | null;
-  googleMapsUri: string | null;
+  photos: PlacePhotoDto[];
+}
+
+export interface PhotosDto {
+  uri: string;
 }
 
 export interface StepInfo {
@@ -262,48 +279,6 @@ export class Api<
      * No description
      *
      * @tags Planner
-     * @name PlannerControllerGetGooglePlaces
-     * @request GET:/api/places/getGooglePlaces
-     */
-    plannerControllerGetGooglePlaces: (
-      query: {
-        step: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<PlacesViewModel, any>({
-        path: `/api/places/getGooglePlaces`,
-        method: "GET",
-        query: query,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Planner
-     * @name PlannerControllerGetGooglePlaceById
-     * @request GET:/api/places/getGooglePlaceById
-     */
-    plannerControllerGetGooglePlaceById: (
-      query: {
-        placeId: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<PlaceDetailsDto, any>({
-        path: `/api/places/getGooglePlaceById`,
-        method: "GET",
-        query: query,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Planner
      * @name PlannerControllerGetPlaces
      * @request GET:/api/places/getPlaces
      */
@@ -325,12 +300,75 @@ export class Api<
      * No description
      *
      * @tags Planner
-     * @name PlannerControllerGetSteps
-     * @request GET:/api/places/getSteps
+     * @name PlannerControllerGetPlaceById
+     * @request GET:/api/places/getPlaceById
      */
-    plannerControllerGetSteps: (params: RequestParams = {}) =>
+    plannerControllerGetPlaceById: (
+      query: {
+        placeId: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<PlaceDetailsDto, any>({
+        path: `/api/places/getPlaceById`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Planner
+     * @name PlannerControllerGetPhotoByRef
+     * @request GET:/api/places/getPhotoByRef
+     */
+    plannerControllerGetPhotoByRef: (
+      query: {
+        photoRef: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<PhotosDto, any>({
+        path: `/api/places/getPhotoByRef`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Planner
+     * @name PlannerControllerGetDummyPlaces
+     * @request GET:/api/places/getDummyPlaces
+     */
+    plannerControllerGetDummyPlaces: (
+      query: {
+        step: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<PlacesViewModel, any>({
+        path: `/api/places/getDummyPlaces`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Planner
+     * @name PlannerControllerGetDummySteps
+     * @request GET:/api/places/getDummySteps
+     */
+    plannerControllerGetDummySteps: (params: RequestParams = {}) =>
       this.request<StepsDto, any>({
-        path: `/api/places/getSteps`,
+        path: `/api/places/getDummySteps`,
         method: "GET",
         format: "json",
         ...params,

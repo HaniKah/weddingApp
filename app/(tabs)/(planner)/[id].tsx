@@ -8,9 +8,6 @@ import {Theme} from "@/styles/Theme";
 import {ButtonStyles} from "@/styles/Button";
 import ScrollView = Animated.ScrollView;
 
-// const key = "AIzaSyAKqIgtmbkopCIEfv4l6DZ77ip8ijZZick"
-const ref = "places/ChIJ51i9R_pfGxUR7vY7QzR16FA/photos/AciIO2fiRVp7wYjFjV2H2PVQD88830v1trjyS2vhOz0Ho9MEFRJKtOvzGsXfV-08377RY7kJcRF9hazfj0H7YVjtPlPKUgBgeSEzR0g60iR76Mn_6B8HiW5PsmsihYPb1FqNqV0nJaPdAofoDwk78zTseLcAYfQoyXwYfh87ccBUjyx2qJK1jtqD-zBmNKmwJ6ahdVy3W9_cwFynGhEhA1rtMLpfWkz3AWe7c99pnL6UPZdDN7brT7r8SMuJi8uSEtEvUCbM5EpGpPhtcuJJ6DFEQrsfffNKp1KMK2dztixNh_If6w"
-// const photoUri = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${ref}&key=${key}`
 
 const {api} = new Api({baseURL: process.env.EXPO_PUBLIC_API_URL, withCredentials: true})
 export default function PlaceId() {
@@ -135,6 +132,7 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 24,
         fontWeight: "bold",
+        flexShrink: 1
     },
     infoContainer: {
         display: "flex",
@@ -146,6 +144,7 @@ const styles = StyleSheet.create({
     info: {
         paddingHorizontal: 10,
         fontSize: 18,
+        flexShrink: 1
     },
     pickPlaceBtn: {
         width: "100%",

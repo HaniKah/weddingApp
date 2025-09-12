@@ -1,4 +1,4 @@
-import {StyleSheet, View} from "react-native";
+import {Animated, StyleSheet, View} from "react-native";
 
 import {useEffect, useState} from "react";
 import PlannerToolbar from "@/components/toolbars/PlannerToolbar";
@@ -47,7 +47,7 @@ export default function Index() {
             try {
                 const response = await api.plannerControllerGetPlaces({step: currentStep?.step}) //todo : doesnt make sense , rethink it
                 setData(response.data)
-                
+
             } catch (err) {
                 console.error(err)
             } finally {

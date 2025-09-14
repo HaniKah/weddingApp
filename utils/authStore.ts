@@ -5,14 +5,18 @@ import {create} from "zustand";
 type userState = {
     isLoggedIn: boolean;
     shouldCreateAccount: boolean;
+    hasCompletedOnboarding: boolean;
     logIn: () => void;
     logOut: () => void;
-
+    completeOnboarding: () => void;
+    resetOnboarding: () => void;
 }
 
 export const useAuthStore = create(persist<userState>((set) => ({
     isLoggedIn: false,
     shouldCreateAccount: false,
+    hasCompletedOnboarding: false,
+
     logIn: () => set((state) => {
         return {
             ...state,
@@ -23,6 +27,18 @@ export const useAuthStore = create(persist<userState>((set) => ({
         return {
             ...state,
             isLoggedIn: false,
+        }
+    }),
+    completeOnboarding: () => set((state) => {
+        return {
+            ...state,
+            hasCompletedOnboarding: true,
+        }
+    }),
+    resetOnboarding: () => set((state) => {
+        return {
+            ...state,
+            hasCompletedOnboarding: false,
         }
     }),
 

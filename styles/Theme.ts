@@ -24,7 +24,7 @@ export const Theme = {
     },
     typographies: {
         meaCulpa: 'MeaCulpa-Regular',
-        aboreto: "Aboreto-Regular"// this is not final , it needs to be configured correctly: https://docs.expo.dev/develop/user-interface/fonts/
+        aboreto: "Aboreto-Regular",
     },
     sizes: {
         iconSymbol: 30

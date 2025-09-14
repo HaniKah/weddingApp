@@ -10,7 +10,7 @@ import {useAuthStore} from "@/utils/authStore";
 
 
 export default function RootLayout() {
-    const {isLoggedIn, shouldCreateAccount} = useAuthStore()
+    const {isLoggedIn, shouldCreateAccount, hasCompletedOnboarding} = useAuthStore()
     SplashScreen.preventAutoHideAsync();
 
     const [loaded, error] = useFonts({
@@ -36,11 +36,14 @@ export default function RootLayout() {
                     <Stack.Protected guard={isLoggedIn}>
                         <Stack.Screen name="(tabs)" options={{headerShown: false}}/>
                     </Stack.Protected>
-                    <Stack.Protected guard={!isLoggedIn && !shouldCreateAccount}>
+                    <Stack.Protected guard={!isLoggedIn && !shouldCreateAccount && hasCompletedOnboarding}>
                         <Stack.Screen name="sign-in" options={{headerShown: false}}/>
                     </Stack.Protected>
                     <Stack.Protected guard={shouldCreateAccount}>
                         <Stack.Screen name="sign-up" options={{headerShown: false}}/>
+                    </Stack.Protected>
+                    <Stack.Protected guard={!hasCompletedOnboarding}>
+                        <Stack.Screen name="onboarding" options={{headerShown: false}}/>
                     </Stack.Protected>
                     <Stack.Screen name="+not-found"/>
                 </Stack>

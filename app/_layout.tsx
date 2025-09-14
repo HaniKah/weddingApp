@@ -6,12 +6,11 @@ import {SafeAreaProvider, SafeAreaView} from "react-native-safe-area-context";
 import {StyleSheet} from "react-native";
 import {Theme} from "@/styles/Theme";
 import {useEffect} from "react";
+import {useAuthStore} from "@/utils/authStore";
 
 
 export default function RootLayout() {
-
-    // const pathName = usePathname()
-    // console.log(pathName)
+    const {isLoggedIn, shouldCreateAccount} = useAuthStore()
     SplashScreen.preventAutoHideAsync();
 
     const [loaded, error] = useFonts({
@@ -34,7 +33,15 @@ export default function RootLayout() {
         <SafeAreaProvider>
             <SafeAreaView style={styles.container} edges={['top']}>
                 <Stack>
-                    <Stack.Screen name="(tabs)" options={{headerShown: false}}/>
+                    <Stack.Protected guard={isLoggedIn}>
+                        <Stack.Screen name="(tabs)" options={{headerShown: false}}/>
+                    </Stack.Protected>
+                    <Stack.Protected guard={!isLoggedIn && !shouldCreateAccount}>
+                        <Stack.Screen name="sign-in" options={{headerShown: false}}/>
+                    </Stack.Protected>
+                    <Stack.Protected guard={shouldCreateAccount}>
+                        <Stack.Screen name="sign-up" options={{headerShown: false}}/>
+                    </Stack.Protected>
                     <Stack.Screen name="+not-found"/>
                 </Stack>
 

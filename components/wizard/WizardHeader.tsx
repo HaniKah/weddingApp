@@ -1,14 +1,14 @@
 import {Pressable, StyleSheet, Text, View} from "react-native";
 import {IconSymbol} from "@/components/ui/IconSymbol";
 import {Theme} from "@/styles/Theme";
-import {StepInfo} from "@/types/open-api";
+import {StepsDto} from "@/types/open-api";
 
 export default function WizardHeader({onNextStep, onPreviousStep, isFirstStep, isLastStep, currentStep}: {
     onNextStep: () => void,
     onPreviousStep: () => void
     isFirstStep: boolean,
     isLastStep: boolean,
-    currentStep: StepInfo
+    currentStep: StepsDto
 }) {
     return (
         <>
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     description: {
         color: Theme.colors.primary,
         paddingVertical: 20,
-        paddingHorizontal: 50,
+        paddingHorizontal: 20,
         textAlign: 'center',
         fontSize: 20,
         fontFamily: Theme.typographies.aboreto,

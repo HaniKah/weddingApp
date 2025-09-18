@@ -1,10 +1,10 @@
-import {Animated, StyleSheet, View} from "react-native";
+import {StyleSheet, View} from "react-native";
 
 import {useEffect, useState} from "react";
 import PlannerToolbar from "@/components/toolbars/PlannerToolbar";
 import PickDate from "@/components/wizard/PickDate";
 import {PickPlace} from "@/components/wizard/PickPlace";
-import {Api, PlacesViewModel, StepInfo, StepsDto, WeddingSteps} from "@/types/open-api";
+import {Api, PlacesViewModel, StepsDto, StepsViewModel, WeddingSteps} from "@/types/open-api";
 
 
 const {api} = new Api({baseURL: process.env.EXPO_PUBLIC_API_URL, withCredentials: true})
@@ -12,9 +12,9 @@ const {api} = new Api({baseURL: process.env.EXPO_PUBLIC_API_URL, withCredentials
 
 export default function Index() {
 
-    const [steps, setSteps] = useState<StepsDto>()
+    const [steps, setSteps] = useState<StepsViewModel>()
     const [stepsOrder, setStepsOrder] = useState<WeddingSteps[]>([])
-    const [currentStep, setCurrentStep] = useState<StepInfo>()
+    const [currentStep, setCurrentStep] = useState<StepsDto>()
     const [isLastStep, setIsLastStep] = useState<boolean>(false)
     const [isFirstStep, setIsFirstStep] = useState<boolean>(false)
     const [isLoading, setLoading] = useState<boolean>(true)
@@ -25,10 +25,10 @@ export default function Index() {
 
         const getSteps = async () => {
             try {
-                const response = await api.plannerControllerGetDummySteps()
+                const response = await api.plannerControllerGetSteps()
                 setSteps(response.data)
                 setStepsOrder(response.data.steps.map(s => s.step))
-                setCurrentStep(response.data.steps.find(s => !s.fullfilled))
+                setCurrentStep(response.data.steps.find(s => !s.isCompleted))
 
             } catch (err) {
                 console.error(err)
@@ -78,7 +78,7 @@ export default function Index() {
                 return <PickDate onNextStep={nextStep} onPreviousStep={previousStep} isFirstStep={isFirstStep}
                                  isLastStep={isLastStep} currentStep={currentStep}/>
             }
-            return <PickPlace data={data?.result} onNextStep={nextStep}
+            return <PickPlace data={data?.places} onNextStep={nextStep}
                               onPreviousStep={previousStep} isLastStep={isLastStep} isFirstStep={isFirstStep}
                               currentStep={currentStep}/>
         }
@@ -112,7 +112,7 @@ export default function Index() {
             {steps && currentStep &&
                 <View style={styles.container}>
                     <PlannerToolbar progress={steps?.progress} note={currentStep.note}
-                                    fullfilled={currentStep.fullfilled}/>
+                                    fullfilled={currentStep.isCompleted}/>
                     <ActiveComponent/>
                 </View>}
         </>)

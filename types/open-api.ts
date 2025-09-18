@@ -16,62 +16,55 @@ export enum WeddingSteps {
   Dress = "Dress",
   Photographer = "Photographer",
   Dj = "Dj",
+  MakeUpArtist = "MakeUpArtist",
+  Decorator = "Decorator",
+  Catering = "Catering",
+  Coordinator = "Coordinator",
+  DancingCourse = "DancingCourse",
+  Aarada = "Aarada",
+  Car = "Car",
+  HotelAfterWedding = "HotelAfterWedding",
+  Giveaways = "Giveaways",
+  MusiciansAndPerformers = "MusiciansAndPerformers",
+  Jewelry = "Jewelry",
+  Perfumes = "Perfumes",
+  Hammam = "Hammam",
+  CosmeticClinics = "CosmeticClinics",
+  ExtraDecorations = "ExtraDecorations",
 }
 
-export type LatLng = object;
-
 export interface PlacesDto {
-  placeId: string | null;
-  location?: LatLng | null;
+  id: number;
   name?: string | null;
   formattedAddress?: string | null;
-  internationalPhoneNumber?: string | null;
 }
 
 export interface PlacesViewModel {
-  result: PlacesDto[];
-}
-
-export interface AuthorAttributionDto {
-  displayName?: string | null;
-  uri?: string | null;
-  photoUri?: string | null;
-}
-
-export interface PlacePhotoDto {
-  photoRef: string;
-  width: number | null;
-  height: number | null;
-  attributions: AuthorAttributionDto[] | null;
+  places: PlacesDto[];
 }
 
 export interface PlaceDetailsDto {
-  placeId: string;
-  name: string | null;
-  nationalPhoneNumber: string | null;
-  internationalPhoneNumber: string | null;
+  id: number;
+  name: string;
+  address: string | null;
   website: string | null;
-  formattedAddress: string | null;
-  rating: number | null;
-  userRatingCount: number | null;
-  photos: PlacePhotoDto[];
+  phoneNumber: string | null;
+  minCost: number | null;
+  maxCost: number | null;
+  cost: number | null;
 }
 
-export interface PhotosDto {
-  uri: string;
-}
-
-export interface StepInfo {
+export interface StepsDto {
   step: WeddingSteps;
-  fullfilled: boolean;
+  isCompleted: boolean;
   note: string;
   title: string;
   description: string;
 }
 
-export interface StepsDto {
+export interface StepsViewModel {
   progress: number;
-  steps: StepInfo[];
+  steps: StepsDto[];
 }
 
 import type {
@@ -305,7 +298,7 @@ export class Api<
      */
     plannerControllerGetPlaceById: (
       query: {
-        placeId: string;
+        placeId: number;
       },
       params: RequestParams = {},
     ) =>
@@ -321,54 +314,12 @@ export class Api<
      * No description
      *
      * @tags Planner
-     * @name PlannerControllerGetPhotoByRef
-     * @request GET:/api/places/getPhotoByRef
+     * @name PlannerControllerGetSteps
+     * @request GET:/api/places/getSteps
      */
-    plannerControllerGetPhotoByRef: (
-      query: {
-        photoRef: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<PhotosDto, any>({
-        path: `/api/places/getPhotoByRef`,
-        method: "GET",
-        query: query,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Planner
-     * @name PlannerControllerGetDummyPlaces
-     * @request GET:/api/places/getDummyPlaces
-     */
-    plannerControllerGetDummyPlaces: (
-      query: {
-        step: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<PlacesViewModel, any>({
-        path: `/api/places/getDummyPlaces`,
-        method: "GET",
-        query: query,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Planner
-     * @name PlannerControllerGetDummySteps
-     * @request GET:/api/places/getDummySteps
-     */
-    plannerControllerGetDummySteps: (params: RequestParams = {}) =>
-      this.request<StepsDto, any>({
-        path: `/api/places/getDummySteps`,
+    plannerControllerGetSteps: (params: RequestParams = {}) =>
+      this.request<StepsViewModel, any>({
+        path: `/api/places/getSteps`,
         method: "GET",
         format: "json",
         ...params,

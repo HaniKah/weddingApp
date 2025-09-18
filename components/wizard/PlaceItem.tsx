@@ -9,7 +9,7 @@ export default function PlaceItem({item}: { item: PlacesDto }) {
     return (
         <Link style={styles.link} href={{
             pathname: '/[id]',
-            params: {id: item.placeId!}
+            params: {id: item.id!}
         }}>
             <View style={styles.container}>
                 <Image style={styles.image} source={{uri: 'https://reactnative.dev/docs/assets/p_cat2.png'}}/>

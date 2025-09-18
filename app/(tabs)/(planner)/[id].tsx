@@ -1,11 +1,10 @@
-import {ActivityIndicator, Animated, Image, Pressable, StyleSheet, Text, View} from "react-native";
-import {Api, PhotosDto, PlaceDetailsDto} from "@/types/open-api";
+import {ActivityIndicator, Animated, Pressable, StyleSheet, Text, View} from "react-native";
 import {useEffect, useState} from "react";
 import {useLocalSearchParams} from "expo-router";
-import IconRatingStar from "@/components/ui/IconRatingStar";
 import {IconSymbol} from "@/components/ui/IconSymbol";
 import {Theme} from "@/styles/Theme";
 import {ButtonStyles} from "@/styles/Button";
+import {Api, PlaceDetailsDto} from "@/types/open-api";
 import ScrollView = Animated.ScrollView;
 
 
@@ -15,15 +14,15 @@ export default function PlaceId() {
 
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const [placeDetails, setPlaceDetails] = useState<PlaceDetailsDto>()
-    const [photoUri, setPhotoUri] = useState<PhotosDto>()
-    const [photosOrder, setPhotosOrder] = useState<string[]>([])
+    // const [photoUri, setPhotoUri] = useState<PhotosDto>()
+    // const [photosOrder, setPhotosOrder] = useState<string[]>([])
 
     useEffect(() => {
         const getPlaceDetails = async () => {
             try {
-                const response = await api.plannerControllerGetPlaceById({placeId: id})
+                const response = await api.plannerControllerGetPlaceById({placeId: Number(id)})
                 setPlaceDetails(response.data)
-                setPhotosOrder(response.data?.photos?.map((p) => p.photoRef))
+                // setPhotosOrder(response.data?.photos?.map((p) => p.photoRef))
             } catch (err) {
                 console.error(err)
             } finally {
@@ -33,19 +32,19 @@ export default function PlaceId() {
         getPlaceDetails()
     }, [id]);
 
-    useEffect(() => {
-        const getPhoto = async () => {
-            try {
-                const res = await api.plannerControllerGetPhotoByRef({photoRef: photosOrder[0]})
-                setPhotoUri(res.data)
-            } catch (err) {
-                console.error(err)
-            } finally {
-                setIsLoading(false)
-            }
-        }
-        getPhoto()
-    }, [photosOrder]);
+    // useEffect(() => {
+    //     const getPhoto = async () => {
+    //         try {
+    //             const res = await api.plannerControllerGetPhotoByRef({photoRef: photosOrder[0]})
+    //             setPhotoUri(res.data)
+    //         } catch (err) {
+    //             console.error(err)
+    //         } finally {
+    //             setIsLoading(false)
+    //         }
+    //     }
+    //     getPhoto()
+    // }, [photosOrder]);
 
 
     //
@@ -57,36 +56,30 @@ export default function PlaceId() {
     if (!isLoading) {
         return (
             <ScrollView>
-                <Image source={{uri: photoUri?.uri}} style={{height: 400}}/>
+                {/*<Image source={{uri: photoUri?.uri}} style={{height: 400}}/>*/}
+                <View style={{height: 400}}></View>
                 <View style={styles.infosContainer}>
 
                     <View style={styles.titleContainer}>
                         <Text style={styles.title}>{placeDetails?.name}</Text>
-                        <IconRatingStar rating={placeDetails?.rating}/>
+                        <Text>{placeDetails?.cost}</Text>
                     </View>
 
                     <View style={styles.infoContainer}>
                         <IconSymbol name="location.circle" color={Theme.colors.black} size={Theme.sizes.iconSymbol}
                                     weight={'thin'}/>
-                        <Text style={styles.info}>{placeDetails?.formattedAddress}</Text>
+                        <Text style={styles.info}>{placeDetails?.address}</Text>
                     </View>
 
                     {
-                        placeDetails?.internationalPhoneNumber &&
+                        placeDetails?.phoneNumber &&
                         <View style={styles.infoContainer}>
                             <IconSymbol name="phone.circle" color={Theme.colors.black} size={Theme.sizes.iconSymbol}
                                         weight={'thin'}/>
-                            <Text style={styles.info}>{placeDetails?.internationalPhoneNumber}</Text>
+                            <Text style={styles.info}>{placeDetails?.phoneNumber}</Text>
                         </View>
                     }
-
-                    {
-                        !placeDetails?.internationalPhoneNumber && placeDetails?.nationalPhoneNumber &&
-                        <View style={styles.infoContainer}>
-                            <Text style={styles.info}> {placeDetails?.nationalPhoneNumber}</Text>
-                        </View>
-                    }
-
+                    
                     {
                         placeDetails?.website &&
                         <View style={{backgroundColor: "red"}}>

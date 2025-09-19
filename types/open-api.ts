@@ -44,6 +44,7 @@ export interface PlacesViewModel {
 }
 
 export interface PlaceDetailsDto {
+  step: WeddingSteps;
   id: number;
   name: string;
   address: string | null;
@@ -65,6 +66,11 @@ export interface StepsDto {
 export interface StepsViewModel {
   progress: number;
   steps: StepsDto[];
+}
+
+export interface PickPlaceRequest {
+  step: WeddingSteps;
+  placeId: number;
 }
 
 import type {
@@ -322,6 +328,25 @@ export class Api<
         path: `/api/places/getSteps`,
         method: "GET",
         format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Planner
+     * @name PlannerControllerPickOnePlace
+     * @request POST:/api/places/pickOnePlace
+     */
+    plannerControllerPickOnePlace: (
+      data: PickPlaceRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/places/pickOnePlace`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
         ...params,
       }),
   };

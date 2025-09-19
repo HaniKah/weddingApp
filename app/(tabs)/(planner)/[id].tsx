@@ -32,6 +32,19 @@ export default function PlaceId() {
         getPlaceDetails()
     }, [id]);
 
+    const pickPlace = async (placeId: number): Promise<void> => {
+        console.log(placeId)
+        if (!placeDetails) return
+        try {
+            setIsLoading(true)
+            await api.plannerControllerPickOnePlace({step: placeDetails.step, placeId: placeId})
+        } catch (err) {
+            console.error(err)
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
     // useEffect(() => {
     //     const getPhoto = async () => {
     //         try {
@@ -53,7 +66,7 @@ export default function PlaceId() {
     //     const index = currentPhotoIndex % photosOrder.length
     //     setCurrentPhotoIndex(index)
     // }
-    if (!isLoading) {
+    if (!isLoading && placeDetails) {
         return (
             <ScrollView>
                 {/*<Image source={{uri: photoUri?.uri}} style={{height: 400}}/>*/}
@@ -79,7 +92,7 @@ export default function PlaceId() {
                             <Text style={styles.info}>{placeDetails?.phoneNumber}</Text>
                         </View>
                     }
-                    
+
                     {
                         placeDetails?.website &&
                         <View style={{backgroundColor: "red"}}>
@@ -94,7 +107,8 @@ export default function PlaceId() {
                         </Pressable>
                     </View>
 
-                    <Pressable style={[ButtonStyles.primaryBtn, styles.pickPlaceBtn]}>
+                    <Pressable onPress={() => pickPlace(placeDetails.id)}
+                               style={[ButtonStyles.primaryBtn, styles.pickPlaceBtn]}>
                         <Text style={styles.pickBtnTxt}>Pick this place</Text>
                     </Pressable>
 

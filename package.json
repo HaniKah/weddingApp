@@ -9,7 +9,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "lint": "expo lint",
-    "swagger-axios": "npx swagger-typescript-api generate -p http://localhost:3000/swagger/json -o ./types -n open-api.ts --http-client axios"
+    "swagger-axios": "swagger-typescript-api generate -p http://localhost:3000/swagger/json -o ./types -n open-api.ts --http-client axios"
   },
   "dependencies": {
     "@expo/vector-icons": "^14.1.0",
@@ -51,6 +51,7 @@
     "@types/react-native": "^0.72.8",
     "eslint": "^9.25.0",
     "eslint-config-expo": "~9.2.0",
+    "swagger-typescript-api": "^13.2.13",
     "typescript": "~5.8.3"
   },
   "private": true

@@ -46,7 +46,6 @@ const styles = {
     calendar: {
         borderRadius: 10,
         marginVertical: 20,
-        marginHorizontal: 10,
         padding: 10,
 
     }

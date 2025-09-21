@@ -2,6 +2,7 @@ export const Theme = {
     colors: {
         primary: '#8D6A3C',
         primaryInactive: '#c2b39f',
+        primaryTextInactive: '#948167',
         background: '#F0F0F0',
         gold1: '#E5C280',
         gold2: '#A97E65',
@@ -27,7 +28,9 @@ export const Theme = {
         aboreto: "Aboreto-Regular",
     },
     sizes: {
-        iconSymbol: 30
+        iconSymbol: 30,
+        buttonText: 18,
+        buttonRadius: 8
     }
 
 };

@@ -4,14 +4,19 @@ import {Theme} from "@/styles/Theme";
 export const ButtonStyles = StyleSheet.create({
     primaryBtn: {
         backgroundColor: Theme.colors.primary,
-        color: 'white',
-        fontWeight: 'bold',
         paddingHorizontal: 20,
         paddingVertical: 14,
-        width: 100,
-        textAlign: 'center',
-        borderRadius: 8,
+        width: "100%",
+        borderRadius: Theme.sizes.buttonRadius,
     },
+    primaryTxt: {
+        color: 'white',
+        fontWeight: 'bold',
+        fontSize: Theme.sizes.buttonText,
+        textAlign: 'center',
+        width: "100%",
+    },
+
     outlinedBtn: {
         backgroundColor: "transparent",
         color: Theme.colors.primary,
@@ -19,10 +24,35 @@ export const ButtonStyles = StyleSheet.create({
         fontWeight: 'bold',
         paddingHorizontal: 20,
         paddingVertical: 10,
-        width: 100,
+        width: "100%",
         textAlign: 'center',
-        borderRadius: 5,
+        borderRadius: Theme.sizes.buttonRadius,
+        borderWidth: 1,
     },
+    outlinedTxt: {
+        color: Theme.colors.primary,
+        fontSize: Theme.sizes.buttonText,
+        textAlign: 'center',
+        width: "100%",
+    },
+
+    inactiveBtn: {
+        backgroundColor: Theme.colors.primaryInactive,
+        color: 'white',
+        fontWeight: 'normal',
+        paddingHorizontal: 20,
+        paddingVertical: 14,
+        width: "100%",
+        textAlign: 'center',
+        borderRadius: Theme.sizes.buttonRadius,
+    },
+    inactiveTxt: {
+        color: Theme.colors.primaryTextInactive,
+        fontSize: Theme.sizes.buttonText,
+        textAlign: 'center',
+        width: "100%",
+    },
+
     iconBtn: {
         width: 30,
         height: 30,
@@ -33,5 +63,8 @@ export const ButtonStyles = StyleSheet.create({
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-    }
+    },
+
 })
+
+export enum ButtonType {PRIMARY = "PRIMARY", OUTLINED = "OUTLINED", INACTIVE = "INACTIVE"}

@@ -1,9 +1,9 @@
 import WizardHeader from "@/components/wizard/WizardHeader";
 import {Animated} from "react-native";
 import {StepsDto} from "@/types/open-api";
-import AppCalendar from "@/components/wizard/AppCalendar";
+import AppCalendar from "@/components/appComponents/AppCalendar";
 import {useState} from "react";
-import AppButton from "@/components/appComponent/AppButton";
+import AppButton from "@/components/appComponents/AppButton";
 import ScrollView = Animated.ScrollView;
 
 const today = new Date()

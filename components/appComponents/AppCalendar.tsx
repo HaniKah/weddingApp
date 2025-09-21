@@ -1,6 +1,5 @@
 import {Calendar, DateData} from "react-native-calendars";
 import {useEffect, useState} from "react";
-import {Text} from "react-native";
 import {Theme} from "@/styles/Theme";
 
 const today = new Date().toLocaleDateString("en-CA");
@@ -29,9 +28,16 @@ export default function AppCalendar({date, onDateUpdate}: { date: Date, onDateUp
                 markedDates={{
                     [selectedDate as string]: {selected: true, selectedColor: Theme.colors.primary},
                 }}
+                theme={{
+                    arrowColor: Theme.colors.primary,
+                    textMonthFontWeight: 'bold',
+                    monthTextColor: Theme.colors.primary,
+                    todayTextColor: Theme.colors.primary,
+                }
+                }
 
                 style={styles.calendar}/>
-            <Text>{selectedDate}</Text>
+
         </>
     )
 }

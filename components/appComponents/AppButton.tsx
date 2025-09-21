@@ -19,7 +19,7 @@ export default function AppButton({buttonType, onPress, children}: {
         buttonStyles = ButtonStyles.primaryBtn
         textStyles = ButtonStyles.primaryTxt
     }
-    console.log(buttonStyles)
+ 
     return (
         <Pressable onPress={onPress} style={buttonStyles}>
             <Text style={textStyles}>

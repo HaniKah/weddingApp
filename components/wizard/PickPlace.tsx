@@ -1,9 +1,10 @@
 import {FlatList, StyleSheet, View} from "react-native";
 
 import PlaceItem from "@/components/wizard/PlaceItem";
-import {PlacesDto, StepsDto} from "@/types/open-api";
+import {Api, PlacesDto, StepsDto} from "@/types/open-api";
 import WizardHeader from "@/components/wizard/WizardHeader";
 
+const {api} = new Api({baseURL: process.env.EXPO_PUBLIC_API_URL, withCredentials: true})
 
 export function PickPlace({data, onNextStep, onPreviousStep, isLastStep, isFirstStep, currentStep}: {
     data: PlacesDto[] | undefined | null,

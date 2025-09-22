@@ -1,10 +1,12 @@
-import {Pressable, Text} from "react-native";
+import {Pressable, StyleProp, Text, TextStyle, ViewStyle} from "react-native";
 import {ButtonStyles, ButtonType} from "@/styles/Button";
 
-export default function AppButton({buttonType, onPress, children}: {
+export default function AppButton({buttonType, onPress, children, extraStylesBtn, extraStylesTxt}: {
     buttonType?: ButtonType,
     onPress?: () => void,
-    children: string
+    children: string,
+    extraStylesBtn?: StyleProp<ViewStyle>,
+    extraStylesTxt?: StyleProp<TextStyle>,
 }) {
     let buttonStyles = {}
     let textStyles = {}
@@ -15,14 +17,17 @@ export default function AppButton({buttonType, onPress, children}: {
     } else if (buttonType === ButtonType.INACTIVE) {
         buttonStyles = ButtonStyles.inactiveBtn
         textStyles = ButtonStyles.inactiveTxt
+    } else if (buttonType === ButtonType.PLAIN) {
+        buttonStyles = ButtonStyles.plainBtn
+        textStyles = ButtonStyles.plainTxt
     } else {
         buttonStyles = ButtonStyles.primaryBtn
         textStyles = ButtonStyles.primaryTxt
     }
- 
+
     return (
-        <Pressable onPress={onPress} style={buttonStyles}>
-            <Text style={textStyles}>
+        <Pressable onPress={onPress} style={[buttonStyles, extraStylesBtn]}>
+            <Text style={[textStyles, extraStylesTxt]}>
                 {children}
             </Text>
         </Pressable>

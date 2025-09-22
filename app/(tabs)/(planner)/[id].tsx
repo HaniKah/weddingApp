@@ -1,10 +1,11 @@
-import {ActivityIndicator, Animated, Pressable, StyleSheet, Text, View} from "react-native";
+import {ActivityIndicator, Animated, StyleSheet, Text, View} from "react-native";
 import {useEffect, useState} from "react";
 import {useLocalSearchParams} from "expo-router";
 import {IconSymbol} from "@/components/ui/IconSymbol";
 import {Theme} from "@/styles/Theme";
-import {ButtonStyles} from "@/styles/Button";
 import {Api, PlaceDetailsDto} from "@/types/open-api";
+import AppButton from "@/components/appComponents/AppButton";
+import {ButtonType} from "@/styles/Button";
 import ScrollView = Animated.ScrollView;
 
 
@@ -14,6 +15,9 @@ export default function PlaceId() {
 
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const [placeDetails, setPlaceDetails] = useState<PlaceDetailsDto>()
+    const [notes, setNotes] = useState<string>()
+    const [cost, setCost] = useState<number>()
+    const [trigger, setTrigger] = useState<boolean>(false)
     // const [photoUri, setPhotoUri] = useState<PhotosDto>()
     // const [photosOrder, setPhotosOrder] = useState<string[]>([])
 
@@ -30,20 +34,38 @@ export default function PlaceId() {
             }
         }
         getPlaceDetails()
-    }, [id]);
+    }, [id, trigger]);
 
-    const pickPlace = async (placeId: number): Promise<void> => {
-        console.log(placeId)
+    async function pickPlace() {
+        await updatePlaceDetails(placeDetails?.favourite, true)
+        // i want to use getPlaceDetails here again
+        setTrigger(!trigger)
+    }
+
+    async function saveForLater() {
+        await updatePlaceDetails(true, placeDetails?.picked)
+        setTrigger(!trigger)
+    }
+
+    async function updatePlaceDetails(favourite?: boolean, picked?: boolean) {
         if (!placeDetails) return
         try {
             setIsLoading(true)
-            await api.plannerControllerPickOnePlace({step: placeDetails.step, placeId: placeId})
+            await api.plannerControllerUpdatePlaceDetails({
+                placeId: Number(id),
+                cost: cost || placeDetails.cost,
+                picked: picked || placeDetails.picked,
+                step: placeDetails.step,
+                favorite: favourite || placeDetails.favourite,
+                notes: notes || placeDetails.notes,
+            })
         } catch (err) {
             console.error(err)
         } finally {
             setIsLoading(false)
         }
     }
+
 
     // useEffect(() => {
     //     const getPhoto = async () => {
@@ -101,16 +123,17 @@ export default function PlaceId() {
                             </Text>
                         </View>
                     }
+
                     <View style={styles.saveForLaterContainer}>
-                        <Pressable style={styles.saveForLaterBtn}>
-                            <Text style={styles.saveForLaterTxt}>save for later</Text>
-                        </Pressable>
+                        <AppButton onPress={saveForLater} buttonType={ButtonType.PLAIN}>
+                            save for later
+                        </AppButton>
                     </View>
 
-                    <Pressable onPress={() => pickPlace(placeDetails.id)}
-                               style={[ButtonStyles.primaryBtn, styles.pickPlaceBtn]}>
-                        <Text style={styles.pickBtnTxt}>Pick this place</Text>
-                    </Pressable>
+                    <AppButton buttonType={placeDetails.picked ? ButtonType.INACTIVE : ButtonType.PRIMARY}
+                               onPress={pickPlace}>
+                        pick this place
+                    </AppButton>
 
                 </View>
 
@@ -153,31 +176,14 @@ const styles = StyleSheet.create({
         fontSize: 18,
         flexShrink: 1
     },
-    pickPlaceBtn: {
-        width: "100%",
-        marginTop: 20,
-    },
-    pickBtnTxt: {
-        color: Theme.colors.white,
-        fontSize: 18,
-        fontWeight: "bold",
-        textAlign: "center",
-    },
-    saveForLaterBtn: {
-        width: 100,
-    },
-    saveForLaterTxt: {
-        textAlign: "center",
-        textDecorationLine: "underline",
-        marginTop: 20,
-        color: Theme.colors.primary,
-    },
+
     saveForLaterContainer: {
         width: "100%",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        marginBottom: 10,
+        marginTop: 30
 
-    }
-
+    },
 })

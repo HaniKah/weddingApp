@@ -53,6 +53,9 @@ export interface PlaceDetailsDto {
   minCost: number | null;
   maxCost: number | null;
   cost: number | null;
+  picked: boolean;
+  favourite: boolean;
+  notes: string | null;
 }
 
 export interface StepsDto {
@@ -68,9 +71,18 @@ export interface StepsViewModel {
   steps: StepsDto[];
 }
 
-export interface PickPlaceRequest {
+export interface PlaceDetailsRequest {
   step: WeddingSteps;
   placeId: number;
+  cost: number | null;
+  notes: string | null;
+  favorite: boolean;
+  picked: boolean;
+}
+
+export interface DatesDto {
+  /** @format date-time */
+  date: string | null;
 }
 
 import type {
@@ -335,18 +347,33 @@ export class Api<
      * No description
      *
      * @tags Planner
-     * @name PlannerControllerPickOnePlace
-     * @request POST:/api/places/pickOnePlace
+     * @name PlannerControllerUpdatePlaceDetails
+     * @request POST:/api/places/updatePlaceDetails
      */
-    plannerControllerPickOnePlace: (
-      data: PickPlaceRequest,
+    plannerControllerUpdatePlaceDetails: (
+      data: PlaceDetailsRequest,
       params: RequestParams = {},
     ) =>
       this.request<void, any>({
-        path: `/api/places/pickOnePlace`,
+        path: `/api/places/updatePlaceDetails`,
         method: "POST",
         body: data,
         type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Planner
+     * @name PlannerControllerGetWeddingDate
+     * @request GET:/api/places/getWeddingDate
+     */
+    plannerControllerGetWeddingDate: (params: RequestParams = {}) =>
+      this.request<DatesDto, any>({
+        path: `/api/places/getWeddingDate`,
+        method: "GET",
+        format: "json",
         ...params,
       }),
   };

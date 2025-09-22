@@ -52,6 +52,14 @@ export const ButtonStyles = StyleSheet.create({
         textAlign: 'center',
         width: "100%",
     },
+    plainBtn: {
+        width: 100,
+    },
+    plainTxt: {
+        textAlign: "center",
+        textDecorationLine: "underline",
+        color: Theme.colors.primary,
+    },
 
     iconBtn: {
         width: 30,
@@ -67,4 +75,9 @@ export const ButtonStyles = StyleSheet.create({
 
 })
 
-export enum ButtonType {PRIMARY = "PRIMARY", OUTLINED = "OUTLINED", INACTIVE = "INACTIVE"}
+export enum ButtonType {
+    PRIMARY = "PRIMARY",
+    OUTLINED = "OUTLINED",
+    INACTIVE = "INACTIVE",
+    PLAIN = "PLAIN"
+}

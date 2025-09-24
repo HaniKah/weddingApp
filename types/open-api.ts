@@ -80,9 +80,12 @@ export interface PlaceDetailsRequest {
   picked: boolean;
 }
 
-export interface DatesDto {
-  /** @format date-time */
-  date: string | null;
+export interface WeddingDateDto {
+  date: string;
+}
+
+export interface UpdateDateRequest {
+  date: string;
 }
 
 import type {
@@ -370,10 +373,29 @@ export class Api<
      * @request GET:/api/places/getWeddingDate
      */
     plannerControllerGetWeddingDate: (params: RequestParams = {}) =>
-      this.request<DatesDto, any>({
+      this.request<WeddingDateDto, any>({
         path: `/api/places/getWeddingDate`,
         method: "GET",
         format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Planner
+     * @name PlannerControllerUpdateWeddingDate
+     * @request POST:/api/places/updateWeddingDate
+     */
+    plannerControllerUpdateWeddingDate: (
+      data: UpdateDateRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/places/updateWeddingDate`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
         ...params,
       }),
   };

@@ -4,40 +4,42 @@ import {Theme} from "@/styles/Theme";
 
 const today = new Date().toLocaleDateString("en-CA");
 
-export default function AppCalendar({date, onDateUpdate}: { date: Date, onDateUpdate: (date: Date) => void }) {
+export default function AppCalendar({markedDate, onDateUpdate}: {
+    markedDate: string,
+    onDateUpdate: (date: string) => void
+}) {
 
     const [selectedDate, setSelectedDate] = useState<string>()
 
     useEffect(() => {
-        if (date) {
-            setSelectedDate(date.toLocaleDateString("en-CA"))
+        if (markedDate) {
+            setSelectedDate(markedDate)
         }
-    }, [date]);
+    }, [markedDate]);
 
 
     function handleDayPress(day: DateData) {
+
         setSelectedDate(day.dateString)
-        onDateUpdate(new Date(day.timestamp))
+        onDateUpdate(day.dateString)
+
     }
 
     return (
         <>
             <Calendar
-                enableSwipeMonths monthFormat={'MMMM yyyy'} onDayPress={handleDayPress}
+                enableSwipeMonths
+                monthFormat={'MMMM yyyy'}
+                onDayPress={handleDayPress}
                 minDate={today}
-                markedDates={{
-                    [selectedDate as string]: {selected: true, selectedColor: Theme.colors.primary},
-                }}
+                markedDates={{[selectedDate as string]: {selected: true, selectedColor: Theme.colors.primary}}}
                 theme={{
                     arrowColor: Theme.colors.primary,
                     textMonthFontWeight: 'bold',
                     monthTextColor: Theme.colors.primary,
                     todayTextColor: Theme.colors.primary,
-                }
-                }
-
+                }}
                 style={styles.calendar}/>
-
         </>
     )
 }

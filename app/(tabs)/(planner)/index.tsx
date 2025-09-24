@@ -4,10 +4,8 @@ import {useEffect, useState} from "react";
 import PlannerToolbar from "@/components/toolbars/PlannerToolbar";
 import PickDate from "@/components/wizard/PickDate";
 import {PickPlace} from "@/components/wizard/PickPlace";
-import {Api, PlacesViewModel, StepsDto, StepsViewModel, WeddingSteps} from "@/types/open-api";
-
-
-const {api} = new Api({baseURL: process.env.EXPO_PUBLIC_API_URL, withCredentials: true})
+import {PlacesViewModel, StepsDto, StepsViewModel, WeddingSteps} from "@/types/open-api";
+import {API} from "@/utils/api";
 
 
 export default function Index() {
@@ -25,7 +23,7 @@ export default function Index() {
 
         const getSteps = async () => {
             try {
-                const response = await api.plannerControllerGetSteps()
+                const response = await API.plannerControllerGetSteps()
                 setSteps(response.data)
                 setStepsOrder(response.data.steps.map(s => s.step))
                 setCurrentStep(response.data.steps.find(s => !s.isCompleted))
@@ -45,7 +43,7 @@ export default function Index() {
         if (!currentStep) return
         const getPlaces = async (): Promise<void> => {
             try {
-                const response = await api.plannerControllerGetPlaces({step: currentStep?.step}) //todo : doesnt make sense , rethink it
+                const response = await API.plannerControllerGetPlaces({step: currentStep?.step}) //todo : doesnt make sense , rethink it
                 setData(response.data)
 
             } catch (err) {

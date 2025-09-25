@@ -1,6 +1,6 @@
 import {ActivityIndicator, Animated, StyleSheet, Text, View} from "react-native";
 import {useEffect, useState} from "react";
-import {useLocalSearchParams} from "expo-router";
+import {Stack, useLocalSearchParams} from "expo-router";
 import {Api, PlaceDetailsDto} from "@/types/open-api";
 import AppButton from "@/components/appComponents/AppButton";
 import {ButtonType} from "@/styles/Button";
@@ -69,6 +69,7 @@ export default function PlaceId() {
     if (!isLoading && placeDetails) {
         return (
             <ScrollView>
+                <Stack.Screen options={{title: placeDetails.name}}/>
                 {/*<Image source={{uri: photoUri?.uri}} style={{height: 400}}/>*/}
                 <View style={{height: 400}}></View>
                 <View style={styles.infosContainer}>

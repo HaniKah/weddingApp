@@ -1,11 +1,11 @@
 import {ActivityIndicator, Animated, StyleSheet, Text, View} from "react-native";
 import {useEffect, useState} from "react";
 import {useLocalSearchParams} from "expo-router";
-import {IconSymbol} from "@/components/ui/IconSymbol";
-import {Theme} from "@/styles/Theme";
 import {Api, PlaceDetailsDto} from "@/types/open-api";
 import AppButton from "@/components/appComponents/AppButton";
 import {ButtonType} from "@/styles/Button";
+import AppCondition from "@/components/appComponents/AppCondition";
+import PlaceInfo from "@/components/wizard/PlaceInfo";
 import ScrollView = Animated.ScrollView;
 
 
@@ -66,28 +66,6 @@ export default function PlaceId() {
         }
     }
 
-
-    // useEffect(() => {
-    //     const getPhoto = async () => {
-    //         try {
-    //             const res = await api.plannerControllerGetPhotoByRef({photoRef: photosOrder[0]})
-    //             setPhotoUri(res.data)
-    //         } catch (err) {
-    //             console.error(err)
-    //         } finally {
-    //             setIsLoading(false)
-    //         }
-    //     }
-    //     getPhoto()
-    // }, [photosOrder]);
-
-
-    //
-    // function nextPhoto() {
-    //     if (!photosOrder) return
-    //     const index = currentPhotoIndex % photosOrder.length
-    //     setCurrentPhotoIndex(index)
-    // }
     if (!isLoading && placeDetails) {
         return (
             <ScrollView>
@@ -100,29 +78,33 @@ export default function PlaceId() {
                         <Text>{placeDetails?.cost}</Text>
                     </View>
 
-                    <View style={styles.infoContainer}>
-                        <IconSymbol name="location.circle" color={Theme.colors.black} size={Theme.sizes.iconSymbol}
-                                    weight={'thin'}/>
-                        <Text style={styles.info}>{placeDetails?.address}</Text>
-                    </View>
 
-                    {
-                        placeDetails?.phoneNumber &&
-                        <View style={styles.infoContainer}>
-                            <IconSymbol name="phone.circle" color={Theme.colors.black} size={Theme.sizes.iconSymbol}
-                                        weight={'thin'}/>
-                            <Text style={styles.info}>{placeDetails?.phoneNumber}</Text>
-                        </View>
-                    }
+                    <AppCondition condition={placeDetails?.address}>
+                        <PlaceInfo iconName="location.circle" info={placeDetails?.address}/>
+                    </AppCondition>
 
-                    {
-                        placeDetails?.website &&
-                        <View style={{backgroundColor: "red"}}>
-                            <Text style={styles.info}>
-                                {placeDetails?.website}
-                            </Text>
-                        </View>
-                    }
+
+                    <AppCondition condition={placeDetails.phoneNumber}>
+                        <PlaceInfo iconName='phone.circle' info={placeDetails?.phoneNumber}/>
+                    </AppCondition>
+
+                    <AppCondition condition={placeDetails.website}>
+                        <PlaceInfo iconName='globe' info={placeDetails?.website}/>
+                    </AppCondition>
+
+
+                    <AppCondition condition={placeDetails?.facebook}>
+                        <PlaceInfo iconName='globe' info={placeDetails?.facebook}/>
+                    </AppCondition>
+
+                    <AppCondition condition={placeDetails?.instagram}>
+                        <PlaceInfo iconName='globe' info={placeDetails?.instagram}/>
+                    </AppCondition>
+
+                    <AppCondition condition={placeDetails?.instagram}>
+                        <PlaceInfo iconName='globe' info={placeDetails?.tiktok}/>
+                    </AppCondition>
+
 
                     <View style={styles.saveForLaterContainer}>
                         <AppButton onPress={saveForLater} buttonType={ButtonType.PLAIN}>
@@ -164,18 +146,7 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         flexShrink: 1
     },
-    infoContainer: {
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-        marginBottom: 10,
-        gap: 10,
-    },
-    info: {
-        paddingHorizontal: 10,
-        fontSize: 18,
-        flexShrink: 1
-    },
+
 
     saveForLaterContainer: {
         width: "100%",

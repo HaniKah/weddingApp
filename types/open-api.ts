@@ -49,6 +49,9 @@ export interface PlaceDetailsDto {
   name: string;
   address: string | null;
   website: string | null;
+  facebook: string | null;
+  tiktok: string | null;
+  instagram: string | null;
   phoneNumber: string | null;
   minCost: number | null;
   maxCost: number | null;

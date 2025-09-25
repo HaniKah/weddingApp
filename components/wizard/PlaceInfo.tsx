@@ -1,0 +1,30 @@
+import {StyleSheet, Text, View} from "react-native";
+import {IconSymbol} from "@/components/ui/IconSymbol";
+import {Theme} from "@/styles/Theme";
+
+
+export default function PlaceInfo({iconName, info}: { iconName: any, info: string | null }) {
+    return (
+        <>
+            <View style={styles.infoContainer}>
+                <IconSymbol name={iconName} color={Theme.colors.black} size={Theme.sizes.iconSymbol}
+                            weight={'thin'}/>
+                <Text style={styles.info}>{info}</Text>
+            </View>
+        </>
+    )
+}
+const styles = StyleSheet.create({
+    infoContainer: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        marginBottom: 10,
+        gap: 10,
+    },
+    info: {
+        paddingHorizontal: 10,
+        fontSize: 18,
+        flexShrink: 1
+    },
+})

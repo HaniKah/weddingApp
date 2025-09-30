@@ -34,6 +34,7 @@ export enum WeddingSteps {
 }
 
 export interface PlacesDto {
+  step: WeddingSteps;
   id: number;
   name?: string | null;
   formattedAddress?: string | null;

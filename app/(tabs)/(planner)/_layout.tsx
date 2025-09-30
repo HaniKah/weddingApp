@@ -4,8 +4,7 @@ import {Theme} from "@/styles/Theme";
 export default function PlannerLayout() {
     return (
         <Stack screenOptions={{headerStyle: {backgroundColor: Theme.colors.background}}}>
-            <Stack.Screen name="index" options={{headerShown: false, title: 'Planner'}}/>
-            <Stack.Screen name="[id]"/>
+            <Stack.Screen name="index" options={{headerShown: false, title: 'Index'}}/>
             <Stack.Screen name="checklist"
                           options={{
                               title: 'Checklist',
@@ -13,6 +12,7 @@ export default function PlannerLayout() {
                               headerTintColor: Theme.colors.primary,
                               headerStyle: {backgroundColor: Theme.colors.background}
                           }}/>
+            <Stack.Screen name="[step]" options={{title: 'back', headerShown: false}}/>
         </Stack>
     )
 }

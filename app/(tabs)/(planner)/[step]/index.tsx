@@ -5,7 +5,7 @@ import PickDate from "@/components/wizard/PickDate";
 import {PickPlace} from "@/components/wizard/PickPlace";
 import AppView from "@/components/appComponents/AppView";
 import PlannerToolbar from "@/components/toolbars/PlannerToolbar";
-import {Stack} from "expo-router";
+import {Stack, useLocalSearchParams} from "expo-router";
 
 export default function Index() {
 
@@ -17,7 +17,7 @@ export default function Index() {
     const [isLoading, setLoading] = useState<boolean>(true)
     const [data, setData] = useState<PlacesViewModel>()
 
-
+    const {step} = useLocalSearchParams<{ step: string }>()
     useEffect(() => {
 
         const getSteps = async () => {
@@ -25,7 +25,7 @@ export default function Index() {
                 const response = await API.plannerControllerGetSteps()
                 setSteps(response.data)
                 setStepsOrder(response.data.steps.map(s => s.step))
-                setCurrentStep(response.data.steps.find(s => !s.isCompleted))
+                setCurrentStep(response.data.steps.find(s => s.step === step))
 
                 console.log("stepsDto from index: ", response.data)
 
@@ -56,7 +56,7 @@ export default function Index() {
 
         const checkLastStep = () => {
             //since we preserve the order , we can hardcode it
-            setIsLastStep(currentStep?.step === WeddingSteps.Dj)
+            setIsLastStep(currentStep?.step === WeddingSteps.ExtraDecorations)
         }
         const checkFirstStep = () => {
             //since we preserve the order , we can hardcode it

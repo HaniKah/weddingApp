@@ -10,10 +10,8 @@ export default function CheckItem({isCompleted, placeId, step, placeName}: {
     step: WeddingSteps,
     placeName: string | null
 }) {
-    const pathName = isCompleted ? "/[id]" : "/"
-    const pathParams = placeId ? {id: placeId} : {id: 1}
-    return (
-        <Link style={styles.link} href={{pathname: pathName, params: pathParams}}>
+    function Item() {
+        return (
             <View style={styles.container}>
                 {
                     isCompleted ?
@@ -27,7 +25,22 @@ export default function CheckItem({isCompleted, placeId, step, placeName}: {
                     {isCompleted && <Text style={[styles.place, styles.isCompleted]}>{placeName}</Text>}
                 </View>
             </View>
-        </Link>
+        )
+    }
+
+    return (
+        <>
+            {placeId &&
+                <Link href={{pathname: "/[step]/[id]", params: {step: step, id: placeId}}} style={styles.link}>
+                    <Item/>
+                </Link>}
+
+            {!isCompleted && <Link style={styles.link} href={{pathname: "/[step]", params: {step: step}}}>
+                <Item/>
+            </Link>}
+
+        </>
+
     )
 }
 const styles = StyleSheet.create({

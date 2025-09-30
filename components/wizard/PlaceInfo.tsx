@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View} from "react-native";
-import {IconSymbol} from "@/components/ui/IconSymbol";
+import {IconSymbol} from "@/components/symbols/IconSymbol";
 import {Theme} from "@/styles/Theme";
 
 

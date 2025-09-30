@@ -1,6 +1,6 @@
 import {StyleSheet, Text, View} from "react-native";
 import {Theme} from "@/styles/Theme";
-import {IconSymbol} from "@/components/ui/IconSymbol";
+import {IconSymbol} from "@/components/symbols/IconSymbol";
 
 export default function IconRatingStar({rating}: { rating: number | null | undefined }) {
 

@@ -1,5 +1,5 @@
 import {Tabs} from "expo-router";
-import {IconSymbol} from "@/components/ui/IconSymbol";
+import {IconSymbol} from "@/components/symbols/IconSymbol";
 import React from "react";
 import {Theme} from "@/styles/Theme";
 

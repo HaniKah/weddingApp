@@ -3,7 +3,7 @@ import Toolbar from "@/components/toolbars/Toolbar";
 import {StyleSheet, Text, View} from "react-native";
 import {Theme} from "@/styles/Theme";
 import * as Progress from 'react-native-progress';
-import {IconSymbol} from "@/components/ui/IconSymbol";
+import {IconSymbol} from "@/components/symbols/IconSymbol";
 import {Link} from "expo-router";
 import {ButtonStyles} from "@/styles/Button";
 

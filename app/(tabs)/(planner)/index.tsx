@@ -1,11 +1,10 @@
-import {StyleSheet, View} from "react-native";
-
 import {useEffect, useState} from "react";
 import PlannerToolbar from "@/components/toolbars/PlannerToolbar";
 import PickDate from "@/components/wizard/PickDate";
 import {PickPlace} from "@/components/wizard/PickPlace";
 import {PlacesViewModel, StepsDto, StepsViewModel, WeddingSteps} from "@/types/open-api";
 import {API} from "@/utils/api";
+import AppView from "@/components/appComponents/AppView";
 
 
 export default function Index() {
@@ -108,16 +107,10 @@ export default function Index() {
     return (
         <>
             {steps && currentStep &&
-                <View style={styles.container}>
+                <AppView>
                     <PlannerToolbar progress={steps?.progress} note={currentStep.note}
                                     fullfilled={currentStep.isCompleted}/>
                     <ActiveComponent/>
-                </View>}
+                </AppView>}
         </>)
 }
-
-const styles = StyleSheet.create({
-    container: {
-        padding: 10,
-    },
-})

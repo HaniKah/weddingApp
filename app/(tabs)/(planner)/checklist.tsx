@@ -10,6 +10,8 @@ export default function Checklist() {
             <AppView>
                 <ScrollView>
                     <CheckItem step={WeddingSteps.Host} placeId={2} placeName="Host 2" isCompleted={true}/>
+                    <CheckItem step={WeddingSteps.Dress} placeId={null} placeName={null} isCompleted={false}/>
+
                 </ScrollView>
             </AppView>
         </>

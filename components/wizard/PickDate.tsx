@@ -40,10 +40,8 @@ export default function PickDate({onNextStep, onPreviousStep, isFirstStep, isLas
 
     useEffect(() => {
         const getWeddingDate = async () => {
-            console.log("getWeddingDate .....")
             const weddingDate = await API.plannerControllerGetWeddingDate()
             if (weddingDate.data.date) {
-                console.log("stored wedding date :", weddingDate.data.date)
                 setSelectedDate(weddingDate.data.date)
             }
         }

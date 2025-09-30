@@ -32,18 +32,18 @@ export default function RootLayout() {
 
         <SafeAreaProvider>
             <SafeAreaView style={styles.container} edges={['top']}>
-                <Stack>
+                <Stack screenOptions={{headerShown: false}}>
                     <Stack.Protected guard={isLoggedIn}>
-                        <Stack.Screen name="(tabs)" options={{headerShown: false}}/>
+                        <Stack.Screen name="(tabs)"/>
                     </Stack.Protected>
                     <Stack.Protected guard={!isLoggedIn && !shouldCreateAccount && hasCompletedOnboarding}>
-                        <Stack.Screen name="sign-in" options={{headerShown: false}}/>
+                        <Stack.Screen name="sign-in"/>
                     </Stack.Protected>
                     <Stack.Protected guard={shouldCreateAccount}>
-                        <Stack.Screen name="sign-up" options={{headerShown: false}}/>
+                        <Stack.Screen name="sign-up"/>
                     </Stack.Protected>
                     <Stack.Protected guard={!hasCompletedOnboarding}>
-                        <Stack.Screen name="onboarding" options={{headerShown: false}}/>
+                        <Stack.Screen name="onboarding"/>
                     </Stack.Protected>
                     <Stack.Screen name="+not-found"/>
                 </Stack>

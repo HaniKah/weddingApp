@@ -6,6 +6,7 @@ import AppButton from "@/components/appComponents/AppButton";
 import {ButtonType} from "@/styles/Button";
 import AppCondition from "@/components/appComponents/AppCondition";
 import PlaceInfo from "@/components/wizard/PlaceInfo";
+import {Theme} from "@/styles/Theme";
 import ScrollView = Animated.ScrollView;
 
 
@@ -69,7 +70,12 @@ export default function PlaceId() {
     if (!isLoading && placeDetails) {
         return (
             <ScrollView>
-                <Stack.Screen options={{title: placeDetails.name}}/>
+                <Stack.Screen
+                    options={{
+                        title: placeDetails.name,
+                        headerShown: true,
+                        headerTintColor: Theme.colors.primary,
+                    }}/>
                 {/*<Image source={{uri: photoUri?.uri}} style={{height: 400}}/>*/}
                 <View style={{height: 400}}></View>
                 <View style={styles.infosContainer}>

@@ -1,13 +1,14 @@
-import {Text, View} from "react-native";
+import {Animated, Text} from "react-native";
+import ScrollView = Animated.ScrollView;
 
 export default function Checklist() {
     return (
         <>
-            <View>
+            <ScrollView>
                 <Text>
                     this is guest list
                 </Text>
-            </View>
+            </ScrollView>
         </>
     )
 }

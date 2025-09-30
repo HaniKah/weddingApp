@@ -27,6 +27,8 @@ export default function Index() {
                 setStepsOrder(response.data.steps.map(s => s.step))
                 setCurrentStep(response.data.steps.find(s => !s.isCompleted))
 
+                console.log("stepsDto from index: ", response.data)
+
             } catch (err) {
                 console.error(err)
             } finally {

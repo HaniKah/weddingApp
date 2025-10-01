@@ -6,26 +6,26 @@ import {Redirect} from "expo-router";
 
 export default function Index() {
     const [currentStep, setCurrentStep] = useState<WeddingSteps>()
-    const [isLoading, setLoading] = useState<boolean>(true)
+
 
     useEffect(() => {
 
         const getSteps = async () => {
             try {
                 const response = await API.plannerControllerGetSteps()
-
-                setCurrentStep(response.data.steps.find(s => !s.isCompleted)?.step)
+                setCurrentStep(response.data.steps.find(s => !s.isCompleted)?.step || WeddingSteps.Date)
+                console.log("steps", response.data.steps)
 
 
             } catch (err) {
                 console.error(err)
             } finally {
-                setLoading(false)
+
             }
         }
         getSteps()
 
     }, [])
 
-    return !isLoading ? <Redirect href={`/${currentStep}`}/> : <ActivityIndicator/>
+    return currentStep ? <Redirect href={`/${currentStep}`}/> : <ActivityIndicator/>
 }

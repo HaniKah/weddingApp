@@ -3,9 +3,9 @@ import {PlacesViewModel, StepsDto, StepsViewModel, WeddingSteps} from "@/types/o
 import {API} from "@/utils/api";
 import PickDate from "@/components/wizard/PickDate";
 import {PickPlace} from "@/components/wizard/PickPlace";
-import AppView from "@/components/appComponents/AppView";
 import PlannerToolbar from "@/components/toolbars/PlannerToolbar";
 import {Stack, useLocalSearchParams} from "expo-router";
+import AppView from "@/components/appComponents/AppView";
 
 export default function Index() {
 
@@ -18,6 +18,7 @@ export default function Index() {
     const [data, setData] = useState<PlacesViewModel>()
 
     const {step} = useLocalSearchParams<{ step: string }>()
+    console.log("step", step)
     useEffect(() => {
 
         const getSteps = async () => {
@@ -27,7 +28,6 @@ export default function Index() {
                 setStepsOrder(response.data.steps.map(s => s.step))
                 setCurrentStep(response.data.steps.find(s => s.step === step))
 
-                console.log("stepsDto from index: ", response.data)
 
             } catch (err) {
                 console.error(err)
@@ -109,11 +109,13 @@ export default function Index() {
     return (
         <>
             {steps && currentStep &&
-                <AppView>
+                <AppView isLoading={isLoading}>
                     <Stack.Screen options={{title: currentStep.step}}/>
                     <PlannerToolbar progress={steps?.progress} note={currentStep.note}
                                     fullfilled={currentStep.isCompleted}/>
                     <ActiveComponent/>
                 </AppView>}
-        </>)
+
+        </>
+    )
 }

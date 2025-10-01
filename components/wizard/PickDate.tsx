@@ -19,15 +19,15 @@ export default function PickDate({onNextStep, onPreviousStep, isFirstStep, isLas
     const [loading, setLoading] = useState(false)
 
     function handleUpdateDate(day: string): void {
-        console.log("selected date :", day)
+
         setSelectedDate(day)
     }
 
     async function storeWeddingDate() {
-        console.log("storing date :", selectedDate)
+
         if (!selectedDate) return
         try {
-            console.log("in the try block")
+
             setLoading(true)
             await API.plannerControllerUpdateWeddingDate({date: selectedDate})
         } catch (err) {

@@ -2,27 +2,22 @@ import {StyleSheet, Text, View} from "react-native";
 import {IconSymbol} from "@/components/symbols/IconSymbol";
 import {Theme} from "@/styles/Theme";
 import {Link} from "expo-router";
-import {WeddingSteps} from "@/types/open-api";
+import {ChecklistDto} from "@/types/open-api";
 
-export default function CheckItem({isCompleted, placeId, step, placeName}: {
-    isCompleted: boolean,
-    placeId: number | null,
-    step: WeddingSteps,
-    placeName: string | null
-}) {
+export default function CheckItem({item}: { item: ChecklistDto }) {
     function Item() {
         return (
             <View style={styles.container}>
                 {
-                    isCompleted ?
+                    item.isCompleted ?
                         <IconSymbol style={styles.symbol} size={35} color={Theme.colors.green["100"]}
                                     name="checkmark.circle.fill"/> :
                         <IconSymbol style={styles.symbol} size={35} name="circle" color={Theme.colors.primary}/>
                 }
 
                 <View style={styles.textContainer}>
-                    <Text style={[styles.step, isCompleted && styles.isCompleted]}>Host</Text>
-                    {isCompleted && <Text style={[styles.place, styles.isCompleted]}>{placeName}</Text>}
+                    <Text style={[styles.step, item.isCompleted && styles.isCompleted]}>{item.step}</Text>
+                    {item.placeId && <Text style={[styles.place, styles.isCompleted]}>{item.placeName}</Text>}
                 </View>
             </View>
         )
@@ -30,12 +25,13 @@ export default function CheckItem({isCompleted, placeId, step, placeName}: {
 
     return (
         <>
-            {placeId &&
-                <Link href={{pathname: "/[step]/[id]", params: {step: step, id: placeId}}} style={styles.link}>
+            {item.placeId &&
+                <Link href={{pathname: "/[step]/[id]", params: {step: item.step, id: item.placeId}}}
+                      style={styles.link}>
                     <Item/>
                 </Link>}
 
-            {!isCompleted && <Link style={styles.link} href={{pathname: "/[step]", params: {step: step}}}>
+            {!item.placeId && <Link style={styles.link} href={{pathname: "/[step]", params: {step: item.step}}}>
                 <Item/>
             </Link>}
 
@@ -54,6 +50,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         gap: 10,
+
     },
 
     symbol: {
@@ -61,10 +58,13 @@ const styles = StyleSheet.create({
     },
 
     textContainer: {
+        display: "flex",
+        justifyContent: "center",
         borderBottomWidth: 1,
         borderColor: Theme.colors.iconBackground,
         width: "100%",
-        paddingVertical: 15,
+        paddingVertical: 10,
+        height: 70
     },
 
     step: {

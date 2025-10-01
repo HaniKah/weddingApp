@@ -92,6 +92,18 @@ export interface UpdateDateRequest {
   date: string;
 }
 
+export interface ChecklistDto {
+  step: WeddingSteps;
+  isCompleted: boolean;
+  placeName: string | null;
+  placeId: number | null;
+  cost: number | null;
+}
+
+export interface ChecklistViewModel {
+  list: ChecklistDto[];
+}
+
 import type {
   AxiosInstance,
   AxiosRequestConfig,
@@ -400,6 +412,21 @@ export class Api<
         method: "POST",
         body: data,
         type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Planner
+     * @name PlannerControllerGetChecklist
+     * @request GET:/api/places/getChecklist
+     */
+    plannerControllerGetChecklist: (params: RequestParams = {}) =>
+      this.request<ChecklistViewModel, any>({
+        path: `/api/places/getChecklist`,
+        method: "GET",
+        format: "json",
         ...params,
       }),
   };

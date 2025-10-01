@@ -1,16 +1,16 @@
 import {ActivityIndicator, Animated, StyleSheet, Text, View} from "react-native";
 import {useEffect, useState} from "react";
 import {Stack, useLocalSearchParams, useRouter} from "expo-router";
-import {Api, PlaceDetailsDto} from "@/types/open-api";
+import {PlaceDetailsDto} from "@/types/open-api";
 import AppButton from "@/components/appComponents/AppButton";
 import {ButtonType} from "@/styles/Button";
 import AppCondition from "@/components/appComponents/AppCondition";
 import PlaceInfo from "@/components/wizard/PlaceInfo";
 import {Theme} from "@/styles/Theme";
+import {API} from "@/utils/api";
 import ScrollView = Animated.ScrollView;
 
 
-const {api} = new Api({baseURL: process.env.EXPO_PUBLIC_API_URL, withCredentials: true})
 export default function PlaceId() {
     const {id} = useLocalSearchParams<{ id: string }>();
 
@@ -27,7 +27,7 @@ export default function PlaceId() {
     useEffect(() => {
         const getPlaceDetails = async () => {
             try {
-                const response = await api.plannerControllerGetPlaceById({placeId: Number(id)})
+                const response = await API.plannerControllerGetPlaceById({placeId: Number(id)})
                 setPlaceDetails(response.data)
                 // setPhotosOrder(response.data?.photos?.map((p) => p.photoRef))
             } catch (err) {
@@ -55,7 +55,7 @@ export default function PlaceId() {
         if (!placeDetails) return
         try {
             setIsLoading(true)
-            await api.plannerControllerUpdatePlaceDetails({
+            await API.plannerControllerUpdatePlaceDetails({
                 placeId: Number(id),
                 cost: cost || placeDetails.cost,
                 picked: picked || placeDetails.picked,

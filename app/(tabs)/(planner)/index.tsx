@@ -16,7 +16,6 @@ export default function Index() {
 
                 setCurrentStep(response.data.steps.find(s => !s.isCompleted)?.step)
 
-                console.log("stepsDto from index: ", response.data)
 
             } catch (err) {
                 console.error(err)

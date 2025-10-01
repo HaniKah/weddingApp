@@ -1,6 +1,6 @@
 import {ActivityIndicator, Animated, StyleSheet, Text, View} from "react-native";
 import {useEffect, useState} from "react";
-import {Stack, useLocalSearchParams} from "expo-router";
+import {Stack, useLocalSearchParams, useRouter} from "expo-router";
 import {Api, PlaceDetailsDto} from "@/types/open-api";
 import AppButton from "@/components/appComponents/AppButton";
 import {ButtonType} from "@/styles/Button";
@@ -18,9 +18,11 @@ export default function PlaceId() {
     const [placeDetails, setPlaceDetails] = useState<PlaceDetailsDto>()
     const [notes, setNotes] = useState<string>()
     const [cost, setCost] = useState<number>()
-    const [trigger, setTrigger] = useState<boolean>(false)
+
     // const [photoUri, setPhotoUri] = useState<PhotosDto>()
     // const [photosOrder, setPhotosOrder] = useState<string[]>([])
+
+    const router = useRouter()
 
     useEffect(() => {
         const getPlaceDetails = async () => {
@@ -35,17 +37,18 @@ export default function PlaceId() {
             }
         }
         getPlaceDetails()
-    }, [id, trigger]);
+    }, [id]);
 
     async function pickPlace() {
         await updatePlaceDetails(placeDetails?.favourite, true)
-        // i want to use getPlaceDetails here again
-        setTrigger(!trigger)
+
+        router.replace("/")
     }
 
     async function saveForLater() {
         await updatePlaceDetails(true, placeDetails?.picked)
-        setTrigger(!trigger)
+
+        router.replace("/")
     }
 
     async function updatePlaceDetails(favourite?: boolean, picked?: boolean) {

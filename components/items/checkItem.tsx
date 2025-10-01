@@ -7,33 +7,40 @@ import {ChecklistDto} from "@/types/open-api";
 export default function CheckItem({item}: { item: ChecklistDto }) {
     function Item() {
         return (
-            <View style={styles.container}>
-                {
-                    item.isCompleted ?
-                        <IconSymbol style={styles.symbol} size={35} color={Theme.colors.green["100"]}
-                                    name="checkmark.circle.fill"/> :
-                        <IconSymbol style={styles.symbol} size={35} name="circle" color={Theme.colors.primary}/>
-                }
+            <View style={styles.wrapper}>
+                <View style={styles.container}>
+                    {
+                        item.isCompleted ?
+                            <IconSymbol style={styles.symbol} size={35} color={Theme.colors.green["100"]}
+                                        name="checkmark.circle.fill"/> :
+                            <IconSymbol style={styles.symbol} size={35} name="circle" color={Theme.colors.primary}/>
+                    }
 
-                <View style={styles.textContainer}>
-                    <Text style={[styles.step, item.isCompleted && styles.isCompleted]}>{item.step}</Text>
-                    {item.placeId && <Text style={[styles.place, styles.isCompleted]}>{item.placeName}</Text>}
+                    <View style={styles.textContainer}>
+                        <Text style={[styles.step, item.isCompleted && styles.isCompleted]}>{item.step}</Text>
+                        {item.isCompleted && <Text style={[styles.place, styles.isCompleted]}>{item.placeName}</Text>}
+                    </View>
                 </View>
+                <Text style={[styles.place, styles.isCompleted]}>
+                    {item.cost}
+                </Text>
             </View>
+
         )
     }
 
     return (
         <>
             {item.placeId &&
-                <Link href={{pathname: "/[step]/[id]", params: {step: item.step, id: item.placeId}}}
+                <Link dangerouslySingular href={{pathname: "/[step]/[id]", params: {step: item.step, id: item.placeId}}}
                       style={styles.link}>
                     <Item/>
                 </Link>}
 
-            {!item.placeId && <Link style={styles.link} href={{pathname: "/[step]", params: {step: item.step}}}>
-                <Item/>
-            </Link>}
+            {!item.placeId &&
+                <Link style={styles.link} dismissTo href={{pathname: "/[step]", params: {step: item.step}}}>
+                    <Item/>
+                </Link>}
 
         </>
 
@@ -44,17 +51,23 @@ const styles = StyleSheet.create({
         width: "100%",
     },
 
+    wrapper: {
+        display: "flex",
+        alignItems: "center",
+        flexDirection: "row",
+    },
+
     container: {
+        flex: 1,
         width: "100%",
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
-        gap: 10,
 
     },
 
     symbol: {
-        marginRight: 10,
+        marginRight: 8,
     },
 
     textContainer: {
@@ -64,7 +77,8 @@ const styles = StyleSheet.create({
         borderColor: Theme.colors.iconBackground,
         width: "100%",
         paddingVertical: 10,
-        height: 70
+        paddingHorizontal: 10,
+        height: 75
     },
 
     step: {

@@ -14,7 +14,6 @@ export default function Index() {
             try {
                 const response = await API.plannerControllerGetSteps()
                 setCurrentStep(response.data.steps.find(s => !s.isCompleted)?.step || WeddingSteps.Date)
-                console.log("steps", response.data.steps)
 
 
             } catch (err) {

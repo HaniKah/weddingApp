@@ -1,6 +1,6 @@
 import {ActivityIndicator, Animated, StyleSheet, Text, View} from "react-native";
 import {useEffect, useState} from "react";
-import {Stack, useLocalSearchParams, useRouter} from "expo-router";
+import {Stack, useLocalSearchParams, usePathname, useRouter} from "expo-router";
 import {PlaceDetailsDto} from "@/types/open-api";
 import AppButton from "@/components/appComponents/AppButton";
 import {ButtonType} from "@/styles/Button";
@@ -23,6 +23,8 @@ export default function PlaceId() {
     // const [photosOrder, setPhotosOrder] = useState<string[]>([])
 
     const router = useRouter()
+    const path = usePathname()
+    console.log(path)
 
     useEffect(() => {
         const getPlaceDetails = async () => {

@@ -1,9 +1,25 @@
-import {Text} from "react-native";
+import {StyleSheet, View} from "react-native";
+import GuestSide from "@/components/GuestSide";
+import {CoupleSide} from "@/types/open-api";
 
 export default function Guests() {
+    const handleAddGuest = () => {
+        console.log("add guest ...")
+    }
     return (
-        <Text>
-            this is guest page
-        </Text>
+        <>
+            <View style={styles.container}>
+                <GuestSide side={CoupleSide.Bride} onAddGuest={handleAddGuest}/>
+                <GuestSide side={CoupleSide.Groom} onAddGuest={handleAddGuest}/>
+            </View>
+        </>
+
     )
+
 }
+const styles = StyleSheet.create({
+    container: {
+        display: "flex",
+        flexDirection: "row",
+    }
+})

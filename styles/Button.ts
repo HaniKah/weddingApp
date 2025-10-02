@@ -6,7 +6,6 @@ export const ButtonStyles = StyleSheet.create({
         backgroundColor: Theme.colors.primary,
         paddingHorizontal: 20,
         paddingVertical: 14,
-        width: "100%",
         borderRadius: Theme.sizes.buttonRadius,
     },
     primaryTxt: {
@@ -24,10 +23,10 @@ export const ButtonStyles = StyleSheet.create({
         fontWeight: 'bold',
         paddingHorizontal: 20,
         paddingVertical: 10,
-        width: "100%",
         textAlign: 'center',
         borderRadius: Theme.sizes.buttonRadius,
-        borderWidth: 1,
+        borderColor: Theme.colors.primary,
+        borderWidth: 1.5,
     },
     outlinedTxt: {
         color: Theme.colors.primary,
@@ -42,7 +41,7 @@ export const ButtonStyles = StyleSheet.create({
         fontWeight: 'normal',
         paddingHorizontal: 20,
         paddingVertical: 14,
-        width: "100%",
+
         textAlign: 'center',
         borderRadius: Theme.sizes.buttonRadius,
     },

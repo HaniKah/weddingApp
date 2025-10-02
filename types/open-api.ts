@@ -10,6 +10,11 @@
  * ---------------------------------------------------------------
  */
 
+export enum CoupleSide {
+  Groom = "Groom",
+  Bride = "Bride",
+}
+
 export enum WeddingSteps {
   Date = "Date",
   Host = "Host",
@@ -102,6 +107,26 @@ export interface ChecklistDto {
 
 export interface ChecklistViewModel {
   list: ChecklistDto[];
+}
+
+export interface GuestsDto {
+  coupleSide: CoupleSide;
+  id: number;
+  name: string;
+  phoneNumber: string;
+  isInvited: boolean;
+}
+
+export interface AddGuestRequest {
+  coupleSide: CoupleSide;
+  name: string;
+  phoneNumber: string;
+}
+
+export interface UpdateGuestRequest {
+  coupleSide?: CoupleSide;
+  name?: string;
+  phoneNumber?: string;
 }
 
 import type {
@@ -427,6 +452,59 @@ export class Api<
         path: `/api/places/getChecklist`,
         method: "GET",
         format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Guests
+     * @name GuestsControllerGetGuests
+     * @request GET:/api/guests/getGuests
+     */
+    guestsControllerGetGuests: (params: RequestParams = {}) =>
+      this.request<GuestsDto[], any>({
+        path: `/api/guests/getGuests`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Guests
+     * @name GuestsControllerAddGuest
+     * @request POST:/api/guests/addGuest
+     */
+    guestsControllerAddGuest: (
+      data: AddGuestRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/guests/addGuest`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Guests
+     * @name GuestsControllerUpdateGuest
+     * @request POST:/api/guests/updateGuest
+     */
+    guestsControllerUpdateGuest: (
+      data: UpdateGuestRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/guests/updateGuest`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
         ...params,
       }),
   };

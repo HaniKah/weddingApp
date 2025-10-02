@@ -4,27 +4,42 @@ import {Theme} from "@/styles/Theme";
 import {Link} from "expo-router";
 import {ChecklistDto} from "@/types/open-api";
 
-export default function CheckItem({item}: { item: ChecklistDto }) {
+export default function CheckItem({item, firstItem, lastItem}: {
+    item: ChecklistDto,
+    firstItem: boolean,
+    lastItem: boolean,
+}) {
     function Item() {
         return (
-            <View style={styles.wrapper}>
-                <View style={styles.container}>
+            <View style={styles.container}>
+                <View style={styles.symbolContainer}>
+
+                    <View style={[styles.connectingLines, firstItem && styles.connectingLinesEdges]}></View>
+
                     {
                         item.isCompleted ?
-                            <IconSymbol style={styles.symbol} size={35} color={Theme.colors.green["100"]}
+                            <IconSymbol size={30} color={Theme.colors.green["100"]}
                                         name="checkmark.circle.fill"/> :
-                            <IconSymbol style={styles.symbol} size={35} name="circle" color={Theme.colors.primary}/>
+                            <IconSymbol size={30} name="circle" color={Theme.colors.primary}/>
                     }
 
-                    <View style={styles.textContainer}>
-                        <Text style={[styles.step, item.isCompleted && styles.isCompleted]}>{item.step}</Text>
-                        {item.isCompleted && <Text style={[styles.place, styles.isCompleted]}>{item.placeName}</Text>}
-                    </View>
+                    <View style={[styles.connectingLines, lastItem && styles.connectingLinesEdges]}></View>
                 </View>
-                <Text style={[styles.place, styles.isCompleted]}>
-                    {item.cost}
-                </Text>
+
+
+                <View style={styles.textContainer}>
+                    <View>
+                        <Text style={[styles.step, item.isCompleted && styles.isCompleted]}>{item.step}</Text>
+                        {item.isCompleted &&
+                            <Text style={[styles.place, styles.isCompleted]}>{item.placeName}</Text>}
+                    </View>
+
+                    <Text style={[styles.place, styles.isCompleted]}>
+                        {item.cost}
+                    </Text>
+                </View>
             </View>
+
 
         )
     }
@@ -51,35 +66,44 @@ const styles = StyleSheet.create({
         width: "100%",
     },
 
-    wrapper: {
-        display: "flex",
-        alignItems: "center",
-        flexDirection: "row",
-    },
-
     container: {
-        flex: 1,
         width: "100%",
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
-
     },
 
-    symbol: {
-        marginRight: 8,
+    symbolContainer: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    connectingLines: {
+        width: 1,
+        borderWidth: 1,
+        borderColor: Theme.colors.iconBackground,
+        height: 23,
+
+    },
+    connectingLinesEdges: {
+        borderWidth: 0
     },
 
     textContainer: {
         display: "flex",
-        justifyContent: "center",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        flex: 1,
         borderBottomWidth: 1,
         borderColor: Theme.colors.iconBackground,
-        width: "100%",
         paddingVertical: 10,
         paddingHorizontal: 10,
-        height: 75
+        marginHorizontal: 10,
+        height: 76,
+
     },
+
 
     step: {
         fontWeight: "bold",

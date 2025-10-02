@@ -1,9 +1,9 @@
-import {Animated, FlatList} from "react-native";
+import {FlatList} from "react-native";
 import AppView from "@/components/appComponents/AppView";
-import CheckItem from "@/components/items/checkItem";
 import {ChecklistViewModel} from "@/types/open-api";
 import {useEffect, useState} from "react";
 import {API} from "@/utils/api";
+import CheckItem from "@/components/items/checkItem";
 
 
 export default function Checklist() {
@@ -27,7 +27,12 @@ export default function Checklist() {
     return (
         <>
             <AppView isLoading={isLoading}>
-                <FlatList data={checklist?.list} renderItem={CheckItem}/>
+                <FlatList data={checklist?.list}
+                          keyExtractor={(data, index) => index.toString()}
+                          renderItem={({item, index}) => (
+                              <CheckItem item={item} firstItem={index === 0}
+                                         lastItem={index + 1 === checklist?.list.length}
+                              />)}/>
             </AppView>
         </>
     )

@@ -4,7 +4,7 @@ import {API} from "@/utils/api";
 import PickDate from "@/components/wizard/PickDate";
 import {PickPlace} from "@/components/wizard/PickPlace";
 import PlannerToolbar from "@/components/toolbars/PlannerToolbar";
-import {router, Stack, useLocalSearchParams, usePathname} from "expo-router";
+import {Stack, useLocalSearchParams, usePathname, useRouter} from "expo-router";
 import AppView from "@/components/appComponents/AppView";
 
 export default function Index() {
@@ -18,6 +18,7 @@ export default function Index() {
     const [data, setData] = useState<PlacesViewModel>()
 
     const {step} = useLocalSearchParams<{ step: string }>()
+    const router = useRouter()
 
     console.log(usePathname())
 
@@ -91,7 +92,7 @@ export default function Index() {
             const index = stepsOrder.indexOf(currentStep.step)
             const nextStep = stepsOrder[index + 1]
             setCurrentStep(steps.steps.find(s => s.step === nextStep))
-            router.replace(`/${nextStep}`)
+            router.setParams({step: nextStep})
 
         }
     }
@@ -102,7 +103,7 @@ export default function Index() {
                 const index = stepsOrder.indexOf(currentStep.step)
                 const previousStep = stepsOrder[index - 1]
                 setCurrentStep(steps.steps.find(s => s.step === previousStep))
-                router.replace(`/${previousStep}`)
+                router.setParams({step: previousStep})
             } else {
                 console.log('first step')
             }

@@ -4,7 +4,7 @@ import {API} from "@/utils/api";
 import PickDate from "@/components/wizard/PickDate";
 import {PickPlace} from "@/components/wizard/PickPlace";
 import PlannerToolbar from "@/components/toolbars/PlannerToolbar";
-import {Stack, useLocalSearchParams, usePathname, useRouter} from "expo-router";
+import {Stack, useLocalSearchParams, useRouter} from "expo-router";
 import AppView from "@/components/appComponents/AppView";
 
 export default function Index() {
@@ -20,7 +20,7 @@ export default function Index() {
     const {step} = useLocalSearchParams<{ step: string }>()
     const router = useRouter()
 
-    console.log(usePathname())
+    // console.log(usePathname())
 
     useEffect(() => {
 

@@ -12,7 +12,10 @@ export default function PlannerLayout() {
                               headerTintColor: Theme.colors.primary,
                               headerStyle: {backgroundColor: Theme.colors.background}
                           }}/>
-            <Stack.Screen name="[step]" options={{title: 'back', headerShown: false}}/>
+
+            {/*Screen [step]/index is defined inside the component*/}
+            {/*Screen [step]/[id] is defined inside the component*/}
+
         </Stack>
     )
 }

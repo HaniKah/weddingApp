@@ -113,9 +113,9 @@ export default function Index() {
 
     return (
         <>
+            <Stack.Screen options={{title: currentStep?.step, headerShown: false}}/>
             {steps && currentStep &&
                 <AppView isLoading={isLoading}>
-                    <Stack.Screen options={{title: currentStep.step}}/>
                     <PlannerToolbar progress={steps?.progress} note={currentStep.note}
                                     fullfilled={currentStep.isCompleted}/>
                     <ActiveComponent/>

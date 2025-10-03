@@ -3,7 +3,7 @@ import AppView from "@/components/appComponents/AppView";
 import {ChecklistViewModel} from "@/types/open-api";
 import {useEffect, useState} from "react";
 import {API} from "@/utils/api";
-import CheckItem from "@/components/items/checkItem";
+import CheckItem from "@/components/items/CheckItem";
 
 
 export default function Checklist() {

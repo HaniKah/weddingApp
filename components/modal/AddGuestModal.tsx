@@ -12,7 +12,6 @@ interface AddGuestRequest {
     phone: string;
 }
 
-
 export default function AddGuestModal({isVisible, setIsVisible, guestSide}: {
     isVisible: boolean,
     setIsVisible: (value: boolean) => void
@@ -22,12 +21,19 @@ export default function AddGuestModal({isVisible, setIsVisible, guestSide}: {
     const [phone, setPhone] = useState<string>()
 
 
-    const handleSave = (data: AddGuestRequest) => {
+    function handleSave(data: AddGuestRequest) {
 
         console.log("from handleSave in Modal ; ", data)
         // setIsVisible(false)
-
+        finishAndClear()
     }
+
+    function finishAndClear() {
+        setIsVisible(false)
+        setGuestName(undefined)
+        setPhone(undefined)
+    }
+
     return (
         <>
             <Modal presentationStyle="pageSheet" animationType="slide" visible={isVisible}
@@ -50,10 +56,10 @@ export default function AddGuestModal({isVisible, setIsVisible, guestSide}: {
                                                   onTextChange={(s: string) => setGuestName(s)}/>
 
                                     <AppTextInput name="phone"
-                                                  required
                                                   placeholder="add phone number" label="Phone number"
                                                   value={phone}
                                                   onTextChange={(s: string) => setPhone(s)}/>
+
                                 </View>
                                 <View style={{marginBottom: 40}}>
                                     <AppButton isSubmit onPress={() => handleSave} buttonType={ButtonType.PRIMARY}>

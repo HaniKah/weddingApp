@@ -32,14 +32,14 @@ export function AppForm<T>({onSubmit, children}: { onSubmit: (data: T) => void, 
         setResult(prev => ({...prev, ...v}))
     }
 
-
+//todo : type validation should happen here with ZOD ( since ts doesnt work in runtime )
     useEffect(() => {
         console.log("checking:", checking)
         if (result && checking) {
             console.log(result)
             onSubmit(result)
         }
-        
+
     }, [result, checking]);
 
 

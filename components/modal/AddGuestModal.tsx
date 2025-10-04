@@ -24,7 +24,7 @@ export default function AddGuestModal({isVisible, setIsVisible, guestSide}: {
     function handleSave(data: AddGuestRequest) {
 
         console.log("from handleSave in Modal ; ", data)
-        // setIsVisible(false)
+        // Post to Api
         finishAndClear()
     }
 

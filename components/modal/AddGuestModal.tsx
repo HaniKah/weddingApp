@@ -56,6 +56,7 @@ export default function AddGuestModal({isVisible, setIsVisible, guestSide}: {
                                                   onTextChange={(s: string) => setGuestName(s)}/>
 
                                     <AppTextInput name="phone"
+                                                  required
                                                   placeholder="add phone number" label="Phone number"
                                                   value={phone}
                                                   onTextChange={(s: string) => setPhone(s)}/>

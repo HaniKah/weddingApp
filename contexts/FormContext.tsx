@@ -1,12 +1,6 @@
 // FormContext.js
 import React, {createContext, useContext, useEffect, useState} from 'react';
 
-interface FormContextType {
-    checking: boolean;
-    setChecking: (checking: boolean) => void;
-    result: any;
-    addValue: (v: { [key: string]: string | null }) => void;
-}
 
 const FormContext = createContext<FormContextType>({
     checking: false,
@@ -17,13 +11,24 @@ const FormContext = createContext<FormContextType>({
 
 });
 
+interface FormContextType {
+    checking: boolean;
+    setChecking: (checking: boolean) => void;
+    result: any;
+    addValue: (data: any) => void;
+}
+
+type OneField<M> = {
+    [K in keyof M]: { [P in K]: M[P] }
+}[keyof M];
+
 
 export function AppForm<T>({onSubmit, children}: { onSubmit: (data: T) => void, children: React.ReactNode }) {
 
     const [checking, setChecking] = useState<boolean>(false);
-    const [result, setResult] = useState({});
+    const [result, setResult] = useState<T | undefined>();
 
-    function addValue(v: { [key: string]: string | null }) {
+    function addValue(v: OneField<T>) {
         setResult(prev => ({...prev, ...v}))
     }
 
@@ -35,7 +40,7 @@ export function AppForm<T>({onSubmit, children}: { onSubmit: (data: T) => void, 
     useEffect(() => {
         if (result && checking) {
             console.log(result)
-            onSubmit(result as T)
+            onSubmit(result)
         }
 
 

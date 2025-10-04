@@ -27,6 +27,11 @@ export default function AppTextInput({
 
     const form = useFormContext()
 
+    function preTextChange(text: string) {
+        setError(undefined)
+        onTextChange(text)
+    }
+
     useEffect(() => {
         if (form.checking) {
 
@@ -56,7 +61,7 @@ export default function AppTextInput({
                        keyboardType={keyboardType}
                        placeholder={placeholder}
                        style={styles.input}
-                       onChangeText={onTextChange}/>
+                       onChangeText={preTextChange}/>
             <Text style={styles.error}>{error}</Text>
         </View>
     )

@@ -5,6 +5,18 @@ import {useState} from "react";
 import AppTextInput from "@/components/appComponents/AppTextInput";
 import AppButton from "@/components/appComponents/AppButton";
 import {ButtonType} from "@/styles/Button";
+import {AppForm} from "@/contexts/FormContext";
+
+class AddGuestRequest {
+    private name: string;
+    private phone: string;
+
+    constructor(name: string, phone: string) {
+        this.name = name
+        this.phone = phone
+    }
+}
+
 
 export default function AddGuestModal({isVisible, setIsVisible, guestSide}: {
     isVisible: boolean,
@@ -13,19 +25,12 @@ export default function AddGuestModal({isVisible, setIsVisible, guestSide}: {
 }) {
     const [guestName, setGuestName] = useState<string>()
     const [phone, setPhone] = useState<string>()
-    const [nameError, setNameError] = useState<string>()
-    const [phoneError, setPhoneError] = useState<string>()
 
 
-    const handleSave = () => {
-        const checkName = guestName?.trim()
-        const checkPhone = phone?.trim()
+    const handleSave = (data: AddGuestRequest) => {
 
-        !checkName || checkName.length === 0 && setNameError("Name is required")
-        !checkPhone || checkPhone.length === 0 && setPhoneError("Phone is required")
-
-        console.log(checkName, checkPhone);
-        setIsVisible(false)
+        console.log("from handleSave in Modal ; ", data)
+        // setIsVisible(false)
 
     }
     return (
@@ -37,23 +42,32 @@ export default function AddGuestModal({isVisible, setIsVisible, guestSide}: {
                     <View style={styles.container}>
                         <Text style={styles.text}> {guestSide}&#39;s guests </Text>
                         <View style={styles.symbol}></View>
-                        <View style={styles.form}>
-                            <View style={{display: "flex", gap: 40, flex: 1}}>
-                                <AppTextInput error={nameError} placeholder="add guest name" label="Guest name"
-                                              value={guestName}
-                                              onTextChange={(s: string) => setGuestName(s)}/>
 
-                                <AppTextInput error={phoneError}
-                                              placeholder="add phone number" label="Phone number"
-                                              value={phone}
-                                              onTextChange={(s: string) => setPhone(s)}/>
+                        <AppForm onSubmit={(data: AddGuestRequest) => handleSave(data)}>
+                            <View style={styles.form}>
+                                <View style={{display: "flex", gap: 40, flex: 1}}>
+
+                                    <AppTextInput name="name"
+                                                  required
+                                                  placeholder="add guest name"
+                                                  label="Guest name"
+                                                  value={guestName}
+                                                  onTextChange={(s: string) => setGuestName(s)}/>
+
+                                    <AppTextInput name="phone"
+                                                  required
+                                                  placeholder="add phone number" label="Phone number"
+                                                  value={phone}
+                                                  onTextChange={(s: string) => setPhone(s)}/>
+                                </View>
+                                <View style={{marginBottom: 40}}>
+                                    <AppButton isSubmit onPress={() => handleSave} buttonType={ButtonType.PRIMARY}>
+                                        save
+                                    </AppButton>
+                                </View>
                             </View>
-                            <View style={{marginBottom: 40}}>
-                                <AppButton onPress={handleSave} buttonType={ButtonType.PRIMARY}>
-                                    save
-                                </AppButton>
-                            </View>
-                        </View>
+                        </AppForm>
+
 
                     </View>
                 </View>

@@ -1,8 +1,10 @@
 import {Pressable, StyleProp, Text, TextStyle, ViewStyle} from "react-native";
 import {ButtonStyles, ButtonType} from "@/styles/Button";
+import {useFormContext} from "@/contexts/FormContext";
 
-export default function AppButton({buttonType, onPress, children, extraStylesBtn, extraStylesTxt}: {
+export default function AppButton({buttonType, isSubmit, onPress, children, extraStylesBtn, extraStylesTxt}: {
     buttonType?: ButtonType,
+    isSubmit?: boolean,
     onPress?: () => void,
     children: string,
     extraStylesBtn?: StyleProp<ViewStyle>,
@@ -25,8 +27,15 @@ export default function AppButton({buttonType, onPress, children, extraStylesBtn
         textStyles = ButtonStyles.primaryTxt
     }
 
+    const formContext = useFormContext()
+
+    function handleSubmit() {
+        formContext.setChecking(true)
+    }
+
+
     return (
-        <Pressable onPress={onPress} style={[buttonStyles, extraStylesBtn]}>
+        <Pressable onPress={isSubmit ? handleSubmit : onPress} style={[buttonStyles, extraStylesBtn]}>
             <Text style={[textStyles, extraStylesTxt]}>
                 {children}
             </Text>

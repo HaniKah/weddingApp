@@ -1,5 +1,7 @@
 import {KeyboardTypeOptions, StyleProp, StyleSheet, Text, TextInput, View, ViewStyle} from "react-native";
 import {Theme} from "@/styles/Theme";
+import {useFormContext} from "@/contexts/FormContext";
+import {useEffect, useState} from "react";
 
 export default function AppTextInput({
                                          onTextChange,
@@ -8,10 +10,9 @@ export default function AppTextInput({
                                          label,
                                          placeholder,
                                          extraStyles,
-                                         error,
-                                         required
+                                         required,
+                                         name
                                      }: {
-    error?: string,
     extraStyles?: StyleProp<ViewStyle>,
     placeholder?: string,
     label?: string
@@ -19,7 +20,32 @@ export default function AppTextInput({
     value: string | undefined,
     keyboardType?: KeyboardTypeOptions,
     required?: boolean,
+    name: string
 }) {
+
+    const [error, setError] = useState<string | undefined>()
+
+    const form = useFormContext()
+
+    useEffect(() => {
+        if (form.checking) {
+
+            const checked: string | null = (!value || value.length === 0) ? null : value.trim();
+
+            if (required) {
+                if (checked) {
+                    form.addValue({[name]: checked})
+                } else {
+                    setError("This field is required")
+                    form.setChecking(false)
+                }
+            } else {
+                form.addValue({[name]: checked})
+            }
+        }
+
+    }, [form.checking]);
+
 
     return (
         <View style={[extraStyles]}>
@@ -32,14 +58,12 @@ export default function AppTextInput({
                        style={styles.input}
                        onChangeText={onTextChange}/>
             <Text style={styles.error}>{error}</Text>
-
         </View>
-
     )
 }
+
+
 const styles = StyleSheet.create({
-
-
         input: {
             height: 50,
             borderBottomWidth: 2,

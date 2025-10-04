@@ -63,7 +63,7 @@ export default function AddGuestModal({isVisible, setIsVisible, guestSide}: {
 
                                 </View>
                                 <View style={{marginBottom: 40}}>
-                                    <AppButton isSubmit onPress={() => handleSave} buttonType={ButtonType.PRIMARY}>
+                                    <AppButton isSubmit buttonType={ButtonType.PRIMARY}>
                                         save
                                     </AppButton>
                                 </View>

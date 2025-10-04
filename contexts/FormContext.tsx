@@ -31,15 +31,15 @@ export function AppForm<T>({onSubmit, children}: { onSubmit: (data: T) => void, 
     function addValue(v: OneField<T>) {
         setResult(prev => ({...prev, ...v}))
     }
-    
+
+
     useEffect(() => {
         console.log("checking:", checking)
         if (result && checking) {
             console.log(result)
             onSubmit(result)
         }
-
-
+        
     }, [result, checking]);
 
 

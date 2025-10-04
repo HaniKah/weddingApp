@@ -7,14 +7,9 @@ import AppButton from "@/components/appComponents/AppButton";
 import {ButtonType} from "@/styles/Button";
 import {AppForm} from "@/contexts/FormContext";
 
-class AddGuestRequest {
-    private name: string;
-    private phone: string;
-
-    constructor(name: string, phone: string) {
-        this.name = name
-        this.phone = phone
-    }
+interface AddGuestRequest {
+    name: string;
+    phone: string;
 }
 
 

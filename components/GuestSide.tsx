@@ -4,12 +4,12 @@ import AppButton from "@/components/appComponents/AppButton";
 import {ButtonType} from "@/styles/Button";
 import {Theme} from "@/styles/Theme";
 
-export default function GuestSide({side, onAddGuest}: { side: CoupleSide, onAddGuest: () => void }) {
+export default function GuestSide({side, onAddGuest}: { side: CoupleSide, onAddGuest: (side: CoupleSide) => void }) {
     return (
         <>
             <View style={[styles.container, side === CoupleSide.Bride ? styles.bride : styles.groom]}>
                 <Text style={styles.text}>{side}&#39;s guests</Text>
-                <AppButton buttonType={ButtonType.OUTLINED} onPress={onAddGuest}>
+                <AppButton buttonType={ButtonType.OUTLINED} onPress={() => onAddGuest(side)}>
                     + add guest
                 </AppButton>
             </View>

@@ -3,12 +3,15 @@ export const Theme = {
         primary: '#8D6A3C',
         primaryInactive: '#c2b39f',
         primaryTextInactive: '#948167',
-        background: '#F0F0F0',
+        background: '#EEEDEB',
         gold1: '#E5C280',
         gold2: '#A97E65',
         iconBackground: '#E0DDDA',
         green: {
             "100": '#4B6D0B',
+        },
+        red: {
+            "100": '#C62222'
         },
         black: '#000000',
         white: '#FFFFFF',

@@ -2,11 +2,21 @@ import {StyleSheet, View} from "react-native";
 import GuestSide from "@/components/GuestSide";
 import {CoupleSide} from "@/types/open-api";
 import GuestItem from "@/components/items/GuestItem";
+import AddGuestModal from "@/components/modal/AddGuestModal";
+import {useState} from "react";
 
 export default function Guests() {
-    const handleAddGuest = () => {
-        console.log("add guest ...")
+
+    const [modalVisible, setModalVisible] = useState(false)
+    const [guestSide, setGuestSide] = useState<CoupleSide>()
+
+
+    const handleAddGuest = (side: CoupleSide) => {
+        setGuestSide(side)
+        setModalVisible(true)
     }
+
+
     return (
         <>
             <View style={styles.container}>
@@ -21,6 +31,7 @@ export default function Guests() {
                 <GuestItem side={CoupleSide.Groom} name="Angelina"/>
             </View>
 
+            <AddGuestModal guestSide={guestSide} isVisible={modalVisible} setIsVisible={setModalVisible}/>
         </>
 
     )

@@ -39,6 +39,9 @@ export function AppForm<T>({onSubmit, children}: { onSubmit: (data: T) => void, 
             console.log(result)
             onSubmit(result)
         }
+        if (!checking) {
+            setResult(undefined)
+        }
 
     }, [result, checking]);
 

@@ -26,7 +26,7 @@ export default function Checklist() {
 
     return (
         <>
-            <AppView isLoading={isLoading}>
+            <AppView withPadding isLoading={isLoading}>
                 <FlatList data={checklist?.list}
                           keyExtractor={(data, index) => index.toString()}
                           renderItem={({item, index}) => (

@@ -16,6 +16,8 @@ export const ButtonStyles = StyleSheet.create({
         width: "100%",
     },
 
+// ===========================
+
     outlinedBtn: {
         backgroundColor: "transparent",
         color: Theme.colors.primary,
@@ -35,30 +37,48 @@ export const ButtonStyles = StyleSheet.create({
         width: "100%",
     },
 
+// ===========================
+
     inactiveBtn: {
         backgroundColor: Theme.colors.primaryInactive,
         color: 'white',
         fontWeight: 'normal',
         paddingHorizontal: 20,
         paddingVertical: 14,
-
         textAlign: 'center',
         borderRadius: Theme.sizes.buttonRadius,
+        pointerEvents: "none",
     },
     inactiveTxt: {
         color: Theme.colors.primaryTextInactive,
         fontSize: Theme.sizes.buttonText,
         textAlign: 'center',
         width: "100%",
+        pointerEvents: "none",
     },
+
+// ===========================
+
     plainBtn: {
-        width: 100,
+        width: "auto"
     },
     plainTxt: {
         textAlign: "center",
-        textDecorationLine: "underline",
         color: Theme.colors.primary,
     },
+
+// ===========================
+
+    linkBtn: {
+        width: "auto"
+    },
+    linkTxt: {
+        textAlign: "center",
+        color: Theme.colors.primary,
+        textDecorationLine: "underline",
+    },
+
+// ===========================
 
     iconBtn: {
         width: 30,
@@ -78,5 +98,6 @@ export enum ButtonType {
     PRIMARY = "PRIMARY",
     OUTLINED = "OUTLINED",
     INACTIVE = "INACTIVE",
-    PLAIN = "PLAIN"
+    PLAIN = "PLAIN",
+    LINK = "LINK"
 }

@@ -117,6 +117,10 @@ export interface GuestsDto {
   isInvited: boolean;
 }
 
+export interface GuestsViewModel {
+  result: GuestsDto[];
+}
+
 export interface AddGuestRequest {
   coupleSide: CoupleSide;
   name: string;
@@ -463,7 +467,7 @@ export class Api<
      * @request GET:/api/guests/getGuests
      */
     guestsControllerGetGuests: (params: RequestParams = {}) =>
-      this.request<GuestsDto[], any>({
+      this.request<GuestsViewModel, any>({
         path: `/api/guests/getGuests`,
         method: "GET",
         format: "json",

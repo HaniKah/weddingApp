@@ -22,10 +22,14 @@ export default function AppButton({buttonType, isSubmit, onPress, children, extr
     } else if (buttonType === ButtonType.PLAIN) {
         buttonStyles = ButtonStyles.plainBtn
         textStyles = ButtonStyles.plainTxt
+    } else if (buttonType === ButtonType.LINK) {
+        buttonStyles = ButtonStyles.linkBtn
+        textStyles = ButtonStyles.linkTxt
     } else {
         buttonStyles = ButtonStyles.primaryBtn
         textStyles = ButtonStyles.primaryTxt
     }
+
 
     const formContext = useFormContext()
 

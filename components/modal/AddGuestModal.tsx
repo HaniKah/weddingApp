@@ -6,6 +6,7 @@ import AppTextInput from "@/components/appComponents/AppTextInput";
 import AppButton from "@/components/appComponents/AppButton";
 import {ButtonType} from "@/styles/Button";
 import {AppForm} from "@/contexts/FormContext";
+import {API} from "@/utils/api";
 
 interface AddGuestRequest {
     name: string;
@@ -19,13 +20,23 @@ export default function AddGuestModal({isVisible, setIsVisible, guestSide}: {
 }) {
     const [guestName, setGuestName] = useState<string>()
     const [phone, setPhone] = useState<string>()
+    const [isLoading, setIsLoading] = useState<boolean>(false)
 
 
-    function handleSave(data: AddGuestRequest) {
+    async function handleSave(data: AddGuestRequest) {
 
         console.log("from handleSave in Modal ; ", data)
-        // Post to Api
-        finishAndClear()
+        if (!guestSide) return
+        try {
+            setIsLoading(true)
+            await API.guestsControllerAddGuest({name: data.name, phoneNumber: data.phone, coupleSide: guestSide})
+            finishAndClear()
+
+        } catch (err) {
+            console.log(err)
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     function finishAndClear() {
@@ -34,12 +45,23 @@ export default function AddGuestModal({isVisible, setIsVisible, guestSide}: {
         setPhone(undefined)
     }
 
+//todo : wrapper the modal with AppModal
     return (
         <>
             <Modal presentationStyle="pageSheet" animationType="slide" visible={isVisible}
                    onRequestClose={() => setIsVisible(false)}>
                 <View style={styles.wrapper}>
-                    <View style={styles.handle}></View>
+                    <View style={styles.header}>
+                        <AppButton extraStylesTxt={{textAlign: "left"}}
+                                   extraStylesBtn={{flex: 1}}
+                                   buttonType={ButtonType.PLAIN}
+                                   onPress={finishAndClear}>
+                            cancel
+                        </AppButton>
+                        <View style={styles.handle}></View>
+                        <View style={{flex: 1}}></View>
+                    </View>
+
                     <View style={styles.container}>
                         <Text style={styles.text}> {guestSide}&#39;s guests </Text>
                         <View style={styles.symbol}></View>
@@ -60,7 +82,6 @@ export default function AddGuestModal({isVisible, setIsVisible, guestSide}: {
                                                   placeholder="add phone number" label="Phone number"
                                                   value={phone}
                                                   onTextChange={(s: string) => setPhone(s)}/>
-
                                 </View>
                                 <View style={{marginBottom: 40}}>
                                     <AppButton isSubmit buttonType={ButtonType.PRIMARY}>
@@ -69,7 +90,6 @@ export default function AddGuestModal({isVisible, setIsVisible, guestSide}: {
                                 </View>
                             </View>
                         </AppForm>
-
 
                     </View>
                 </View>
@@ -84,13 +104,19 @@ const styles = StyleSheet.create({
         backgroundColor: Theme.colors.background,
 
     },
+    header: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: 20
+    },
     handle: {
+        flex: 1,
         height: 3,
         width: 120,
         backgroundColor: Theme.colors.iconBackground,
         borderRadius: 10,
-        marginHorizontal: "auto",
-        marginVertical: 10,
     },
     container: {
         padding: 20,

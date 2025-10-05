@@ -34,6 +34,9 @@ export const Theme = {
         iconSymbol: 30,
         buttonText: 18,
         buttonRadius: 8
+    },
+    spaces: {
+        appPadding: 10,
     }
 
 };

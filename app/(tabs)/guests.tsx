@@ -1,14 +1,18 @@
-import {StyleSheet, View} from "react-native";
+import {FlatList, StyleSheet, View} from "react-native";
 import GuestSide from "@/components/GuestSide";
-import {CoupleSide} from "@/types/open-api";
-import GuestItem from "@/components/items/GuestItem";
+import {CoupleSide, GuestsViewModel} from "@/types/open-api";
 import AddGuestModal from "@/components/modal/AddGuestModal";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {API} from "@/utils/api";
+import AppView from "@/components/appComponents/AppView";
+import GuestItem from "@/components/items/GuestItem";
 
 export default function Guests() {
 
     const [modalVisible, setModalVisible] = useState(false)
     const [guestSide, setGuestSide] = useState<CoupleSide>()
+    const [isLoading, setIsLoading] = useState(true)
+    const [guests, setGuests] = useState<GuestsViewModel>()
 
 
     const handleAddGuest = (side: CoupleSide) => {
@@ -16,20 +20,36 @@ export default function Guests() {
         setModalVisible(true)
     }
 
+    useEffect(() => {
+
+        async function getAllGuests() {
+            try {
+                const response = await API.guestsControllerGetGuests()
+                setGuests(response.data)
+            } catch (err) {
+                console.error(err)
+            } finally {
+                setIsLoading(false)
+            }
+        }
+
+        getAllGuests()
+
+
+    }, []);
+
 
     return (
         <>
-            <View style={styles.container}>
-                <GuestSide side={CoupleSide.Bride} onAddGuest={handleAddGuest}/>
-                <GuestSide side={CoupleSide.Groom} onAddGuest={handleAddGuest}/>
-            </View>
-            <View style={styles.listContainer}>
-                <GuestItem side={CoupleSide.Bride} name="hani"/>
-                <GuestItem side={CoupleSide.Bride} name="hani"/>
-                <GuestItem side={CoupleSide.Groom} name="Angelina"/>
-                <GuestItem side={CoupleSide.Groom} name="Angelina"/>
-                <GuestItem side={CoupleSide.Groom} name="Angelina"/>
-            </View>
+            <AppView isLoading={isLoading}>
+                <View style={styles.container}>
+                    <GuestSide side={CoupleSide.Bride} onAddGuest={handleAddGuest}/>
+                    <GuestSide side={CoupleSide.Groom} onAddGuest={handleAddGuest}/>
+                </View>
+
+                <FlatList renderItem={GuestItem} data={guests?.result}/>
+            </AppView>
+
 
             <AddGuestModal guestSide={guestSide} isVisible={modalVisible} setIsVisible={setModalVisible}/>
         </>

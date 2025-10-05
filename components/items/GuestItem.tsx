@@ -1,12 +1,12 @@
 import {StyleSheet, Text, View} from "react-native";
 import {Theme} from "@/styles/Theme";
-import {CoupleSide} from "@/types/open-api";
+import {CoupleSide, GuestsDto} from "@/types/open-api";
 
-export default function GuestItem({name, side}: { name: string, side: CoupleSide }) {
+export default function GuestItem({item}: { item: GuestsDto }) {
     return (
         <>
-            <View style={[styles.container, side === CoupleSide.Bride ? styles.bride : styles.groom]}>
-                <Text style={styles.text}>{name}</Text>
+            <View style={[styles.container, item.coupleSide === CoupleSide.Bride ? styles.bride : styles.groom]}>
+                <Text style={styles.text}>{item.name}</Text>
             </View>
         </>
     )

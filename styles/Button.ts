@@ -2,18 +2,16 @@ import {StyleSheet} from "react-native";
 import {Theme} from "@/styles/Theme";
 
 export const ButtonStyles = StyleSheet.create({
+
     primaryBtn: {
         backgroundColor: Theme.colors.primary,
-        paddingHorizontal: 20,
-        paddingVertical: 14,
-        borderRadius: 8,
+
     },
+
     primaryTxt: {
         color: 'white',
         fontWeight: 'bold',
-        fontSize: Theme.sizes.md,
         textAlign: 'center',
-        width: "100%",
     },
 
 // ===========================
@@ -86,11 +84,40 @@ export const ButtonStyles = StyleSheet.create({
         padding: 4,
         backgroundColor: Theme.colors.iconBackground,
         color: Theme.colors.primary,
-        borderRadius: 100,
+        borderRadius: Theme.radius.full,
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
     },
+// ===========================
+
+    smSizeBtn: {
+        borderRadius: Theme.radius.xs,
+        paddingHorizontal: 14,
+        paddingVertical: 10,
+    },
+    smSizeTxt: {
+        fontSize: Theme.sizes.sm,
+    },
+
+
+    mdSizeBtn: {
+        borderRadius: Theme.radius.sm,
+        paddingHorizontal: 20,
+        paddingVertical: 14,
+    },
+    mdSizeTxt: {
+        fontSize: Theme.sizes.md,
+    },
+
+    lgSizeBtn: {
+        borderRadius: Theme.radius.md,
+        paddingHorizontal: 24,
+        paddingVertical: 18,
+    },
+    lgSizeTxt: {
+        fontSize: Theme.sizes.lg,
+    }
 
 })
 
@@ -100,4 +127,10 @@ export enum ButtonType {
     INACTIVE = "INACTIVE",
     PLAIN = "PLAIN",
     LINK = "LINK",
+}
+
+export enum ButtonSize {
+    SM = "SM",
+    MD = "MD",
+    LG = "LG",
 }

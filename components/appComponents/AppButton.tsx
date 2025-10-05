@@ -1,8 +1,17 @@
 import {Pressable, StyleProp, Text, TextStyle, ViewStyle} from "react-native";
-import {ButtonStyles, ButtonType} from "@/styles/Button";
+import {ButtonSize, ButtonStyles, ButtonType} from "@/styles/Button";
 import {useFormContext} from "@/contexts/FormContext";
 
-export default function AppButton({buttonType, isSubmit, onPress, children, extraStylesBtn, extraStylesTxt}: {
+export default function AppButton({
+                                      buttonType,
+                                      buttonSize,
+                                      isSubmit,
+                                      onPress,
+                                      children,
+                                      extraStylesBtn,
+                                      extraStylesTxt
+                                  }: {
+    buttonSize?: "SM" | "MD" | "LG",
     buttonType?: ButtonType,
     isSubmit?: boolean,
     onPress?: () => void,
@@ -28,6 +37,17 @@ export default function AppButton({buttonType, isSubmit, onPress, children, extr
     } else {
         buttonStyles = ButtonStyles.primaryBtn
         textStyles = ButtonStyles.primaryTxt
+    }
+
+    if (buttonSize === ButtonSize.SM) {
+        buttonStyles = {...buttonStyles, ...ButtonStyles.smSizeBtn}
+        textStyles = {...textStyles, ...ButtonStyles.smSizeTxt}
+    } else if (buttonSize === ButtonSize.LG) {
+        buttonStyles = {...buttonStyles, ...ButtonStyles.lgSizeBtn}
+        textStyles = {...textStyles, ...ButtonStyles.lgSizeTxt}
+    } else {
+        buttonStyles = {...buttonStyles, ...ButtonStyles.mdSizeBtn}
+        textStyles = {...textStyles, ...ButtonStyles.mdSizeTxt}
     }
 
 

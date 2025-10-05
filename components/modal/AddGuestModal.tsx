@@ -1,21 +1,23 @@
-import {Modal, StyleSheet, Text, View} from "react-native";
+import {StyleSheet, Text, View} from "react-native";
 import {Theme} from "@/styles/Theme";
 import {CoupleSide} from "@/types/open-api";
-import {useState} from "react";
+import React, {Dispatch, useState} from "react";
 import AppTextInput from "@/components/appComponents/AppTextInput";
 import AppButton from "@/components/appComponents/AppButton";
 import {ButtonType} from "@/styles/Button";
 import {AppForm} from "@/contexts/FormContext";
 import {API} from "@/utils/api";
+import AppModal from "@/components/appComponents/AppModal";
 
 interface AddGuestRequest {
     name: string;
     phone: string;
 }
 
-export default function AddGuestModal({isVisible, setIsVisible, guestSide}: {
+export default function AddGuestModal({isVisible, setIsVisible, guestSide, setRefetchTrigger}: {
+    setRefetchTrigger?: Dispatch<React.SetStateAction<boolean>>
     isVisible: boolean,
-    setIsVisible: (value: boolean) => void
+    setIsVisible: Dispatch<React.SetStateAction<boolean>>
     guestSide: CoupleSide | undefined,
 }) {
     const [guestName, setGuestName] = useState<string>()
@@ -31,6 +33,7 @@ export default function AddGuestModal({isVisible, setIsVisible, guestSide}: {
             setIsLoading(true)
             await API.guestsControllerAddGuest({name: data.name, phoneNumber: data.phone, coupleSide: guestSide})
             finishAndClear()
+            setRefetchTrigger && setRefetchTrigger((prev: boolean) => !prev)
 
         } catch (err) {
             console.log(err)
@@ -48,76 +51,44 @@ export default function AddGuestModal({isVisible, setIsVisible, guestSide}: {
 //todo : wrapper the modal with AppModal
     return (
         <>
-            <Modal presentationStyle="pageSheet" animationType="slide" visible={isVisible}
-                   onRequestClose={() => setIsVisible(false)}>
-                <View style={styles.wrapper}>
-                    <View style={styles.header}>
-                        <AppButton extraStylesTxt={{textAlign: "left"}}
-                                   extraStylesBtn={{flex: 1}}
-                                   buttonType={ButtonType.PLAIN}
-                                   onPress={finishAndClear}>
-                            cancel
-                        </AppButton>
-                        <View style={styles.handle}></View>
-                        <View style={{flex: 1}}></View>
-                    </View>
+            <AppModal isVisible={isVisible} setIsVisible={setIsVisible}>
+                <View style={styles.container}>
+                    <Text style={styles.text}> {guestSide}&#39;s guests </Text>
+                    <View style={styles.symbol}></View>
 
-                    <View style={styles.container}>
-                        <Text style={styles.text}> {guestSide}&#39;s guests </Text>
-                        <View style={styles.symbol}></View>
+                    <AppForm onSubmit={(data: AddGuestRequest) => handleSave(data)}>
+                        <View style={styles.form}>
+                            <View style={{display: "flex", gap: 40, flex: 1}}>
 
-                        <AppForm onSubmit={(data: AddGuestRequest) => handleSave(data)}>
-                            <View style={styles.form}>
-                                <View style={{display: "flex", gap: 40, flex: 1}}>
+                                <AppTextInput name="name"
+                                              required
+                                              placeholder="add guest name"
+                                              label="Guest name"
+                                              value={guestName}
+                                              onTextChange={(s: string) => setGuestName(s)}/>
 
-                                    <AppTextInput name="name"
-                                                  required
-                                                  placeholder="add guest name"
-                                                  label="Guest name"
-                                                  value={guestName}
-                                                  onTextChange={(s: string) => setGuestName(s)}/>
-
-                                    <AppTextInput name="phone"
-                                                  required
-                                                  placeholder="add phone number" label="Phone number"
-                                                  value={phone}
-                                                  onTextChange={(s: string) => setPhone(s)}/>
-                                </View>
-                                <View style={{marginBottom: 40}}>
-                                    <AppButton isSubmit buttonType={ButtonType.PRIMARY}>
-                                        save
-                                    </AppButton>
-                                </View>
+                                <AppTextInput name="phone"
+                                              required
+                                              placeholder="add phone number" label="Phone number"
+                                              value={phone}
+                                              onTextChange={(s: string) => setPhone(s)}/>
                             </View>
-                        </AppForm>
+                            <View style={{marginBottom: 40}}>
+                                <AppButton isSubmit buttonType={ButtonType.PRIMARY}>
+                                    save
+                                </AppButton>
+                            </View>
+                        </View>
+                    </AppForm>
 
-                    </View>
                 </View>
-            </Modal>
+            </AppModal>
 
         </>
     )
 }
 const styles = StyleSheet.create({
-    wrapper: {
-        flex: 1,
-        backgroundColor: Theme.colors.background,
 
-    },
-    header: {
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
-        padding: 20
-    },
-    handle: {
-        flex: 1,
-        height: 3,
-        width: 120,
-        backgroundColor: Theme.colors.iconBackground,
-        borderRadius: 10,
-    },
     container: {
         padding: 20,
         flex: 1

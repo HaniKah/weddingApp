@@ -17,6 +17,7 @@ export default function GuestSide({side, onAddGuest}: { side: CoupleSide, onAddG
     )
 }
 const styles = StyleSheet.create({
+
     container: {
         display: "flex",
         flexDirection: "column",
@@ -30,8 +31,8 @@ const styles = StyleSheet.create({
     groom: {
         flex: 1,
         backgroundColor: Theme.colors.background,
-        borderBottomWidth: 2,
-        borderBottomColor: Theme.colors.iconBackground,
+        // borderBottomWidth: 2,
+        // borderBottomColor: Theme.colors.iconBackground,
     },
     bride: {
         flex: 1,

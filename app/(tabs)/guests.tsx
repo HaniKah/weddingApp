@@ -13,6 +13,7 @@ export default function Guests() {
     const [guestSide, setGuestSide] = useState<CoupleSide>()
     const [isLoading, setIsLoading] = useState(true)
     const [guests, setGuests] = useState<GuestsViewModel>()
+    const [trigger, setTrigger] = useState(false)
 
 
     const handleAddGuest = (side: CoupleSide) => {
@@ -36,7 +37,7 @@ export default function Guests() {
         getAllGuests()
 
 
-    }, []);
+    }, [trigger]);
 
 
     return (
@@ -47,11 +48,12 @@ export default function Guests() {
                     <GuestSide side={CoupleSide.Groom} onAddGuest={handleAddGuest}/>
                 </View>
 
-                <FlatList renderItem={GuestItem} data={guests?.result}/>
+                <FlatList style={{marginTop: 2}} renderItem={GuestItem} data={guests?.result}/>
             </AppView>
 
 
-            <AddGuestModal guestSide={guestSide} isVisible={modalVisible} setIsVisible={setModalVisible}/>
+            <AddGuestModal setRefetchTrigger={setTrigger} guestSide={guestSide} isVisible={modalVisible}
+                           setIsVisible={setModalVisible}/>
         </>
 
     )

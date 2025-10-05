@@ -10,7 +10,7 @@ export default function GuestSide({side, onAddGuest}: { side: CoupleSide, onAddG
             <View style={[styles.container, side === CoupleSide.Bride ? styles.bride : styles.groom]}>
                 <Text style={styles.text}>{side}&#39;s guests</Text>
                 <AppButton buttonType={ButtonType.OUTLINED} onPress={() => onAddGuest(side)}>
-                    + add guest
+                    + add
                 </AppButton>
             </View>
         </>

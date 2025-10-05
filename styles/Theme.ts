@@ -31,9 +31,25 @@ export const Theme = {
         aboreto: "Aboreto-Regular",
     },
     sizes: {
-        iconSymbol: 30,
-        buttonText: 18,
-        buttonRadius: 8
+        sm: 12,
+        md: 16,
+        lg: 20,
+        xl: 24,
+        xxl: 32,
+        xxxl: 40,
+        xxxxl: 48,
+    },
+    radius: {
+        xxs: 4,
+        xs: 6,
+        sm: 8,
+        md: 12,
+        lg: 16,
+        xl: 24,
+        xxl: 32,
+        xxxl: 36,
+        xxxxl: 40,
+        full: 9999,
     },
     spaces: {
         appPadding: 10,

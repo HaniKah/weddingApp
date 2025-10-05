@@ -7,7 +7,7 @@ export default function PlaceInfo({iconName, info}: { iconName: any, info: strin
     return (
         <>
             <View style={styles.infoContainer}>
-                <IconSymbol name={iconName} color={Theme.colors.black} size={Theme.sizes.iconSymbol}
+                <IconSymbol name={iconName} color={Theme.colors.black} size={30}
                             weight={'thin'}/>
                 <Text style={styles.info}>{info}</Text>
             </View>

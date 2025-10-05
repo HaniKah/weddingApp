@@ -19,8 +19,8 @@ export default function AppButton({
     extraStylesBtn?: StyleProp<ViewStyle>,
     extraStylesTxt?: StyleProp<TextStyle>,
 }) {
-    let buttonStyles = {}
-    let textStyles = {}
+    let buttonStyles: StyleProp<ViewStyle> = {}
+    let textStyles: StyleProp<TextStyle> = {}
 
     if (buttonType === ButtonType.OUTLINED) {
         buttonStyles = ButtonStyles.outlinedBtn
@@ -39,6 +39,7 @@ export default function AppButton({
         textStyles = ButtonStyles.primaryTxt
     }
 
+
     if (buttonSize === ButtonSize.SM) {
         buttonStyles = {...buttonStyles, ...ButtonStyles.smSizeBtn}
         textStyles = {...textStyles, ...ButtonStyles.smSizeTxt}
@@ -48,6 +49,11 @@ export default function AppButton({
     } else {
         buttonStyles = {...buttonStyles, ...ButtonStyles.mdSizeBtn}
         textStyles = {...textStyles, ...ButtonStyles.mdSizeTxt}
+    }
+
+    if (buttonType === ButtonType.LINK || buttonType === ButtonType.PLAIN) {
+        buttonStyles.paddingHorizontal = 0
+        buttonStyles.paddingVertical = 0
     }
 
 

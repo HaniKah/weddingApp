@@ -21,16 +21,12 @@ export const ButtonStyles = StyleSheet.create({
         color: Theme.colors.primary,
         borderStyle: 'solid',
         fontWeight: 'bold',
-        paddingHorizontal: 20,
-        paddingVertical: 10,
         textAlign: 'center',
-        borderRadius: Theme.radius.sm,
         borderColor: Theme.colors.primary,
         borderWidth: 1.5,
     },
     outlinedTxt: {
         color: Theme.colors.primary,
-        fontSize: Theme.sizes.md,
         textAlign: 'center',
         width: "100%",
     },
@@ -41,17 +37,12 @@ export const ButtonStyles = StyleSheet.create({
         backgroundColor: Theme.colors.primaryInactive,
         color: 'white',
         fontWeight: 'normal',
-        paddingHorizontal: 20,
-        paddingVertical: 14,
         textAlign: 'center',
-        borderRadius: Theme.radius.lg,
         pointerEvents: "none",
     },
     inactiveTxt: {
         color: Theme.colors.primaryTextInactive,
-        fontSize: Theme.sizes.md,
         textAlign: 'center',
-        width: "100%",
         pointerEvents: "none",
     },
 
@@ -92,9 +83,9 @@ export const ButtonStyles = StyleSheet.create({
 // ===========================
 
     smSizeBtn: {
-        borderRadius: Theme.radius.xs,
+        borderRadius: Theme.radius.sm,
         paddingHorizontal: 14,
-        paddingVertical: 10,
+        paddingVertical: 8,
     },
     smSizeTxt: {
         fontSize: Theme.sizes.sm,
@@ -102,7 +93,7 @@ export const ButtonStyles = StyleSheet.create({
 
 
     mdSizeBtn: {
-        borderRadius: Theme.radius.sm,
+        borderRadius: Theme.radius.md,
         paddingHorizontal: 20,
         paddingVertical: 14,
     },

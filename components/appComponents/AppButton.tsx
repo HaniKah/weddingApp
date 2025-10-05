@@ -22,34 +22,44 @@ export default function AppButton({
     let buttonStyles: StyleProp<ViewStyle> = {}
     let textStyles: StyleProp<TextStyle> = {}
 
-    if (buttonType === ButtonType.OUTLINED) {
-        buttonStyles = ButtonStyles.outlinedBtn
-        textStyles = ButtonStyles.outlinedTxt
-    } else if (buttonType === ButtonType.INACTIVE) {
-        buttonStyles = ButtonStyles.inactiveBtn
-        textStyles = ButtonStyles.inactiveTxt
-    } else if (buttonType === ButtonType.PLAIN) {
-        buttonStyles = ButtonStyles.plainBtn
-        textStyles = ButtonStyles.plainTxt
-    } else if (buttonType === ButtonType.LINK) {
-        buttonStyles = ButtonStyles.linkBtn
-        textStyles = ButtonStyles.linkTxt
-    } else {
-        buttonStyles = ButtonStyles.primaryBtn
-        textStyles = ButtonStyles.primaryTxt
+    switch (buttonType) {
+        case ButtonType.OUTLINED:
+            buttonStyles = ButtonStyles.outlinedBtn;
+            textStyles = ButtonStyles.outlinedTxt;
+            break;
+        case ButtonType.INACTIVE:
+            buttonStyles = ButtonStyles.inactiveBtn;
+            textStyles = ButtonStyles.inactiveTxt;
+            break;
+        case ButtonType.PLAIN:
+            buttonStyles = ButtonStyles.plainBtn;
+            textStyles = ButtonStyles.plainTxt;
+            break;
+        case ButtonType.LINK:
+            buttonStyles = ButtonStyles.linkBtn;
+            textStyles = ButtonStyles.linkTxt;
+            break;
+        default:
+            buttonStyles = ButtonStyles.primaryBtn;
+            textStyles = ButtonStyles.primaryTxt;
+            break;
     }
 
-
-    if (buttonSize === ButtonSize.SM) {
-        buttonStyles = {...buttonStyles, ...ButtonStyles.smSizeBtn}
-        textStyles = {...textStyles, ...ButtonStyles.smSizeTxt}
-    } else if (buttonSize === ButtonSize.LG) {
-        buttonStyles = {...buttonStyles, ...ButtonStyles.lgSizeBtn}
-        textStyles = {...textStyles, ...ButtonStyles.lgSizeTxt}
-    } else {
-        buttonStyles = {...buttonStyles, ...ButtonStyles.mdSizeBtn}
-        textStyles = {...textStyles, ...ButtonStyles.mdSizeTxt}
+    switch (buttonSize) {
+        case ButtonSize.SM:
+            buttonStyles = {...buttonStyles, ...ButtonStyles.smSizeBtn}
+            textStyles = {...textStyles, ...ButtonStyles.smSizeTxt}
+            break;
+        case ButtonSize.LG:
+            buttonStyles = {...buttonStyles, ...ButtonStyles.lgSizeBtn}
+            textStyles = {...textStyles, ...ButtonStyles.lgSizeTxt}
+            break
+        default:
+            buttonStyles = {...buttonStyles, ...ButtonStyles.mdSizeBtn}
+            textStyles = {...textStyles, ...ButtonStyles.mdSizeTxt}
+            break
     }
+    
 
     if (buttonType === ButtonType.LINK || buttonType === ButtonType.PLAIN) {
         buttonStyles.paddingHorizontal = 0

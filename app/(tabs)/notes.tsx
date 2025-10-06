@@ -21,7 +21,7 @@ export default function Notes() {
 
                 <AppButton icon="trash" buttonType={ButtonType.OUTLINED} buttonSize={"SM"}
                            extraStylesBtn={{marginTop: 20}}>
-                    medium
+                    small
                 </AppButton>
 
                 <AppButton icon="trash" buttonType={ButtonType.OUTLINED} buttonSize={"MD"}
@@ -31,24 +31,24 @@ export default function Notes() {
 
                 <AppButton icon="trash" buttonType={ButtonType.OUTLINED} buttonSize={"LG"}
                            extraStylesBtn={{marginTop: 20}}>
-                    medium
+                    large
                 </AppButton>
 
                 {/*=============*/}
 
                 <AppButton destructive icon="trash" buttonType={ButtonType.PRIMARY} buttonSize={"SM"}
                            extraStylesBtn={{marginTop: 20}}>
-                    medium
+                    small
                 </AppButton>
 
-                <AppButton destructive icon="trash" buttonType={ButtonType.PRIMARY} buttonSize={"MD"}
+                <AppButton fullWidth destructive icon="trash" buttonType={ButtonType.PRIMARY} buttonSize={"MD"}
                            extraStylesBtn={{marginTop: 20}}>
                     medium
                 </AppButton>
 
-                <AppButton destructive icon="trash" buttonType={ButtonType.PRIMARY} buttonSize={"LG"}
+                <AppButton fullWidth destructive icon="trash" buttonType={ButtonType.PRIMARY} buttonSize={"LG"}
                            extraStylesBtn={{marginTop: 20}}>
-                    destructive
+                    large
                 </AppButton>
             </View>
         </>

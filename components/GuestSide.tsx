@@ -1,17 +1,12 @@
 import {CoupleSide} from "@/types/open-api";
 import {StyleSheet, Text, View} from "react-native";
-import AppButton from "@/components/appComponents/AppButton";
-import {ButtonType} from "@/styles/Button";
 import {Theme} from "@/styles/Theme";
 
-export default function GuestSide({side, onAddGuest}: { side: CoupleSide, onAddGuest: (side: CoupleSide) => void }) {
+export default function GuestSide({side}: { side: CoupleSide }) {
     return (
         <>
             <View style={[styles.container, side === CoupleSide.Bride ? styles.bride : styles.groom]}>
                 <Text style={styles.text}>{side}&#39;s guests</Text>
-                <AppButton buttonSize={"SM"} buttonType={ButtonType.OUTLINED} onPress={() => onAddGuest(side)}>
-                    + add
-                </AppButton>
             </View>
         </>
     )

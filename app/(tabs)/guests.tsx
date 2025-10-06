@@ -19,6 +19,7 @@ export default function Guests() {
 
     const handleAddGuest = (side: CoupleSide) => {
         setGuestSide(side)
+        setSelectedGuest(undefined)
         setModalVisible(true)
     }
 
@@ -43,6 +44,7 @@ export default function Guests() {
     function handleSelectGuest(guest: GuestsDto) {
         setSelectedGuest(guest)
         setModalVisible(true)
+
     }
 
 
@@ -60,7 +62,7 @@ export default function Guests() {
             </AppView>
 
 
-            <AddGuestModal guestInfo={selectedGuest} setRefetchTrigger={setTrigger} guestSide={guestSide}
+            <AddGuestModal guestInfo={selectedGuest} setRefetchTrigger={setTrigger}
                            isVisible={modalVisible}
                            setIsVisible={setModalVisible}/>
         </>

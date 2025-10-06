@@ -1,9 +1,10 @@
-import {StyleSheet, View, ViewProps} from "react-native";
+import {StyleProp, StyleSheet, View, ViewStyle} from "react-native";
+import {Theme} from "@/styles/Theme";
 
-export default function Toolbar(props: ViewProps) {
+export default function Toolbar({children, style}: { children: React.ReactNode, style?: StyleProp<ViewStyle> }) {
     return (
-        <View style={styles.container}>
-            {props.children}
+        <View style={[styles.container, style]}>
+            {children}
         </View>
     )
 }
@@ -14,7 +15,8 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "flex-start",
-        gap: 10
+        gap: 10,
+        backgroundColor: Theme.colors.background,
 
     },
 })

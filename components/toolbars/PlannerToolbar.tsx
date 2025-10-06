@@ -30,7 +30,8 @@ export default function PlannerToolbar({progress, note, fullfilled}: {
 
                 <Link style={styles.checklistBtn} push href="/(tabs)/(planner)/checklist">
                     <View style={ButtonStyles.iconBtn}>
-                        <IconSymbol name="checklist" color={Theme.colors.primary} size={20} weight={'bold'}/>
+                        <IconSymbol name="checklist" color={Theme.colors.primary} size={Theme.sizes.lg}
+                                    weight={'bold'}/>
                     </View>
                 </Link>
             </Toolbar>

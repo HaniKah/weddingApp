@@ -6,6 +6,7 @@ import {useEffect, useState} from "react";
 import {API} from "@/utils/api";
 import AppView from "@/components/appComponents/AppView";
 import GuestItem from "@/components/items/GuestItem";
+import GuestsToolbar from "@/components/toolbars/GuestsToolbar";
 
 export default function Guests() {
 
@@ -51,6 +52,7 @@ export default function Guests() {
     return (
         <>
             <AppView isLoading={isLoading}>
+                <GuestsToolbar onCreateGuest={() => setModalVisible(true)}/>
                 <View style={styles.container}>
                     <GuestSide side={CoupleSide.Bride}/>
                     <GuestSide side={CoupleSide.Groom}/>

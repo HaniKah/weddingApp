@@ -58,6 +58,7 @@ export default function AppTextInput({
             <Text style={styles.label}>{label}</Text>
 
             <TextInput value={value}
+                       autoCorrect={false}
                        keyboardType={keyboardType}
                        placeholder={placeholder}
                        style={styles.input}

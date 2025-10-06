@@ -129,6 +129,7 @@ export interface AddGuestRequest {
 
 export interface UpdateGuestRequest {
   coupleSide?: CoupleSide;
+  id: number;
   name?: string;
   phoneNumber?: string;
 }

@@ -1,6 +1,6 @@
 import {FlatList, StyleSheet, View} from "react-native";
 import GuestSide from "@/components/GuestSide";
-import {CoupleSide, GuestsViewModel} from "@/types/open-api";
+import {CoupleSide, GuestsDto, GuestsViewModel} from "@/types/open-api";
 import AddGuestModal from "@/components/modal/AddGuestModal";
 import {useEffect, useState} from "react";
 import {API} from "@/utils/api";
@@ -14,6 +14,7 @@ export default function Guests() {
     const [isLoading, setIsLoading] = useState(true)
     const [guests, setGuests] = useState<GuestsViewModel>()
     const [trigger, setTrigger] = useState(false)
+    const [selectedGuest, setSelectedGuest] = useState<GuestsDto>()
 
 
     const handleAddGuest = (side: CoupleSide) => {
@@ -39,6 +40,11 @@ export default function Guests() {
 
     }, [trigger]);
 
+    function handleSelectGuest(guest: GuestsDto) {
+        setSelectedGuest(guest)
+        setModalVisible(true)
+    }
+
 
     return (
         <>
@@ -47,12 +53,15 @@ export default function Guests() {
                     <GuestSide side={CoupleSide.Bride} onAddGuest={handleAddGuest}/>
                     <GuestSide side={CoupleSide.Groom} onAddGuest={handleAddGuest}/>
                 </View>
-
-                <FlatList style={{marginTop: 2}} renderItem={GuestItem} data={guests?.result}/>
+                
+                <FlatList style={{marginTop: 2}}
+                          renderItem={({item}) => <GuestItem item={item} onPress={handleSelectGuest}/>}
+                          data={guests?.result}/>
             </AppView>
 
 
-            <AddGuestModal setRefetchTrigger={setTrigger} guestSide={guestSide} isVisible={modalVisible}
+            <AddGuestModal guestInfo={selectedGuest} setRefetchTrigger={setTrigger} guestSide={guestSide}
+                           isVisible={modalVisible}
                            setIsVisible={setModalVisible}/>
         </>
 

@@ -1,13 +1,14 @@
-import {StyleSheet, Text, View} from "react-native";
+import {Pressable, StyleSheet, Text} from "react-native";
 import {Theme} from "@/styles/Theme";
 import {CoupleSide, GuestsDto} from "@/types/open-api";
 
-export default function GuestItem({item}: { item: GuestsDto }) {
+export default function GuestItem({item, onPress}: { item: GuestsDto, onPress: (g: GuestsDto) => void }) {
     return (
         <>
-            <View style={[styles.container, item.coupleSide === CoupleSide.Bride ? styles.bride : styles.groom]}>
-                <Text style={styles.text}>{item.name}</Text>
-            </View>
+            <Pressable onPress={() => onPress(item)}
+                       style={[styles.container, item?.coupleSide === CoupleSide.Bride ? styles.bride : styles.groom]}>
+                <Text style={styles.text}>{item?.name}</Text>
+            </Pressable>
         </>
     )
 }

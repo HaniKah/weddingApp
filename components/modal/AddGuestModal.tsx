@@ -1,7 +1,7 @@
 import {StyleSheet, Text, View} from "react-native";
 import {Theme} from "@/styles/Theme";
-import {CoupleSide} from "@/types/open-api";
-import React, {Dispatch, useState} from "react";
+import {CoupleSide, GuestsDto} from "@/types/open-api";
+import React, {Dispatch, useEffect, useState} from "react";
 import AppTextInput from "@/components/appComponents/AppTextInput";
 import AppButton from "@/components/appComponents/AppButton";
 import {ButtonType} from "@/styles/Button";
@@ -14,15 +14,22 @@ interface AddGuestRequest {
     phone: string;
 }
 
-export default function AddGuestModal({isVisible, setIsVisible, guestSide, setRefetchTrigger}: {
+export default function AddGuestModal({guestInfo, isVisible, setIsVisible, guestSide, setRefetchTrigger}: {
+    guestInfo?: GuestsDto
     setRefetchTrigger?: Dispatch<React.SetStateAction<boolean>>
     isVisible: boolean,
     setIsVisible: Dispatch<React.SetStateAction<boolean>>
     guestSide: CoupleSide | undefined,
 }) {
-    const [guestName, setGuestName] = useState<string>()
-    const [phone, setPhone] = useState<string>()
+    const [guestName, setGuestName] = useState<string | undefined>(guestInfo?.name)
+    const [phone, setPhone] = useState<string | undefined>(guestInfo?.phoneNumber)
     const [isLoading, setIsLoading] = useState<boolean>(false)
+
+    useEffect(() => {
+        setGuestName(guestInfo?.name)
+        setPhone(guestInfo?.phoneNumber)
+
+    }, [guestInfo]);
 
 
     async function handleSave(data: AddGuestRequest) {
@@ -59,7 +66,6 @@ export default function AddGuestModal({isVisible, setIsVisible, guestSide, setRe
                     <AppForm onSubmit={(data: AddGuestRequest) => handleSave(data)}>
                         <View style={styles.form}>
                             <View style={{display: "flex", gap: 40, flex: 1}}>
-
                                 <AppTextInput name="name"
                                               required
                                               placeholder="add guest name"

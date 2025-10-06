@@ -1,11 +1,22 @@
 import {StyleSheet} from "react-native";
 import {Theme} from "@/styles/Theme";
 
+const GeneralButtonStyles = StyleSheet.create({
+    general: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        alignSelf: 'flex-start',
+        gap: 8
+    }
+})
+
 export const ButtonStyles = StyleSheet.create({
 
     primaryBtn: {
+        ...GeneralButtonStyles.general,
         backgroundColor: Theme.colors.primary,
-
     },
 
     primaryTxt: {
@@ -14,26 +25,26 @@ export const ButtonStyles = StyleSheet.create({
         textAlign: 'center',
     },
 
+
 // ===========================
 
     outlinedBtn: {
-        backgroundColor: "transparent",
-        color: Theme.colors.primary,
+        ...GeneralButtonStyles.general,
         borderStyle: 'solid',
-        fontWeight: 'bold',
-        textAlign: 'center',
         borderColor: Theme.colors.primary,
         borderWidth: 1.5,
     },
     outlinedTxt: {
         color: Theme.colors.primary,
         textAlign: 'center',
-        width: "100%",
+    
+        fontWeight: 'bold',
     },
 
 // ===========================
 
     inactiveBtn: {
+        ...GeneralButtonStyles.general,
         backgroundColor: Theme.colors.primaryInactive,
         color: 'white',
         fontWeight: 'normal',
@@ -49,23 +60,14 @@ export const ButtonStyles = StyleSheet.create({
 // ===========================
 
     plainBtn: {
-        width: "auto"
+        ...GeneralButtonStyles.general,
+
     },
     plainTxt: {
         textAlign: "center",
         color: Theme.colors.primary,
     },
 
-// ===========================
-
-    linkBtn: {
-        width: "auto"
-    },
-    linkTxt: {
-        textAlign: "center",
-        color: Theme.colors.primary,
-        textDecorationLine: "underline",
-    },
 
 // ===========================
 
@@ -91,7 +93,6 @@ export const ButtonStyles = StyleSheet.create({
         fontSize: Theme.sizes.sm,
     },
 
-
     mdSizeBtn: {
         borderRadius: Theme.radius.md,
         paddingHorizontal: 20,
@@ -108,16 +109,23 @@ export const ButtonStyles = StyleSheet.create({
     },
     lgSizeTxt: {
         fontSize: Theme.sizes.lg,
+    },
+
+    // ===========================
+    destructiveBtn: {
+        borderColor: Theme.colors.red.S500,
+    },
+    destructiveTxt: {
+        color: Theme.colors.red.S500,
     }
+
 
 })
 
 export enum ButtonType {
     PRIMARY = "PRIMARY",
     OUTLINED = "OUTLINED",
-    INACTIVE = "INACTIVE",
     PLAIN = "PLAIN",
-    LINK = "LINK",
 }
 
 export enum ButtonSize {

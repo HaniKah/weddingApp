@@ -75,6 +75,10 @@ export default function AddGuestModal({guestInfo, isVisible, setIsVisible, setRe
         setPhone(undefined)
     }
 
+    function handleDeleteGuest() {
+        console.log("delete guest")
+    }
+
 //todo : wrapper the modal with AppModal
     return (
         <>
@@ -100,8 +104,12 @@ export default function AddGuestModal({guestInfo, isVisible, setIsVisible, setRe
                                               onTextChange={(s: string) => setPhone(s)}/>
                             </View>
                             <View style={{marginBottom: 40}}>
-                                <AppButton isSubmit buttonType={ButtonType.PRIMARY}>
+                                <AppButton destructive fullWidth isSubmit buttonType={ButtonType.PRIMARY}>
                                     save
+                                </AppButton>
+                                <AppButton destructive fullWidth icon="trash" onPress={handleDeleteGuest}
+                                           buttonType={ButtonType.PLAIN}>
+                                    delete this user
                                 </AppButton>
                             </View>
                         </View>

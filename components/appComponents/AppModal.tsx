@@ -13,10 +13,10 @@ export default function AppModal({isVisible, setIsVisible, children}: {
                onRequestClose={() => setIsVisible(false)}>
             <View style={styles.wrapper}>
                 <View style={styles.header}>
-                    <AppButton extraStylesTxt={{textAlign: "left"}}
-                               extraStylesBtn={{flex: 1}}
-                               buttonType={ButtonType.PLAIN}
-                               onPress={() => setIsVisible(false)}>
+                    <AppButton
+                        extraStylesBtn={{flex: 1, justifyContent: "flex-start"}}
+                        buttonType={ButtonType.PLAIN}
+                        onPress={() => setIsVisible(false)}>
                         cancel
                     </AppButton>
                     <View style={styles.handle}></View>

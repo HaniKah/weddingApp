@@ -1,5 +1,6 @@
 import AppButton from "@/components/appComponents/AppButton";
 import {View} from "react-native";
+import {ButtonType} from "@/styles/Button";
 
 export default function Notes() {
     return (
@@ -14,6 +15,40 @@ export default function Notes() {
                 </AppButton>
                 <AppButton buttonSize={"LG"} extraStylesBtn={{marginTop: 20}}>
                     large
+                </AppButton>
+
+                {/*=============*/}
+
+                <AppButton icon="trash" buttonType={ButtonType.OUTLINED} buttonSize={"SM"}
+                           extraStylesBtn={{marginTop: 20}}>
+                    medium
+                </AppButton>
+
+                <AppButton icon="trash" buttonType={ButtonType.OUTLINED} buttonSize={"MD"}
+                           extraStylesBtn={{marginTop: 20}}>
+                    medium
+                </AppButton>
+
+                <AppButton icon="trash" buttonType={ButtonType.OUTLINED} buttonSize={"LG"}
+                           extraStylesBtn={{marginTop: 20}}>
+                    medium
+                </AppButton>
+
+                {/*=============*/}
+
+                <AppButton destructive icon="trash" buttonType={ButtonType.PRIMARY} buttonSize={"SM"}
+                           extraStylesBtn={{marginTop: 20}}>
+                    medium
+                </AppButton>
+
+                <AppButton destructive icon="trash" buttonType={ButtonType.PRIMARY} buttonSize={"MD"}
+                           extraStylesBtn={{marginTop: 20}}>
+                    medium
+                </AppButton>
+
+                <AppButton destructive icon="trash" buttonType={ButtonType.PRIMARY} buttonSize={"LG"}
+                           extraStylesBtn={{marginTop: 20}}>
+                    destructive
                 </AppButton>
             </View>
         </>

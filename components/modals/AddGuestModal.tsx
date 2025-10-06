@@ -104,7 +104,7 @@ export default function AddGuestModal({guestInfo, isVisible, setIsVisible, setRe
         }
     }
 
-//todo : wrapper the modal with AppModal
+//todo : wrapper the modals with AppModal
     return (
         <>
             <AppModal isVisible={isVisible} setIsVisible={setIsVisible}>

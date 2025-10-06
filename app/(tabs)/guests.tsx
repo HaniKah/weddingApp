@@ -1,7 +1,7 @@
 import {FlatList, StyleSheet, View} from "react-native";
 import GuestSide from "@/components/GuestSide";
 import {CoupleSide, GuestsDto, GuestsViewModel} from "@/types/open-api";
-import AddGuestModal from "@/components/modal/AddGuestModal";
+import AddGuestModal from "@/components/modals/AddGuestModal";
 import {useEffect, useState} from "react";
 import {API} from "@/utils/api";
 import AppView from "@/components/appComponents/AppView";

@@ -11,8 +11,14 @@ export default function AppView({isLoading, withPadding, children}: {
             <ActivityIndicator size={"large"}/>
         )
     } else return (
-        <View style={withPadding ? {padding: Theme.spaces.appPadding} : {}}>
+        <View style={[styles.container, withPadding && {padding: Theme.spaces.appPadding}]}>
             {children}
         </View>
     )
+}
+const styles = {
+    container: {
+       
+        // flex: 1
+    },
 }

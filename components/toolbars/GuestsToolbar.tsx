@@ -7,7 +7,7 @@ import {Pressable, View} from "react-native";
 export default function GuestsToolbar({onCreateGuest}: { onCreateGuest: () => void }) {
     return (
         <>
-            <Toolbar style={{flexDirection: "row-reverse"}}>
+            <Toolbar style={{flexDirection: "row-reverse", padding: 20}}>
                 <Pressable onPress={onCreateGuest}>
                     <View style={ButtonStyles.iconBtn}>
                         <IconSymbol name="plus" color={Theme.colors.primary} size={Theme.sizes.lg}

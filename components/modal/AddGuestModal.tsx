@@ -104,13 +104,13 @@ export default function AddGuestModal({guestInfo, isVisible, setIsVisible, setRe
                                               onTextChange={(s: string) => setPhone(s)}/>
                             </View>
                             <View style={{marginBottom: 40}}>
-                                <AppButton destructive fullWidth isSubmit buttonType={ButtonType.PRIMARY}>
-                                    save
-                                </AppButton>
-                                <AppButton destructive fullWidth icon="trash" onPress={handleDeleteGuest}
-                                           buttonType={ButtonType.PLAIN}>
-                                    delete this user
-                                </AppButton>
+                                {guestInfo?.id ?
+                                    <AppButton destructive fullWidth icon="trash" onPress={handleDeleteGuest}
+                                               buttonType={ButtonType.PLAIN}>
+                                        delete this guest
+                                    </AppButton> : <AppButton fullWidth isSubmit buttonType={ButtonType.PRIMARY}>
+                                        save
+                                    </AppButton>}
                             </View>
                         </View>
                     </AppForm>

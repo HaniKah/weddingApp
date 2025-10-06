@@ -53,7 +53,7 @@ export default function Guests() {
                     <GuestSide side={CoupleSide.Bride} onAddGuest={handleAddGuest}/>
                     <GuestSide side={CoupleSide.Groom} onAddGuest={handleAddGuest}/>
                 </View>
-                
+
                 <FlatList style={{marginTop: 2}}
                           renderItem={({item}) => <GuestItem item={item} onPress={handleSelectGuest}/>}
                           data={guests?.result}/>

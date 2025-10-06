@@ -37,7 +37,7 @@ export const ButtonStyles = StyleSheet.create({
     outlinedTxt: {
         color: Theme.colors.primary,
         textAlign: 'center',
-    
+
         fontWeight: 'bold',
     },
 

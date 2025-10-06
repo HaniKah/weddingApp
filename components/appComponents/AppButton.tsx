@@ -50,8 +50,6 @@ export default function AppButton({
     } else if (buttonType === ButtonType.PLAIN) {
         buttonStyles = ButtonStyles.plainBtn;
         textStyles = ButtonStyles.plainTxt;
-        buttonStyles.paddingHorizontal = 0
-        buttonStyles.paddingVertical = 0
         if (destructive) {
             textStyles = {...textStyles, color: Theme.colors.red.S500}
         }
@@ -80,6 +78,11 @@ export default function AppButton({
             textStyles = {...textStyles, ...ButtonStyles.mdSizeTxt}
             iconSize = Theme.sizes.xl
             break
+    }
+
+    if (buttonType === ButtonType.PLAIN) {
+        buttonStyles.paddingHorizontal = 0
+        buttonStyles.paddingVertical = 0
     }
 
 

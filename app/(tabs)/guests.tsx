@@ -52,8 +52,8 @@ export default function Guests() {
         <>
             <AppView isLoading={isLoading}>
                 <View style={styles.container}>
-                    <GuestSide side={CoupleSide.Bride} onAddGuest={handleAddGuest}/>
-                    <GuestSide side={CoupleSide.Groom} onAddGuest={handleAddGuest}/>
+                    <GuestSide side={CoupleSide.Bride}/>
+                    <GuestSide side={CoupleSide.Groom}/>
                 </View>
 
                 <FlatList style={{marginTop: 2}}

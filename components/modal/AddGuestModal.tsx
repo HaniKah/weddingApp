@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from "react-native";
+import {Alert, StyleSheet, Text, View} from "react-native";
 import {Theme} from "@/styles/Theme";
 import {AddGuestRequest, CoupleSide, GuestsDto, UpdateGuestRequest} from "@/types/open-api";
 import React, {Dispatch, useEffect, useState} from "react";
@@ -25,6 +25,7 @@ export default function AddGuestModal({guestInfo, isVisible, setIsVisible, setRe
     const [guestSide, setGuestSide] = useState<CoupleSide>(CoupleSide.Groom)
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
+
     useEffect(() => {
         setGuestName(guestInfo?.name)
         setPhone(guestInfo?.phoneNumber)
@@ -47,7 +48,6 @@ export default function AddGuestModal({guestInfo, isVisible, setIsVisible, setRe
             console.log(err)
         } finally {
             finishAndClear()
-            setRefetchTrigger && setRefetchTrigger((prev: boolean) => !prev)
             setIsLoading(false)
         }
     }
@@ -64,7 +64,6 @@ export default function AddGuestModal({guestInfo, isVisible, setIsVisible, setRe
             console.log(err)
         } finally {
             finishAndClear()
-            setRefetchTrigger && setRefetchTrigger((prev: boolean) => !prev)
             setIsLoading(false)
         }
     }
@@ -73,10 +72,36 @@ export default function AddGuestModal({guestInfo, isVisible, setIsVisible, setRe
         setIsVisible(false)
         setGuestName(undefined)
         setPhone(undefined)
+        setRefetchTrigger && setRefetchTrigger((prev: boolean) => !prev)
     }
 
-    function handleDeleteGuest() {
-        console.log("delete guest")
+    function onPressDelete() {
+        Alert.alert('Delete Guest', 'are you sure you want to delete this guest?', [
+                {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                },
+                {
+                    text: 'Delete',
+                    onPress: () => handleDeleteGuest(),
+                    style: 'destructive'
+                },
+            ]
+        );
+    }
+
+    async function handleDeleteGuest() {
+        if (!guestInfo?.id) return
+        try {
+            setIsLoading(true)
+            await API.guestsControllerDeleteGuest({id: guestInfo?.id})
+        } catch (err) {
+            console.log(err)
+        } finally {
+            setIsLoading(false)
+            finishAndClear()
+        }
     }
 
 //todo : wrapper the modal with AppModal
@@ -105,7 +130,7 @@ export default function AddGuestModal({guestInfo, isVisible, setIsVisible, setRe
                             </View>
                             <View style={{marginBottom: 40}}>
                                 {guestInfo?.id ?
-                                    <AppButton destructive fullWidth icon="trash" onPress={handleDeleteGuest}
+                                    <AppButton destructive fullWidth icon="trash" onPress={onPressDelete}
                                                buttonType={ButtonType.PLAIN}>
                                         delete this guest
                                     </AppButton> : <AppButton fullWidth isSubmit buttonType={ButtonType.PRIMARY}>
@@ -117,6 +142,7 @@ export default function AddGuestModal({guestInfo, isVisible, setIsVisible, setRe
 
                 </View>
             </AppModal>
+
 
         </>
     )

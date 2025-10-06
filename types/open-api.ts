@@ -134,6 +134,10 @@ export interface UpdateGuestRequest {
   phoneNumber?: string;
 }
 
+export interface DeleteGuestRequest {
+  id: number;
+}
+
 import type {
   AxiosInstance,
   AxiosRequestConfig,
@@ -507,6 +511,25 @@ export class Api<
     ) =>
       this.request<void, any>({
         path: `/api/guests/updateGuest`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Guests
+     * @name GuestsControllerDeleteGuest
+     * @request POST:/api/guests/deleteGuest
+     */
+    guestsControllerDeleteGuest: (
+      data: DeleteGuestRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/guests/deleteGuest`,
         method: "POST",
         body: data,
         type: ContentType.Json,

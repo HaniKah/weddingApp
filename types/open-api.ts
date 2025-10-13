@@ -535,5 +535,33 @@ export class Api<
         type: ContentType.Json,
         ...params,
       }),
+
+    /**
+     * No description
+     *
+     * @tags Auth
+     * @name AuthControllerGoogleLogin
+     * @request GET:/api/auth/google/login
+     */
+    authControllerGoogleLogin: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/auth/google/login`,
+        method: "GET",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Auth
+     * @name AuthControllerCallRedirect
+     * @request GET:/api/auth/call-Redirect
+     */
+    authControllerCallRedirect: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/auth/call-Redirect`,
+        method: "GET",
+        ...params,
+      }),
   };
 }

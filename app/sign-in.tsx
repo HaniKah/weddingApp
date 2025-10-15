@@ -1,35 +1,17 @@
-import {Button, Text, View} from "react-native";
-import {useAuthStore} from "@/utils/authStore";
-import * as WebBrowser from 'expo-web-browser';
-import {API} from "@/utils/api";
+import {Button, Text} from "react-native";
+import {useAuth} from "@/contexts/auth-context";
+import AppView from "@/components/appComponents/AppView";
 
 export default function SignIn() {
-
-    const {logIn} = useAuthStore()
-
-    async function openWindow() {
-        await WebBrowser.openBrowserAsync('https://expo.dev');
-    }
-
-    async function closeWindow() {
-        await WebBrowser.dismissBrowser();
-    }
-
-    async function callRedirect() {
-        await API.authControllerCallRedirect()
-    }
+    const {signInWithGoogle} = useAuth()
 
     return (
-        <View>
+        <AppView withPadding>
             <Text>
                 Sign in
             </Text>
-            <Button onPress={logIn} title="Sign in">
+            <Button onPress={signInWithGoogle} title="Sign In with google">
             </Button>
-            <Button onPress={openWindow} title="Open browser">
-            </Button>
-            <Button onPress={callRedirect} title="call redirect from backend"></Button>
-
-        </View>
+        </AppView>
     )
 }

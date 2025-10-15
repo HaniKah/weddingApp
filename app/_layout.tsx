@@ -7,6 +7,7 @@ import {StyleSheet} from "react-native";
 import {Theme} from "@/styles/Theme";
 import {useEffect} from "react";
 import {useAuthStore} from "@/utils/authStore";
+import {AuthProvider} from "@/contexts/auth-context";
 
 
 export default function RootLayout() {
@@ -29,28 +30,29 @@ export default function RootLayout() {
     }
 
     return (
+        <AuthProvider>
+            <SafeAreaProvider>
+                <SafeAreaView style={styles.container} edges={['top']}>
+                    <Stack screenOptions={{headerShown: false}}>
+                        <Stack.Protected guard={isLoggedIn}>
+                            <Stack.Screen name="(tabs)"/>
+                        </Stack.Protected>
+                        <Stack.Protected guard={!isLoggedIn && !shouldCreateAccount && hasCompletedOnboarding}>
+                            <Stack.Screen name="sign-in"/>
+                        </Stack.Protected>
+                        <Stack.Protected guard={shouldCreateAccount}>
+                            <Stack.Screen name="sign-up"/>
+                        </Stack.Protected>
+                        <Stack.Protected guard={!hasCompletedOnboarding}>
+                            <Stack.Screen name="onboarding"/>
+                        </Stack.Protected>
+                        <Stack.Screen name="+not-found"/>
+                    </Stack>
 
-        <SafeAreaProvider>
-            <SafeAreaView style={styles.container} edges={['top']}>
-                <Stack screenOptions={{headerShown: false}}>
-                    <Stack.Protected guard={isLoggedIn}>
-                        <Stack.Screen name="(tabs)"/>
-                    </Stack.Protected>
-                    <Stack.Protected guard={!isLoggedIn && !shouldCreateAccount && hasCompletedOnboarding}>
-                        <Stack.Screen name="sign-in"/>
-                    </Stack.Protected>
-                    <Stack.Protected guard={shouldCreateAccount}>
-                        <Stack.Screen name="sign-up"/>
-                    </Stack.Protected>
-                    <Stack.Protected guard={!hasCompletedOnboarding}>
-                        <Stack.Screen name="onboarding"/>
-                    </Stack.Protected>
-                    <Stack.Screen name="+not-found"/>
-                </Stack>
-
-                <StatusBar style="auto"/>
-            </SafeAreaView>
-        </SafeAreaProvider>
+                    <StatusBar style="auto"/>
+                </SafeAreaView>
+            </SafeAreaProvider>
+        </AuthProvider>
 
 
     );

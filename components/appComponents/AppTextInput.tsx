@@ -1,6 +1,6 @@
 import {KeyboardTypeOptions, StyleProp, StyleSheet, Text, TextInput, View, ViewStyle} from "react-native";
 import {Theme} from "@/styles/Theme";
-import {useFormContext} from "@/contexts/FormContext";
+import {useFormContext} from "@/contexts/form-context";
 import {useEffect, useState} from "react";
 
 export default function AppTextInput({

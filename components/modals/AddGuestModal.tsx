@@ -5,7 +5,7 @@ import React, {Dispatch, useEffect, useState} from "react";
 import AppTextInput from "@/components/appComponents/AppTextInput";
 import AppButton from "@/components/appComponents/AppButton";
 import {ButtonType} from "@/styles/Button";
-import {AppForm} from "@/contexts/FormContext";
+import {AppForm} from "@/contexts/form-context";
 import {API} from "@/utils/api";
 import AppModal from "@/components/appComponents/AppModal";
 

@@ -6,7 +6,7 @@ type userState = {
     isLoggedIn: boolean;
     shouldCreateAccount: boolean;
     hasCompletedOnboarding: boolean;
-    logIn: () => void;
+    logIn: (accessToken: string, refreshToken: string) => void;
     logOut: () => void;
     completeOnboarding: () => void;
     resetOnboarding: () => void;
@@ -17,7 +17,9 @@ export const useAuthStore = create(persist<userState>((set) => ({
     shouldCreateAccount: false,
     hasCompletedOnboarding: false,
 
-    logIn: () => set((state) => {
+    logIn: (accessToken: string, refreshToken: string) => set((state) => {
+        setItem("accessToken", accessToken)
+        setItem("refreshToken", refreshToken)
         return {
             ...state,
             isLoggedIn: true,

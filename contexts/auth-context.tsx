@@ -1,6 +1,6 @@
 import {AuthError, AuthRequestConfig, DiscoveryDocument, makeRedirectUri, useAuthRequest} from "expo-auth-session";
 import React, {useEffect} from "react";
-import * as WebBrowser from 'expo-web-browser';
+import {useAuthStore} from "@/utils/authStore";
 
 
 export type AuthUser = {
@@ -34,37 +34,52 @@ const config: AuthRequestConfig = {
     redirectUri: makeRedirectUri(),
     state: "mobile"
 
+
 }
 
-const discovery: DiscoveryDocument = {
+let discovery: DiscoveryDocument = {
     authorizationEndpoint: process.env.EXPO_PUBLIC_API_URL + "/api/auth/google/login",
     tokenEndpoint: process.env.EXPO_PUBLIC_API_URL + "/api/auth/token"
-}
+};
 
 export const AuthProvider = ({children}: { children: React.ReactNode }) => {
     const [user, setUser] = React.useState<AuthUser | null>(null);
     const [isLoading, setIsLoading] = React.useState(false);
     const [error, setError] = React.useState<AuthError | null>(null);
-
-    // this is the function that will call the backend for us
+    const auth = useAuth()
+    // this is the function that will call the backend
     const [request, response, promptAsync] = useAuthRequest(config, discovery)
+    const {logIn} = useAuthStore()
+
 
     useEffect(() => {
+        const handleResponse = async () => {
+            if (response?.type === "success") {
+                console.log("response Success : ", response)
+            } else if (response?.type === "error") {
+                setError(response.error as AuthError)
+                console.log("response Error : ", response)
+            }
+        }
         handleResponse()
     }, [response]);
 
-    const handleResponse = async () => {
-        if (response?.type === "success") {
-            const {code} = response.params
-            console.log(code)
-        } else if (response?.type === "error") {
-            setError(response.error as AuthError)
-        }
-    }
 
     const signInWithGoogle = async () => {
+        try {
+            if (!request) {
+                console.log("No request");
+                return;
+            }
+            await promptAsync();
+        } catch (error) {
+            console.error(error);
+            setError(error as AuthError);
+        } finally {
+            setIsLoading(false);
+        }
 
-        await WebBrowser.openBrowserAsync(`${process.env.EXPO_PUBLIC_API_URL}/api/auth/google/login`);
+        // await WebBrowser.openBrowserAsync(`${process.env.EXPO_PUBLIC_API_URL}/api/auth/google/login`);
 
     }
     const signOut = () => {

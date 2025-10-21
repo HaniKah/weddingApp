@@ -64,10 +64,10 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
     // useEffect(() => {
     //     const handleResponse = async () => {
     //         if (response?.type === "success") {
-    //             console.log("response Success : ", response)
+
     //         } else if (response?.type === "error") {
     //             setError(response.error as AuthError)
-    //             console.log("response Error : ", response)
+    //
     //         }
     //     }
     //     handleResponse()
@@ -77,7 +77,7 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
     // const signInWithGoogle = async () => {
     //     try {
     //         if (!request) {
-    //             console.log("No request");
+    //
     //             return;
     //         }
     //         await promptAsync();
@@ -94,7 +94,6 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
     const signInWithGoogle = async () => {
         try {
             const response = await WebBrowser.openAuthSessionAsync(`${process.env.EXPO_PUBLIC_API_URL}/api/auth/google/login`);
-            console.log("#### response ", response)
             if (response.type === "success") {
                 const url = new URL(response.url);
                 await exchangeWithToken(url.searchParams.get("exchangeToken")!)

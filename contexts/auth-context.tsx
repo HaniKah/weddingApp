@@ -1,6 +1,8 @@
-import {AuthError, AuthRequestConfig, DiscoveryDocument, makeRedirectUri, useAuthRequest} from "expo-auth-session";
-import React, {useEffect} from "react";
+import {AuthError} from "expo-auth-session";
+import React from "react";
 import {useAuthStore} from "@/utils/authStore";
+import * as WebBrowser from "expo-web-browser";
+import {API} from "@/utils/api";
 
 
 export type AuthUser = {
@@ -22,25 +24,26 @@ const AuthContext = React.createContext({
     },
     signOut: () => {
     },
-    fetchWithAuth: async (url: string, options: RequestInit) =>
-        Promise.resolve(new Response()),
+    // fetchWithAuth: async (url: string, options: RequestInit) =>
+    //     Promise.resolve(new Response()),
     isLoading: false,
     error: null as AuthError | null,
 })
 
-const config: AuthRequestConfig = {
-    clientId: "google",
-    scopes: ["openid", "profile", "email"],
-    redirectUri: makeRedirectUri(),
-    state: "mobile"
+// const config: AuthRequestConfig = {
+//     clientId: "google",
+//     scopes: ["openid", "profile", "email"],
+//     redirectUri: makeRedirectUri(),
+//     state: "mobile"
+//
+//
+// }
+//
+// let discovery: DiscoveryDocument = {
+//     authorizationEndpoint: process.env.EXPO_PUBLIC_API_URL + "/api/auth/google/login",
+//     tokenEndpoint: process.env.EXPO_PUBLIC_API_URL + "/api/auth/token"
+// };
 
-
-}
-
-let discovery: DiscoveryDocument = {
-    authorizationEndpoint: process.env.EXPO_PUBLIC_API_URL + "/api/auth/google/login",
-    tokenEndpoint: process.env.EXPO_PUBLIC_API_URL + "/api/auth/token"
-};
 
 export const AuthProvider = ({children}: { children: React.ReactNode }) => {
     const [user, setUser] = React.useState<AuthUser | null>(null);
@@ -48,45 +51,70 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
     const [error, setError] = React.useState<AuthError | null>(null);
     const auth = useAuth()
     // this is the function that will call the backend
-    const [request, response, promptAsync] = useAuthRequest(config, discovery)
+    // const [request, response, promptAsync] = useAuthRequest(config, discovery)
+
     const {logIn} = useAuthStore()
 
 
-    useEffect(() => {
-        const handleResponse = async () => {
-            if (response?.type === "success") {
-                console.log("response Success : ", response)
-            } else if (response?.type === "error") {
-                setError(response.error as AuthError)
-                console.log("response Error : ", response)
-            }
-        }
-        handleResponse()
-    }, [response]);
+    // const exchangeCode = async (code: string) => {
+    //
+    // }
 
+
+    // useEffect(() => {
+    //     const handleResponse = async () => {
+    //         if (response?.type === "success") {
+    //             console.log("response Success : ", response)
+    //         } else if (response?.type === "error") {
+    //             setError(response.error as AuthError)
+    //             console.log("response Error : ", response)
+    //         }
+    //     }
+    //     handleResponse()
+    // }, [response]);
+
+
+    // const signInWithGoogle = async () => {
+    //     try {
+    //         if (!request) {
+    //             console.log("No request");
+    //             return;
+    //         }
+    //         await promptAsync();
+    //     } catch (error) {
+    //         console.error(error);
+    //         setError(error as AuthError);
+    //     } finally {
+    //         setIsLoading(false);
+    //     }
+    // }
+
+    WebBrowser.maybeCompleteAuthSession(); // still not sure what this does
 
     const signInWithGoogle = async () => {
         try {
-            if (!request) {
-                console.log("No request");
-                return;
+            const response = await WebBrowser.openAuthSessionAsync(`${process.env.EXPO_PUBLIC_API_URL}/api/auth/google/login`);
+            console.log("#### response ", response)
+            if (response.type === "success") {
+                const url = new URL(response.url);
+                await exchangeWithToken(url.searchParams.get("exchangeToken")!)
             }
-            await promptAsync();
+
         } catch (error) {
             console.error(error);
-            setError(error as AuthError);
-        } finally {
-            setIsLoading(false);
         }
-
-        // await WebBrowser.openBrowserAsync(`${process.env.EXPO_PUBLIC_API_URL}/api/auth/google/login`);
-
     }
+
     const signOut = () => {
     }
 
-    const fetchWithAuth = async (url: string, options: RequestInit) => {
-        return Promise.resolve(new Response())
+    const exchangeWithToken = async (code: string) => {
+        const response = await API.authControllerExchangeToken({
+            headers: {
+                Authorization: `Bearer ${code}`,
+            },
+        })
+        logIn(response.data.accessToken, response.data.refreshToken)
     }
 
     return (
@@ -94,7 +122,6 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
             user,
             signInWithGoogle,
             signOut,
-            fetchWithAuth,
             isLoading,
             error
 

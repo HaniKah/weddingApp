@@ -26,6 +26,8 @@ export const useAuthStore = create(persist<userState>((set) => ({
         }
     }),
     logOut: () => set((state) => {
+        deleteItemAsync("accessToken")
+        deleteItemAsync("refreshToken")
         return {
             ...state,
             isLoggedIn: false,

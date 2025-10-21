@@ -138,6 +138,11 @@ export interface DeleteGuestRequest {
   id: number;
 }
 
+export interface ExchangeTokenDto {
+  accessToken: string;
+  refreshToken: string;
+}
+
 import type {
   AxiosInstance,
   AxiosRequestConfig,
@@ -540,6 +545,34 @@ export class Api<
      * No description
      *
      * @tags Auth
+     * @name AuthControllerRefreshToken
+     * @request POST:/api/auth/refresh
+     */
+    authControllerRefreshToken: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/auth/refresh`,
+        method: "POST",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Auth
+     * @name AuthControllerSignOut
+     * @request POST:/api/auth/signout
+     */
+    authControllerSignOut: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/auth/signout`,
+        method: "POST",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Auth
      * @name AuthControllerGoogleLogin
      * @request GET:/api/auth/google/login
      */
@@ -554,13 +587,28 @@ export class Api<
      * No description
      *
      * @tags Auth
-     * @name AuthControllerCallRedirect
-     * @request GET:/api/auth/call-Redirect
+     * @name AuthControllerGoogleCallback
+     * @request GET:/api/auth/google/callback
      */
-    authControllerCallRedirect: (params: RequestParams = {}) =>
+    authControllerGoogleCallback: (params: RequestParams = {}) =>
       this.request<void, any>({
-        path: `/api/auth/call-Redirect`,
+        path: `/api/auth/google/callback`,
         method: "GET",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Auth
+     * @name AuthControllerExchangeToken
+     * @request POST:/api/auth/exchangeToken
+     */
+    authControllerExchangeToken: (params: RequestParams = {}) =>
+      this.request<ExchangeTokenDto, any>({
+        path: `/api/auth/exchangeToken`,
+        method: "POST",
+        format: "json",
         ...params,
       }),
   };

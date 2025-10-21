@@ -3,10 +3,12 @@ import {WeddingSteps} from "@/types/open-api";
 import {API} from "@/utils/api";
 import {ActivityIndicator} from "react-native";
 import {Redirect} from "expo-router";
+import {getItem} from "expo-secure-store";
 
 export default function Index() {
     const [currentStep, setCurrentStep] = useState<WeddingSteps>()
 
+    console.log("my access token", getItem("accessToken"))
 
     useEffect(() => {
 

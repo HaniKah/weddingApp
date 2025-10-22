@@ -7,10 +7,8 @@ import axios from "axios";
 export function useApi() {
     const api = new Api({
         baseURL: process.env.EXPO_PUBLIC_API_URL,
-        // headers: {Authorization: `Bearer ${getItem("accessToken")}`}
     })
-    // const api = new Api()
-    // api.instance({baseURL: process.env.EXPO_PUBLIC_API_URL})
+
 
     const {logOut} = useAuthStore()
 
@@ -20,7 +18,6 @@ export function useApi() {
         if (token) {
             config.headers["Authorization"] = `Bearer ${token}`
         }
-        // console.log("config : ", config)
         return config
 
     }, (error) => {

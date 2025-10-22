@@ -24,8 +24,6 @@ const AuthContext = React.createContext({
     },
     signOut: () => {
     },
-    // fetchWithAuth: async (url: string, options: RequestInit) =>
-    //     Promise.resolve(new Response()),
     isLoading: false,
     error: null as AuthError | null,
 })
@@ -37,10 +35,10 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
     const [error, setError] = React.useState<AuthError | null>(null);
     const auth = useAuth()
     const API = useApi()
-    // this is the function that will call the backend
+    // we are not using useAuthRequest because we are implementing oAuth2.0 with passport in the backend
     // const [request, response, promptAsync] = useAuthRequest(config, discovery)
 
-    const {logIn} = useAuthStore()
+    const {logIn, logOut} = useAuthStore()
 
     WebBrowser.maybeCompleteAuthSession(); // still not sure what this does
 
@@ -57,8 +55,14 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
         }
     }
 
-    const signOut = () => {
-        // should call the sign out controller
+    const signOut = async () => {
+        try {
+            await API.authControllerSignOut()
+            logOut()
+        } catch (error) {
+            console.error(error)
+        }
+
     }
 
     const exchangeWithToken = async (code: string) => {
@@ -67,9 +71,6 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
                 Authorization: `Bearer ${code}`,
             },
         })
-        // const {accessToken, refreshToken} = response.data
-        // console.log("access token :", accessToken)
-        // console.log("refresh token :", refreshToken)
         logIn(response.data.accessToken, response.data.refreshToken)
     }
 

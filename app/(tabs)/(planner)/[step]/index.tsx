@@ -1,14 +1,15 @@
 import {useEffect, useState} from "react";
 import {PlacesViewModel, StepsDto, StepsViewModel, WeddingSteps} from "@/types/open-api";
-import {API} from "@/utils/api";
 import PickDate from "@/components/wizard/PickDate";
 import {PickPlace} from "@/components/wizard/PickPlace";
 import PlannerToolbar from "@/components/toolbars/PlannerToolbar";
 import {Stack, useLocalSearchParams, useRouter} from "expo-router";
 import AppView from "@/components/appComponents/AppView";
+import {useApi} from "@/utils/api";
 
 export default function Index() {
 
+    const API = useApi()
     const [steps, setSteps] = useState<StepsViewModel>()
     const [stepsOrder, setStepsOrder] = useState<WeddingSteps[]>([])
     const [currentStep, setCurrentStep] = useState<StepsDto>()
@@ -22,10 +23,12 @@ export default function Index() {
 
     // console.log(usePathname())
 
+
     useEffect(() => {
 
         const getSteps = async () => {
             try {
+
                 const response = await API.plannerControllerGetSteps()
                 setSteps(response.data)
                 setStepsOrder(response.data.steps.map(s => s.step))

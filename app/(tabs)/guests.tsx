@@ -3,10 +3,11 @@ import GuestSide from "@/components/GuestSide";
 import {CoupleSide, GuestsDto, GuestsViewModel} from "@/types/open-api";
 import AddGuestModal from "@/components/modals/AddGuestModal";
 import {useEffect, useState} from "react";
-import {API} from "@/utils/api";
+
 import AppView from "@/components/appComponents/AppView";
 import GuestItem from "@/components/items/GuestItem";
 import GuestsToolbar from "@/components/toolbars/GuestsToolbar";
+import {useApi} from "@/utils/api";
 
 export default function Guests() {
 
@@ -16,6 +17,8 @@ export default function Guests() {
     const [guests, setGuests] = useState<GuestsViewModel>()
     const [trigger, setTrigger] = useState(false)
     const [selectedGuest, setSelectedGuest] = useState<GuestsDto>()
+
+    const API = useApi()
 
 
     const handleAddGuest = (side: CoupleSide) => {

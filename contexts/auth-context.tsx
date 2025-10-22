@@ -2,7 +2,7 @@ import {AuthError} from "expo-auth-session";
 import React from "react";
 import {useAuthStore} from "@/utils/authStore";
 import * as WebBrowser from "expo-web-browser";
-import {API} from "@/utils/api";
+import {useApi} from "@/utils/api";
 
 
 export type AuthUser = {
@@ -30,64 +30,17 @@ const AuthContext = React.createContext({
     error: null as AuthError | null,
 })
 
-// const config: AuthRequestConfig = {
-//     clientId: "google",
-//     scopes: ["openid", "profile", "email"],
-//     redirectUri: makeRedirectUri(),
-//     state: "mobile"
-//
-//
-// }
-//
-// let discovery: DiscoveryDocument = {
-//     authorizationEndpoint: process.env.EXPO_PUBLIC_API_URL + "/api/auth/google/login",
-//     tokenEndpoint: process.env.EXPO_PUBLIC_API_URL + "/api/auth/token"
-// };
-
 
 export const AuthProvider = ({children}: { children: React.ReactNode }) => {
     const [user, setUser] = React.useState<AuthUser | null>(null);
     const [isLoading, setIsLoading] = React.useState(false);
     const [error, setError] = React.useState<AuthError | null>(null);
     const auth = useAuth()
+    const API = useApi()
     // this is the function that will call the backend
     // const [request, response, promptAsync] = useAuthRequest(config, discovery)
 
     const {logIn} = useAuthStore()
-
-
-    // const exchangeCode = async (code: string) => {
-    //
-    // }
-
-
-    // useEffect(() => {
-    //     const handleResponse = async () => {
-    //         if (response?.type === "success") {
-
-    //         } else if (response?.type === "error") {
-    //             setError(response.error as AuthError)
-    //
-    //         }
-    //     }
-    //     handleResponse()
-    // }, [response]);
-
-
-    // const signInWithGoogle = async () => {
-    //     try {
-    //         if (!request) {
-    //
-    //             return;
-    //         }
-    //         await promptAsync();
-    //     } catch (error) {
-    //         console.error(error);
-    //         setError(error as AuthError);
-    //     } finally {
-    //         setIsLoading(false);
-    //     }
-    // }
 
     WebBrowser.maybeCompleteAuthSession(); // still not sure what this does
 
@@ -105,6 +58,7 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
     }
 
     const signOut = () => {
+        // should call the sign out controller
     }
 
     const exchangeWithToken = async (code: string) => {
@@ -113,6 +67,9 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
                 Authorization: `Bearer ${code}`,
             },
         })
+        // const {accessToken, refreshToken} = response.data
+        // console.log("access token :", accessToken)
+        // console.log("refresh token :", refreshToken)
         logIn(response.data.accessToken, response.data.refreshToken)
     }
 

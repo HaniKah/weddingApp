@@ -1,9 +1,11 @@
 import {Button, Text} from "react-native";
 import {useAuth} from "@/contexts/auth-context";
 import AppView from "@/components/appComponents/AppView";
+import {useAuthStore} from "@/utils/authStore";
 
 export default function SignIn() {
     const {signInWithGoogle} = useAuth()
+    const {logOut} = useAuthStore()
 
 
     return (
@@ -12,6 +14,9 @@ export default function SignIn() {
                 Sign in
             </Text>
             <Button onPress={signInWithGoogle} title="Sign In with google">
+            </Button>
+            <Button onPress={logOut} title="Sign Out">
+
             </Button>
         </AppView>
     )

@@ -4,7 +4,7 @@ import {StepsDto} from "@/types/open-api";
 import AppCalendar from "@/components/appComponents/AppCalendar";
 import {useEffect, useState} from "react";
 import AppButton from "@/components/appComponents/AppButton";
-import {API} from "@/utils/api";
+import {useApi} from "@/utils/api";
 import ScrollView = Animated.ScrollView;
 
 
@@ -15,6 +15,9 @@ export default function PickDate({onNextStep, onPreviousStep, isFirstStep, isLas
     isLastStep: boolean,
     currentStep: StepsDto,
 }) {
+
+    const API = useApi()
+
     const [selectedDate, setSelectedDate] = useState<string>(new Date().toLocaleDateString("en-CA"));
     const [loading, setLoading] = useState(false)
 

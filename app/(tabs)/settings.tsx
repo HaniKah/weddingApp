@@ -3,6 +3,7 @@ import {useAuthStore} from "@/utils/authStore";
 
 export default function Settings() {
     const {logOut} = useAuthStore()
+
     return (
         <>
             <Text>

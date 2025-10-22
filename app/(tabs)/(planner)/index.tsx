@@ -1,10 +1,13 @@
 import {useEffect, useState} from "react";
 import {WeddingSteps} from "@/types/open-api";
-import {API} from "@/utils/api";
+
 import {ActivityIndicator} from "react-native";
 import {Redirect} from "expo-router";
+import {useApi} from "@/utils/api";
 
 export default function Index() {
+
+    const API = useApi()
     const [currentStep, setCurrentStep] = useState<WeddingSteps>()
 
 

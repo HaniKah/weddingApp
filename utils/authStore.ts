@@ -1,7 +1,7 @@
 import {createJSONStorage, persist} from "zustand/middleware";
 import {deleteItemAsync, getItem, setItem} from "expo-secure-store";
 import {create} from "zustand";
-import {Role} from "@/types/open-api";
+import {UserType} from "@/types/user-type";
 
 
 type userState = {
@@ -12,15 +12,15 @@ type userState = {
     logOut: () => void;
     completeOnboarding: () => void;
     resetOnboarding: () => void;
-    role: Role
-    switchRole: (role: Role) => void
+    userType: UserType
+    switchRole: (role: UserType) => void
 }
 
 export const useAuthStore = create(persist<userState>((set) => ({
     isLoggedIn: false,
     shouldCreateAccount: false,
     hasCompletedOnboarding: false,
-    role: Role.User,
+    userType: UserType.User,
 
     logIn: (accessToken: string, refreshToken: string) => set((state) => {
         setItem("accessToken", accessToken)
@@ -50,10 +50,10 @@ export const useAuthStore = create(persist<userState>((set) => ({
             hasCompletedOnboarding: false,
         }
     }),
-    switchRole: (role: Role) => set((state) => {
+    switchRole: (userType: UserType) => set((state) => {
         return {
             ...state,
-            role: role
+            userType: userType
         }
     })
 

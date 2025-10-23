@@ -10,13 +10,6 @@
  * ---------------------------------------------------------------
  */
 
-export enum Role {
-  Admin = "Admin",
-  User = "User",
-  Guest = "Guest",
-  Vendor = "Vendor",
-}
-
 export enum CoupleSide {
   Groom = "Groom",
   Bride = "Bride",
@@ -145,12 +138,7 @@ export interface DeleteGuestRequest {
   id: number;
 }
 
-export interface ExchangeTokenRequest {
-  role: Role;
-}
-
 export interface ExchangeTokenDto {
-  role: Role;
   id: number;
   accessToken: string;
   refreshToken: string;
@@ -617,15 +605,10 @@ export class Api<
      * @name AuthControllerExchangeToken
      * @request POST:/api/auth/exchangeToken
      */
-    authControllerExchangeToken: (
-      data: ExchangeTokenRequest,
-      params: RequestParams = {},
-    ) =>
+    authControllerExchangeToken: (params: RequestParams = {}) =>
       this.request<ExchangeTokenDto, any>({
         path: `/api/auth/exchangeToken`,
         method: "POST",
-        body: data,
-        type: ContentType.Json,
         format: "json",
         ...params,
       }),

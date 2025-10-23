@@ -8,11 +8,11 @@ import {Theme} from "@/styles/Theme";
 import {useEffect} from "react";
 import {useAuthStore} from "@/utils/authStore";
 import {AuthProvider} from "@/contexts/auth-context";
-import {Role} from "@/types/open-api";
+import {UserType} from "@/types/user-type";
 
 
 export default function RootLayout() {
-    const {isLoggedIn, shouldCreateAccount, hasCompletedOnboarding, role} = useAuthStore()
+    const {isLoggedIn, shouldCreateAccount, hasCompletedOnboarding, userType} = useAuthStore()
     SplashScreen.preventAutoHideAsync();
 
     const [loaded, error] = useFonts({
@@ -35,10 +35,10 @@ export default function RootLayout() {
             <SafeAreaProvider>
                 <SafeAreaView style={styles.container} edges={['top']}>
                     <Stack screenOptions={{headerShown: false}}>
-                        <Stack.Protected guard={isLoggedIn && role === Role.User}>
+                        <Stack.Protected guard={isLoggedIn && userType === UserType.User}>
                             <Stack.Screen name="(tabs)"/>
                         </Stack.Protected>
-                        <Stack.Protected guard={isLoggedIn && role === Role.Vendor}>
+                        <Stack.Protected guard={isLoggedIn && userType === UserType.Vendor}>
                             <Stack.Screen name="(switch-tabs)"/>
                         </Stack.Protected>
                         <Stack.Protected guard={!isLoggedIn && !shouldCreateAccount && hasCompletedOnboarding}>

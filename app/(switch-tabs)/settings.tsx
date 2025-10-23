@@ -3,7 +3,7 @@ import {Text} from "react-native";
 import AppButton from "@/components/appComponents/AppButton";
 import {ButtonType} from "@/styles/Button";
 import {useAuthStore} from "@/utils/authStore";
-import {Role} from "@/types/open-api";
+import {UserType} from "@/types/user-type";
 
 export default function Settings() {
 
@@ -15,7 +15,7 @@ export default function Settings() {
                 <Text>
                     this is settings page
                 </Text>
-                <AppButton onPress={() => switchRole(Role.User)} buttonType={ButtonType.OUTLINED}>
+                <AppButton onPress={() => switchRole(UserType.User)} buttonType={ButtonType.OUTLINED}>
                     switch to user
                 </AppButton>
             </AppView>

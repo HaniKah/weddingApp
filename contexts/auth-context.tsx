@@ -33,12 +33,11 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
     const [user, setUser] = React.useState<AuthUser | null>(null);
     const [isLoading, setIsLoading] = React.useState(false);
     const [error, setError] = React.useState<AuthError | null>(null);
-    const auth = useAuth()
     const API = useApi()
     // we are not using useAuthRequest because we are implementing oAuth2.0 with passport in the backend
     // const [request, response, promptAsync] = useAuthRequest(config, discovery)
 
-    const {logIn, logOut, role} = useAuthStore()
+    const {logIn, logOut} = useAuthStore()
 
     WebBrowser.maybeCompleteAuthSession(); // still not sure what this does
 
@@ -67,8 +66,6 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
 
     const exchangeWithToken = async (code: string) => {
         const response = await API.authControllerExchangeToken({
-            role: role
-        }, {
             headers: {
                 Authorization: `Bearer ${code}`,
             }

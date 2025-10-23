@@ -3,7 +3,7 @@ import {useAuth} from "@/contexts/auth-context";
 import AppButton from "@/components/appComponents/AppButton";
 import {ButtonType} from "@/styles/Button";
 import {useAuthStore} from "@/utils/authStore";
-import {Role} from "@/types/open-api";
+import {UserType} from "@/types/user-type";
 
 export default function Settings() {
 
@@ -18,7 +18,7 @@ export default function Settings() {
             <Button title="log out" onPress={signOut}>
 
             </Button>
-            <AppButton onPress={() => switchRole(Role.Vendor)} fullWidth buttonType={ButtonType.OUTLINED}>
+            <AppButton onPress={() => switchRole(UserType.Vendor)} fullWidth buttonType={ButtonType.OUTLINED}>
                 switch tp vendor
             </AppButton>
         </>

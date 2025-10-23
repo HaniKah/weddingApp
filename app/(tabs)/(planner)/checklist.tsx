@@ -2,11 +2,13 @@ import {FlatList} from "react-native";
 import AppView from "@/components/appComponents/AppView";
 import {ChecklistViewModel} from "@/types/open-api";
 import {useEffect, useState} from "react";
-import {API} from "@/utils/api";
+
 import CheckItem from "@/components/items/CheckItem";
+import {useApi} from "@/utils/api";
 
 
 export default function Checklist() {
+    const API = useApi()
     const [checklist, setChecklist] = useState<ChecklistViewModel>()
     const [isLoading, setIsLoading] = useState(true)
 

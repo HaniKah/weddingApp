@@ -1,6 +1,7 @@
-# Welcome to your Expo app 👋
+# Welcome to the Wedding Planner App 👋
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+This is an [Expo](https://expo.dev) project created with [
+`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
 ## Get started
 
@@ -16,35 +17,45 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
    npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+## Table of Contents
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- [Tech-Stack](#Project Stack)
+- [Authentication](#Authentication)
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### Tech-Stack
 
-## Get a fresh project
+- Expo : Frontend development
+- NestJs : Backend development
 
-When you're ready, run:
+### Authentication
 
-```bash
-npm run reset-project
-```
+#### OAuth2 :
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+1. when this signIn (with google/Apple/Facebook , etc ) is pressed we use the provided method from WebBrowser package to
+   open a window that create a request to our backend ( NestJs )
 
-## Learn more
+2. our backend then will construct the object needed for the provider using the package 'passport' ( please learn the
+   best practice using passport with strategies, what is actually
+   needed is following :
+    1. the client id
+    2. the client secret
+    3. the callback url
+    4. the scopes ( if needed )
 
-To learn more about developing your project with Expo, look at the following resources:
+   The client id and client secret could be obtained by creating an account on the provider related page ( for
+   google its the google console ) after that the data could be obtained from there.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+   The callback url is the Endpoint on our backend in which the provider will send a code ( if the user consent ) that
+   we
+   could use to fetch user's data , __Please note that when using passport :__ this step were we should get a code and
+   exchange it with user's info will happen behind the scene , passport with automatically exchange the code and
+   return :
+   (userinfo , accessToken , refreshToken).
 
-## Join the community
+3. after getting the user's info we store them in the database
 
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+4. at this stage sending the accessToken and the refreshToken to the frontend is only possible through params in the
+   url ( which is not very safe )
+   because we are redirecting to web or using deep link , so instead we create an ExchangeToken ( quickly expired )
+   and we send it back to the frontend , in which later the frontend will directly exchange it with the
+   accessToken and refreshToken from the /api/auth/exchange endpoint

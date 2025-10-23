@@ -1,8 +1,8 @@
 import {AuthError} from "expo-auth-session";
 import React from "react";
-import {useAuthStore} from "@/utils/authStore";
 import * as WebBrowser from "expo-web-browser";
 import {useApi} from "@/utils/api";
+import {useAuthStore} from "@/utils/authStore";
 
 
 export type AuthUser = {
@@ -38,7 +38,7 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
     // we are not using useAuthRequest because we are implementing oAuth2.0 with passport in the backend
     // const [request, response, promptAsync] = useAuthRequest(config, discovery)
 
-    const {logIn, logOut} = useAuthStore()
+    const {logIn, logOut, role} = useAuthStore()
 
     WebBrowser.maybeCompleteAuthSession(); // still not sure what this does
 
@@ -67,9 +67,11 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
 
     const exchangeWithToken = async (code: string) => {
         const response = await API.authControllerExchangeToken({
+            role: role
+        }, {
             headers: {
                 Authorization: `Bearer ${code}`,
-            },
+            }
         })
         logIn(response.data.accessToken, response.data.refreshToken)
     }

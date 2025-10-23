@@ -1,17 +1,23 @@
-import {Button, Text, View} from "react-native";
+import {Text} from "react-native";
 import {useAuthStore} from "@/utils/authStore";
+import {Link} from "expo-router";
+import AppButton from "@/components/appComponents/AppButton";
+import AppView from "@/components/appComponents/AppView";
 
 export default function Onboarding() {
     const {completeOnboarding} = useAuthStore()
     return (
-        <View>
+        <AppView withPadding>
             <Text>
                 this is on boarding
             </Text>
-            <Button title="complete on boarding" onPress={completeOnboarding}>
+            <Link href="/onboarding/choose-role" asChild>
+                <AppButton fullWidth>
+                    next
+                </AppButton>
+            </Link>
 
-            </Button>
-        </View>
+        </AppView>
     )
 }
 

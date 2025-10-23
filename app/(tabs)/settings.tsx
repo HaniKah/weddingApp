@@ -1,9 +1,14 @@
 import {Button, Text} from "react-native";
 import {useAuth} from "@/contexts/auth-context";
+import AppButton from "@/components/appComponents/AppButton";
+import {ButtonType} from "@/styles/Button";
+import {useAuthStore} from "@/utils/authStore";
+import {Role} from "@/types/open-api";
 
 export default function Settings() {
-    
+
     const {signOut} = useAuth()
+    const {switchRole} = useAuthStore()
 
     return (
         <>
@@ -13,6 +18,9 @@ export default function Settings() {
             <Button title="log out" onPress={signOut}>
 
             </Button>
+            <AppButton onPress={() => switchRole(Role.Vendor)} fullWidth buttonType={ButtonType.OUTLINED}>
+                switch tp vendor
+            </AppButton>
         </>
     )
 }

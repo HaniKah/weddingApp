@@ -23,7 +23,7 @@ export default function AppButton({
     buttonSize?: "SM" | "MD" | "LG",
     buttonType?: ButtonType,
     isSubmit?: boolean,
-    onPress?: () => void,
+    onPress?: (props: any) => void,
     children: React.ReactNode | string,
     extraStylesBtn?: StyleProp<ViewStyle>,
     extraStylesTxt?: StyleProp<TextStyle>,
@@ -84,7 +84,7 @@ export default function AppButton({
         buttonStyles.paddingHorizontal = 0
         buttonStyles.paddingVertical = 0
     }
-    
+
     if (inactive) {
         buttonStyles = {...buttonStyles, ...ButtonStyles.inactiveBtn}
         textStyles = {...textStyles, ...ButtonStyles.inactiveTxt}

@@ -7,13 +7,13 @@ import {ButtonType} from "@/styles/Button";
 import AppCondition from "@/components/appComponents/AppCondition";
 import PlaceInfo from "@/components/wizard/PlaceInfo";
 import {Theme} from "@/styles/Theme";
-import {API} from "@/utils/api";
+import {useApi} from "@/utils/api";
 import ScrollView = Animated.ScrollView;
 
 
 export default function PlaceId() {
+    const API = useApi()
     const {id} = useLocalSearchParams<{ id: string }>();
-
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const [placeDetails, setPlaceDetails] = useState<PlaceDetailsDto>()
     const [notes, setNotes] = useState<string>()
@@ -119,12 +119,12 @@ export default function PlaceId() {
 
 
                     <View style={styles.saveForLaterContainer}>
-                        <AppButton onPress={saveForLater} buttonType={ButtonType.PLAIN}>
+                        <AppButton fullWidth onPress={saveForLater} buttonType={ButtonType.PLAIN}>
                             save for later
                         </AppButton>
                     </View>
 
-                    <AppButton buttonType={placeDetails.picked ? ButtonType.INACTIVE : ButtonType.PRIMARY}
+                    <AppButton inactive={placeDetails.picked} fullWidth buttonType={ButtonType.PRIMARY}
                                onPress={pickPlace}>
                         pick this place
                     </AppButton>

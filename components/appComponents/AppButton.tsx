@@ -84,16 +84,17 @@ export default function AppButton({
         buttonStyles.paddingHorizontal = 0
         buttonStyles.paddingVertical = 0
     }
-
-
-    if (fullWidth) {
-        buttonStyles.alignSelf = "stretch"
+    
+    if (inactive) {
+        buttonStyles = {...buttonStyles, ...ButtonStyles.inactiveBtn}
+        textStyles = {...textStyles, ...ButtonStyles.inactiveTxt}
     }
-
     if (underline) {
         textStyles.textDecorationLine = "underline"
     }
-
+    if (fullWidth) {
+        buttonStyles.alignSelf = "stretch"
+    }
 
     const formContext = useFormContext()
 

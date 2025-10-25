@@ -6,8 +6,9 @@ import AppTextInput from "@/components/appComponents/AppTextInput";
 import AppButton from "@/components/appComponents/AppButton";
 import {ButtonType} from "@/styles/Button";
 import {AppForm} from "@/contexts/form-context";
-import {API} from "@/utils/api";
+
 import AppModal from "@/components/appComponents/AppModal";
+import {useApi} from "@/utils/api";
 
 interface checkedGuestInfo {
     name: string;
@@ -24,6 +25,8 @@ export default function AddGuestModal({guestInfo, isVisible, setIsVisible, setRe
     const [phone, setPhone] = useState<string | undefined>(guestInfo?.phoneNumber)
     const [guestSide, setGuestSide] = useState<CoupleSide>(CoupleSide.Groom)
     const [isLoading, setIsLoading] = useState<boolean>(false)
+
+    const API = useApi()
 
 
     useEffect(() => {

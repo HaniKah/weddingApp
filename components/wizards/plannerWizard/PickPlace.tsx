@@ -1,8 +1,8 @@
 import {FlatList, StyleSheet, View} from "react-native";
 
-import PlaceItem from "@/components/wizard/PlaceItem";
+import PlaceItem from "@/components/wizards/plannerWizard/PlaceItem";
 import {PlacesDto, StepsDto} from "@/types/open-api";
-import WizardHeader from "@/components/wizard/WizardHeader";
+import WizardHeader from "@/components/wizards/plannerWizard/WizardHeader";
 
 
 export function PickPlace({data, onNextStep, onPreviousStep, isLastStep, isFirstStep, currentStep}: {

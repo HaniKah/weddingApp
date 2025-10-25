@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {PlacesViewModel, StepsDto, StepsViewModel, WeddingSteps} from "@/types/open-api";
-import PickDate from "@/components/wizard/PickDate";
-import {PickPlace} from "@/components/wizard/PickPlace";
+import PickDate from "@/components/wizards/plannerWizard/PickDate";
+import {PickPlace} from "@/components/wizards/plannerWizard/PickPlace";
 import PlannerToolbar from "@/components/toolbars/PlannerToolbar";
 import {Stack, useLocalSearchParams, useRouter} from "expo-router";
 import AppView from "@/components/appComponents/AppView";

@@ -5,7 +5,7 @@ import {PlaceDetailsDto} from "@/types/open-api";
 import AppButton from "@/components/appComponents/AppButton";
 import {ButtonType} from "@/styles/Button";
 import AppCondition from "@/components/appComponents/AppCondition";
-import PlaceInfo from "@/components/wizard/PlaceInfo";
+import PlaceInfo from "@/components/wizards/plannerWizard/PlaceInfo";
 import {Theme} from "@/styles/Theme";
 import {useApi} from "@/utils/api";
 import ScrollView = Animated.ScrollView;

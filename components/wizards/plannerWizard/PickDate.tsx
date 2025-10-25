@@ -1,4 +1,4 @@
-import WizardHeader from "@/components/wizard/WizardHeader";
+import WizardHeader from "@/components/wizards/plannerWizard/WizardHeader";
 import {Animated} from "react-native";
 import {StepsDto} from "@/types/open-api";
 import AppCalendar from "@/components/appComponents/AppCalendar";

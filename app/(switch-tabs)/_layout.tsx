@@ -9,7 +9,7 @@ export default function SwitchTabsLayout() {
             <Tabs screenOptions={{
                 tabBarActiveTintColor: Theme.colors.primary,
                 tabBarInactiveTintColor: Theme.colors.primaryInactive,
-                headerShown: false
+                headerShown: false,
             }}>
                 <Tabs.Screen name="index" options={{
                     title: 'Places',
@@ -20,7 +20,7 @@ export default function SwitchTabsLayout() {
                                  title: 'ads',
                                  tabBarIcon: ({color}) => <IconSymbol size={28} name="person.3.fill" color={color}/>,
                              }}/>
-             
+
                 <Tabs.Screen name="settings"
                              options={{
                                  title: 'Settings',

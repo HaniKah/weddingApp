@@ -1,10 +1,27 @@
-export default function Wizard<T>({children, stepsList, onFinish, currentStep, setCurrentStep}: {
+import {useImperativeHandle} from "react";
+
+export interface WizardRef {
+    nextStep: () => void;
+    previousStep: () => void;
+}
+
+
+export default function Wizard<T>({children, stepsList, currentStep, setCurrentStep, ref}: {
     children: React.ReactNode,
     stepsList: T[]
-    onFinish: () => void,
     currentStep: T,
     setCurrentStep: (step: T) => void,
+    ref: any
 }) {
+
+    useImperativeHandle(ref, () => ({
+        nextStep() {
+            onNext()
+        },
+        previousStep() {
+            onPrevious()
+        }
+    }));
 
 
     function onNext() {

@@ -1,4 +1,4 @@
-import {ActivityIndicator, View} from "react-native";
+import {ActivityIndicator, StyleSheet, View} from "react-native";
 import {Theme} from "@/styles/Theme";
 
 export default function AppView({isLoading, withPadding, children}: {
@@ -16,9 +16,9 @@ export default function AppView({isLoading, withPadding, children}: {
         </View>
     )
 }
-const styles = {
+
+const styles = StyleSheet.create({
     container: {
-       
-        // flex: 1
-    },
-}
+        flex: 1
+    }
+})

@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
     },
     listContainer: {
         paddingBottom: 100,
+        gap: 20
     },
     placeItem: {
         flex: 1,
@@ -65,6 +66,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         padding: 20,
+
     },
     placeText: {
         fontSize: Theme.sizes.md,

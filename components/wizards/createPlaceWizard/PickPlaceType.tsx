@@ -54,9 +54,9 @@ const styles = StyleSheet.create({
         fontSize: Theme.sizes.xl,
         fontWeight: "bold",
         textAlign: "center",
+        marginVertical: 20,
     },
     listContainer: {
-        gap: 20,
         paddingBottom: 100,
     },
     placeItem: {

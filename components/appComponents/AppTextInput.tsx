@@ -1,7 +1,7 @@
 import {KeyboardTypeOptions, StyleProp, StyleSheet, Text, TextInput, View, ViewStyle} from "react-native";
 import {Theme} from "@/styles/Theme";
 import {useFormContext} from "@/contexts/form-context";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 
 export default function AppTextInput({
                                          onTextChange,
@@ -23,6 +23,7 @@ export default function AppTextInput({
     name: string
 }) {
 
+    const inputRef = useRef<TextInput>(null)
     const [error, setError] = useState<string | undefined>()
 
     const form = useFormContext()
@@ -50,8 +51,7 @@ export default function AppTextInput({
         }
 
     }, [form.checking]);
-
-
+    
     return (
         <View style={[extraStyles]}>
 
@@ -61,7 +61,8 @@ export default function AppTextInput({
                        autoCorrect={false}
                        keyboardType={keyboardType}
                        placeholder={placeholder}
-                       style={styles.input}
+                       ref={inputRef}
+                       style={[styles.input, inputRef.current?.isFocused() && styles.onFocus]}
                        onChangeText={preTextChange}/>
             <Text style={styles.error}>{error}</Text>
         </View>
@@ -76,17 +77,20 @@ const styles = StyleSheet.create({
             borderColor: Theme.colors.primaryInactive,
             paddingHorizontal: 10,
             color: Theme.colors.primary,
-            fontSize: 20,
+            fontSize: Theme.sizes.md,
         },
 
         label: {
-            fontSize: 18,
+            fontSize: Theme.sizes.md,
             color: Theme.colors.primary,
-            fontWeight: "bold",
+            fontWeight: "semibold",
         },
         error: {
             color: Theme.colors.red["S100"],
             marginTop: 5,
+        },
+        onFocus: {
+            borderColor: Theme.colors.primary,
         }
     }
 )

@@ -2,11 +2,13 @@ import {FlatList, Pressable, StyleSheet, Text, View} from "react-native";
 import {WeddingSteps} from "@/types/open-api";
 import {IconSymbol} from "@/components/symbols/IconSymbol";
 import {Theme} from "@/styles/Theme";
+import AppButton from "@/components/appComponents/AppButton";
 
 
-export default function PickPlaceType({selectedType, setSelectedType}: {
+export default function PickPlaceType({selectedType, setSelectedType, onNext}: {
     selectedType: WeddingSteps | null,
     setSelectedType: (type: WeddingSteps) => void
+    onNext: () => void
 }) {
     const placeTypeList: WeddingSteps[] = Object.values(WeddingSteps)
 
@@ -28,6 +30,9 @@ export default function PickPlaceType({selectedType, setSelectedType}: {
                           renderItem={({item, index}) => (<PickPlaceItem step={item}/>)}/>
                 {/*{placeTypeList.map((step, i) => (<PickPlaceItem key={i} step={step}/>))}*/}
             </View>
+            <AppButton onPress={onNext} fullWidth extraStylesBtn={{marginVertical: 30}}>
+                next
+            </AppButton>
 
         </>
     )

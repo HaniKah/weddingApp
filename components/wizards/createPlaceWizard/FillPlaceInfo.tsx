@@ -6,7 +6,7 @@ import {Theme} from "@/styles/Theme";
 import AppButton from "@/components/appComponents/AppButton";
 
 
-export default function FillPlaceInfo() {
+export default function FillPlaceInfo({onNext}: { onNext: () => void }) {
 
     const [placeName, setPlaceName] = useState<string>()
     const [phoneNumber, setPhoneNumber] = useState<string>()
@@ -16,7 +16,7 @@ export default function FillPlaceInfo() {
     const [website, setWebsite] = useState<string>()
 
     const handleSubmit = () => {
-        console.log(" form submmited ")
+        onNext()
     }
     return (
         <>

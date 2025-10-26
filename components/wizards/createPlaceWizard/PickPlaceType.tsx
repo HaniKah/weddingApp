@@ -22,29 +22,42 @@ export default function PickPlaceType({selectedType, setSelectedType, onNext}: {
             </Pressable>
         )
     }
+
+    const preNext = () => {
+        if (selectedType) {
+            onNext()
+        }
+    }
     return (
         <>
-            <View>
+            <View style={styles.container}>
                 <FlatList ListHeaderComponent={<Text style={styles.title}>Choose your place type</Text>}
-                          contentContainerStyle={styles.container} data={placeTypeList} numColumns={3}
+                          contentContainerStyle={styles.listContainer} data={placeTypeList} numColumns={3}
                           renderItem={({item, index}) => (<PickPlaceItem step={item}/>)}/>
                 {/*{placeTypeList.map((step, i) => (<PickPlaceItem key={i} step={step}/>))}*/}
+                <AppButton extraStylesBtn={styles.button} onPress={preNext} fullWidth
+                >
+                    next
+                </AppButton>
             </View>
-            <AppButton onPress={onNext} fullWidth extraStylesBtn={{marginVertical: 30}}>
-                next
-            </AppButton>
+
 
         </>
     )
 }
 const styles = StyleSheet.create({
+    container: {
+        position: 'relative',
+        padding: 15
+    },
     title: {
         fontSize: Theme.sizes.xl,
         fontWeight: "bold",
         textAlign: "center",
     },
-    container: {
-        gap: 20
+    listContainer: {
+        gap: 20,
+        paddingBottom: 100,
     },
     placeItem: {
         flex: 1,
@@ -55,6 +68,15 @@ const styles = StyleSheet.create({
     },
     placeText: {
         fontSize: Theme.sizes.md,
+    },
+    button: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        marginVertical: 30,
+        marginHorizontal: 15
+
     },
     selected: {
         backgroundColor: Theme.colors.iconBackground,

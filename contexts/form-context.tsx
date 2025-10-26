@@ -1,4 +1,5 @@
 // FormContext.js
+//Todo consider using the swift elements from ios
 import React, {createContext, useContext, useEffect, useState} from 'react';
 
 
@@ -34,9 +35,7 @@ export function AppForm<T>({onSubmit, children}: { onSubmit: (data: T) => void, 
 
 //todo : type validation should happen here with ZOD ( since ts doesnt work in runtime )
     useEffect(() => {
-        console.log("checking:", checking)
         if (result && checking) {
-            console.log(result)
             onSubmit(result)
         }
         if (!checking) {

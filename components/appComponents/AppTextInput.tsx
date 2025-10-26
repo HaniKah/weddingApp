@@ -51,7 +51,7 @@ export default function AppTextInput({
         }
 
     }, [form.checking]);
-    
+
     return (
         <View style={[extraStyles]}>
 
@@ -72,7 +72,7 @@ export default function AppTextInput({
 
 const styles = StyleSheet.create({
         input: {
-            height: 50,
+            height: 45,
             borderBottomWidth: 2,
             borderColor: Theme.colors.primaryInactive,
             paddingHorizontal: 10,
@@ -86,7 +86,8 @@ const styles = StyleSheet.create({
             fontWeight: "semibold",
         },
         error: {
-            color: Theme.colors.red["S100"],
+            fontSize: Theme.sizes.sm,
+            color: Theme.colors.red["S500"],
             marginTop: 5,
         },
         onFocus: {

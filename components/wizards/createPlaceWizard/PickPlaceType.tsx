@@ -35,8 +35,7 @@ export default function PickPlaceType({selectedType, setSelectedType, onNext}: {
                           contentContainerStyle={styles.listContainer} data={placeTypeList} numColumns={3}
                           renderItem={({item, index}) => (<PickPlaceItem step={item}/>)}/>
                 {/*{placeTypeList.map((step, i) => (<PickPlaceItem key={i} step={step}/>))}*/}
-                <AppButton extraStylesBtn={styles.button} onPress={preNext} fullWidth
-                >
+                <AppButton extraStylesBtn={styles.button} onPress={preNext} fullWidth>
                     next
                 </AppButton>
             </View>

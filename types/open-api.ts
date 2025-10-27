@@ -144,6 +144,12 @@ export interface ExchangeTokenDto {
   refreshToken: string;
 }
 
+export interface CreatePlaceRequest {
+  type: WeddingSteps;
+  placeInfo: object;
+  location: object;
+}
+
 import type {
   AxiosInstance,
   AxiosRequestConfig,
@@ -610,6 +616,25 @@ export class Api<
         path: `/api/auth/exchangeToken`,
         method: "POST",
         format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Places
+     * @name PlacesControllerCreatePlace
+     * @request POST:/api/places/Create
+     */
+    placesControllerCreatePlace: (
+      data: CreatePlaceRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/places/Create`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
         ...params,
       }),
   };

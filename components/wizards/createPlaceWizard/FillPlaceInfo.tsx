@@ -4,6 +4,7 @@ import AppTextInput from "@/components/appComponents/AppTextInput";
 import {useState} from "react";
 import {Theme} from "@/styles/Theme";
 import AppButton from "@/components/appComponents/AppButton";
+import {Picker} from "@react-native-picker/picker";
 
 
 export default function FillPlaceInfo({onNext}: { onNext: () => void }) {
@@ -15,6 +16,8 @@ export default function FillPlaceInfo({onNext}: { onNext: () => void }) {
     const [tiktok, setTiktok] = useState<string>()
     const [website, setWebsite] = useState<string>()
 
+    const [selectedLanguage, setSelectedLanguage] = useState();
+
     const handleSubmit = () => {
         onNext()
     }
@@ -24,6 +27,14 @@ export default function FillPlaceInfo({onNext}: { onNext: () => void }) {
                 <Text style={styles.title}>Your place info</Text>
                 <AppForm onSubmit={handleSubmit}>
                     <ScrollView style={styles.list}>
+                        <Picker
+                            selectedValue={selectedLanguage}
+                            onValueChange={(itemValue, itemIndex) =>
+                                setSelectedLanguage(itemValue)
+                            }>
+                            <Picker.Item label="Java" value="java"/>
+                            <Picker.Item label="JavaScript" value="js"/>
+                        </Picker>
                         <AppTextInput value={placeName}
                                       required
                                       onTextChange={(s) => setPlaceName(s)} name="name"

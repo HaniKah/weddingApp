@@ -77,7 +77,6 @@ export default function FillPlaceInfo({onNext}: { onNext: () => void }) {
 
 const styles = StyleSheet.create({
     container: {
-        position: 'relative',
         padding: 15,
         paddingBottom: 0,
     },
@@ -95,13 +94,5 @@ const styles = StyleSheet.create({
     list: {
         height: "80%"
     },
-    // button: {
-    //     position: 'absolute',
-    //     bottom: 0,
-    //     left: 0,
-    //     right: 0,
-    //     marginVertical: 0,
-    //     marginHorizontal: 0
-    //
-    // },
+
 })

@@ -1,10 +1,10 @@
 import Wizard, {WizardRef} from "@/components/wizards/Wizard";
 import {useRef, useState} from "react";
 import WizardStep from "@/components/wizards/WizardStep";
-import {Text} from "react-native";
 import PickPlaceType from "@/components/wizards/createPlaceWizard/PickPlaceType";
 import {WeddingSteps} from "@/types/open-api";
 import FillPlaceInfo from "@/components/wizards/createPlaceWizard/FillPlaceInfo";
+import UploadImages from "@/components/wizards/createPlaceWizard/UploadImages";
 
 enum CreatePlaceSteps {
     PickPlaceType = "PickPlaceType",
@@ -32,12 +32,10 @@ export default function CreatePlaceWizard() {
                     <PickPlaceType onNext={onNext} selectedType={selectedType} setSelectedType={setSelectedType}/>
                 </WizardStep>
                 <WizardStep step={CreatePlaceSteps.FillPlaceInfo} currentStep={currentStep}>
-                    <FillPlaceInfo/>
+                    <FillPlaceInfo onNext={onNext}/>
                 </WizardStep>
                 <WizardStep step={CreatePlaceSteps.PickPlaceLocation} currentStep={currentStep}>
-                    <Text>
-                        step 3
-                    </Text>
+                    <UploadImages/>
                 </WizardStep>
             </Wizard>
 

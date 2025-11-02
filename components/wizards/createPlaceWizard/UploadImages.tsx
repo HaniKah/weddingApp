@@ -24,6 +24,7 @@ export default function UploadImages({images, setImages, onFinish}: {
 
         if (!result.canceled) {
             const [other, heic] = splitByMimeType(result.assets) // special handle for heic files
+            console.log("hiec", heic)
             const convertedImages: ImageUploadModel[] = await convertHeicToJPEGAndCreateUploadModel(heic)
             const imagesFormdata: ImageUploadModel[] = [...createImageUploadModelForOther(other), ...convertedImages]
             setImages(imagesFormdata)
@@ -36,6 +37,7 @@ export default function UploadImages({images, setImages, onFinish}: {
             else fail.push(val)
             return ([pass, fail])
         }, [[], []])
+
     }
 
     function convertHeicToJPEGAndCreateUploadModel(images: ImagePickerAsset[]): Promise<ImageUploadModel[]> {
@@ -44,10 +46,12 @@ export default function UploadImages({images, setImages, onFinish}: {
             const converted = await image.saveAsync({
                 format: SaveFormat.JPEG
             })
+            // const existingName = asset.fileName?.split(".").pop()
+            const newName = asset.fileName?.replace("heic", "jpeg")
             return {
                 uri: converted.uri,
                 type: "image/jpeg",
-                name: asset.fileName
+                name: newName
             }
         }))
     }
@@ -61,7 +65,7 @@ export default function UploadImages({images, setImages, onFinish}: {
             }
         })
     }
-    
+
     return (
         <View style={styles.container}>
             <Button title="Pick an image from camera roll" onPress={pickImage}/>

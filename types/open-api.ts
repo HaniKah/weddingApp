@@ -144,10 +144,33 @@ export interface ExchangeTokenDto {
   refreshToken: string;
 }
 
+export interface CreatePlaceInfo {
+  name: string;
+  phoneNumber: string;
+  facebook?: string;
+  instagram?: string;
+  tiktok?: string;
+  website?: string;
+}
+
+export interface CreatePlaceLocation {
+  streetName: string;
+  city: string;
+  country: string;
+  postalCode: string;
+  lat?: number;
+  lng?: number;
+  googleId?: string;
+}
+
 export interface CreatePlaceRequest {
   type: WeddingSteps;
-  placeInfo: object;
-  location: object;
+  placeInfo: CreatePlaceInfo;
+  location?: CreatePlaceLocation;
+}
+
+export interface CreatePlaceDto {
+  id: number;
 }
 
 import type {
@@ -624,17 +647,34 @@ export class Api<
      *
      * @tags Places
      * @name PlacesControllerCreatePlace
-     * @request POST:/api/places/Create
+     * @request POST:/api/places/create
      */
     placesControllerCreatePlace: (
       data: CreatePlaceRequest,
       params: RequestParams = {},
     ) =>
-      this.request<void, any>({
-        path: `/api/places/Create`,
+      this.request<CreatePlaceDto, any>({
+        path: `/api/places/create`,
         method: "POST",
         body: data,
         type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Photos
+     * @name PhotosControllerUploadFile
+     * @request POST:/api/photos/upload
+     */
+    photosControllerUploadFile: (data: any, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/photos/upload`,
+        method: "POST",
+        body: data,
+        type: ContentType.FormData,
         ...params,
       }),
   };

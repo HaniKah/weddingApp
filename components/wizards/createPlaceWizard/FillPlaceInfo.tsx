@@ -5,9 +5,13 @@ import {useState} from "react";
 import {Theme} from "@/styles/Theme";
 import AppButton from "@/components/appComponents/AppButton";
 import {Picker} from "@react-native-picker/picker";
+import {CreatePlaceInfo} from "@/types/open-api";
 
 
-export default function FillPlaceInfo({onNext}: { onNext: () => void }) {
+export default function FillPlaceInfo({onNext, setPlaceInfo}: {
+    onNext: () => void,
+    setPlaceInfo: (info: CreatePlaceInfo) => void
+}) {
 
     const [placeName, setPlaceName] = useState<string>()
     const [phoneNumber, setPhoneNumber] = useState<string>()
@@ -18,7 +22,18 @@ export default function FillPlaceInfo({onNext}: { onNext: () => void }) {
 
     const [selectedLanguage, setSelectedLanguage] = useState();
 
+
     const handleSubmit = () => {
+//this is extra for ts. required fields are handled inside the form
+        if (!placeName || !phoneNumber) return
+        setPlaceInfo({
+            name: placeName,
+            phoneNumber: phoneNumber,
+            facebook: facebook,
+            instagram: instagram,
+            tiktok: tiktok,
+            website: website
+        })
         onNext()
     }
     return (

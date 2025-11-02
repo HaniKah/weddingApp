@@ -2,14 +2,22 @@ import Wizard, {WizardRef} from "@/components/wizards/Wizard";
 import {useRef, useState} from "react";
 import WizardStep from "@/components/wizards/WizardStep";
 import PickPlaceType from "@/components/wizards/createPlaceWizard/PickPlaceType";
-import {WeddingSteps} from "@/types/open-api";
+import {CreatePlaceInfo, WeddingSteps} from "@/types/open-api";
 import FillPlaceInfo from "@/components/wizards/createPlaceWizard/FillPlaceInfo";
 import UploadImages from "@/components/wizards/createPlaceWizard/UploadImages";
+import {useApi} from "@/utils/api";
+
 
 enum CreatePlaceSteps {
     PickPlaceType = "PickPlaceType",
     FillPlaceInfo = "FillPlaceInfo",
     PickPlaceLocation = "PickPlaceLocation"
+}
+
+export type ImageUploadModel = {
+    uri: string
+    type?: string
+    name?: string | null
 }
 
 export default function CreatePlaceWizard() {
@@ -18,12 +26,40 @@ export default function CreatePlaceWizard() {
     const stepsList: CreatePlaceSteps[] = Object.values(CreatePlaceSteps);
     const [currentStep, setCurrentStep] = useState<string>(stepsList[0]);
 
-    const [selectedType, setSelectedType] = useState<WeddingSteps | null>(null)
+    const [selectedType, setSelectedType] = useState<WeddingSteps>()
+    const [placeInfo, setPlaceInfo] = useState<CreatePlaceInfo>()
+    const [images, setImages] = useState<ImageUploadModel[]>([]);
 
+    const API = useApi()
 
     const onNext = () => {
         wizardRef.current?.nextStep();
     };
+
+
+    const onCreate = async () => {
+        if (!placeInfo || !selectedType) return
+        const res = await API.placesControllerCreatePlace({placeInfo: placeInfo, type: selectedType})
+        const files = constructRequest(res.data.id)
+        if (!files) return
+        await API.photosControllerUploadFile(files)
+    }
+
+
+    function constructRequest(placeId: number): FormData | undefined {
+        if (!placeInfo || !selectedType) return //todo : to be handled with errors
+        const formData = new FormData();
+        formData.append('placeId', placeId.toString())
+        images?.map((asset, i) => {
+            formData.append('file', {
+                uri: asset.uri,
+                type: asset.type,
+                name: asset.name,
+            } as any)
+        })
+        return formData
+    }
+
 
     return (
         <>
@@ -32,10 +68,10 @@ export default function CreatePlaceWizard() {
                     <PickPlaceType onNext={onNext} selectedType={selectedType} setSelectedType={setSelectedType}/>
                 </WizardStep>
                 <WizardStep step={CreatePlaceSteps.FillPlaceInfo} currentStep={currentStep}>
-                    <FillPlaceInfo onNext={onNext}/>
+                    <FillPlaceInfo setPlaceInfo={setPlaceInfo} onNext={onNext}/>
                 </WizardStep>
                 <WizardStep step={CreatePlaceSteps.PickPlaceLocation} currentStep={currentStep}>
-                    <UploadImages/>
+                    <UploadImages setImages={setImages} images={images} onFinish={onCreate}/>
                 </WizardStep>
             </Wizard>
 

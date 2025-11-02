@@ -6,7 +6,7 @@ import AppButton from "@/components/appComponents/AppButton";
 
 
 export default function PickPlaceType({selectedType, setSelectedType, onNext}: {
-    selectedType: WeddingSteps | null,
+    selectedType: WeddingSteps | undefined,
     setSelectedType: (type: WeddingSteps) => void
     onNext: () => void
 }) {

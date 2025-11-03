@@ -1,4 +1,4 @@
-import {Button, Image, StyleSheet, Text, View} from "react-native";
+import {Button, ScrollView, StyleSheet, Text, View} from "react-native";
 import * as ImagePicker from 'expo-image-picker';
 import {ImagePickerAsset} from 'expo-image-picker';
 import AppButton from "@/components/appComponents/AppButton";
@@ -24,7 +24,6 @@ export default function UploadImages({images, setImages, onFinish}: {
 
         if (!result.canceled) {
             const [other, heic] = splitByMimeType(result.assets) // special handle for heic files
-            console.log("hiec", heic)
             const convertedImages: ImageUploadModel[] = await convertHeicToJPEGAndCreateUploadModel(heic)
             const imagesFormdata: ImageUploadModel[] = [...createImageUploadModelForOther(other), ...convertedImages]
             setImages(imagesFormdata)
@@ -67,14 +66,14 @@ export default function UploadImages({images, setImages, onFinish}: {
     }
 
     return (
-        <View style={styles.container}>
+        <ScrollView contentContainerStyle={styles.container}>
             <Button title="Pick an image from camera roll" onPress={pickImage}/>
             <View>
                 <Text>before conversion</Text>
                 {images?.map((img, i) => {
                     return (
                         <View key={i}>
-                            <Image source={{uri: img.uri}} style={styles.image}/>
+                            {/*<Image source={{uri: img.uri}} style={styles.image}/>*/}
                             <Text>{img.type}</Text>
                         </View>
                     )
@@ -82,7 +81,7 @@ export default function UploadImages({images, setImages, onFinish}: {
                 <AppButton onPress={onFinish}>finish</AppButton>
             </View>
 
-        </View>
+        </ScrollView>
     );
 }
 const styles = StyleSheet.create({

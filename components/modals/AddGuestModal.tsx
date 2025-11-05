@@ -58,7 +58,6 @@ export default function AddGuestModal({guestInfo, isVisible, setIsVisible, setRe
 
     async function createNewGuest(data: AddGuestRequest) {
 
-        console.log("from createNewGuest in Modal ; ", data)
         if (!guestSide) return
         try {
             setIsLoading(true)

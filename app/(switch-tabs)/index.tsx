@@ -1,25 +1,45 @@
 import AppView from "@/components/appComponents/AppView";
 import PlacesToolbar from "@/components/toolbars/PlacesToolbar";
 import {useApi} from "@/utils/api";
-import {StyleSheet, Text} from "react-native";
+import {FlatList, StyleSheet} from "react-native";
 import {Theme} from "@/styles/Theme";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import AddPlaceModal from "@/components/modals/AddPlaceModal";
+import {VendorPlaceDto} from "@/types/open-api";
+import VendorPlaceItem from "@/components/items/VendorPlaceItem";
 
 export default function Index() {
     const API = useApi()
-    const [openModal, setOpenModal] = useState(false)
+    const [openModal, setOpenModal] = useState<boolean>(false)
+    const [places, setPlaces] = useState<VendorPlaceDto[]>()
+    const [isLoading, setIsLoading] = useState(true)
 
-    function createPlace() {
-        console.log("create place")
+    useEffect(() => {
+        const getPlaces = async () => {
+            try {
+                const res = await API.placesControllerGetPlaces()
+                setPlaces(res.data.result)
+            } catch (err) {
+                console.error(err)
+            } finally {
+                setIsLoading(false)
+            }
+        }
 
-    }
+        getPlaces()
+    }, [])
+
 
     return (
         <>
             <PlacesToolbar onCreatePlace={() => setOpenModal(true)}/>
-            <AppView withPadding>
-                <Text style={styles.title}>Your places</Text>
+            <AppView withPadding isLoading={isLoading}>
+                <FlatList keyExtractor={(item) => item.id.toString()}
+                          data={places}
+                          renderItem={({item}) => <VendorPlaceItem streetName={item.streetName}
+                                                                   thumbnail={item.thumbnail}
+                                                                   id={item.id}
+                                                                   name={item.name}/>}/>
             </AppView>
             <AddPlaceModal setIsVisible={setOpenModal} isVisible={openModal}/>
         </>

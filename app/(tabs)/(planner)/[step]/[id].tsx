@@ -24,7 +24,6 @@ export default function PlaceId() {
 
     const router = useRouter()
     const path = usePathname()
-    console.log(path)
 
     useEffect(() => {
         const getPlaceDetails = async () => {

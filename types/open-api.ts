@@ -173,6 +173,17 @@ export interface CreatePlaceDto {
   id: number;
 }
 
+export interface VendorPlaceDto {
+  id: number;
+  name: string;
+  streetName?: string;
+  thumbnail: string;
+}
+
+export interface VendorPlaceViewModel {
+  result: VendorPlaceDto[];
+}
+
 import type {
   AxiosInstance,
   AxiosRequestConfig,
@@ -379,7 +390,7 @@ export class Api<
      *
      * @tags Planner
      * @name PlannerControllerGetPlaces
-     * @request GET:/api/places/getPlaces
+     * @request GET:/api/planner/getPlaces
      */
     plannerControllerGetPlaces: (
       query: {
@@ -388,7 +399,7 @@ export class Api<
       params: RequestParams = {},
     ) =>
       this.request<PlacesViewModel, any>({
-        path: `/api/places/getPlaces`,
+        path: `/api/planner/getPlaces`,
         method: "GET",
         query: query,
         format: "json",
@@ -400,7 +411,7 @@ export class Api<
      *
      * @tags Planner
      * @name PlannerControllerGetPlaceById
-     * @request GET:/api/places/getPlaceById
+     * @request GET:/api/planner/getPlaceById
      */
     plannerControllerGetPlaceById: (
       query: {
@@ -409,7 +420,7 @@ export class Api<
       params: RequestParams = {},
     ) =>
       this.request<PlaceDetailsDto, any>({
-        path: `/api/places/getPlaceById`,
+        path: `/api/planner/getPlaceById`,
         method: "GET",
         query: query,
         format: "json",
@@ -421,11 +432,11 @@ export class Api<
      *
      * @tags Planner
      * @name PlannerControllerGetSteps
-     * @request GET:/api/places/getSteps
+     * @request GET:/api/planner/getSteps
      */
     plannerControllerGetSteps: (params: RequestParams = {}) =>
       this.request<StepsViewModel, any>({
-        path: `/api/places/getSteps`,
+        path: `/api/planner/getSteps`,
         method: "GET",
         format: "json",
         ...params,
@@ -436,14 +447,14 @@ export class Api<
      *
      * @tags Planner
      * @name PlannerControllerUpdatePlaceDetails
-     * @request POST:/api/places/updatePlaceDetails
+     * @request POST:/api/planner/updatePlaceDetails
      */
     plannerControllerUpdatePlaceDetails: (
       data: PlaceDetailsRequest,
       params: RequestParams = {},
     ) =>
       this.request<void, any>({
-        path: `/api/places/updatePlaceDetails`,
+        path: `/api/planner/updatePlaceDetails`,
         method: "POST",
         body: data,
         type: ContentType.Json,
@@ -455,11 +466,11 @@ export class Api<
      *
      * @tags Planner
      * @name PlannerControllerGetWeddingDate
-     * @request GET:/api/places/getWeddingDate
+     * @request GET:/api/planner/getWeddingDate
      */
     plannerControllerGetWeddingDate: (params: RequestParams = {}) =>
       this.request<WeddingDateDto, any>({
-        path: `/api/places/getWeddingDate`,
+        path: `/api/planner/getWeddingDate`,
         method: "GET",
         format: "json",
         ...params,
@@ -470,14 +481,14 @@ export class Api<
      *
      * @tags Planner
      * @name PlannerControllerUpdateWeddingDate
-     * @request POST:/api/places/updateWeddingDate
+     * @request POST:/api/planner/updateWeddingDate
      */
     plannerControllerUpdateWeddingDate: (
       data: UpdateDateRequest,
       params: RequestParams = {},
     ) =>
       this.request<void, any>({
-        path: `/api/places/updateWeddingDate`,
+        path: `/api/planner/updateWeddingDate`,
         method: "POST",
         body: data,
         type: ContentType.Json,
@@ -489,11 +500,11 @@ export class Api<
      *
      * @tags Planner
      * @name PlannerControllerGetChecklist
-     * @request GET:/api/places/getChecklist
+     * @request GET:/api/planner/getChecklist
      */
     plannerControllerGetChecklist: (params: RequestParams = {}) =>
       this.request<ChecklistViewModel, any>({
-        path: `/api/places/getChecklist`,
+        path: `/api/planner/getChecklist`,
         method: "GET",
         format: "json",
         ...params,
@@ -658,6 +669,21 @@ export class Api<
         method: "POST",
         body: data,
         type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Places
+     * @name PlacesControllerGetPlaces
+     * @request GET:/api/places/getPlaces
+     */
+    placesControllerGetPlaces: (params: RequestParams = {}) =>
+      this.request<VendorPlaceViewModel, any>({
+        path: `/api/places/getPlaces`,
+        method: "GET",
         format: "json",
         ...params,
       }),

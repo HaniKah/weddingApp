@@ -1,0 +1,19 @@
+<svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M2.5 15C2.5 10.286 2.5 7.92894 3.96446 6.46446C5.42894 5 7.78595 5 12.5 5H17.5C22.214 5 24.5711 5 26.0355 6.46446C27.5 7.92894 27.5 10.286 27.5 15V17.5C27.5 22.214 27.5 24.5711 26.0355 26.0355C24.5711 27.5 22.214 27.5 17.5 27.5H12.5C7.78595 27.5 5.42894 27.5 3.96446 26.0355C2.5 24.5711 2.5 22.214 2.5 17.5V15Z"
+          stroke="currentColor" stroke-width="2"/>
+    <path opacity="0.5" d="M8.75 5V3.125" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <path opacity="0.5" d="M21.25 5V3.125" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <path opacity="0.5" d="M3.125 11.25H26.875" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <path d="M21.25 21C21.3881 21 21.5 21.1119 21.5 21.25C21.5 21.3881 21.3881 21.5 21.25 21.5C21.1119 21.5 21 21.3881 21 21.25C21 21.1119 21.1119 21 21.25 21Z"
+          fill="currentColor" stroke="currentColor" stroke-width="2"/>
+    <path d="M21.25 16C21.3881 16 21.5 16.1119 21.5 16.25C21.5 16.3881 21.3881 16.5 21.25 16.5C21.1119 16.5 21 16.3881 21 16.25C21 16.1119 21.1119 16 21.25 16Z"
+          fill="currentColor" stroke="currentColor" stroke-width="2"/>
+    <path d="M15 21C15.1381 21 15.25 21.1119 15.25 21.25C15.25 21.3881 15.1381 21.5 15 21.5C14.8619 21.5 14.75 21.3881 14.75 21.25C14.75 21.1119 14.8619 21 15 21Z"
+          fill="currentColor" stroke="currentColor" stroke-width="2"/>
+    <path d="M15 16C15.1381 16 15.25 16.1119 15.25 16.25C15.25 16.3881 15.1381 16.5 15 16.5C14.8619 16.5 14.75 16.3881 14.75 16.25C14.75 16.1119 14.8619 16 15 16Z"
+          fill="currentColor" stroke="currentColor" stroke-width="2"/>
+    <path d="M8.75 21C8.88808 21 9 21.1119 9 21.25C9 21.3881 8.88808 21.5 8.75 21.5C8.61192 21.5 8.5 21.3881 8.5 21.25C8.5 21.1119 8.61192 21 8.75 21Z"
+          fill="currentColor" stroke="currentColor" stroke-width="2"/>
+    <path d="M8.75 16C8.88808 16 9 16.1119 9 16.25C9 16.3881 8.88808 16.5 8.75 16.5C8.61192 16.5 8.5 16.3881 8.5 16.25C8.5 16.1119 8.61192 16 8.75 16Z"
+          fill="currentColor" stroke="currentColor" stroke-width="2"/>
+</svg>

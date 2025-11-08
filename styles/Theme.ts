@@ -38,7 +38,6 @@ export const Theme = {
             peacock: "#2E8B8B",
             purple: "#9A8C98",
             blue: "#457B9D",
-            navy: "#264653"
         }
     },
     typographies: {

@@ -6,8 +6,7 @@ import PlannerToolbar from "@/components/toolbars/PlannerToolbar";
 import {Stack, useLocalSearchParams, useRouter} from "expo-router";
 import AppView from "@/components/appComponents/AppView";
 import {useApi} from "@/utils/api";
-import Calendar from "../../../../assets/icons/steps/calendar.svg";
-import {Theme} from "@/styles/Theme";
+import {useColors} from "@/utils/colors";
 
 
 export default function Index() {
@@ -23,6 +22,8 @@ export default function Index() {
 
     const {step} = useLocalSearchParams<{ step: string }>()
     const router = useRouter()
+
+    const getColorByStep = useColors()
 
     // console.log(usePathname())
 
@@ -126,8 +127,6 @@ export default function Index() {
                     <PlannerToolbar progress={steps?.progress} note={currentStep.note}
                                     fullfilled={currentStep.isCompleted}/>
                     <ActiveComponent/>
-                    <Calendar width={40} height={40} color={Theme.colors.primary}/>
-
                 </AppView>}
 
         </>

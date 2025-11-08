@@ -1,17 +1,12 @@
 import {FlatList, StyleSheet, View} from "react-native";
 
 import PlaceItem from "@/components/wizards/plannerWizard/PlaceItem";
-import {PlacesDto, StepsDto} from "@/types/open-api";
-import WizardHeader from "@/components/wizards/plannerWizard/WizardHeader";
+import {PlacesDto} from "@/types/open-api";
 
 
-export function PickPlace({data, onNextStep, onPreviousStep, isLastStep, isFirstStep, currentStep}: {
+export function PickPlace({data}: {
     data: PlacesDto[] | undefined | null,
-    onNextStep: () => void,
-    onPreviousStep: () => void
-    isLastStep: boolean,
-    isFirstStep: boolean,
-    currentStep: StepsDto
+
 }) {
 
 
@@ -20,10 +15,6 @@ export function PickPlace({data, onNextStep, onPreviousStep, isLastStep, isFirst
             <FlatList style={styles.scrollContent}
                       data={data}
                       renderItem={PlaceItem}
-                      ListHeaderComponent={
-                          <WizardHeader onPreviousStep={onPreviousStep} onNextStep={onNextStep} isLastStep={isLastStep}
-                                        isFirstStep={isFirstStep} currentStep={currentStep}/>
-                      }
             />
         </View>
     )

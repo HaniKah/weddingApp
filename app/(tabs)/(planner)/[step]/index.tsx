@@ -1,28 +1,33 @@
 import {useEffect, useState} from "react";
-import {PlacesViewModel, StepsDto, StepsViewModel, WeddingSteps} from "@/types/open-api";
+import {PlacesDto, StepsDto, WeddingSteps} from "@/types/open-api";
 import {PickPlace} from "@/components/wizards/plannerWizard/PickPlace";
 import PlannerToolbar from "@/components/toolbars/PlannerToolbar";
 import {Stack, useLocalSearchParams, useRouter} from "expo-router";
 import AppView from "@/components/appComponents/AppView";
 import {useApi} from "@/utils/api";
 import {useColors} from "@/utils/colors";
+import StepsHeader from "@/components/StepsHeader";
 
 
 export default function Index() {
 
     const API = useApi()
-    const [steps, setSteps] = useState<StepsViewModel>()
-    const [stepsOrder, setStepsOrder] = useState<WeddingSteps[]>([])
-    const [currentStep, setCurrentStep] = useState<StepsDto>()
+    const router = useRouter()
+    const getColorByStep = useColors()
+    const {step} = useLocalSearchParams<{ step: string }>()
+
+    const [isLoading, setLoading] = useState<boolean>(true)
+
+    const [steps, setSteps] = useState<StepsDto[]>()
+    const [activeStep, setActiveStep] = useState<StepsDto>()
+    const [progress, setProgress] = useState<number>(0)
+
     const [isLastStep, setIsLastStep] = useState<boolean>(false)
     const [isFirstStep, setIsFirstStep] = useState<boolean>(false)
-    const [isLoading, setLoading] = useState<boolean>(true)
-    const [data, setData] = useState<PlacesViewModel>()
 
-    const {step} = useLocalSearchParams<{ step: string }>()
-    const router = useRouter()
 
-    const getColorByStep = useColors()
+    const [places, setPlaces] = useState<PlacesDto[]>()
+
 
     // console.log(usePathname())
 
@@ -31,12 +36,10 @@ export default function Index() {
 
         const getSteps = async () => {
             try {
-
                 const response = await API.plannerControllerGetSteps()
-                setSteps(response.data)
-                setStepsOrder(response.data.steps.map(s => s.step))
-                setCurrentStep(response.data.steps.find(s => s.step === step))
-
+                setSteps(response.data.steps)
+                setProgress(response.data.progress)
+                setActiveStep(response.data.steps.find(s => s.step === step))
 
             } catch (err) {
                 console.error(err)
@@ -46,15 +49,15 @@ export default function Index() {
         }
         getSteps()
 
-    }, [step])
+    }, [])
 
 
     useEffect(() => {
-        if (!currentStep) return
+        if (!activeStep) return
         const getPlaces = async (): Promise<void> => {
             try {
-                const response = await API.plannerControllerGetPlaces({step: currentStep?.step}) //todo : doesnt make sense , rethink it
-                setData(response.data)
+                const response = await API.plannerControllerGetPlaces({step: activeStep?.step}) //todo : doesnt make sense , rethink it
+                setPlaces(response.data.places)
 
             } catch (err) {
                 console.error(err)
@@ -65,62 +68,63 @@ export default function Index() {
 
         const checkLastStep = () => {
             //since we preserve the order , we can hardcode it
-            setIsLastStep(currentStep?.step === WeddingSteps.Extra)
+            setIsLastStep(activeStep.step === WeddingSteps.Extra)
         }
         const checkFirstStep = () => {
             //since we preserve the order , we can hardcode it
-            setIsFirstStep(currentStep?.step === WeddingSteps.Host)
+            setIsFirstStep(activeStep.step === WeddingSteps.Host)
         }
-        if (currentStep) {
+
+        if (activeStep) {
             getPlaces()
         }
 
         checkLastStep()
         checkFirstStep()
-    }, [currentStep, steps]);
+    }, [activeStep, steps]);
 
-
+//later on we might want to change the whole layout , for example to create an invitation card
     function ActiveComponent() {
-        if (currentStep) {
-            return <PickPlace data={data?.places} onNextStep={nextStep}
-                              onPreviousStep={previousStep} isLastStep={isLastStep} isFirstStep={isFirstStep}
-                              currentStep={currentStep}/>
+        if (activeStep) {
+            return <PickPlace data={places}/>
         }
 
     }
 
-    function nextStep() {
-        if (!isLastStep && currentStep && steps) {
-            const index = stepsOrder.indexOf(currentStep.step)
-            const nextStep = stepsOrder[index + 1]
-            setCurrentStep(steps.steps.find(s => s.step === nextStep))
-            router.setParams({step: nextStep})
+    // function nextStep() {
+    //     if (!isLastStep && activeStep && steps) {
+    //         const index = stepsOrder.indexOf(activeStep.step)
+    //         const nextStep = stepsOrder[index + 1]
+    //         setActiveStep(steps.steps.find(s => s.step === nextStep))
+    //         router.setParams({step: nextStep})
+    //
+    //     }
+    // }
 
-        }
-    }
-
-    function previousStep() {
-        if (currentStep && steps) {
-            if (currentStep.step !== stepsOrder[0]) {
-                const index = stepsOrder.indexOf(currentStep.step)
-                const previousStep = stepsOrder[index - 1]
-                setCurrentStep(steps.steps.find(s => s.step === previousStep))
-                router.setParams({step: previousStep})
-            } else {
-                console.log('first step')
-            }
-        }
-
-    }
+    // function previousStep() {
+    //     if (activeStep && steps) {
+    //         if (activeStep.step !== stepsOrder[0]) {
+    //             const index = stepsOrder.indexOf(activeStep.step)
+    //             const previousStep = stepsOrder[index - 1]
+    //             setActiveStep(steps.steps.find(s => s.step === previousStep))
+    //             router.setParams({step: previousStep})
+    //         } else {
+    //             console.log('first step')
+    //         }
+    //     }
+    //
+    // }
 
 
     return (
         <>
-            <Stack.Screen options={{title: currentStep?.step, headerShown: false}}/>
-            {steps && currentStep &&
+            <Stack.Screen options={{title: activeStep?.step, headerShown: false}}/>
+            {steps && activeStep &&
                 <AppView withPadding isLoading={isLoading}>
-                    <PlannerToolbar progress={steps?.progress} note={currentStep.note}
-                                    fullfilled={currentStep.isCompleted}/>
+                    <PlannerToolbar progress={progress} note={activeStep.note}
+                                    fullfilled={activeStep.isCompleted}/>
+                    <StepsHeader stepsList={steps} activeStep={activeStep} setActiveStep={setActiveStep}/>
+
                     <ActiveComponent/>
                 </AppView>}
 

@@ -2,7 +2,7 @@ import {Pressable, StyleSheet, Text, View} from "react-native";
 import {IconSymbol} from "@/components/symbols/IconSymbol";
 import {Theme} from "@/styles/Theme";
 import {StepsDto} from "@/types/open-api";
-
+// this component is Deprecated , its from the old design
 export default function WizardHeader({onNextStep, onPreviousStep, isFirstStep, isLastStep, currentStep}: {
     onNextStep: () => void,
     onPreviousStep: () => void

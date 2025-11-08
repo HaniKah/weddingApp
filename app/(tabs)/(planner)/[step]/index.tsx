@@ -1,6 +1,5 @@
 import {useEffect, useState} from "react";
 import {PlacesViewModel, StepsDto, StepsViewModel, WeddingSteps} from "@/types/open-api";
-import PickDate from "@/components/wizards/plannerWizard/PickDate";
 import {PickPlace} from "@/components/wizards/plannerWizard/PickPlace";
 import PlannerToolbar from "@/components/toolbars/PlannerToolbar";
 import {Stack, useLocalSearchParams, useRouter} from "expo-router";
@@ -66,11 +65,11 @@ export default function Index() {
 
         const checkLastStep = () => {
             //since we preserve the order , we can hardcode it
-            setIsLastStep(currentStep?.step === WeddingSteps.ExtraDecorations)
+            setIsLastStep(currentStep?.step === WeddingSteps.Extra)
         }
         const checkFirstStep = () => {
             //since we preserve the order , we can hardcode it
-            setIsFirstStep(currentStep?.step === WeddingSteps.Date)
+            setIsFirstStep(currentStep?.step === WeddingSteps.Host)
         }
         if (currentStep) {
             getPlaces()
@@ -83,10 +82,6 @@ export default function Index() {
 
     function ActiveComponent() {
         if (currentStep) {
-            if (currentStep.step === WeddingSteps.Date) {
-                return <PickDate onNextStep={nextStep} onPreviousStep={previousStep} isFirstStep={isFirstStep}
-                                 isLastStep={isLastStep} currentStep={currentStep}/>
-            }
             return <PickPlace data={data?.places} onNextStep={nextStep}
                               onPreviousStep={previousStep} isLastStep={isLastStep} isFirstStep={isFirstStep}
                               currentStep={currentStep}/>

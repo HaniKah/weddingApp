@@ -16,7 +16,6 @@ export enum CoupleSide {
 }
 
 export enum WeddingSteps {
-  Date = "Date",
   Host = "Host",
   Dress = "Dress",
   Photographer = "Photographer",
@@ -35,7 +34,8 @@ export enum WeddingSteps {
   Perfumes = "Perfumes",
   Hammam = "Hammam",
   CosmeticClinics = "CosmeticClinics",
-  ExtraDecorations = "ExtraDecorations",
+  Fireworks = "Fireworks",
+  Extra = "Extra",
 }
 
 export interface PlacesDto {

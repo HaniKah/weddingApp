@@ -1,12 +1,10 @@
 export const Theme = {
     colors: {
-        primary: '#8D6A3C',
-        primaryInactive: '#c2b39f',
-        primaryTextInactive: '#948167',
-        background: '#EEEDEB',
-        gold1: '#E5C280',
-        gold2: '#A97E65',
-        iconBackground: '#E0DDDA',
+        primary: 'black',
+        background: '#F0F0F0',
+        iconBackground: '#E0E0E0',
+        primaryInactive: '#C0C0C0',
+        primaryTextInactive: '#606060',
         green: {
             S100: '#4B6D0B',
         },
@@ -31,6 +29,16 @@ export const Theme = {
             "S600": '#606060',
             "S700": '#404040',
             "S800": '#202020',
+        },
+        complementary: {
+            red: "#E76F51",
+            orange: "#F4A261",
+            yellow: "#E9C46A",
+            green: "#6A994E",
+            peacock: "#2E8B8B",
+            purple: "#9A8C98",
+            blue: "#457B9D",
+            navy: "#264653"
         }
     },
     typographies: {

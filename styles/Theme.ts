@@ -36,8 +36,8 @@ export const Theme = {
             yellow: "#E9C46A",
             green: "#6A994E",
             peacock: "#2E8B8B",
-            purple: "#9A8C98",
             blue: "#457B9D",
+            purple: "#7B5275",
         }
     },
     typographies: {

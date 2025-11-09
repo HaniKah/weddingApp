@@ -18,46 +18,51 @@ import Fireworks from "@/assets/icons/steps/firework.svg";
 import Guitar from "@/assets/icons/steps/guitar.svg";
 import Star from "@/assets/icons/steps/star.svg";
 
-export default function IconStep({step}: { step: WeddingSteps }) {
+export default function IconStep({step, width, height, fill}: {
+    step: WeddingSteps,
+    width?: number,
+    height?: number,
+    fill?: string
+}) {
     switch (step) {
         case WeddingSteps.Host:
-            return <DiscoBall/>
+            return <DiscoBall width={width} height={height} fill={fill}/>
         case WeddingSteps.Dress:
-            return <Dress/>
+            return <Dress width={width} height={height} fill={fill}/>
         case WeddingSteps.Photographer:
-            return <Camera/>
+            return <Camera width={width} height={height} fill={fill}/>
         case WeddingSteps.Dj:
-            return <Disc/>
+            return <Disc width={width} height={height} fill={fill}/>
         case WeddingSteps.MakeUpArtist:
-            return <Lipstick/>
+            return <Lipstick width={width} height={height} fill={fill}/>
         case WeddingSteps.Decorator:
-            return <Vase/>
+            return <Vase width={width} height={height} fill={fill}/>
         case WeddingSteps.Catering:
-            return <Catering/>
+            return <Catering width={width} height={height} fill={fill}/>
         case WeddingSteps.DancingCourse:
-            return <Dance/>
+            return <Dance width={width} height={height} fill={fill}/>
         case WeddingSteps.Aarada:
-            return <Drum/>
+            return <Drum width={width} height={height} fill={fill}/>
         case WeddingSteps.Car:
-            return <Car/>
+            return <Car width={width} height={height} fill={fill}/>
         case WeddingSteps.Giveaways:
-            return <Present/>
+            return <Present width={width} height={height} fill={fill}/>
         case WeddingSteps.CosmeticClinics:
-            return <ShavingBlade/>
+            return <ShavingBlade width={width} height={height} fill={fill}/>
         case WeddingSteps.Jewelry:
-            return <Ring/>
+            return <Ring width={width} height={height} fill={fill}/>
         case WeddingSteps.Perfumes:
-            return <Perfume/>
+            return <Perfume width={width} height={height} fill={fill}/>
         case WeddingSteps.Hammam:
-            return <Hammam/>
+            return <Hammam width={width} height={height} fill={fill}/>
         case WeddingSteps.Fireworks:
-            return <Fireworks/>
+            return <Fireworks width={width} height={height} fill={fill}/>
         case WeddingSteps.MusiciansAndPerformers:
-            return <Guitar/>
+            return <Guitar width={width} height={height} fill={fill}/>
         case WeddingSteps.Extra:
-            return <Star/>
+            return <Star width={width} height={height} fill={fill}/>
         default:
-            return <Star/>
+            return <Star width={width} height={height} fill={fill}/>
     }
 
 }

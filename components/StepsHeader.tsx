@@ -1,17 +1,22 @@
 import {StepsDto} from "@/types/open-api";
 import {FlatList, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {useEffect, useRef, useState} from "react";
+import IconStep from "@/components/symbols/IconStep";
+import {useColors} from "@/utils/colors";
+import {Theme} from "@/styles/Theme"
 
 export default function StepsHeader({stepsList, activeStep, setActiveStep}: {
     stepsList: StepsDto[],
     activeStep: StepsDto,
     setActiveStep: (value: StepsDto) => void,
 }) {
+
+    const getColorByStep = useColors()
     const [headerWidth, setHeaderWidth] = useState(0)
     const [itemWidth, setItemWidth] = useState(0)
 
     const ITEMS_GAP = 10
-    const NUMBER_OF_ITEMS = 5
+    const NUMBER_OF_ITEMS = 3.6
 
 
     const flatListRef = useRef<FlatList>(null)
@@ -25,9 +30,17 @@ export default function StepsHeader({stepsList, activeStep, setActiveStep}: {
     }, [activeStep]);
 
     function RenderItem({item}: { item: StepsDto }) {
+        const isActive = item === activeStep
+        const color = getColorByStep(item.step)
         return (
-            <TouchableOpacity onPress={() => setActiveStep(item)} style={{backgroundColor: "red", width: itemWidth}}>
-                <Text style={styles.title}>
+            <TouchableOpacity onPress={() => setActiveStep(item)} style={[{width: itemWidth}, styles.itemContainer]}>
+                <IconStep step={item.step} width={isActive ? 50 : 30} height={isActive ? 50 : 30}
+                          fill={color}/>
+                <Text style={[styles.itemTitle, isActive && {
+                    color: color,
+                    fontWeight: "bold",
+                    fontSize: 14
+                }]}>
                     {item.title}
                 </Text>
             </TouchableOpacity>
@@ -47,7 +60,7 @@ export default function StepsHeader({stepsList, activeStep, setActiveStep}: {
 
     return (
         <>
-            <View style={{backgroundColor: "blue"}}
+            <View style={styles.container}
                   onLayout={(event) => setHeaderWidth(event.nativeEvent.layout.width)}>
                 <FlatList
                     ref={flatListRef}
@@ -63,7 +76,24 @@ export default function StepsHeader({stepsList, activeStep, setActiveStep}: {
     )
 }
 const styles = StyleSheet.create({
-    title: {
-        textAlign: "center"
-    }
+    container: {
+        marginVertical: 20,
+        height: 120,
+        // backgroundColor: "blue"
+    },
+    itemContainer: {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        // backgroundColor: "red"
+
+
+    },
+    itemTitle: {
+        fontSize: Theme.sizes.sm,
+        textAlign: "center",
+        marginTop: 10,
+        color: Theme.colors.gray.S500,
+    },
 })

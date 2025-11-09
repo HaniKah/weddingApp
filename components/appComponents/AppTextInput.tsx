@@ -14,7 +14,6 @@ export default function AppTextInput({
                                          name,
                                          design,
                                          debounceTime = 0
-
                                      }: {
 
     placeholder?: string,
@@ -40,7 +39,6 @@ export default function AppTextInput({
     function debouncer(func: () => void) {
         if (timeout) clearTimeout(timeout)
         timeout = setTimeout(() => {
-            console.log("waiting ....")
             func()
         }, debounceTime)
     }

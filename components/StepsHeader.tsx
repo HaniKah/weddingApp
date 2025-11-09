@@ -77,7 +77,6 @@ export default function StepsHeader({stepsList, activeStep, setActiveStep}: {
 }
 const styles = StyleSheet.create({
     container: {
-        marginVertical: 20,
         height: 120,
         // backgroundColor: "blue"
     },

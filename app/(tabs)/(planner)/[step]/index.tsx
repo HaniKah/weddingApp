@@ -24,7 +24,7 @@ export default function Index() {
     const [places, setPlaces] = useState<PlacesDto[]>()
 
 
-    console.log("step :", step)
+    // console.log("step :", step)
 
 
     useEffect(() => {

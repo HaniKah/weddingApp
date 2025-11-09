@@ -16,7 +16,7 @@ export default function StepsHeader({stepsList, activeStep, setActiveStep}: {
     const [itemWidth, setItemWidth] = useState(0)
 
     const ITEMS_GAP = 10
-    const NUMBER_OF_ITEMS = 3.6
+    const NUMBER_OF_ITEMS = 4
 
 
     const flatListRef = useRef<FlatList>(null)
@@ -34,12 +34,11 @@ export default function StepsHeader({stepsList, activeStep, setActiveStep}: {
         const color = getColorByStep(item.step)
         return (
             <TouchableOpacity onPress={() => setActiveStep(item)} style={[{width: itemWidth}, styles.itemContainer]}>
-                <IconStep step={item.step} width={isActive ? 50 : 30} height={isActive ? 50 : 30}
+                <IconStep step={item.step} width={isActive ? 40 : 30} height={isActive ? 40 : 30}
                           fill={color}/>
                 <Text style={[styles.itemTitle, isActive && {
                     color: color,
                     fontWeight: "bold",
-                    fontSize: 14
                 }]}>
                     {item.title}
                 </Text>
@@ -77,7 +76,8 @@ export default function StepsHeader({stepsList, activeStep, setActiveStep}: {
 }
 const styles = StyleSheet.create({
     container: {
-        height: 120,
+        height: 100,
+        marginBottom: 10,
         // backgroundColor: "blue"
     },
     itemContainer: {
@@ -91,8 +91,8 @@ const styles = StyleSheet.create({
     },
     itemTitle: {
         fontSize: Theme.sizes.sm,
+        fontWeight: "semibold",
         textAlign: "center",
         marginTop: 10,
-        color: Theme.colors.gray.S500,
     },
 })

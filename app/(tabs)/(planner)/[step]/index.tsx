@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {PlacesDto, StepsDto, WeddingSteps} from "@/types/open-api";
+import {PlacesDto, StepsDto} from "@/types/open-api";
 import {PickPlace} from "@/components/wizards/plannerWizard/PickPlace";
 import PlannerToolbar from "@/components/toolbars/PlannerToolbar";
 import {Stack, useLocalSearchParams} from "expo-router";
@@ -24,7 +24,7 @@ export default function Index() {
     const [places, setPlaces] = useState<PlacesDto[]>()
 
 
-    // console.log(usePathname())
+    console.log("step :", step)
 
 
     useEffect(() => {
@@ -44,7 +44,7 @@ export default function Index() {
         }
         getSteps()
 
-    }, [])
+    }, [step])
 
 
     useEffect(() => {
@@ -61,21 +61,10 @@ export default function Index() {
             }
         }
 
-        const checkLastStep = () => {
-            //since we preserve the order , we can hardcode it
-            setIsLastStep(activeStep.step === WeddingSteps.Extra)
-        }
-        const checkFirstStep = () => {
-            //since we preserve the order , we can hardcode it
-            setIsFirstStep(activeStep.step === WeddingSteps.Host)
-        }
-
         if (activeStep) {
             getPlaces()
         }
 
-        checkLastStep()
-        checkFirstStep()
     }, [activeStep, steps]);
 
 //later on we might want to change the whole layout , for example to create an invitation card
@@ -85,7 +74,7 @@ export default function Index() {
         }
 
     }
-    
+
     return (
         <>
             <Stack.Screen options={{title: activeStep?.step, headerShown: false}}/>

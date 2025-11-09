@@ -77,7 +77,7 @@ export default function StepsHeader({stepsList, activeStep, setActiveStep}: {
 const styles = StyleSheet.create({
     container: {
         height: 100,
-  
+
         // backgroundColor: "blue"
     },
     itemContainer: {
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
 
     },
     itemTitle: {
-        fontSize: Theme.sizes.sm,
+        fontSize: Theme.sizes.xs,
         fontWeight: "semibold",
         textAlign: "center",
         marginTop: 10,

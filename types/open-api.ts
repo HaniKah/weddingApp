@@ -15,6 +15,12 @@ export enum CoupleSide {
   Bride = "Bride",
 }
 
+export enum SearchFilter {
+  MyPick = "MyPick",
+  MyFavourite = "MyFavourite",
+  OnSale = "onSale",
+}
+
 export enum WeddingSteps {
   Host = "Host",
   Dress = "Dress",
@@ -38,9 +44,12 @@ export enum WeddingSteps {
 
 export interface PlacesDto {
   step: WeddingSteps;
+  filter?: SearchFilter;
   id: number;
   name?: string | null;
   formattedAddress?: string | null;
+  picked: boolean;
+  favourite: boolean;
 }
 
 export interface PlacesViewModel {
@@ -412,6 +421,7 @@ export class Api<
           | "Fireworks"
           | "Extra";
         search?: string;
+        filter?: "MyPick" | "MyFavourite" | "onSale";
       },
       params: RequestParams = {},
     ) =>

@@ -90,7 +90,7 @@ export const ButtonStyles = StyleSheet.create({
         paddingVertical: 8,
     },
     smSizeTxt: {
-        fontSize: Theme.sizes.sm,
+        fontSize: Theme.sizes.xs,
     },
 
     mdSizeBtn: {

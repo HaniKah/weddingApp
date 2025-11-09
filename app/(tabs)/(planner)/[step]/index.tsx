@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {PlacesDto, StepsDto} from "@/types/open-api";
+import {PlacesDto, SearchFilter, StepsDto} from "@/types/open-api";
 import {PickPlace} from "@/components/wizards/plannerWizard/PickPlace";
 import PlannerToolbar from "@/components/toolbars/PlannerToolbar";
 import {Stack, useLocalSearchParams} from "expo-router";
@@ -7,6 +7,7 @@ import AppView from "@/components/appComponents/AppView";
 import {useApi} from "@/utils/api";
 import StepsHeader from "@/components/StepsHeader";
 import AppSearchBar from "@/components/appComponents/AppSearchBar";
+import SearchFilters, {Filters} from "@/components/SearchFilters";
 
 
 export default function Index() {
@@ -25,6 +26,8 @@ export default function Index() {
 
 
     const [places, setPlaces] = useState<PlacesDto[]>()
+
+    const [selectedFilter, setSelectedFilter] = useState<SearchFilter>()
 
 
     // console.log("step :", step)
@@ -54,7 +57,9 @@ export default function Index() {
         if (!activeStep) return
         const getPlaces = async (): Promise<void> => {
             try {
-                const response = await API.plannerControllerGetPlaces({step: activeStep?.step, search: searchText}) //todo : doesnt make sense , rethink it
+                const response = await API.plannerControllerGetPlaces({
+                    step: activeStep?.step, search: searchText, filter: selectedFilter
+                }) //todo : doesnt make sense , rethink it
                 setPlaces(response.data.places)
 
             } catch (err) {
@@ -68,7 +73,7 @@ export default function Index() {
             getPlaces()
         }
 
-    }, [activeStep, steps, searchText]);
+    }, [activeStep, steps, searchText, selectedFilter]);
 
 //later on we might want to change the whole layout , for example to create an invitation card
     function ActiveComponent() {
@@ -77,6 +82,17 @@ export default function Index() {
         }
 
     }
+
+    const filters: Filters[] = [
+        {
+            name: "My Pick",
+            value: SearchFilter.MyPick
+        },
+        {
+            name: "My Favourites",
+            value: SearchFilter.MyFavourite
+        }
+    ]
 
     return (
         <>
@@ -87,6 +103,8 @@ export default function Index() {
                                     fullfilled={activeStep.isCompleted}/>
                     <StepsHeader stepsList={steps} activeStep={activeStep} setActiveStep={setActiveStep}/>
                     <AppSearchBar searchText={searchText} setSearchText={setSearchText}/>
+                    <SearchFilters filters={filters} selectedFilter={selectedFilter}
+                                   setSelectedFilter={setSelectedFilter}/>
 
                     <ActiveComponent/>
                 </AppView>}

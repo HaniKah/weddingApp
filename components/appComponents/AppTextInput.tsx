@@ -93,13 +93,13 @@ const base = StyleSheet.create({
 
     },
     label: {
-        fontSize: Theme.sizes.sm,
+        fontSize: Theme.sizes.xs,
         color: Theme.colors.primary,
         fontWeight: "semibold",
         margin: 5
     },
     error: {
-        fontSize: Theme.sizes.sm,
+        fontSize: Theme.sizes.xs,
         color: Theme.colors.red["S500"],
         marginTop: 5,
     },

@@ -392,7 +392,26 @@ export class Api<
      */
     plannerControllerGetPlaces: (
       query: {
-        step: string;
+        step:
+          | "Host"
+          | "Dress"
+          | "Photographer"
+          | "Decorator"
+          | "Catering"
+          | "DancingCourse"
+          | "Dj"
+          | "MakeUpArtist"
+          | "Car"
+          | "Giveaways"
+          | "Aarada"
+          | "MusiciansAndPerformers"
+          | "Jewelry"
+          | "Perfumes"
+          | "Hammam"
+          | "CosmeticClinics"
+          | "Fireworks"
+          | "Extra";
+        search?: string;
       },
       params: RequestParams = {},
     ) =>

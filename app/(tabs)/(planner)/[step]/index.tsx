@@ -6,6 +6,7 @@ import {Stack, useLocalSearchParams} from "expo-router";
 import AppView from "@/components/appComponents/AppView";
 import {useApi} from "@/utils/api";
 import StepsHeader from "@/components/StepsHeader";
+import AppSearchBar from "@/components/appComponents/AppSearchBar";
 
 
 export default function Index() {
@@ -19,6 +20,8 @@ export default function Index() {
     const [steps, setSteps] = useState<StepsDto[]>()
     const [activeStep, setActiveStep] = useState<StepsDto>()
     const [progress, setProgress] = useState<number>(0)
+
+    const [searchText, setSearchText] = useState<string>()
 
 
     const [places, setPlaces] = useState<PlacesDto[]>()
@@ -51,7 +54,7 @@ export default function Index() {
         if (!activeStep) return
         const getPlaces = async (): Promise<void> => {
             try {
-                const response = await API.plannerControllerGetPlaces({step: activeStep?.step}) //todo : doesnt make sense , rethink it
+                const response = await API.plannerControllerGetPlaces({step: activeStep?.step, search: searchText}) //todo : doesnt make sense , rethink it
                 setPlaces(response.data.places)
 
             } catch (err) {
@@ -65,7 +68,7 @@ export default function Index() {
             getPlaces()
         }
 
-    }, [activeStep, steps]);
+    }, [activeStep, steps, searchText]);
 
 //later on we might want to change the whole layout , for example to create an invitation card
     function ActiveComponent() {
@@ -83,6 +86,7 @@ export default function Index() {
                     <PlannerToolbar progress={progress} note={activeStep.note}
                                     fullfilled={activeStep.isCompleted}/>
                     <StepsHeader stepsList={steps} activeStep={activeStep} setActiveStep={setActiveStep}/>
+                    <AppSearchBar searchText={searchText} setSearchText={setSearchText}/>
 
                     <ActiveComponent/>
                 </AppView>}

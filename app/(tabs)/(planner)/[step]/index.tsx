@@ -8,6 +8,8 @@ import {useApi} from "@/utils/api";
 import StepsHeader from "@/components/StepsHeader";
 import AppSearchBar from "@/components/appComponents/AppSearchBar";
 import SearchFilters, {Filters} from "@/components/SearchFilters";
+import {StyleSheet, Text} from "react-native";
+import {Theme} from "@/styles/Theme";
 
 
 export default function Index() {
@@ -25,7 +27,7 @@ export default function Index() {
     const [searchText, setSearchText] = useState<string>()
 
 
-    const [places, setPlaces] = useState<PlacesDto[]>()
+    const [places, setPlaces] = useState<PlacesDto[]>([])
 
     const [selectedFilter, setSelectedFilter] = useState<SearchFilter>()
 
@@ -105,6 +107,8 @@ export default function Index() {
                     <AppSearchBar searchText={searchText} setSearchText={setSearchText}/>
                     <SearchFilters filters={filters} selectedFilter={selectedFilter}
                                    setSelectedFilter={setSelectedFilter}/>
+                    <Text
+                        style={places?.length > 0 ? styles.placesFound : styles.placesNotFound}>{places?.length > 0 ? places?.length + (places.length > 1 ? " places" : " place") : " no places were found for this this search"} </Text>
 
                     <ActiveComponent/>
                 </AppView>}
@@ -112,3 +116,17 @@ export default function Index() {
         </>
     )
 }
+
+const styles = StyleSheet.create({
+    placesFound: {
+        marginVertical: 15,
+        fontWeight: "bold",
+        fontSize: Theme.sizes.md
+    },
+    placesNotFound: {
+        textAlign: "center",
+        marginVertical: 50,
+        fontStyle: "italic",
+        color: Theme.colors.gray.S600
+    }
+})

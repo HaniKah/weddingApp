@@ -1,6 +1,7 @@
 import {Image, StyleSheet, Text, View} from "react-native";
 import {PlacesDto} from "@/types/open-api";
 import {Link} from "expo-router";
+import {Theme} from "@/styles/Theme";
 
 
 export default function PlaceItem({item}: { item: PlacesDto }) {
@@ -11,7 +12,10 @@ export default function PlaceItem({item}: { item: PlacesDto }) {
             params: {id: item.id!, step: item.step}
         }}>
             <View style={styles.container}>
-                <Image style={styles.image} source={{uri: 'https://reactnative.dev/docs/assets/p_cat2.png'}}/>
+                <View style={styles.imageContainer}>
+                    <Image style={styles.image}
+                           source={{uri: 'https://cdn.essensedesigns.com/uploads/2020/11/1.S20-StellaYork.7289-SS.jpg'}}/>
+                </View>
                 <View>
                     <Text style={styles.name}>
                         {item.name}
@@ -30,21 +34,27 @@ const styles = StyleSheet.create({
     link: {
         marginBottom: 10
     },
+    imageContainer: {
+        height: 170,
+        borderRadius: 10,
+        overflow: "hidden",
+    },
     container: {
         width: "100%",
-        padding: 15,
-        display: "flex",
-        flexDirection: "row",
+
+
         gap: 10,
-        backgroundColor: "white",
+
         borderRadius: 10,
     },
     image: {
-        width: 40,
-        height: 40,
+        backgroundSize: "cover",
+        height: "100%",
+
     },
 
     name: {
-        fontWeight: "bold"
+        fontWeight: "bold",
+        fontSize: Theme.sizes.lg,
     }
 })

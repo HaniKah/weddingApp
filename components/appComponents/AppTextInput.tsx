@@ -87,7 +87,8 @@ export default function AppTextInput({
 const base = StyleSheet.create({
     input: {
         height: 45,
-        paddingHorizontal: 10,
+        paddingRight: 10,
+        paddingLeft: 20,
         color: Theme.colors.primary,
         fontSize: Theme.sizes.md,
 

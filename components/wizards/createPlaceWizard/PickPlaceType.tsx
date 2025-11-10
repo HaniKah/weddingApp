@@ -1,8 +1,9 @@
 import {FlatList, Pressable, StyleSheet, Text, View} from "react-native";
 import {WeddingSteps} from "@/types/open-api";
-import {IconSymbol} from "@/components/symbols/IconSymbol";
 import {Theme} from "@/styles/Theme";
 import AppButton from "@/components/appComponents/AppButton";
+import IconStep from "@/components/symbols/IconStep";
+import {useColors} from "@/utils/colors";
 
 
 export default function PickPlaceType({selectedType, setSelectedType, onNext}: {
@@ -11,13 +12,14 @@ export default function PickPlaceType({selectedType, setSelectedType, onNext}: {
     onNext: () => void
 }) {
     const placeTypeList: WeddingSteps[] = Object.values(WeddingSteps)
+    const getColorByStep = useColors()
 
 
     const PickPlaceItem = ({step}: { step: WeddingSteps }) => {
         return (
             <Pressable onPress={() => setSelectedType(step)}
                        style={[styles.placeItem, selectedType === step && styles.selected]}>
-                <IconSymbol size={60} name="house" color={Theme.colors.primary}></IconSymbol>
+                <IconStep step={step} width={50} height={50} fill={getColorByStep(step)}/>
                 <Text style={styles.placeText}>{step}</Text>
             </Pressable>
         )
@@ -34,7 +36,7 @@ export default function PickPlaceType({selectedType, setSelectedType, onNext}: {
                 <FlatList ListHeaderComponent={<Text style={styles.title}>Choose your place type</Text>}
                           contentContainerStyle={styles.listContainer} data={placeTypeList} numColumns={3}
                           renderItem={({item, index}) => (<PickPlaceItem step={item}/>)}/>
-                {/*{placeTypeList.map((step, i) => (<PickPlaceItem key={i} step={step}/>))}*/}
+
                 <AppButton extraStylesBtn={styles.button} onPress={preNext} fullWidth>
                     next
                 </AppButton>
@@ -47,7 +49,6 @@ export default function PickPlaceType({selectedType, setSelectedType, onNext}: {
 const styles = StyleSheet.create({
     container: {
         position: 'relative',
-        padding: 15
     },
     title: {
         fontSize: Theme.sizes.xl,
@@ -64,11 +65,14 @@ const styles = StyleSheet.create({
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        padding: 20,
+        padding: 10,
 
     },
     placeText: {
-        fontSize: Theme.sizes.md,
+        fontSize: Theme.sizes.sm,
+        marginTop: 15,
+        fontWeight: "bold",
+        color: Theme.colors.gray.S600,
     },
     button: {
         position: 'absolute',

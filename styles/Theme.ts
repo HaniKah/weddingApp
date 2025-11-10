@@ -32,12 +32,13 @@ export const Theme = {
         },
         complementary: {
             red: "#E76F51",
-            orange: "#F4A261",
-            yellow: "#E9C46A",
+            orange: "#f18d3d",
+            yellow: "#e7b848",
             green: "#6A994E",
             peacock: "#2E8B8B",
             blue: "#457B9D",
             purple: "#7B5275",
+
         }
     },
     typographies: {

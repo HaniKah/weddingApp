@@ -12,7 +12,7 @@ export default function AppTextInput({
                                          placeholder,
                                          required,
                                          name,
-                                         design,
+                                         design = 1,
                                          debounceTime = 0
                                      }: {
 
@@ -88,7 +88,7 @@ const base = StyleSheet.create({
     input: {
         height: 45,
         paddingRight: 10,
-        paddingLeft: 20,
+
         color: Theme.colors.primary,
         fontSize: Theme.sizes.md,
 
@@ -114,6 +114,7 @@ const design1 = StyleSheet.create({
         input: {
             borderBottomWidth: 2,
             borderColor: Theme.colors.primaryInactive,
+            paddingLeft: 5,
         },
         label: {},
         error: {},
@@ -124,7 +125,8 @@ const design1 = StyleSheet.create({
 const design2 = StyleSheet.create({
     input: {
         backgroundColor: Theme.colors.white,
-        borderRadius: Theme.radius.sm
+        borderRadius: Theme.radius.sm,
+        paddingLeft: 20
     },
     label: {},
     error: {},

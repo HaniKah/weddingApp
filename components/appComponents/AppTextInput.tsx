@@ -1,4 +1,4 @@
-import {KeyboardTypeOptions, StyleSheet, Text, TextInput, View} from "react-native";
+import {KeyboardTypeOptions, StyleProp, StyleSheet, Text, TextInput, View, ViewStyle} from "react-native";
 import {Theme} from "@/styles/Theme";
 import {useFormContext} from "@/contexts/form-context";
 import {useEffect, useRef, useState} from "react";
@@ -13,7 +13,9 @@ export default function AppTextInput({
                                          required,
                                          name,
                                          design = 1,
-                                         debounceTime = 0
+                                         debounceTime = 0,
+                                         extraStyles,
+                                         unit
                                      }: {
 
     placeholder?: string,
@@ -25,6 +27,9 @@ export default function AppTextInput({
     name: string
     design?: 1 | 2,
     debounceTime?: number
+    extraStyles?: StyleProp<ViewStyle>
+    unit?: string
+
 }) {
 
     const inputRef = useRef<TextInput>(null)
@@ -70,34 +75,93 @@ export default function AppTextInput({
     }, [form.checking]);
 
     return (
-        <View>
-            {label && <Text style={[base.label, design === 2 ? design2.label : design1.label]}>{label}</Text>}
-            <TextInput value={textInput}
-                       autoCorrect={false}
-                       keyboardType={keyboardType}
-                       placeholder={placeholder}
-                       ref={inputRef}
-                       style={[base.input, design === 2 ? design2.input : design1.input]}
-                       onChangeText={preTextChange}/>
-            <Text style={[base.error, design === 2 ? design2.error : design1.error]}>{error}</Text>
+        <View style={extraStyles}>
+            {label && <Text style={design === 2 ? design2.label : design1.label}>{label}</Text>}
+            <View style={design === 2 ? design2.inputContainer : design1.inputContainer}>
+                <TextInput value={textInput}
+                           autoCorrect={false}
+                           keyboardType={keyboardType}
+                           placeholder={placeholder}
+                           ref={inputRef}
+                           style={design === 2 ? design2.input : design1.input}
+                           onChangeText={preTextChange}
+
+                />
+                {unit && <Text style={design === 2 ? design2.unit : design1.unit}>JOD</Text>}
+            </View>
+
+            <Text style={design === 2 ? design2.error : design1.error}>{error}</Text>
         </View>
     )
 }
 
-const base = StyleSheet.create({
-    input: {
-        height: 45,
+const design1 = StyleSheet.create({
+        inputContainer: {
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            borderBottomWidth: 2,
+            borderColor: Theme.colors.primaryInactive,
+
+        },
+        input: {
+            paddingRight: 10,
+            height: 45,
+            color: Theme.colors.primary,
+            fontSize: Theme.sizes.md,
+            width: "100%",
+            flex: 1,
+
+
+            paddingLeft: 5,
+
+        },
+        label: {
+            color: Theme.colors.primary,
+            fontWeight: "semibold",
+            margin: 5,
+
+            fontSize: Theme.sizes.sm,
+        },
+        error: {
+            fontSize: Theme.sizes.xs,
+            color: Theme.colors.red["S500"],
+            marginTop: 5,
+        },
+        onFocus: {
+            borderColor: Theme.colors.primary,
+        },
+        unit: {
+            color: Theme.colors.gray.S400,
+        }
+    }
+)
+
+const design2 = StyleSheet.create({
+    inputContainer: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        backgroundColor: Theme.colors.white,
+        borderRadius: Theme.radius.sm,
+        overflow: "hidden",
         paddingRight: 10,
 
+    },
+    input: {
+
+        height: 45,
         color: Theme.colors.primary,
         fontSize: Theme.sizes.md,
-
+        width: "100%",
+        flex: 1,
+        paddingLeft: 20
     },
     label: {
-        fontSize: Theme.sizes.xs,
         color: Theme.colors.primary,
         fontWeight: "semibold",
-        margin: 5
+        margin: 5,
+        fontSize: Theme.sizes.xs,
     },
     error: {
         fontSize: Theme.sizes.xs,
@@ -106,31 +170,10 @@ const base = StyleSheet.create({
     },
     onFocus: {
         borderColor: Theme.colors.primary,
-    }
-
-})
-
-const design1 = StyleSheet.create({
-        input: {
-            borderBottomWidth: 2,
-            borderColor: Theme.colors.primaryInactive,
-            paddingLeft: 5,
-        },
-        label: {},
-        error: {},
-        onFocus: {}
-    }
-)
-
-const design2 = StyleSheet.create({
-    input: {
-        backgroundColor: Theme.colors.white,
-        borderRadius: Theme.radius.sm,
-        paddingLeft: 20
     },
-    label: {},
-    error: {},
-    onFocus: {}
+    unit: {
+        color: Theme.colors.gray.S400,
+    }
 
 })
 

@@ -4,7 +4,6 @@ import AppTextInput from "@/components/appComponents/AppTextInput";
 import {useState} from "react";
 import {Theme} from "@/styles/Theme";
 import AppButton from "@/components/appComponents/AppButton";
-import {Picker} from "@react-native-picker/picker";
 import {CreatePlaceInfo} from "@/types/open-api";
 
 
@@ -19,6 +18,7 @@ export default function FillPlaceInfo({onNext, setPlaceInfo}: {
     const [instagram, setInstagram] = useState<string>()
     const [tiktok, setTiktok] = useState<string>()
     const [website, setWebsite] = useState<string>()
+    const [minPrice, setMinPrice] = useState<string>()
 
     const [selectedLanguage, setSelectedLanguage] = useState();
 
@@ -39,17 +39,20 @@ export default function FillPlaceInfo({onNext, setPlaceInfo}: {
     return (
         <>
             <View style={styles.container}>
-                <Text style={styles.title}>Your place info</Text>
+                <Text style={styles.title}>Your place&#39;s info</Text>
                 <AppForm onSubmit={handleSubmit}>
                     <ScrollView style={styles.list}>
-                        <Picker
-                            selectedValue={selectedLanguage}
-                            onValueChange={(itemValue, itemIndex) =>
-                                setSelectedLanguage(itemValue)
-                            }>
-                            <Picker.Item label="Java" value="java"/>
-                            <Picker.Item label="JavaScript" value="js"/>
-                        </Picker>
+                        {/*<Picker*/}
+                        {/*    selectedValue={selectedLanguage}*/}
+                        {/*    onValueChange={(itemValue, itemIndex) =>*/}
+                        {/*        setSelectedLanguage(itemValue)*/}
+                        {/*    }>*/}
+                        {/*    <Picker.Item label="Java" value="java"/>*/}
+                        {/*    <Picker.Item label="JavaScript" value="js"/>*/}
+                        {/*</Picker>*/}
+                        <Text style={styles.subtitle}>
+                            Basic Info
+                        </Text>
                         <AppTextInput value={placeName}
                                       required
                                       onTextChange={(s) => setPlaceName(s)} name="name"
@@ -64,6 +67,9 @@ export default function FillPlaceInfo({onNext, setPlaceInfo}: {
                                       value={phoneNumber}
                                       extraStyles={styles.input}
                         />
+                        <Text style={styles.subtitle}>
+                            Social media
+                        </Text>
                         <AppTextInput name="facebook"
                                       label="Facebook"
                                       placeholder="Link to your place's facebook account"
@@ -92,6 +98,28 @@ export default function FillPlaceInfo({onNext, setPlaceInfo}: {
                                       value={website}
                                       extraStyles={styles.input}
                         />
+                        <Text style={styles.subtitle}>
+                            Price details
+                        </Text>
+                        <View style={styles.priceView}>
+                            <AppTextInput onTextChange={(s) => setMinPrice(s)} name="minPrice" label="Min. price"
+                                          extraStyles={[styles.input, {flex: 1}]}
+                                          placeholder="Minimum price could be offered"
+                                          value={minPrice}
+                                          keyboardType={"decimal-pad"}
+                                          unit="JOD"
+                            />
+                            <Text style={styles.priceSeparator}>
+                                -
+                            </Text>
+                            <AppTextInput onTextChange={(s) => setMinPrice(s)} name="maxPrice" label="Max. price"
+                                          extraStyles={[styles.input, {flex: 1}]}
+                                          placeholder="Maximum price could be offered"
+                                          value={minPrice}
+                                          keyboardType={"decimal-pad"}
+                                          unit="JOD"
+                            />
+                        </View>
                     </ScrollView>
                     <AppButton fullWidth isSubmit>next</AppButton>
                 </AppForm>
@@ -106,7 +134,6 @@ const styles = StyleSheet.create({
         padding: 15,
         paddingBottom: 0,
     },
-
     title: {
         fontSize: Theme.sizes.xl,
         fontWeight: "bold",
@@ -114,11 +141,30 @@ const styles = StyleSheet.create({
         marginVertical: 20,
         width: "100%",
     },
+    subtitle: {
+        fontSize: Theme.sizes.xl,
+        fontWeight: "bold",
+        color: Theme.colors.gray.S300,
+        paddingVertical: 15
+
+        // backgroundColor: Theme.colors.gray.S200,
+        // padding: 10
+
+    },
     input: {
-        marginTop: 20
+        marginTop: 10
     },
     list: {
         height: "80%"
     },
+    priceView: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+    },
+    priceSeparator: {
+        paddingHorizontal: 20,
+    }
 
 })

@@ -50,6 +50,7 @@ export interface PlacesDto {
   formattedAddress?: string | null;
   picked: boolean;
   favourite: boolean;
+  mainPhoto: string;
 }
 
 export interface PlacesViewModel {
@@ -540,6 +541,22 @@ export class Api<
     /**
      * No description
      *
+     * @tags Photos
+     * @name PhotosControllerUploadFile
+     * @request POST:/api/photos/upload
+     */
+    photosControllerUploadFile: (data: any, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/photos/upload`,
+        method: "POST",
+        body: data,
+        type: ContentType.FormData,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @tags Guests
      * @name GuestsControllerGetGuests
      * @request GET:/api/guests/getGuests
@@ -712,22 +729,6 @@ export class Api<
         path: `/api/places/getPlaces`,
         method: "GET",
         format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Photos
-     * @name PhotosControllerUploadFile
-     * @request POST:/api/photos/upload
-     */
-    photosControllerUploadFile: (data: any, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/photos/upload`,
-        method: "POST",
-        body: data,
-        type: ContentType.FormData,
         ...params,
       }),
   };

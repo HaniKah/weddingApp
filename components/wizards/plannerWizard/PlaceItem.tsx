@@ -14,7 +14,7 @@ export default function PlaceItem({item}: { item: PlacesDto }) {
             <View style={styles.container}>
                 <View style={styles.imageContainer}>
                     <Image style={styles.image}
-                           source={{uri: 'https://cdn.essensedesigns.com/uploads/2020/11/1.S20-StellaYork.7289-SS.jpg'}}/>
+                           source={{uri: item.mainPhoto}}/>
                 </View>
                 <View>
                     <Text style={styles.name}>

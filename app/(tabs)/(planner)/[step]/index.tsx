@@ -108,7 +108,7 @@ export default function Index() {
                     <SearchFilters filters={filters} selectedFilter={selectedFilter}
                                    setSelectedFilter={setSelectedFilter}/>
                     <Text
-                        style={places?.length > 0 ? styles.placesFound : styles.placesNotFound}>{places?.length > 0 ? places?.length + (places.length > 1 ? " places" : " place") : " no places were found for this this search"} </Text>
+                        style={places?.length > 0 ? styles.placesFound : styles.placesNotFound}>{places?.length > 0 ? places?.length + (places.length > 1 ? " places" : " place") : " no places were found for this search criteria"} </Text>
 
                     <ActiveComponent/>
                 </AppView>}

@@ -88,7 +88,7 @@ export default function FillPlaceInfo({onNext, setPlaceInfo}: {
                         </View>
 
                         {!switchEnabled &&
-                            <AppNumericInput onTextChange={(s) => setPrice(s)} name="minPrice" label="Price"
+                            <AppNumericInput onTextChange={(s) => setPrice(s)} name="Price" label="Price"
                                              extraStyles={styles.input}
                                              placeholder="Add your price here"
                                              value={price}

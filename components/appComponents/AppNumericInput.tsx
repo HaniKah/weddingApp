@@ -10,7 +10,8 @@ export default function AppNumericInput({
                                             extraStyles,
                                             keyboardType,
                                             unit,
-                                            required
+                                            required,
+                                            fixedTo
                                         }: {
     name: string,
     label?: string,
@@ -21,6 +22,7 @@ export default function AppNumericInput({
     keyboardType?: KeyboardTypeOptions,
     unit?: string
     required?: boolean
+    fixedTo?: number
 }) {
 
 
@@ -30,7 +32,14 @@ export default function AppNumericInput({
     }
 
     function convertToNumber(text: string) {
-        const convert: number = parseFloat(text)
+
+        // removes anything that is not a number, dot or comma
+        let clean = text.replace(/[^0-9.,]/g, "")
+        // replace comma with dot
+        clean = clean.replace(",", ".")
+
+        const convert = parseFloat(clean)
+
         if (isNaN(convert)) return
         onTextChange(convert)
     }

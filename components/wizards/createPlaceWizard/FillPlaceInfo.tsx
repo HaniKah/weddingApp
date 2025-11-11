@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
-        gap: 30
+        gap: 35
     }
 
 })

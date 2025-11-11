@@ -122,8 +122,7 @@ const design1 = StyleSheet.create({
         label: {
             color: Theme.colors.primary,
             fontWeight: "semibold",
-            margin: 5,
-
+           
             fontSize: Theme.sizes.sm,
         },
         error: {

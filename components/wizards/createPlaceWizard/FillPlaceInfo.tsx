@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
 
     },
     input: {
-        marginTop: 10
+        marginTop: 15
     },
     list: {
         height: "80%"

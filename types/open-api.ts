@@ -44,17 +44,21 @@ export enum WeddingSteps {
 
 export interface PlacesDto {
   step: WeddingSteps;
-  filter?: SearchFilter;
+  mainPhoto: SearchFilter;
   id: number;
   name?: string | null;
   formattedAddress?: string | null;
   picked: boolean;
   favourite: boolean;
-  mainPhoto: string;
+  price: string | null;
+  max_price: string | null;
+  min_price: string | null;
+  currency: string | null;
 }
 
 export interface PlacesViewModel {
   places: PlacesDto[];
+  filter?: "MyPick" | "MyFavourite" | "onSale";
 }
 
 export interface PlaceDetailsDto {
@@ -67,9 +71,10 @@ export interface PlaceDetailsDto {
   tiktok: string | null;
   instagram: string | null;
   phoneNumber: string | null;
-  minCost: number | null;
-  maxCost: number | null;
-  cost: number | null;
+  minPrice: string | null;
+  maxPrice: string | null;
+  price: string | null;
+  currency: string | null;
   picked: boolean;
   favourite: boolean;
   notes: string | null;

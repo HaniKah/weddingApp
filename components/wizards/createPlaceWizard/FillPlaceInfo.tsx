@@ -5,6 +5,7 @@ import {useState} from "react";
 import {Theme} from "@/styles/Theme";
 import AppButton from "@/components/appComponents/AppButton";
 import {CreatePlaceInfo} from "@/types/open-api";
+import AppNumericInput from "@/components/appComponents/AppNumericInput";
 
 
 export default function FillPlaceInfo({onNext, setPlaceInfo}: {
@@ -86,34 +87,38 @@ export default function FillPlaceInfo({onNext, setPlaceInfo}: {
 
                         </View>
 
-                        {/*{!switchEnabled &&*/}
-                        {/*    <AppTextInput onTextChange={(s) => setPrice(s)} name="minPrice" label="Price"*/}
-                        {/*                  extraStyles={styles.input}*/}
-                        {/*                  placeholder="Add your price here"*/}
-                        {/*                  value={price}*/}
-                        {/*                  keyboardType={"decimal-pad"}*/}
-                        {/*                  unit="JOD"*/}
-                        {/*    />*/}
-                        {/*}*/}
-                        
-                        {/*{switchEnabled &&*/}
-                        {/*    <View style={styles.priceRangeContainer}>*/}
-                        {/*        <AppTextInput onTextChange={(s) => setMinPrice(s)} name="minPrice" label="Min. price"*/}
-                        {/*                      extraStyles={[styles.input, {flex: 1}]}*/}
-                        {/*                      placeholder="Minimum price"*/}
-                        {/*                      value={minPrice}*/}
-                        {/*                      keyboardType={"decimal-pad"}*/}
-                        {/*                      unit="JOD"*/}
-                        {/*        />*/}
-                        {/*        <AppTextInput onTextChange={(s) => setMaxPrice(s)} name="minPrice" label="Max. price"*/}
-                        {/*                      extraStyles={[styles.input, {flex: 1}]}*/}
-                        {/*                      placeholder="Maximum price"*/}
-                        {/*                      value={maxPrice}*/}
-                        {/*                      keyboardType={"decimal-pad"}*/}
-                        {/*                      unit="JOD"*/}
-                        {/*        />*/}
-                        {/*    </View>*/}
-                        {/*}*/}
+                        {!switchEnabled &&
+                            <AppNumericInput onTextChange={(s) => setPrice(s)} name="minPrice" label="Price"
+                                             extraStyles={styles.input}
+                                             placeholder="Add your price here"
+                                             value={price}
+                                             keyboardType={"decimal-pad"}
+                                             unit="JOD"
+                                             required
+                            />
+
+                        }
+
+                        {switchEnabled &&
+                            <View style={styles.priceRangeContainer}>
+                                <AppNumericInput onTextChange={(s) => setMinPrice(s)} name="minPrice" label="Min. price"
+                                                 extraStyles={[styles.input, {flex: 1}]}
+                                                 placeholder="Minimum price"
+                                                 value={minPrice}
+                                                 keyboardType={"decimal-pad"}
+                                                 unit="JOD"
+                                                 required
+                                />
+                                <AppNumericInput onTextChange={(s) => setMaxPrice(s)} name="minPrice" label="Max. price"
+                                                 extraStyles={[styles.input, {flex: 1}]}
+                                                 placeholder="Maximum price"
+                                                 value={maxPrice}
+                                                 keyboardType={"decimal-pad"}
+                                                 unit="JOD"
+                                                 required
+                                />
+                            </View>
+                        }
 
                         <Text style={styles.subtitle}>
                             Social media

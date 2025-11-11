@@ -57,21 +57,21 @@ export default function AppTextInput({
 
     useEffect(() => {
         if (form.checking) {
-            let checked: string | undefined = value?.trim();
 
-            if (!checked || checked.length === 0) {
-                checked = undefined
+            let valid: string | undefined = value?.trim();
+            if (!valid || valid.length === 0) {
+                valid = undefined
             }
 
             if (required) {
-                if (checked) {
-                    form.addValue({[name]: checked})
+                if (valid) {
+                    form.addValue({[name]: valid})
                 } else {
-                    setError("This field is required")
+                    setError("Please check this field")
                     form.setChecking(false)
                 }
             } else {
-                form.addValue({[name]: checked})
+                form.addValue({[name]: valid})
             }
         }
 

@@ -1,4 +1,4 @@
-import {ScrollView, StyleSheet, Text, View} from "react-native";
+import {ScrollView, StyleSheet, Switch, Text, View} from "react-native";
 import {AppForm} from "@/contexts/form-context";
 import AppTextInput from "@/components/appComponents/AppTextInput";
 import {useState} from "react";
@@ -18,9 +18,12 @@ export default function FillPlaceInfo({onNext, setPlaceInfo}: {
     const [instagram, setInstagram] = useState<string>()
     const [tiktok, setTiktok] = useState<string>()
     const [website, setWebsite] = useState<string>()
-    const [minPrice, setMinPrice] = useState<string>()
+    const [price, setPrice] = useState<number>()
+    const [minPrice, setMinPrice] = useState<number>()
+    const [maxPrice, setMaxPrice] = useState<number>()
 
     const [selectedLanguage, setSelectedLanguage] = useState();
+    const [switchEnabled, setSwitchEnabled] = useState(false);
 
 
     const handleSubmit = () => {
@@ -67,6 +70,51 @@ export default function FillPlaceInfo({onNext, setPlaceInfo}: {
                                       value={phoneNumber}
                                       extraStyles={styles.input}
                         />
+
+                        <Text style={styles.subtitle}>
+                            Price details
+                        </Text>
+                        <View style={styles.switchContainer}>
+                            <Text style={styles.switchText}>Price range </Text>
+                            <Switch
+                                trackColor={{false: '#767577', true: Theme.colors.green.S100}}
+                                thumbColor={Theme.colors.white}
+                                ios_backgroundColor="#3e3e3e"
+                                onValueChange={() => setSwitchEnabled(!switchEnabled)}
+                                value={switchEnabled}
+                            />
+
+                        </View>
+
+                        {/*{!switchEnabled &&*/}
+                        {/*    <AppTextInput onTextChange={(s) => setPrice(s)} name="minPrice" label="Price"*/}
+                        {/*                  extraStyles={styles.input}*/}
+                        {/*                  placeholder="Add your price here"*/}
+                        {/*                  value={price}*/}
+                        {/*                  keyboardType={"decimal-pad"}*/}
+                        {/*                  unit="JOD"*/}
+                        {/*    />*/}
+                        {/*}*/}
+                        
+                        {/*{switchEnabled &&*/}
+                        {/*    <View style={styles.priceRangeContainer}>*/}
+                        {/*        <AppTextInput onTextChange={(s) => setMinPrice(s)} name="minPrice" label="Min. price"*/}
+                        {/*                      extraStyles={[styles.input, {flex: 1}]}*/}
+                        {/*                      placeholder="Minimum price"*/}
+                        {/*                      value={minPrice}*/}
+                        {/*                      keyboardType={"decimal-pad"}*/}
+                        {/*                      unit="JOD"*/}
+                        {/*        />*/}
+                        {/*        <AppTextInput onTextChange={(s) => setMaxPrice(s)} name="minPrice" label="Max. price"*/}
+                        {/*                      extraStyles={[styles.input, {flex: 1}]}*/}
+                        {/*                      placeholder="Maximum price"*/}
+                        {/*                      value={maxPrice}*/}
+                        {/*                      keyboardType={"decimal-pad"}*/}
+                        {/*                      unit="JOD"*/}
+                        {/*        />*/}
+                        {/*    </View>*/}
+                        {/*}*/}
+
                         <Text style={styles.subtitle}>
                             Social media
                         </Text>
@@ -98,28 +146,7 @@ export default function FillPlaceInfo({onNext, setPlaceInfo}: {
                                       value={website}
                                       extraStyles={styles.input}
                         />
-                        <Text style={styles.subtitle}>
-                            Price details
-                        </Text>
-                        <View style={styles.priceView}>
-                            <AppTextInput onTextChange={(s) => setMinPrice(s)} name="minPrice" label="Min. price"
-                                          extraStyles={[styles.input, {flex: 1}]}
-                                          placeholder="Minimum price could be offered"
-                                          value={minPrice}
-                                          keyboardType={"decimal-pad"}
-                                          unit="JOD"
-                            />
-                            <Text style={styles.priceSeparator}>
-                                -
-                            </Text>
-                            <AppTextInput onTextChange={(s) => setMinPrice(s)} name="maxPrice" label="Max. price"
-                                          extraStyles={[styles.input, {flex: 1}]}
-                                          placeholder="Maximum price could be offered"
-                                          value={minPrice}
-                                          keyboardType={"decimal-pad"}
-                                          unit="JOD"
-                            />
-                        </View>
+
                     </ScrollView>
                     <AppButton fullWidth isSubmit>next</AppButton>
                 </AppForm>
@@ -157,14 +184,22 @@ const styles = StyleSheet.create({
     list: {
         height: "80%"
     },
-    priceView: {
+    switchContainer: {
         display: "flex",
         flexDirection: "row",
-        justifyContent: "space-between",
         alignItems: "center",
+        marginVertical: 15,
+
     },
-    priceSeparator: {
-        paddingHorizontal: 20,
+    switchText: {
+        flex: 1,
+        fontSize: Theme.sizes.md
+    },
+    priceRangeContainer: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 30
     }
 
 })

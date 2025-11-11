@@ -57,8 +57,11 @@ export default function AppTextInput({
 
     useEffect(() => {
         if (form.checking) {
+            let checked: string | undefined = value?.trim();
 
-            const checked: string | null = (!value || value.length === 0) ? null : value.trim();
+            if (!checked || checked.length === 0) {
+                checked = undefined
+            }
 
             if (required) {
                 if (checked) {

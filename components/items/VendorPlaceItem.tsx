@@ -13,7 +13,11 @@ export default function VendorPlaceItem(data: VendorPlaceDto) {
                 <View style={styles.infoContainer}>
                     <Text style={styles.placeName}>{data.name}</Text>
                     <Text>{data.streetName}</Text>
-                    <Text>{data.prices?.priceRange?.min} - {data.prices?.priceRange?.max} {data.prices.currency}</Text>
+                    {data.prices.priceRange.min === data.prices.priceRange.max ?
+                        <Text>{data.prices?.priceRange?.min} {data.prices.currency}</Text> :
+                        <Text>{data.prices?.priceRange?.min} - {data.prices?.priceRange?.max}<Text
+                            style={styles.currency}>  {data.prices.currency}</Text></Text>
+                    }
 
 
                 </View>
@@ -56,5 +60,10 @@ const styles = StyleSheet.create({
     },
     placeName: {
         fontWeight: 'bold',
+        fontSize: Theme.sizes.md
     },
+    currency: {
+        color: Theme.colors.gray.S500,
+
+    }
 });

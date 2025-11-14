@@ -27,7 +27,7 @@ export default function PlaceItem({item}: { item: PlacesDto }) {
                     </View>
                     <View>
                         <Text>
-                            {}
+                            {item.price.priceRange.min} - {item.price.priceRange.max} {item.price.currency}
                         </Text>
                     </View>
                 </View>

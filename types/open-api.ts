@@ -42,6 +42,16 @@ export enum WeddingSteps {
   Extra = "Extra",
 }
 
+export interface PlacePriceRange {
+  min: string;
+  max: string;
+}
+
+export interface PlacePrice {
+  priceRange: PlacePriceRange;
+  currency: string;
+}
+
 export interface PlacesDto {
   step: WeddingSteps;
   mainPhoto: SearchFilter;
@@ -50,10 +60,7 @@ export interface PlacesDto {
   formattedAddress?: string | null;
   picked: boolean;
   favourite: boolean;
-  price: string | null;
-  max_price: string | null;
-  min_price: string | null;
-  currency: string | null;
+  price: PlacePrice;
 }
 
 export interface PlacesViewModel {
@@ -71,9 +78,7 @@ export interface PlaceDetailsDto {
   tiktok: string | null;
   instagram: string | null;
   phoneNumber: string | null;
-  minPrice: string | null;
-  maxPrice: string | null;
-  price: string | null;
+  price: PlacePrice;
   currency: string | null;
   picked: boolean;
   favourite: boolean;
@@ -157,7 +162,7 @@ export interface ExchangeTokenDto {
   refreshToken: string;
 }
 
-export interface NumRange {
+export interface NumRangeDto {
   min: string;
   max: string;
 }
@@ -169,7 +174,7 @@ export interface CreatePlaceInfo {
   instagram?: string;
   tiktok?: string;
   website?: string;
-  priceRange: NumRange;
+  priceRange: NumRangeDto;
 }
 
 export interface CreatePlaceLocation {
@@ -190,16 +195,6 @@ export interface CreatePlaceRequest {
 
 export interface CreatePlaceDto {
   id: number;
-}
-
-export interface PriceRange {
-  min: string;
-  max: string;
-}
-
-export interface PlacePrice {
-  price: string;
-  priceRange: PriceRange;
 }
 
 export interface VendorPlaceDto {

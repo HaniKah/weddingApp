@@ -157,6 +157,11 @@ export interface ExchangeTokenDto {
   refreshToken: string;
 }
 
+export interface NumRange {
+  min: string;
+  max: string;
+}
+
 export interface CreatePlaceInfo {
   name: string;
   phoneNumber: string;
@@ -164,6 +169,7 @@ export interface CreatePlaceInfo {
   instagram?: string;
   tiktok?: string;
   website?: string;
+  priceRange: NumRange;
 }
 
 export interface CreatePlaceLocation {
@@ -186,10 +192,21 @@ export interface CreatePlaceDto {
   id: number;
 }
 
+export interface PriceRange {
+  min: string;
+  max: string;
+}
+
+export interface PlacePrice {
+  price: string;
+  priceRange: PriceRange;
+}
+
 export interface VendorPlaceDto {
   id: number;
   name: string;
   streetName?: string;
+  prices: PlacePrice;
   thumbnail: string;
 }
 

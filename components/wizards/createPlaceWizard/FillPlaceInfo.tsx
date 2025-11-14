@@ -1,11 +1,10 @@
 import {ScrollView, StyleSheet, Switch, Text, View} from "react-native";
 import {AppForm} from "@/contexts/form-context";
 import AppTextInput from "@/components/appComponents/AppTextInput";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Theme} from "@/styles/Theme";
 import AppButton from "@/components/appComponents/AppButton";
-import {CreatePlaceInfo} from "@/types/open-api";
-import AppNumericInput from "@/components/appComponents/AppNumericInput";
+import {CreatePlaceInfo, NumRange} from "@/types/open-api";
 
 
 export default function FillPlaceInfo({onNext, setPlaceInfo}: {
@@ -19,27 +18,39 @@ export default function FillPlaceInfo({onNext, setPlaceInfo}: {
     const [instagram, setInstagram] = useState<string>()
     const [tiktok, setTiktok] = useState<string>()
     const [website, setWebsite] = useState<string>()
-    const [price, setPrice] = useState<number>()
-    const [minPrice, setMinPrice] = useState<number>()
-    const [maxPrice, setMaxPrice] = useState<number>()
+    const [priceRange, setPriceRange] = useState<NumRange>()
+
 
     const [selectedLanguage, setSelectedLanguage] = useState();
     const [switchEnabled, setSwitchEnabled] = useState(false);
 
+    const enterPriceRange = ({newMin, newMax}: { newMin?: string, newMax?: string }) => {
+        if (newMin) {
+            setPriceRange((p) => ({min: newMin, max: p?.max as string}))
+        }
+        if (newMax) {
+            setPriceRange((p) => ({min: p?.min as string, max: newMax}))
+        }
+
+    }
 
     const handleSubmit = () => {
-//this is extra for ts. required fields are handled inside the form
-        if (!placeName || !phoneNumber) return
+//this is extra for ts. required fields are handled inside the form and will present an error if not filled
+        if (!placeName || !phoneNumber || !priceRange) return
         setPlaceInfo({
             name: placeName,
             phoneNumber: phoneNumber,
             facebook: facebook,
             instagram: instagram,
             tiktok: tiktok,
-            website: website
+            website: website,
+            priceRange: priceRange,
         })
         onNext()
     }
+    useEffect(() => {
+        console.log(priceRange)
+    }, [priceRange]);
     return (
         <>
             <View style={styles.container}>
@@ -88,37 +99,41 @@ export default function FillPlaceInfo({onNext, setPlaceInfo}: {
                         </View>
 
                         {!switchEnabled &&
-                            <AppNumericInput onTextChange={(s) => setPrice(s)} name="Price" label="Price"
-                                             extraStyles={styles.input}
-                                             placeholder="Add your price here"
-                                             value={price}
-                                             keyboardType={"decimal-pad"}
-                                             unit="JOD"
-                                             required
+                            <AppTextInput onTextChange={(s) => enterPriceRange({newMin: s, newMax: s})} name="Price"
+                                          label="Price"
+                                          extraStyles={styles.input}
+                                          placeholder="Add your price here"
+                                          value={priceRange?.min}
+                                          keyboardType={"decimal-pad"}
+                                          unit="JOD"
+                                          required
                             />
 
                         }
 
                         {switchEnabled &&
                             <View style={styles.priceRangeContainer}>
-                                <AppNumericInput onTextChange={(s) => setMinPrice(s)} name="minPrice" label="Min. price"
-                                                 extraStyles={[styles.input, {flex: 1}]}
-                                                 placeholder="Minimum price"
-                                                 value={minPrice}
-                                                 keyboardType={"decimal-pad"}
-                                                 unit="JOD"
-                                                 required
+                                <AppTextInput onTextChange={(s) => enterPriceRange({newMin: s})} name="minPrice"
+                                              label="Min. price"
+                                              extraStyles={[styles.input, {flex: 1}]}
+                                              placeholder="Minimum price"
+                                              value={priceRange?.min}
+                                              keyboardType={"decimal-pad"}
+                                              unit="JOD"
+                                              required
                                 />
-                                <AppNumericInput onTextChange={(s) => setMaxPrice(s)} name="minPrice" label="Max. price"
-                                                 extraStyles={[styles.input, {flex: 1}]}
-                                                 placeholder="Maximum price"
-                                                 value={maxPrice}
-                                                 keyboardType={"decimal-pad"}
-                                                 unit="JOD"
-                                                 required
+                                <AppTextInput onTextChange={(s) => enterPriceRange({newMax: s})} name="minPrice"
+                                              label="Max. price"
+                                              extraStyles={[styles.input, {flex: 1}]}
+                                              placeholder="Maximum price"
+                                              value={priceRange?.max}
+                                              keyboardType={"decimal-pad"}
+                                              unit="JOD"
+                                              required
                                 />
                             </View>
                         }
+                    
 
                         <Text style={styles.subtitle}>
                             Social media

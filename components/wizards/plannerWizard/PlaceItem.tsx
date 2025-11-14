@@ -16,14 +16,22 @@ export default function PlaceItem({item}: { item: PlacesDto }) {
                     <Image style={styles.image}
                            source={{uri: item.mainPhoto}}/>
                 </View>
-                <View>
-                    <Text style={styles.name}>
-                        {item.name}
-                    </Text>
-                    <Text>
-                        {item.formattedAddress}
-                    </Text>
+                <View style={styles.infoContainer}>
+                    <View>
+                        <Text style={styles.name}>
+                            {item.name}
+                        </Text>
+                        <Text>
+                            {item.formattedAddress}
+                        </Text>
+                    </View>
+                    <View>
+                        <Text>
+                            {}
+                        </Text>
+                    </View>
                 </View>
+
             </View>
         </Link>
 
@@ -31,6 +39,11 @@ export default function PlaceItem({item}: { item: PlacesDto }) {
 
 }
 const styles = StyleSheet.create({
+    infoContainer: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+    },
     link: {
         marginBottom: 10
     },

@@ -4,8 +4,15 @@ import AppTextInput from "@/components/appComponents/AppTextInput";
 import {useEffect, useState} from "react";
 import {Theme} from "@/styles/Theme";
 import AppButton from "@/components/appComponents/AppButton";
-import {CreatePlaceInfo, NumRange} from "@/types/open-api";
+import {CreatePlaceInfo, NumRangeDto} from "@/types/open-api";
+import {PickerItem} from "@/components/appComponents/AppPicker";
+import SelectPriceType from "@/components/SelectPriceType.ios";
 
+export enum PriceType {
+    Person = "Person",
+    Hour = "Hour",
+    None = "None"
+}
 
 export default function FillPlaceInfo({onNext, setPlaceInfo}: {
     onNext: () => void,
@@ -18,7 +25,8 @@ export default function FillPlaceInfo({onNext, setPlaceInfo}: {
     const [instagram, setInstagram] = useState<string>()
     const [tiktok, setTiktok] = useState<string>()
     const [website, setWebsite] = useState<string>()
-    const [priceRange, setPriceRange] = useState<NumRange>()
+    const [priceRange, setPriceRange] = useState<NumRangeDto>()
+    const [priceType, setPriceType] = useState<PriceType>(PriceType.None)
 
 
     const [selectedLanguage, setSelectedLanguage] = useState();
@@ -49,8 +57,13 @@ export default function FillPlaceInfo({onNext, setPlaceInfo}: {
         onNext()
     }
     useEffect(() => {
-        console.log(priceRange)
     }, [priceRange]);
+
+    const priceTypeList: PickerItem<PriceType>[] = Object.values(PriceType).map((v) => ({
+        label: v.toString(), // needs to be translated here
+        value: v
+    }))
+
     return (
         <>
             <View style={styles.container}>
@@ -89,7 +102,7 @@ export default function FillPlaceInfo({onNext, setPlaceInfo}: {
                         <View style={styles.switchContainer}>
                             <Text style={styles.switchText}>Price range </Text>
                             <Switch
-                                trackColor={{false: '#767577', true: Theme.colors.green.S100}}
+                                trackColor={{false: '#767577', true: Theme.colors.green.S600}}
                                 thumbColor={Theme.colors.white}
                                 ios_backgroundColor="#3e3e3e"
                                 onValueChange={() => setSwitchEnabled(!switchEnabled)}
@@ -133,7 +146,11 @@ export default function FillPlaceInfo({onNext, setPlaceInfo}: {
                                 />
                             </View>
                         }
-                    
+
+                        <SelectPriceType style={styles.input} label="Price type" itemList={priceTypeList}
+                                         value={priceType}
+                                         setValue={setPriceType}/>
+
 
                         <Text style={styles.subtitle}>
                             Social media

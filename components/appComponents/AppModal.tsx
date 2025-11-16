@@ -3,14 +3,30 @@ import AppButton from "@/components/appComponents/AppButton";
 import {ButtonType} from "@/styles/Button";
 import {Theme} from "@/styles/Theme";
 
-export default function AppModal({isVisible, setIsVisible, children}: {
+export default function AppModal({
+                                     isVisible,
+                                     setIsVisible,
+                                     children,
+                                     presentationStyle = "pageSheet",
+                                     allowSwipeDismissal = true,
+                                 }: {
+    presentationStyle?: | 'fullScreen' | 'pageSheet' | 'formSheet' | 'overFullScreen' | undefined;
     isVisible: boolean,
     setIsVisible: (s: boolean) => void,
     children: React.ReactNode
+    allowSwipeDismissal?: boolean
 }) {
     return (
-        <Modal presentationStyle="pageSheet" animationType="slide" visible={isVisible}
-               onRequestClose={() => setIsVisible(false)}>
+        <Modal
+
+            allowSwipeDismissal={allowSwipeDismissal}
+            presentationStyle={presentationStyle}
+            animationType="slide"
+            visible={isVisible}
+            onRequestClose={() => setIsVisible(false)}
+
+
+        >
             <View style={styles.wrapper}>
                 <View style={styles.header}>
                     <AppButton
@@ -41,7 +57,7 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         paddingHorizontal: 20,
         paddingTop: 20,
- 
+
     },
     handle: {
         flex: 1,

@@ -29,7 +29,6 @@ export default function FillPlaceInfo({onNext, setPlaceInfo}: {
     const [priceType, setPriceType] = useState<PriceType>(PriceType.None)
 
 
-    const [selectedLanguage, setSelectedLanguage] = useState();
     const [switchEnabled, setSwitchEnabled] = useState(false);
 
     const enterPriceRange = ({newMin, newMax}: { newMin?: string, newMax?: string }) => {

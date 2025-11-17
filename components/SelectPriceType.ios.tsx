@@ -44,6 +44,7 @@ export default function SelectPriceType({itemList, label, value, setValue, style
                       isVisible={isVisible}
                       setIsVisible={setIsVisible}>
                 <View style={styles.viewContainer}>
+                    <Text style={styles.title}>Select price type</Text>
                     <FlatList data={itemList} renderItem={renderItem}/>
                 </View>
             </AppModal>
@@ -76,4 +77,9 @@ const styles = StyleSheet.create({
         borderBottomColor: Theme.colors.gray.S300,
 
     },
+    title: {
+        textAlign: "center",
+        fontSize: Theme.sizes.md,
+        fontWeight: "bold",
+    }
 })

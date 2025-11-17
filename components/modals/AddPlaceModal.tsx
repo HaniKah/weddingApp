@@ -9,7 +9,10 @@ export default function AddPlaceModal({isVisible, setIsVisible}: {
 
     return (
         <>
-            <AppModal isVisible={isVisible} setIsVisible={setIsVisible}>
+            <AppModal allowSwipeDismissal={true}
+                      presentationStyle="fullScreen"
+                      isVisible={isVisible}
+                      setIsVisible={setIsVisible}>
                 <AppView withPadding>
                     <CreatePlaceWizard/>
                 </AppView>

@@ -16,6 +16,7 @@ export default function AppModal({
     children: React.ReactNode
     allowSwipeDismissal?: boolean
 }) {
+    const isFullScreen = presentationStyle === 'fullScreen' || presentationStyle === 'overFullScreen'
     return (
         <Modal
 
@@ -28,14 +29,15 @@ export default function AppModal({
 
         >
             <View style={styles.wrapper}>
-                <View style={styles.header}>
+                <View
+                    style={[styles.header, isFullScreen && styles.headerFullScreen]}>
                     <AppButton
                         extraStylesBtn={{flex: 1, justifyContent: "flex-start"}}
                         buttonType={ButtonType.PLAIN}
                         onPress={() => setIsVisible(false)}>
                         cancel
                     </AppButton>
-                    <View style={styles.handle}></View>
+                    <View style={[styles.handle, isFullScreen && styles.handleFullScreen]}></View>
                     <View style={{flex: 1}}></View>
                 </View>
 
@@ -57,7 +59,9 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         paddingHorizontal: 20,
         paddingTop: 20,
-
+    },
+    headerFullScreen: {
+        paddingTop: 70,
     },
     handle: {
         flex: 1,
@@ -66,4 +70,7 @@ const styles = StyleSheet.create({
         backgroundColor: Theme.colors.iconBackground,
         borderRadius: 10,
     },
+    handleFullScreen: {
+        display: "none",
+    }
 })

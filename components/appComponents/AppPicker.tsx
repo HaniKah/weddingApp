@@ -3,7 +3,7 @@ import {Text} from "react-native";
 
 export type PickerItem<P> = {
     label: string;
-    value: P
+    value: P;
 }
 
 export default function AppPicker<T>({itemList, label, value, setValue}: {

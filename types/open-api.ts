@@ -10,6 +10,12 @@
  * ---------------------------------------------------------------
  */
 
+export enum PlaceStatus {
+  Incomplete = "Incomplete",
+  Unpublished = "Unpublished",
+  Published = "Published",
+}
+
 export enum CoupleSide {
   Groom = "Groom",
   Bride = "Bride",
@@ -198,6 +204,7 @@ export interface CreatePlaceDto {
 }
 
 export interface VendorPlaceDto {
+  status: PlaceStatus;
   id: number;
   name: string;
   streetName?: string;
@@ -207,6 +214,11 @@ export interface VendorPlaceDto {
 
 export interface VendorPlaceViewModel {
   result: VendorPlaceDto[];
+}
+
+export interface PublishPlaceRequest {
+  status: PlaceStatus;
+  placeId: number;
 }
 
 import type {
@@ -746,6 +758,25 @@ export class Api<
         path: `/api/places/getPlaces`,
         method: "GET",
         format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Places
+     * @name PlacesControllerToggleStatus
+     * @request POST:/api/places/toggleStatus
+     */
+    placesControllerToggleStatus: (
+      data: PublishPlaceRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/places/toggleStatus`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
         ...params,
       }),
   };

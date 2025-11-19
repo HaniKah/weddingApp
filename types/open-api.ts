@@ -78,14 +78,14 @@ export interface PlaceDetailsDto {
   step: WeddingSteps;
   id: number;
   name: string;
-  address: string | null;
-  website: string | null;
-  facebook: string | null;
-  tiktok: string | null;
-  instagram: string | null;
-  phoneNumber: string | null;
+  address?: string;
+  website?: string;
+  facebook?: string;
+  tiktok?: string;
+  instagram?: string;
+  phoneNumber: string;
   price: PlacePrice;
-  currency: string | null;
+  currency: string;
   picked: boolean;
   favourite: boolean;
   notes: string | null;
@@ -107,7 +107,6 @@ export interface StepsViewModel {
 export interface PlaceDetailsRequest {
   step: WeddingSteps;
   placeId: number;
-  cost: number | null;
   notes: string | null;
   favorite: boolean;
   picked: boolean;
@@ -219,6 +218,20 @@ export interface VendorPlaceViewModel {
 export interface PublishPlaceRequest {
   status: PlaceStatus;
   placeId: number;
+}
+
+export interface VendorPlaceDetailsDto {
+  status: PlaceStatus;
+  id: number;
+  name: string;
+  streetName?: string;
+  phoneNumber: string;
+  facebook?: string;
+  instagram?: string;
+  tiktok?: string;
+  website?: string;
+  placePrice: PlacePrice;
+  mainPhoto: string;
 }
 
 import type {
@@ -777,6 +790,27 @@ export class Api<
         method: "POST",
         body: data,
         type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Places
+     * @name PlacesControllerGetPlaceDetails
+     * @request GET:/api/places/getPlaceDetails
+     */
+    placesControllerGetPlaceDetails: (
+      query: {
+        id: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<VendorPlaceDetailsDto, any>({
+        path: `/api/places/getPlaceDetails`,
+        method: "GET",
+        query: query,
+        format: "json",
         ...params,
       }),
   };

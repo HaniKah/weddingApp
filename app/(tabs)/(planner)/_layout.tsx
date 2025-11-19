@@ -5,7 +5,7 @@ export default function PlannerLayout() {
     return (
         <Stack screenOptions={{
             headerStyle: {backgroundColor: Theme.colors.background},
-            contentStyle: {backgroundColor: Theme.colors.background}
+            contentStyle: {backgroundColor: Theme.colors.background},
         }}>
             <Stack.Screen name="index" options={{headerShown: false, title: 'Index'}}/>
             <Stack.Screen name="checklist"

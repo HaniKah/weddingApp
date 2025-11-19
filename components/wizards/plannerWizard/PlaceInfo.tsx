@@ -3,7 +3,7 @@ import {IconSymbol} from "@/components/symbols/IconSymbol";
 import {Theme} from "@/styles/Theme";
 
 
-export default function PlaceInfo({iconName, info}: { iconName: any, info: string | null }) {
+export default function PlaceInfo({iconName, info}: { iconName: any, info: string | undefined }) {
     return (
         <>
             <View style={styles.infoContainer}>

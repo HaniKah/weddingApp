@@ -7,6 +7,7 @@ import {useEffect, useState} from 'react';
 import AddPlaceModal from '@/components/modals/AddPlaceModal';
 import {VendorPlaceDto} from '@/types/open-api';
 import VendorPlaceItem from '@/components/items/VendorPlaceItem';
+import {Stack} from "expo-router";
 
 export default function Index() {
     const API = useApi();
@@ -33,6 +34,7 @@ export default function Index() {
 
     return (
         <>
+            <Stack.Screen options={{headerShown: false}}/>
             <PlacesToolbar onCreatePlace={() => setOpenModal(true)}/>
             <AppView withPadding isLoading={isLoading}>
                 <FlatList contentContainerStyle={styles.flatlist} keyExtractor={(item) => item.id.toString()}
@@ -40,6 +42,7 @@ export default function Index() {
                           renderItem={(item) => <VendorPlaceItem setTrigger={setTrigger} data={item.item}/>
                           }/>
             </AppView>
+
             <AddPlaceModal setIsVisible={setOpenModal} isVisible={openModal}/>
         </>
     );

@@ -58,7 +58,6 @@ export default function PlaceId() {
             setIsLoading(true)
             await API.plannerControllerUpdatePlaceDetails({
                 placeId: Number(id),
-                cost: cost || placeDetails.cost,
                 picked: picked || placeDetails.picked,
                 step: placeDetails.step,
                 favorite: favourite || placeDetails.favourite,
@@ -86,7 +85,7 @@ export default function PlaceId() {
 
                     <View style={styles.titleContainer}>
                         <Text style={styles.title}>{placeDetails?.name}</Text>
-                        <Text>{placeDetails?.cost}</Text>
+                        <Text>{placeDetails?.price.currency}</Text>
                     </View>
 
 

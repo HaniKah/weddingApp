@@ -11,7 +11,7 @@ export default function SwitchTabsLayout() {
                 tabBarInactiveTintColor: Theme.colors.primaryInactive,
                 headerShown: false,
             }}>
-                <Tabs.Screen name="index" options={{
+                <Tabs.Screen name="(places)" options={{
                     title: 'Places',
                     tabBarIcon: ({color}) => <IconSymbol size={28} name="house.fill" color={color}/>,
                 }}/>

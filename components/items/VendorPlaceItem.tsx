@@ -4,6 +4,7 @@ import {Theme} from '@/styles/Theme';
 import AppButton from '@/components/appComponents/AppButton';
 import {Dispatch, SetStateAction, useState} from "react";
 import {useApi} from "@/utils/api";
+import {Link} from "expo-router";
 
 type VendorPlaceItemProps = {
     data: VendorPlaceDto;
@@ -27,46 +28,52 @@ export default function VendorPlaceItem({data, setTrigger}: VendorPlaceItemProps
     }
     return (
         <>
-            <View style={styles.container}>
-                <View style={styles.imageContainer}>
-                    <Image style={styles.image} source={{uri: data.thumbnail}}/>
-                </View>
-                <View style={styles.infoContainer}>
-                    <Text style={styles.placeName}>{data.name}</Text>
-                    <Text>{data.streetName}</Text>
-                    <View style={styles.priceContainer}>
-                        {data.prices.priceRange.min === data.prices.priceRange.max ?
-                            <Text>{data.prices?.priceRange?.min}</Text> :
-                            <Text>{data.prices?.priceRange?.min} - {data.prices?.priceRange?.max}
-                            </Text>
-                        }
-                        <Text style={styles.currency}>  {data.prices.currency}</Text>
+            <Link push href={{
+                pathname: "/(switch-tabs)/(places)/[id]",
+                params: {id: data.id}
+            }}>
+                <View style={styles.container}>
+                    <View style={styles.imageContainer}>
+                        <Image style={styles.image} source={{uri: data.thumbnail}}/>
                     </View>
+                    <View style={styles.infoContainer}>
+                        <Text style={styles.placeName}>{data.name}</Text>
+                        <Text>{data.streetName}</Text>
+                        <View style={styles.priceContainer}>
+                            {data.prices.priceRange.min === data.prices.priceRange.max ?
+                                <Text>{data.prices?.priceRange?.min}</Text> :
+                                <Text>{data.prices?.priceRange?.min} - {data.prices?.priceRange?.max}
+                                </Text>
+                            }
+                            <Text style={styles.currency}>  {data.prices.currency}</Text>
+                        </View>
 
-                </View>
-                <View>
-                    {
-                        data.status === PlaceStatus.Unpublished &&
-                        <AppButton buttonSize="SM" onPress={() => publish(data.id, PlaceStatus.Published)} confirmative>
-                            Publish
-                        </AppButton>
-                    }
-                    {
-                        data.status === PlaceStatus.Published &&
-                        <AppButton buttonSize="SM" onPress={() => publish(data.id, PlaceStatus.Unpublished)}
-                                   destructive>
-                            Unpublish
-                        </AppButton>
-                    }
-                    {
-                        data.status === PlaceStatus.Incomplete &&
-                        <AppButton buttonSize="SM" confirmative>
-                            complete
-                        </AppButton>
-                    }
+                    </View>
+                    <View>
+                        {
+                            data.status === PlaceStatus.Unpublished &&
+                            <AppButton buttonSize="SM" onPress={() => publish(data.id, PlaceStatus.Published)}
+                                       confirmative>
+                                Publish
+                            </AppButton>
+                        }
+                        {
+                            data.status === PlaceStatus.Published &&
+                            <AppButton buttonSize="SM" onPress={() => publish(data.id, PlaceStatus.Unpublished)}
+                                       destructive>
+                                Unpublish
+                            </AppButton>
+                        }
+                        {
+                            data.status === PlaceStatus.Incomplete &&
+                            <AppButton buttonSize="SM" confirmative>
+                                complete
+                            </AppButton>
+                        }
 
+                    </View>
                 </View>
-            </View>
+            </Link>
         </>
     );
 }

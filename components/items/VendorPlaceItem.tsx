@@ -34,28 +34,33 @@ export default function VendorPlaceItem({data, setTrigger}: VendorPlaceItemProps
                 <View style={styles.infoContainer}>
                     <Text style={styles.placeName}>{data.name}</Text>
                     <Text>{data.streetName}</Text>
-                    {data.prices.priceRange.min === data.prices.priceRange.max ?
-                        <Text>{data.prices?.priceRange?.min} {data.prices.currency}</Text> :
-                        <Text>{data.prices?.priceRange?.min} - {data.prices?.priceRange?.max}<Text
-                            style={styles.currency}>  {data.prices.currency}</Text></Text>
-                    }
+                    <View style={styles.priceContainer}>
+                        {data.prices.priceRange.min === data.prices.priceRange.max ?
+                            <Text>{data.prices?.priceRange?.min}</Text> :
+                            <Text>{data.prices?.priceRange?.min} - {data.prices?.priceRange?.max}
+                            </Text>
+                        }
+                        <Text style={styles.currency}>  {data.prices.currency}</Text>
+                    </View>
+
                 </View>
                 <View>
                     {
                         data.status === PlaceStatus.Unpublished &&
-                        <AppButton onPress={() => publish(data.id, PlaceStatus.Published)} confirmative>
+                        <AppButton buttonSize="SM" onPress={() => publish(data.id, PlaceStatus.Published)} confirmative>
                             Publish
                         </AppButton>
                     }
                     {
                         data.status === PlaceStatus.Published &&
-                        <AppButton onPress={() => publish(data.id, PlaceStatus.Unpublished)} destructive>
+                        <AppButton buttonSize="SM" onPress={() => publish(data.id, PlaceStatus.Unpublished)}
+                                   destructive>
                             Unpublish
                         </AppButton>
                     }
                     {
                         data.status === PlaceStatus.Incomplete &&
-                        <AppButton confirmative>
+                        <AppButton buttonSize="SM" confirmative>
                             complete
                         </AppButton>
                     }
@@ -100,5 +105,10 @@ const styles = StyleSheet.create({
     currency: {
         color: Theme.colors.gray.S500,
 
+    },
+    priceContainer: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
     }
 });

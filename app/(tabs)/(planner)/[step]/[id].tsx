@@ -4,7 +4,7 @@ import {Stack, useLocalSearchParams, usePathname, useRouter} from "expo-router";
 import {PlaceDetailsDto} from "@/types/open-api";
 import AppButton from "@/components/appComponents/AppButton";
 import {ButtonType} from "@/styles/Button";
-import AppCondition from "@/components/appComponents/AppCondition";
+import AppIf from "@/components/appComponents/AppIf";
 import PlaceInfo from "@/components/wizards/plannerWizard/PlaceInfo";
 import {Theme} from "@/styles/Theme";
 import {useApi} from "@/utils/api";
@@ -89,31 +89,31 @@ export default function PlaceId() {
                     </View>
 
 
-                    <AppCondition condition={placeDetails?.address}>
+                    <AppIf value={placeDetails?.address}>
                         <PlaceInfo iconName="location.circle" info={placeDetails?.address}/>
-                    </AppCondition>
+                    </AppIf>
 
 
-                    <AppCondition condition={placeDetails.phoneNumber}>
+                    <AppIf value={placeDetails.phoneNumber}>
                         <PlaceInfo iconName='phone.circle' info={placeDetails?.phoneNumber}/>
-                    </AppCondition>
+                    </AppIf>
 
-                    <AppCondition condition={placeDetails.website}>
+                    <AppIf value={placeDetails.website}>
                         <PlaceInfo iconName='globe' info={placeDetails?.website}/>
-                    </AppCondition>
+                    </AppIf>
 
 
-                    <AppCondition condition={placeDetails?.facebook}>
+                    <AppIf value={placeDetails?.facebook}>
                         <PlaceInfo iconName='globe' info={placeDetails?.facebook}/>
-                    </AppCondition>
+                    </AppIf>
 
-                    <AppCondition condition={placeDetails?.instagram}>
+                    <AppIf value={placeDetails?.instagram}>
                         <PlaceInfo iconName='globe' info={placeDetails?.instagram}/>
-                    </AppCondition>
+                    </AppIf>
 
-                    <AppCondition condition={placeDetails?.instagram}>
+                    <AppIf value={placeDetails?.instagram}>
                         <PlaceInfo iconName='globe' info={placeDetails?.tiktok}/>
-                    </AppCondition>
+                    </AppIf>
 
 
                     <View style={styles.saveForLaterContainer}>

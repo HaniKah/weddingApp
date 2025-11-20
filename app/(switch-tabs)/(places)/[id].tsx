@@ -1,6 +1,6 @@
-import {Link, Stack, useLocalSearchParams} from "expo-router";
+import {Stack, useLocalSearchParams} from "expo-router";
 import {Theme} from "@/styles/Theme";
-import {Image, ScrollView, StyleSheet, Text, View} from "react-native";
+import {Image, Linking, Pressable, ScrollView, StyleSheet, Text, View} from "react-native";
 import AppIf from "@/components/appComponents/AppIf";
 import PlaceInfo from "@/components/wizards/plannerWizard/PlaceInfo";
 import {useApi} from "@/utils/api";
@@ -69,30 +69,27 @@ export default function Place() {
 
                     <View style={styles.socialMediaContainer}>
                         <AppIf value={placeDetails?.website}>
-                            <Link href={placeDetails?.website}>
+                            <Pressable onPress={() => Linking.openURL(placeDetails?.website as string)}>
                                 <Website width={40} height={40} color={Theme.colors.gray.S300}/>
-                            </Link>
+                            </Pressable>
                         </AppIf>
 
                         <AppIf value={placeDetails?.facebook}>
-                            <Link href={placeDetails?.facebook}>
+                            <Pressable onPress={() => Linking.openURL(placeDetails?.facebook as string)}>
                                 <Facebook width={40} height={40} color={Theme.colors.gray.S300}/>
-                            </Link>
+                            </Pressable>
                         </AppIf>
 
                         <AppIf value={placeDetails?.instagram}>
-                            {placeDetails?.instagram &&
-                                <Link href={placeDetails?.instagram}>
-                                    <Instagram width={40} height={40} color={Theme.colors.gray.S300}/>
-                                </Link>
-                            }
-
+                            <Pressable onPress={() => Linking.openURL(placeDetails?.instagram as string)}>
+                                <Instagram width={40} height={40} color={Theme.colors.gray.S300}/>
+                            </Pressable>
                         </AppIf>
 
                         <AppIf value={placeDetails?.tiktok}>
-                            <Link href={placeDetails?.tiktok}>
+                            <Pressable onPress={() => Linking.openURL(placeDetails?.tiktok as string)}>
                                 <Tiktok width={40} height={40} color={Theme.colors.gray.S300}/>
-                            </Link>
+                            </Pressable>
                         </AppIf>
 
                     </View>

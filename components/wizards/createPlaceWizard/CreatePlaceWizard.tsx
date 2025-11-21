@@ -42,7 +42,11 @@ export default function CreatePlaceWizard() {
 
     const onCreate = async () => {
         if (!placeInfo || !selectedType) return
-        const res = await API.placesControllerCreatePlace({placeInfo: placeInfo, type: selectedType})
+        const res = await API.placesControllerCreatePlace({
+            placeInfo: placeInfo,
+            type: selectedType,
+            description: description
+        })
         const files = constructRequest(res.data.id)
         if (!files) return
         await API.photosControllerUploadFile(files)

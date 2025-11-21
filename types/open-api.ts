@@ -195,6 +195,7 @@ export interface CreatePlaceLocation {
 export interface CreatePlaceRequest {
   type: WeddingSteps;
   placeInfo: CreatePlaceInfo;
+  description?: string;
   location?: CreatePlaceLocation;
 }
 

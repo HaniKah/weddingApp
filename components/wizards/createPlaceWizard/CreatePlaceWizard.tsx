@@ -6,11 +6,13 @@ import {CreatePlaceInfo, WeddingSteps} from "@/types/open-api";
 import FillPlaceInfo from "@/components/wizards/createPlaceWizard/FillPlaceInfo";
 import UploadImages from "@/components/wizards/createPlaceWizard/UploadImages";
 import {useApi} from "@/utils/api";
+import AddDescription from "@/components/wizards/createPlaceWizard/AddDescription";
 
 
 enum CreatePlaceSteps {
     PickPlaceType = "PickPlaceType",
     FillPlaceInfo = "FillPlaceInfo",
+    AddDescription = "AddDescription",
     PickPlaceLocation = "PickPlaceLocation"
 }
 
@@ -28,6 +30,7 @@ export default function CreatePlaceWizard() {
 
     const [selectedType, setSelectedType] = useState<WeddingSteps>()
     const [placeInfo, setPlaceInfo] = useState<CreatePlaceInfo>()
+    const [description, setDescription] = useState<string>()
     const [images, setImages] = useState<ImageUploadModel[]>([]);
 
     const API = useApi()
@@ -69,6 +72,9 @@ export default function CreatePlaceWizard() {
                 </WizardStep>
                 <WizardStep step={CreatePlaceSteps.FillPlaceInfo} currentStep={currentStep}>
                     <FillPlaceInfo setPlaceInfo={setPlaceInfo} onNext={onNext}/>
+                </WizardStep>
+                <WizardStep step={CreatePlaceSteps.AddDescription} currentStep={currentStep}>
+                    <AddDescription description={description} setDescription={setDescription} onNext={onNext}/>
                 </WizardStep>
                 <WizardStep step={CreatePlaceSteps.PickPlaceLocation} currentStep={currentStep}>
                     <UploadImages setImages={setImages} images={images} onFinish={onCreate}/>

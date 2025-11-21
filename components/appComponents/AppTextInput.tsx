@@ -1,4 +1,4 @@
-import {KeyboardTypeOptions, StyleProp, StyleSheet, Text, TextInput, View, ViewStyle} from "react-native";
+import {KeyboardTypeOptions, StyleProp, StyleSheet, Text, TextInput, TextStyle, View, ViewStyle} from "react-native";
 import {Theme} from "@/styles/Theme";
 import {useFormContext} from "@/contexts/form-context";
 import {useEffect, useRef, useState} from "react";
@@ -15,7 +15,9 @@ export default function AppTextInput({
                                          design = 1,
                                          debounceTime = 0,
                                          extraStyles,
-                                         unit
+                                         unit,
+                                         textArea,
+
                                      }: {
 
     placeholder?: string,
@@ -29,8 +31,12 @@ export default function AppTextInput({
     debounceTime?: number
     extraStyles?: StyleProp<ViewStyle>
     unit?: string
+    textArea?: boolean
 
 }) {
+
+    let styles: TextInputType = design === 1 ? design1 : design2
+
 
     const inputRef = useRef<TextInput>(null)
     const [error, setError] = useState<string | undefined>()
@@ -54,6 +60,7 @@ export default function AppTextInput({
         debouncer(() => onTextChange(text))
 
     }
+
 
     useEffect(() => {
         if (form.checking) {
@@ -79,33 +86,44 @@ export default function AppTextInput({
 
     return (
         <View style={extraStyles}>
-            {label && <Text style={design === 2 ? design2.label : design1.label}>{label}</Text>}
-            <View style={design === 2 ? design2.inputContainer : design1.inputContainer}>
+            {label && <Text style={styles.label}>{label}</Text>}
+            <View style={styles.inputContainer}>
                 <TextInput value={textInput}
                            autoCorrect={false}
                            keyboardType={keyboardType}
                            placeholder={placeholder}
                            ref={inputRef}
-                           style={design === 2 ? design2.input : design1.input}
+                           style={[styles.input, textArea && styles.textArea]}
                            onChangeText={preTextChange}
+                           multiline={textArea}
 
                 />
-                {unit && <Text style={design === 2 ? design2.unit : design1.unit}>JOD</Text>}
+                {unit && <Text style={styles.unit}>JOD</Text>}
             </View>
 
-            <Text style={design === 2 ? design2.error : design1.error}>{error}</Text>
+            <Text style={styles.error}>{error}</Text>
         </View>
     )
 }
 
-const design1 = StyleSheet.create({
+type TextInputType = {
+    inputContainer: ViewStyle,
+    input: TextStyle,
+    label: TextStyle,
+    error: TextStyle,
+    onFocus: ViewStyle,
+    unit: TextStyle,
+    textArea: TextStyle
+}
+
+
+const design1: TextInputType = StyleSheet.create({
         inputContainer: {
             display: "flex",
             flexDirection: "row",
             alignItems: "center",
             borderBottomWidth: 2,
             borderColor: Theme.colors.primaryInactive,
-
         },
         input: {
             paddingRight: 10,
@@ -114,15 +132,11 @@ const design1 = StyleSheet.create({
             fontSize: Theme.sizes.md,
             width: "100%",
             flex: 1,
-
-
             paddingLeft: 5,
-
         },
         label: {
             color: Theme.colors.primary,
             fontWeight: "semibold",
-           
             fontSize: Theme.sizes.sm,
         },
         error: {
@@ -135,11 +149,15 @@ const design1 = StyleSheet.create({
         },
         unit: {
             color: Theme.colors.gray.S400,
+        },
+        textArea: {
+            padding: 10,
+            height: 250
         }
     }
 )
 
-const design2 = StyleSheet.create({
+const design2: TextInputType = StyleSheet.create({
     inputContainer: {
         display: "flex",
         flexDirection: "row",
@@ -148,10 +166,8 @@ const design2 = StyleSheet.create({
         borderRadius: Theme.radius.sm,
         overflow: "hidden",
         paddingRight: 10,
-
     },
     input: {
-
         height: 45,
         color: Theme.colors.primary,
         fontSize: Theme.sizes.md,
@@ -175,9 +191,17 @@ const design2 = StyleSheet.create({
     },
     unit: {
         color: Theme.colors.gray.S400,
+    },
+    textArea: {
+        padding: 10,
+        height: 250
     }
-
 })
+
+
+
+
+
 
 
 

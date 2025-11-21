@@ -42,7 +42,7 @@ export default function FillPlaceInfo({onNext, setPlaceInfo}: {
     }
 
     const handleSubmit = () => {
-//this is extra for ts. required fields are handled inside the form and will present an error if not filled
+//if condition is extra for ts. required fields are handled inside the form and will present an error if not filled
         if (!placeName || !phoneNumber || !priceRange) return
         setPlaceInfo({
             name: placeName,

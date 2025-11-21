@@ -232,6 +232,7 @@ export interface VendorPlaceDetailsDto {
   tiktok?: string;
   website?: string;
   placePrice: PlacePrice;
+  description?: string;
   mainPhoto: string;
 }
 

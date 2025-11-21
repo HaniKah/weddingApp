@@ -56,7 +56,7 @@ export default function Place() {
                     </View>
 
 
-                    <View style={styles.contactContainer}>
+                    <View>
                         <AppIf value={placeDetails?.streetName}>
                             <PlaceInfo iconName="location.circle" info={placeDetails?.streetName}/>
                         </AppIf>
@@ -64,6 +64,12 @@ export default function Place() {
                         <AppIf value={placeDetails?.phoneNumber}>
                             <PlaceInfo iconName='phone.circle' info={placeDetails?.phoneNumber}/>
                         </AppIf>
+                    </View>
+
+                    <View style={{flex: 1}}>
+                        <Text>
+                            {placeDetails?.description}
+                        </Text>
                     </View>
 
 
@@ -131,9 +137,7 @@ const styles = StyleSheet.create({
         flexShrink: 1
     },
 
-    contactContainer: {
-        flex: 1
-    },
+
     socialMediaContainer: {
         display: "flex",
         flexDirection: "row",

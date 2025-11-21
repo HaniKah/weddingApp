@@ -6,7 +6,7 @@ import AppButton from "@/components/appComponents/AppButton";
 export default function AddDescription({onNext, description, setDescription}: {
     onNext: () => void,
     description: string | undefined,
-    setDescription: (info: string) => void
+    setDescription: (text: string) => void
 }) {
 
 
@@ -16,7 +16,7 @@ export default function AddDescription({onNext, description, setDescription}: {
 
             <AppTextInput name="description"
                           value={description}
-                          onTextChange={() => setDescription}
+                          onTextChange={(text) => setDescription(text)}
                           design={1}
                           textArea
                           label="Description"
@@ -24,6 +24,7 @@ export default function AddDescription({onNext, description, setDescription}: {
 
             />
             <AppButton extraStylesBtn={styles.button} fullWidth onPress={onNext}>next</AppButton>
+            <Text>{description}</Text>
         </>
     )
 }

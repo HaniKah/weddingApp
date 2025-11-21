@@ -78,7 +78,8 @@ export default function CreatePlaceWizard() {
                     <FillPlaceInfo setPlaceInfo={setPlaceInfo} onNext={onNext}/>
                 </WizardStep>
                 <WizardStep step={CreatePlaceSteps.AddDescription} currentStep={currentStep}>
-                    <AddDescription description={description} setDescription={setDescription} onNext={onNext}/>
+                    <AddDescription description={description} setDescription={(text) => setDescription(text)}
+                                    onNext={onNext}/>
                 </WizardStep>
                 <WizardStep step={CreatePlaceSteps.PickPlaceLocation} currentStep={currentStep}>
                     <UploadImages setImages={setImages} images={images} onFinish={onCreate}/>

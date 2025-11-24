@@ -1,4 +1,4 @@
-import {ActivityIndicator, Animated, StyleSheet, Text, View} from "react-native";
+import {ActivityIndicator, Animated, Image, StyleSheet, Text, View} from "react-native";
 import {useEffect, useState} from "react";
 import {Stack, useLocalSearchParams, usePathname, useRouter} from "expo-router";
 import {PlaceDetailsDto} from "@/types/open-api";
@@ -79,8 +79,9 @@ export default function PlaceId() {
                         headerShown: true,
                         headerTintColor: Theme.colors.primary,
                     }}/>
-                {/*<Image source={{uri: photoUri?.uri}} style={{height: 400}}/>*/}
-                <View style={{height: 400}}></View>
+                <View style={styles.imageContainer}>
+                    <Image style={styles.image} source={{uri: placeDetails.mainPhoto}}/>
+                </View>
                 <View style={styles.infosContainer}>
 
                     <View style={styles.titleContainer}>
@@ -156,8 +157,13 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         flexShrink: 1
     },
-
-
+    imageContainer: {
+        height: 400,
+    },
+    image: {
+        backgroundSize: "cover",
+        height: "100%"
+    },
     saveForLaterContainer: {
         width: "100%",
         display: "flex",

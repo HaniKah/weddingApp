@@ -89,6 +89,7 @@ export interface PlaceDetailsDto {
   picked: boolean;
   favourite: boolean;
   notes: string | null;
+  mainPhoto: string;
 }
 
 export interface StepsDto {

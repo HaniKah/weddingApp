@@ -1,17 +1,17 @@
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import {PlaceStatus, VendorPlaceDto} from '@/types/open-api';
 import {Theme} from '@/styles/Theme';
 import AppButton from '@/components/appComponents/AppButton';
 import {Dispatch, SetStateAction, useState} from "react";
 import {useApi} from "@/utils/api";
-import {Link} from "expo-router";
 
 type VendorPlaceItemProps = {
     data: VendorPlaceDto;
     setTrigger: Dispatch<SetStateAction<boolean>>;
+    openBottomSheet: (placeId: number) => void;
 }
 
-export default function VendorPlaceItem({data, setTrigger}: VendorPlaceItemProps) {
+export default function VendorPlaceItem({data, setTrigger, openBottomSheet}: VendorPlaceItemProps) {
     const API = useApi()
     const [isLoading, setIsLoading] = useState(true);
 
@@ -28,10 +28,7 @@ export default function VendorPlaceItem({data, setTrigger}: VendorPlaceItemProps
     }
     return (
         <>
-            <Link push href={{
-                pathname: "/(switch-tabs)/(places)/[id]",
-                params: {id: data.id}
-            }}>
+            <Pressable onPress={() => openBottomSheet(data.id)}>
                 <View style={styles.container}>
                     <View style={styles.imageContainer}>
                         <Image style={styles.image} source={{uri: data.thumbnail}}/>
@@ -73,7 +70,7 @@ export default function VendorPlaceItem({data, setTrigger}: VendorPlaceItemProps
 
                     </View>
                 </View>
-            </Link>
+            </Pressable>
         </>
     );
 }

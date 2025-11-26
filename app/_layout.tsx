@@ -9,6 +9,7 @@ import {useEffect} from "react";
 import {useAuthStore} from "@/utils/authStore";
 import {AuthProvider} from "@/contexts/auth-context";
 import {UserType} from "@/types/user-type";
+import {GestureHandlerRootView} from "react-native-gesture-handler";
 
 
 export default function RootLayout() {
@@ -34,26 +35,28 @@ export default function RootLayout() {
         <AuthProvider>
             <SafeAreaProvider>
                 <SafeAreaView style={styles.container} edges={['top']}>
-                    <Stack screenOptions={{headerShown: false}}>
-                        <Stack.Protected guard={isLoggedIn && userType === UserType.User}>
-                            <Stack.Screen name="(tabs)"/>
-                        </Stack.Protected>
-                        <Stack.Protected guard={isLoggedIn && userType === UserType.Vendor}>
-                            <Stack.Screen name="(switch-tabs)"/>
-                        </Stack.Protected>
-                        <Stack.Protected guard={!isLoggedIn && !shouldCreateAccount && hasCompletedOnboarding}>
-                            <Stack.Screen name="sign-in"/>
-                        </Stack.Protected>
-                        <Stack.Protected guard={shouldCreateAccount}>
-                            <Stack.Screen name="sign-up"/>
-                        </Stack.Protected>
-                        <Stack.Protected guard={!hasCompletedOnboarding}>
-                            <Stack.Screen name="onboarding"/>
-                        </Stack.Protected>
-                        <Stack.Screen name="+not-found"/>
-                    </Stack>
+                    <GestureHandlerRootView>
+                        <Stack screenOptions={{headerShown: false}}>
+                            <Stack.Protected guard={isLoggedIn && userType === UserType.User}>
+                                <Stack.Screen name="(tabs)"/>
+                            </Stack.Protected>
+                            <Stack.Protected guard={isLoggedIn && userType === UserType.Vendor}>
+                                <Stack.Screen name="(switch-tabs)"/>
+                            </Stack.Protected>
+                            <Stack.Protected guard={!isLoggedIn && !shouldCreateAccount && hasCompletedOnboarding}>
+                                <Stack.Screen name="sign-in"/>
+                            </Stack.Protected>
+                            <Stack.Protected guard={shouldCreateAccount}>
+                                <Stack.Screen name="sign-up"/>
+                            </Stack.Protected>
+                            <Stack.Protected guard={!hasCompletedOnboarding}>
+                                <Stack.Screen name="onboarding"/>
+                            </Stack.Protected>
+                            <Stack.Screen name="+not-found"/>
+                        </Stack>
 
-                    <StatusBar style="auto"/>
+                        <StatusBar style="auto"/>
+                    </GestureHandlerRootView>
                 </SafeAreaView>
             </SafeAreaProvider>
         </AuthProvider>

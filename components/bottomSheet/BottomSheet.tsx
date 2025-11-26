@@ -47,16 +47,13 @@ export default function BottomSheet({isVisible, setIsVisible, children}: {
         <>
             {isVisible && <TouchableOpacity onPress={() => setIsVisible(false)} style={styles.touchable}/>}
             <Animated.View style={[styles.container, animatedStyle]}>
+
                 <GestureDetector gesture={flingUp}>
                     <GestureDetector gesture={flingDown}>
                         <View style={styles.handlerContainer}>
-
-                            <IconButton name="xmark" onPress={() => setIsVisible(false)}/>
-
-
+                            <IconButton size={Theme.sizes.md} name="xmark" onPress={() => setIsVisible(false)}/>
                             <View style={styles.handler}/>
                             <View style={{width: 30}}></View>
-
                         </View>
                     </GestureDetector>
                 </GestureDetector>
@@ -64,6 +61,7 @@ export default function BottomSheet({isVisible, setIsVisible, children}: {
                 <View style={styles.content}>
                     {children}
                 </View>
+                
             </Animated.View>
 
         </>

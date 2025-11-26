@@ -50,8 +50,13 @@ export default function BottomSheet({isVisible, setIsVisible, children}: {
                 <GestureDetector gesture={flingUp}>
                     <GestureDetector gesture={flingDown}>
                         <View style={styles.handlerContainer}>
+
                             <IconButton name="xmark" onPress={() => setIsVisible(false)}/>
+
+
                             <View style={styles.handler}/>
+                            <View style={{width: 30}}></View>
+
                         </View>
                     </GestureDetector>
                 </GestureDetector>
@@ -82,13 +87,16 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        padding: 20
+        padding: 20,
+
     },
     handler: {
         height: 5,
         width: 50,
         backgroundColor: Theme.colors.gray.S300,
         borderRadius: Theme.radius.full,
+        margin: "auto",
+
     },
     content: {
         padding: 20

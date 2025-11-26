@@ -4,8 +4,7 @@ import {StyleSheet, Text, View} from "react-native";
 import {Theme} from "@/styles/Theme";
 import * as Progress from 'react-native-progress';
 import {IconSymbol} from "@/components/symbols/IconSymbol";
-import {Link} from "expo-router";
-import {ButtonStyles} from "@/styles/Button";
+import {IconButton} from "@/components/symbols/IconButton";
 
 
 export default function PlannerToolbar({progress, note, fullfilled}: {
@@ -27,13 +26,9 @@ export default function PlannerToolbar({progress, note, fullfilled}: {
                     <Text style={[styles.note, fullfilled && styles.filled]}>{note}</Text>
                 </View>
 
-
-                <Link style={styles.checklistBtn} push href="/(tabs)/(planner)/checklist">
-                    <View style={ButtonStyles.iconBtn}>
-                        <IconSymbol name="checklist" color={Theme.colors.primary} size={Theme.sizes.lg}
-                                    weight={'bold'}/>
-                    </View>
-                </Link>
+                <View style={styles.checklistBtn}>
+                    <IconButton name="checklist" href="/(tabs)/(planner)/checklist"/>
+                </View>
             </Toolbar>
 
         </>

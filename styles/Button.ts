@@ -71,19 +71,6 @@ export const ButtonStyles = StyleSheet.create({
 
 // ===========================
 
-    iconBtn: {
-        width: 30,
-        height: 30,
-        padding: 4,
-        backgroundColor: Theme.colors.iconBackground,
-        color: Theme.colors.primary,
-        borderRadius: Theme.radius.full,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-    },
-// ===========================
-
     smSizeBtn: {
         borderRadius: Theme.radius.sm,
         paddingHorizontal: 14,

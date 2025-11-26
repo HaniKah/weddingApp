@@ -1,8 +1,9 @@
-import {Dimensions, Pressable, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {Dimensions, StyleSheet, TouchableOpacity, View} from "react-native";
 import Animated, {useAnimatedStyle, useSharedValue, withSpring} from 'react-native-reanimated';
 import {Theme} from "@/styles/Theme";
 import {Directions, Gesture, GestureDetector} from "react-native-gesture-handler";
 import {useEffect} from "react";
+import {IconButton} from "@/components/symbols/IconButton";
 
 
 export default function BottomSheet({isVisible, setIsVisible, children}: {
@@ -49,9 +50,7 @@ export default function BottomSheet({isVisible, setIsVisible, children}: {
                 <GestureDetector gesture={flingUp}>
                     <GestureDetector gesture={flingDown}>
                         <View style={styles.handlerContainer}>
-                            <Pressable onPress={() => setIsVisible(false)}>
-                                <Text>cancel</Text>
-                            </Pressable>
+                            <IconButton name="xmark" onPress={() => setIsVisible(false)}/>
                             <View style={styles.handler}/>
                         </View>
                     </GestureDetector>

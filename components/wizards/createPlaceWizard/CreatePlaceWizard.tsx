@@ -22,7 +22,7 @@ export type ImageUploadModel = {
     name?: string | null
 }
 
-export default function CreatePlaceWizard() {
+export default function CreatePlaceWizard({placeId}: { placeId: number | undefined }) {
     const wizardRef = useRef<WizardRef>(null);
 
     const stepsList: CreatePlaceSteps[] = Object.values(CreatePlaceSteps);

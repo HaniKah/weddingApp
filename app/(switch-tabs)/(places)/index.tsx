@@ -1,15 +1,14 @@
 import AppView from '@/components/appComponents/AppView';
 import PlacesToolbar from '@/components/toolbars/PlacesToolbar';
 import {useApi} from '@/utils/api';
-import {FlatList, StyleSheet, View} from 'react-native';
+import {FlatList, StyleSheet} from 'react-native';
 import {Theme} from '@/styles/Theme';
 import {useEffect, useState} from 'react';
 import AddPlaceModal from '@/components/modals/AddPlaceModal';
 import {VendorPlaceDto} from '@/types/open-api';
 import VendorPlaceItem from '@/components/items/VendorPlaceItem';
-import {Link, Stack} from "expo-router";
-import BottomSheet from "@/components/bottomSheet/BottomSheet";
-import AppButton from "@/components/appComponents/AppButton";
+import {Stack} from "expo-router";
+import PlaceActionsBottomSheet from "@/components/bottomSheet/PlaceActionsBottomSheet";
 
 export default function Index() {
     const API = useApi();
@@ -42,15 +41,6 @@ export default function Index() {
 
     }
 
-    function actionPressed() {
-        setTimeout(() => {
-            setPressedPlaceId(undefined);
-            setIsBottomSheetVisible(false);
-        }, 1000)
-
-    }
-
-
     return (
         <>
             <Stack.Screen options={{headerShown: false}}/>
@@ -64,24 +54,12 @@ export default function Index() {
                           }/>
             </AppView>
 
-            <AddPlaceModal setIsVisible={setOpenModal} isVisible={openModal}/>
-            <BottomSheet setIsVisible={setIsBottomSheetVisible} isVisible={isBottomSheetVisible}>
-                {pressedPlaceId &&
-                    <View>
-                        <Link asChild push href={{
-                            pathname: "/(switch-tabs)/(places)/[id]",
-                            params: {id: pressedPlaceId?.toString()}
-                        }}>
-                            <AppButton fullWidth onPress={actionPressed}>
-                                View place
-                            </AppButton>
-                        </Link>
-                    </View>}
+            <AddPlaceModal setIsVisible={setOpenModal} isVisible={openModal} placeId={pressedPlaceId}/>
 
 
-            </BottomSheet>
-
-
+            <PlaceActionsBottomSheet isVisible={isBottomSheetVisible} setIsVisible={setIsBottomSheetVisible}
+                                     pressedPlaceId={pressedPlaceId} setPressedPlaceId={setPressedPlaceId}
+                                     setOpenModal={setOpenModal}/>
         </>
     );
 }

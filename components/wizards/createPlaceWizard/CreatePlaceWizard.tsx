@@ -1,20 +1,13 @@
 import Wizard, {WizardRef} from "@/components/wizards/Wizard";
-import {useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import WizardStep from "@/components/wizards/WizardStep";
 import PickPlaceType from "@/components/wizards/createPlaceWizard/PickPlaceType";
-import {CreatePlaceInfo, WeddingSteps} from "@/types/open-api";
+import {CreateOrUpdatePlaceDto, CreatePlaceSteps, UpdatePlaceInfo, WeddingSteps} from "@/types/open-api";
 import FillPlaceInfo from "@/components/wizards/createPlaceWizard/FillPlaceInfo";
 import UploadImages from "@/components/wizards/createPlaceWizard/UploadImages";
 import {useApi} from "@/utils/api";
 import AddDescription from "@/components/wizards/createPlaceWizard/AddDescription";
 
-
-enum CreatePlaceSteps {
-    PickPlaceType = "PickPlaceType",
-    FillPlaceInfo = "FillPlaceInfo",
-    AddDescription = "AddDescription",
-    PickPlaceLocation = "PickPlaceLocation"
-}
 
 export type ImageUploadModel = {
     uri: string
@@ -24,30 +17,50 @@ export type ImageUploadModel = {
 
 export default function CreatePlaceWizard({placeId}: { placeId: number | undefined }) {
     const wizardRef = useRef<WizardRef>(null);
+    const [data, setData] = useState<CreateOrUpdatePlaceDto>()
 
     const stepsList: CreatePlaceSteps[] = Object.values(CreatePlaceSteps);
-    const [currentStep, setCurrentStep] = useState<string>(stepsList[0]);
-
-    const [selectedType, setSelectedType] = useState<WeddingSteps>()
-    const [placeInfo, setPlaceInfo] = useState<CreatePlaceInfo>()
-    const [description, setDescription] = useState<string>()
+    const [currentStep, setCurrentStep] = useState<CreatePlaceSteps>(stepsList[0]);
+    const [selectedType, setSelectedType] = useState<WeddingSteps | undefined>(data?.weddingStep)
+    const [placeInfo, setPlaceInfo] = useState<UpdatePlaceInfo | undefined>(data?.placeInfo)
+    const [description, setDescription] = useState<string | undefined>(data?.description)
     const [images, setImages] = useState<ImageUploadModel[]>([]);
+
+    const [isLoading, setIsLoading] = useState(false)
 
     const API = useApi()
 
+    useEffect(() => {
+        if (!placeId) return
+        const getPlaceDetails = async () => {
+            try {
+                const res = await API.placesControllerCreateOrUpdatePlace({placeId: placeId, createStep: currentStep})
+                setData(res.data)
+
+            } catch (err) {
+                console.error(err)
+            } finally {
+            }
+        }
+        getPlaceDetails()
+    }, [placeId])
+
     const onNext = () => {
         wizardRef.current?.nextStep();
+        handleCreateOrUpdate()
     };
 
 
-    const onCreate = async () => {
+    const handleCreateOrUpdate = async () => {
         if (!placeInfo || !selectedType) return
-        const res = await API.placesControllerCreatePlace({
+        const res = await API.placesControllerCreateOrUpdatePlace({
+            placeId: placeId,
             placeInfo: placeInfo,
-            type: selectedType,
-            description: description
+            weddingStep: selectedType,
+            description: description,
+            createStep: currentStep
         })
-        const files = constructRequest(res.data.id)
+        const files = constructRequest(res.data.placeId)
         if (!files) return
         await API.photosControllerUploadFile(files)
     }
@@ -72,7 +85,8 @@ export default function CreatePlaceWizard({placeId}: { placeId: number | undefin
         <>
             <Wizard stepsList={stepsList} currentStep={currentStep} setCurrentStep={setCurrentStep} ref={wizardRef}>
                 <WizardStep step={CreatePlaceSteps.PickPlaceType} currentStep={currentStep}>
-                    <PickPlaceType onNext={onNext} selectedType={selectedType} setSelectedType={setSelectedType}/>
+                    <PickPlaceType onNext={onNext}
+                                   selectedType={selectedType} setSelectedType={setSelectedType}/>
                 </WizardStep>
                 <WizardStep step={CreatePlaceSteps.FillPlaceInfo} currentStep={currentStep}>
                     <FillPlaceInfo setPlaceInfo={setPlaceInfo} onNext={onNext}/>
@@ -82,7 +96,7 @@ export default function CreatePlaceWizard({placeId}: { placeId: number | undefin
                                     onNext={onNext}/>
                 </WizardStep>
                 <WizardStep step={CreatePlaceSteps.PickPlaceLocation} currentStep={currentStep}>
-                    <UploadImages setImages={setImages} images={images} onFinish={onCreate}/>
+                    <UploadImages setImages={setImages} images={images} onFinish={handleCreateOrUpdate}/>
                 </WizardStep>
             </Wizard>
 

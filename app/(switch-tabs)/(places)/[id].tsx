@@ -46,23 +46,23 @@ export default function Place() {
                         headerTintColor: Theme.colors.primary,
                     }}/>
                 <View style={styles.imageContainer}>
-                    <Image height={300} style={styles.image} source={{uri: placeDetails?.mainPhoto}}/>
+                    <Image height={300} style={styles.image} source={{uri: placeDetails?.photos[0].uri}}/>
                 </View>
 
                 <View style={styles.infosContainer}>
 
                     <View style={styles.titleContainer}>
-                        <Text style={styles.title}>{placeDetails?.name}</Text>
+                        <Text style={styles.title}>{placeDetails?.placeInfo?.name}</Text>
                     </View>
 
 
                     <View>
-                        <AppIf value={placeDetails?.streetName}>
-                            <PlaceInfo iconName="location.circle" info={placeDetails?.streetName}/>
+                        <AppIf value={placeDetails?.location?.streetName}>
+                            <PlaceInfo iconName="location.circle" info={placeDetails?.location?.streetName}/>
                         </AppIf>
 
-                        <AppIf value={placeDetails?.phoneNumber}>
-                            <PlaceInfo iconName='phone.circle' info={placeDetails?.phoneNumber}/>
+                        <AppIf value={placeDetails?.placeInfo?.phoneNumber}>
+                            <PlaceInfo iconName='phone.circle' info={placeDetails?.placeInfo?.phoneNumber}/>
                         </AppIf>
                     </View>
 
@@ -74,26 +74,26 @@ export default function Place() {
 
 
                     <View style={styles.socialMediaContainer}>
-                        <AppIf value={placeDetails?.website}>
-                            <Pressable onPress={() => Linking.openURL(placeDetails?.website as string)}>
+                        <AppIf value={placeDetails?.socialMedia?.website}>
+                            <Pressable onPress={() => Linking.openURL(placeDetails?.socialMedia?.website as string)}>
                                 <Website width={40} height={40} color={Theme.colors.gray.S300}/>
                             </Pressable>
                         </AppIf>
 
-                        <AppIf value={placeDetails?.facebook}>
-                            <Pressable onPress={() => Linking.openURL(placeDetails?.facebook as string)}>
+                        <AppIf value={placeDetails?.socialMedia?.facebook}>
+                            <Pressable onPress={() => Linking.openURL(placeDetails?.socialMedia?.facebook as string)}>
                                 <Facebook width={40} height={40} color={Theme.colors.gray.S300}/>
                             </Pressable>
                         </AppIf>
 
-                        <AppIf value={placeDetails?.instagram}>
-                            <Pressable onPress={() => Linking.openURL(placeDetails?.instagram as string)}>
+                        <AppIf value={placeDetails?.socialMedia?.instagram}>
+                            <Pressable onPress={() => Linking.openURL(placeDetails?.socialMedia?.instagram as string)}>
                                 <Instagram width={40} height={40} color={Theme.colors.gray.S300}/>
                             </Pressable>
                         </AppIf>
 
-                        <AppIf value={placeDetails?.tiktok}>
-                            <Pressable onPress={() => Linking.openURL(placeDetails?.tiktok as string)}>
+                        <AppIf value={placeDetails?.socialMedia?.tiktok}>
+                            <Pressable onPress={() => Linking.openURL(placeDetails?.socialMedia?.tiktok as string)}>
                                 <Tiktok width={40} height={40} color={Theme.colors.gray.S300}/>
                             </Pressable>
                         </AppIf>

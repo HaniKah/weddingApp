@@ -16,13 +16,6 @@ export enum PlaceStatus {
   Published = "Published",
 }
 
-export enum CreatePlaceSteps {
-  PickPlaceType = "PickPlaceType",
-  FillPlaceInfo = "FillPlaceInfo",
-  AddDescription = "AddDescription",
-  PickPlaceLocation = "PickPlaceLocation",
-}
-
 export enum CoupleSide {
   Groom = "Groom",
   Bride = "Bride",
@@ -175,19 +168,35 @@ export interface ExchangeTokenDto {
   refreshToken: string;
 }
 
-export interface NumRangeDto {
-  min: string;
-  max: string;
+export interface VendorPlaceListDto {
+  status: PlaceStatus;
+  id: number;
+  name: string;
+  streetName?: string;
+  prices: PlacePrice;
+  thumbnail: string;
 }
 
-export interface UpdatePlaceInfo {
+export interface VendorPlaceViewModel {
+  result: VendorPlaceListDto[];
+}
+
+export interface PublishPlaceRequest {
+  status: PlaceStatus;
+  placeId: number;
+}
+
+export interface VendorPlaceInfo {
   name: string;
   phoneNumber: string;
+  priceRange: PlacePrice;
+}
+
+export interface VendorPlaceSocialMedia {
   facebook?: string;
   instagram?: string;
   tiktok?: string;
   website?: string;
-  priceRange: NumRangeDto;
 }
 
 export interface UpdatePlaceLocation {
@@ -200,54 +209,19 @@ export interface UpdatePlaceLocation {
   googleId?: string;
 }
 
-export interface CreateOrUpdatePlaceRequest {
-  weddingStep?: WeddingSteps;
-  createStep: CreatePlaceSteps;
-  placeId?: number;
-  placeInfo?: UpdatePlaceInfo;
-  description?: string;
-  location?: UpdatePlaceLocation;
-}
-
-export interface CreateOrUpdatePlaceDto {
-  weddingStep: WeddingSteps;
-  placeId: number;
-  placeInfo?: UpdatePlaceInfo;
-  description?: string;
-  location?: UpdatePlaceLocation;
-}
-
-export interface VendorPlaceDto {
-  status: PlaceStatus;
-  id: number;
-  name: string;
-  streetName?: string;
-  prices: PlacePrice;
-  thumbnail: string;
-}
-
-export interface VendorPlaceViewModel {
-  result: VendorPlaceDto[];
-}
-
-export interface PublishPlaceRequest {
-  status: PlaceStatus;
-  placeId: number;
+export interface VendorPlacePhoto {
+  uri: string;
+  main: boolean;
 }
 
 export interface VendorPlaceDetailsDto {
-  status: PlaceStatus;
-  id: number;
-  name: string;
-  streetName?: string;
-  phoneNumber: string;
-  facebook?: string;
-  instagram?: string;
-  tiktok?: string;
-  website?: string;
-  placePrice: PlacePrice;
+  weddingStep: WeddingSteps;
+  placeId: number;
+  placeInfo?: VendorPlaceInfo;
+  socialMedia: VendorPlaceSocialMedia;
   description?: string;
-  mainPhoto: string;
+  location?: UpdatePlaceLocation;
+  photos: VendorPlacePhoto[];
 }
 
 import type {
@@ -751,26 +725,6 @@ export class Api<
       this.request<ExchangeTokenDto, any>({
         path: `/api/auth/exchangeToken`,
         method: "POST",
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Places
-     * @name PlacesControllerCreateOrUpdatePlace
-     * @request POST:/api/places/createOrUpdate
-     */
-    placesControllerCreateOrUpdatePlace: (
-      data: CreateOrUpdatePlaceRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<CreateOrUpdatePlaceDto, any>({
-        path: `/api/places/createOrUpdate`,
-        method: "POST",
-        body: data,
-        type: ContentType.Json,
         format: "json",
         ...params,
       }),

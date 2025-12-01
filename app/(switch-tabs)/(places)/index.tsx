@@ -5,7 +5,7 @@ import {FlatList, StyleSheet} from 'react-native';
 import {Theme} from '@/styles/Theme';
 import {useEffect, useState} from 'react';
 import AddPlaceModal from '@/components/modals/AddPlaceModal';
-import {VendorPlaceDto} from '@/types/open-api';
+import {VendorPlaceListDto} from '@/types/open-api';
 import VendorPlaceItem from '@/components/items/VendorPlaceItem';
 import {Stack} from "expo-router";
 import PlaceActionsBottomSheet from "@/components/bottomSheet/PlaceActionsBottomSheet";
@@ -13,7 +13,7 @@ import PlaceActionsBottomSheet from "@/components/bottomSheet/PlaceActionsBottom
 export default function Index() {
     const API = useApi();
     const [openModal, setOpenModal] = useState<boolean>(false);
-    const [places, setPlaces] = useState<VendorPlaceDto[]>();
+    const [places, setPlaces] = useState<VendorPlaceListDto[]>();
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [trigger, setTrigger] = useState<boolean>(false);
 

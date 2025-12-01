@@ -1,12 +1,12 @@
 import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
-import {PlaceStatus, VendorPlaceDto} from '@/types/open-api';
+import {PlaceStatus, VendorPlaceListDto} from '@/types/open-api';
 import {Theme} from '@/styles/Theme';
 import AppButton from '@/components/appComponents/AppButton';
 import {Dispatch, SetStateAction, useState} from "react";
 import {useApi} from "@/utils/api";
 
 type VendorPlaceItemProps = {
-    data: VendorPlaceDto;
+    data: VendorPlaceListDto;
     setTrigger: Dispatch<SetStateAction<boolean>>;
     openBottomSheet: (placeId: number) => void;
 }
@@ -31,7 +31,7 @@ export default function VendorPlaceItem({data, setTrigger, openBottomSheet}: Ven
             <Pressable onPress={() => openBottomSheet(data.id)}>
                 <View style={styles.container}>
                     <View style={styles.imageContainer}>
-                        <Image style={styles.image} source={{uri: data.thumbnail}}/>
+                        <Image style={styles.image} source={{uri: data.thumbnail.uri}}/>
                     </View>
                     <View style={styles.infoContainer}>
                         <Text style={styles.placeName}>{data.name}</Text>

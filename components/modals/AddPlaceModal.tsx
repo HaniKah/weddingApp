@@ -8,6 +8,7 @@ export default function AddPlaceModal({placeId, isVisible, setIsVisible}: {
     setIsVisible: (value: boolean) => void
 }) {
 
+
     return (
         <>
             <AppModal allowSwipeDismissal={true}

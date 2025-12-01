@@ -16,6 +16,13 @@ export enum PlaceStatus {
   Published = "Published",
 }
 
+export enum CreatePlaceSteps {
+  PickPlaceType = "PickPlaceType",
+  FillPlaceInfo = "FillPlaceInfo",
+  AddDescription = "AddDescription",
+  PickPlaceLocation = "PickPlaceLocation",
+}
+
 export enum CoupleSide {
   Groom = "Groom",
   Bride = "Bride",
@@ -49,8 +56,8 @@ export enum WeddingSteps {
 }
 
 export interface PlacePriceRange {
-  min: string;
-  max: string;
+  min?: string;
+  max?: string;
 }
 
 export interface PlacePrice {
@@ -74,6 +81,11 @@ export interface PlacesViewModel {
   filter?: "MyPick" | "MyFavourite" | "onSale";
 }
 
+export interface PhotosDto {
+  uri: string;
+  main: boolean;
+}
+
 export interface PlaceDetailsDto {
   step: WeddingSteps;
   id: number;
@@ -89,7 +101,7 @@ export interface PlaceDetailsDto {
   picked: boolean;
   favourite: boolean;
   notes: string | null;
-  mainPhoto: string;
+  mainPhoto: PhotosDto;
 }
 
 export interface StepsDto {
@@ -168,38 +180,17 @@ export interface ExchangeTokenDto {
   refreshToken: string;
 }
 
-export interface VendorPlaceListDto {
-  status: PlaceStatus;
-  id: number;
-  name: string;
-  streetName?: string;
-  prices: PlacePrice;
-  thumbnail: string;
-}
-
-export interface VendorPlaceViewModel {
-  result: VendorPlaceListDto[];
-}
-
-export interface PublishPlaceRequest {
-  status: PlaceStatus;
-  placeId: number;
-}
-
 export interface VendorPlaceInfo {
   name: string;
   phoneNumber: string;
   priceRange: PlacePrice;
-}
-
-export interface VendorPlaceSocialMedia {
   facebook?: string;
   instagram?: string;
   tiktok?: string;
   website?: string;
 }
 
-export interface UpdatePlaceLocation {
+export interface VendorPlaceLocation {
   streetName: string;
   city: string;
   country: string;
@@ -209,19 +200,49 @@ export interface UpdatePlaceLocation {
   googleId?: string;
 }
 
-export interface VendorPlacePhoto {
-  uri: string;
-  main: boolean;
+export interface UpdatePlaceRequest {
+  weddingStep?: WeddingSteps;
+  createStep: CreatePlaceSteps;
+  placeId?: number;
+  placeInfo?: VendorPlaceInfo;
+  description?: string;
+  location?: VendorPlaceLocation;
 }
 
 export interface VendorPlaceDetailsDto {
   weddingStep: WeddingSteps;
   placeId: number;
   placeInfo?: VendorPlaceInfo;
-  socialMedia: VendorPlaceSocialMedia;
   description?: string;
-  location?: UpdatePlaceLocation;
+  location?: VendorPlaceLocation;
+}
+
+export interface VendorPlacePhoto {
+  uri: string;
+  main: boolean;
+}
+
+export interface VendorPlaceDetailsViewModel {
+  place: VendorPlaceDetailsDto;
   photos: VendorPlacePhoto[];
+}
+
+export interface VendorPlaceListDto {
+  status: PlaceStatus;
+  id: number;
+  name: string;
+  streetName?: string;
+  prices: PlacePrice;
+  thumbnail: PhotosDto;
+}
+
+export interface VendorPlaceViewModel {
+  result: VendorPlaceListDto[];
+}
+
+export interface PublishPlaceRequest {
+  status: PlaceStatus;
+  placeId: number;
 }
 
 import type {
@@ -733,6 +754,26 @@ export class Api<
      * No description
      *
      * @tags Places
+     * @name PlacesControllerUpdatePlace
+     * @request POST:/api/places/updatePlace
+     */
+    placesControllerUpdatePlace: (
+      data: UpdatePlaceRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<VendorPlaceDetailsViewModel, any>({
+        path: `/api/places/updatePlace`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Places
      * @name PlacesControllerGetPlaces
      * @request GET:/api/places/getPlaces
      */
@@ -776,7 +817,7 @@ export class Api<
       },
       params: RequestParams = {},
     ) =>
-      this.request<VendorPlaceDetailsDto, any>({
+      this.request<VendorPlaceDetailsViewModel, any>({
         path: `/api/places/getPlaceDetails`,
         method: "GET",
         query: query,

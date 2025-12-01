@@ -1,24 +1,31 @@
 import {FlatList, Pressable, StyleSheet, Text, View} from "react-native";
-import {WeddingSteps} from "@/types/open-api";
+import {CreatePlaceSteps, VendorPlaceDetailsViewModel, WeddingSteps} from "@/types/open-api";
 import {Theme} from "@/styles/Theme";
 import AppButton from "@/components/appComponents/AppButton";
 import IconStep from "@/components/symbols/IconStep";
 import {useColors} from "@/utils/colors";
+import {useApi} from "@/utils/api";
+import {useState} from "react";
 
 
-export default function PickPlaceType({selectedType, setSelectedType, onNext}: {
-    selectedType: WeddingSteps | undefined,
-    setSelectedType: (type: WeddingSteps) => void
+export default function PickPlaceType({onNext, data, setData, placeId}: {
+    placeId: number | undefined
+    data: VendorPlaceDetailsViewModel | undefined,
+    setData: (data: VendorPlaceDetailsViewModel) => void,
     onNext: () => void
 }) {
+
+    const API = useApi()
     const placeTypeList: WeddingSteps[] = Object.values(WeddingSteps)
     const getColorByStep = useColors()
+
+    const [weddingStep, setWeddingStep] = useState<WeddingSteps | undefined>(data?.place.weddingStep)
 
 
     const PickPlaceItem = ({step}: { step: WeddingSteps }) => {
         return (
-            <Pressable onPress={() => setSelectedType(step)}
-                       style={[styles.placeItem, selectedType === step && styles.selected]}>
+            <Pressable onPress={() => setWeddingStep(step)}
+                       style={[styles.placeItem, weddingStep === step && styles.selected]}>
                 <IconStep step={step} width={50} height={50} fill={getColorByStep(step)}/>
                 <Text style={styles.placeText}>{step}</Text>
             </Pressable>
@@ -26,10 +33,25 @@ export default function PickPlaceType({selectedType, setSelectedType, onNext}: {
     }
 
     const preNext = () => {
-        if (selectedType) {
+        if (weddingStep) {
+            updateOrCreatePlace()
             onNext()
         }
     }
+
+    async function updateOrCreatePlace() {
+        try {
+            const res = await API.placesControllerUpdatePlace({
+                placeId: placeId,
+                weddingStep: weddingStep,
+                createStep: CreatePlaceSteps.PickPlaceType
+            })
+            setData(res.data)
+        } catch (err) {
+            console.error(err)
+        }
+    }
+
     return (
         <>
             <View style={styles.container}>

@@ -2,8 +2,7 @@ import AppModal from "@/components/appComponents/AppModal";
 import AppView from "@/components/appComponents/AppView";
 import CreatePlaceWizard from "@/components/wizards/createPlaceWizard/CreatePlaceWizard";
 
-export default function AddPlaceModal({placeId, isVisible, setIsVisible}: {
-    placeId: number | undefined,
+export default function AddPlaceModal({isVisible, setIsVisible}: {
     isVisible: boolean,
     setIsVisible: (value: boolean) => void
 }) {
@@ -15,7 +14,7 @@ export default function AddPlaceModal({placeId, isVisible, setIsVisible}: {
                       isVisible={isVisible}
                       setIsVisible={setIsVisible}>
                 <AppView withPadding>
-                    <CreatePlaceWizard placeId={placeId}/>
+                    <CreatePlaceWizard/>
                 </AppView>
             </AppModal>
         </>

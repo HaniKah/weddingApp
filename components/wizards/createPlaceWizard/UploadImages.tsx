@@ -4,20 +4,13 @@ import {ImagePickerAsset} from 'expo-image-picker';
 import AppButton from "@/components/appComponents/AppButton";
 import {ImageUploadModel} from "@/components/wizards/createPlaceWizard/CreatePlaceWizard";
 import {ImageManipulator, SaveFormat} from "expo-image-manipulator";
-import {useState} from "react";
-import {VendorPlaceDetailsViewModel} from "@/types/open-api";
-import {useApi} from "@/utils/api";
 
-export default function UploadImages({placeId, data, setData, onFinish}: {
-    placeId: number | undefined
-    data: VendorPlaceDetailsViewModel | undefined,
-    setData: (data: VendorPlaceDetailsViewModel) => void,
+export default function UploadImages({images, setImages, onFinish}: {
+    images: ImageUploadModel[] | undefined,
+    setImages: (images: ImageUploadModel[]) => void,
     onFinish: () => void,
 }) {
 
-    const API = useApi()
-
-    const [images, setImages] = useState<ImageUploadModel[] | undefined>()
 
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
@@ -71,27 +64,6 @@ export default function UploadImages({placeId, data, setData, onFinish}: {
             }
         })
     }
-
-    async function uploadImages() {
-        if (!placeId) return
-        const files = constructImagesRequest(placeId)
-        if (!files) return
-        await API.photosControllerUploadFile(files)
-    }
-
-    function constructImagesRequest(placeId: number): FormData | undefined {
-        const formData = new FormData();
-        formData.append('placeId', placeId.toString())
-        images?.map((asset, i) => {
-            formData.append('file', {
-                uri: asset.uri,
-                type: asset.type,
-                name: asset.name,
-            } as any)
-        })
-        return formData
-    }
-
 
     return (
         <ScrollView contentContainerStyle={styles.container}>

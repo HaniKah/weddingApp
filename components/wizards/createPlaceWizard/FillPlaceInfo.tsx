@@ -4,10 +4,9 @@ import AppTextInput from "@/components/appComponents/AppTextInput";
 import {useEffect, useState} from "react";
 import {Theme} from "@/styles/Theme";
 import AppButton from "@/components/appComponents/AppButton";
-import {CreatePlaceSteps, PlacePrice, VendorPlaceDetailsViewModel} from "@/types/open-api";
+import {CreatePlaceInfo, NumRangeDto} from "@/types/open-api";
 import {PickerItem} from "@/components/appComponents/AppPicker";
 import SelectPriceType from "@/components/SelectPriceType.ios";
-import {useApi} from "@/utils/api";
 
 export enum PriceType {
     Person = "Person",
@@ -15,36 +14,47 @@ export enum PriceType {
     None = "None"
 }
 
-export default function FillPlaceInfo({onNext, data, setData, placeId}: {
-    data: VendorPlaceDetailsViewModel | undefined,
-    setData: (data: VendorPlaceDetailsViewModel) => void,
+export default function FillPlaceInfo({onNext, setPlaceInfo}: {
     onNext: () => void,
-    placeId: number | undefined
+    setPlaceInfo: (info: CreatePlaceInfo) => void
 }) {
 
-    const API = useApi()
-    const [placeName, setPlaceName] = useState<string | undefined>(data?.place.placeInfo?.name)
-    const [phoneNumber, setPhoneNumber] = useState<string | undefined>(data?.place.placeInfo?.phoneNumber)
-    const [priceRange, setPriceRange] = useState<PlacePrice>(data?.place.placeInfo?.priceRange as PlacePrice)
+    const [placeName, setPlaceName] = useState<string>()
+    const [phoneNumber, setPhoneNumber] = useState<string>()
     const [facebook, setFacebook] = useState<string>()
     const [instagram, setInstagram] = useState<string>()
     const [tiktok, setTiktok] = useState<string>()
     const [website, setWebsite] = useState<string>()
-    // const [placeInfo, setPlaceInfo] = useState<VendorPlaceInfo | undefined>(data.place.placeInfo)
-    //todo : to be added to the Dbx
+    const [priceRange, setPriceRange] = useState<NumRangeDto>()
     const [priceType, setPriceType] = useState<PriceType>(PriceType.None)
-    const [isLoading, setIsLoading] = useState(false)
+
+
     const [switchEnabled, setSwitchEnabled] = useState(false);
 
     const enterPriceRange = ({newMin, newMax}: { newMin?: string, newMax?: string }) => {
         if (newMin) {
-            setPriceRange((prev) => ({...prev, priceRange: {min: newMin, max: prev?.priceRange.max}}))
+            setPriceRange((p) => ({min: newMin, max: p?.max as string}))
         }
         if (newMax) {
-            setPriceRange((prev) => ({...prev, priceRange: {min: prev?.priceRange.min, max: newMax}}))
+            setPriceRange((p) => ({min: p?.min as string, max: newMax}))
         }
+
     }
 
+    const handleSubmit = () => {
+//if condition is extra for ts. required fields are handled inside the form and will present an error if not filled
+        if (!placeName || !phoneNumber || !priceRange) return
+        setPlaceInfo({
+            name: placeName,
+            phoneNumber: phoneNumber,
+            facebook: facebook,
+            instagram: instagram,
+            tiktok: tiktok,
+            website: website,
+            priceRange: priceRange,
+        })
+        onNext()
+    }
     useEffect(() => {
     }, [priceRange]);
 
@@ -53,37 +63,11 @@ export default function FillPlaceInfo({onNext, data, setData, placeId}: {
         value: v
     }))
 
-    async function updatePlace() {
-        //if condition is extra for ts. required fields are handled inside the form and will present an error if not filled
-        if (!placeName || !phoneNumber || !priceRange) return
-        try {
-            setIsLoading(true)
-            const res = await API.placesControllerUpdatePlace({
-                placeId: placeId,
-                createStep: CreatePlaceSteps.FillPlaceInfo,
-                placeInfo: {
-                    priceRange: priceRange,
-                    name: placeName,
-                    phoneNumber: phoneNumber,
-                    facebook,
-                    instagram,
-                    tiktok,
-                    website
-                }
-            })
-            setData(res.data)
-        } catch (err) {
-            console.error(err)
-        } finally {
-            setIsLoading(false)
-        }
-    }
-
     return (
         <>
             <View style={styles.container}>
                 <Text style={styles.title}>Your place&#39;s info</Text>
-                <AppForm onSubmit={updatePlace}>
+                <AppForm onSubmit={handleSubmit}>
                     <ScrollView style={styles.list}>
                         {/*<Picker*/}
                         {/*    selectedValue={selectedLanguage}*/}
@@ -131,7 +115,7 @@ export default function FillPlaceInfo({onNext, data, setData, placeId}: {
                                           label="Price"
                                           extraStyles={styles.input}
                                           placeholder="Add your price here"
-                                          value={priceRange?.priceRange.min}
+                                          value={priceRange?.min}
                                           keyboardType={"decimal-pad"}
                                           unit="JOD"
                                           required
@@ -145,7 +129,7 @@ export default function FillPlaceInfo({onNext, data, setData, placeId}: {
                                               label="Min. price"
                                               extraStyles={[styles.input, {flex: 1}]}
                                               placeholder="Minimum price"
-                                              value={priceRange?.priceRange.min}
+                                              value={priceRange?.min}
                                               keyboardType={"decimal-pad"}
                                               unit="JOD"
                                               required
@@ -154,7 +138,7 @@ export default function FillPlaceInfo({onNext, data, setData, placeId}: {
                                               label="Max. price"
                                               extraStyles={[styles.input, {flex: 1}]}
                                               placeholder="Maximum price"
-                                              value={priceRange?.priceRange.max}
+                                              value={priceRange?.max}
                                               keyboardType={"decimal-pad"}
                                               unit="JOD"
                                               required

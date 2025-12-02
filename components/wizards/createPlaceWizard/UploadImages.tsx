@@ -8,8 +8,7 @@ import {useState} from "react";
 import {VendorPlaceDetailsViewModel} from "@/types/open-api";
 import {useApi} from "@/utils/api";
 
-export default function UploadImages({placeId, data, setData, onFinish}: {
-    placeId: number | undefined
+export default function UploadImages({data, setData, onFinish}: {
     data: VendorPlaceDetailsViewModel | undefined,
     setData: (data: VendorPlaceDetailsViewModel) => void,
     onFinish: () => void,
@@ -73,8 +72,8 @@ export default function UploadImages({placeId, data, setData, onFinish}: {
     }
 
     async function uploadImages() {
-        if (!placeId) return
-        const files = constructImagesRequest(placeId)
+        if (!data?.place.placeId) return
+        const files = constructImagesRequest(data.place.placeId)
         if (!files) return
         await API.photosControllerUploadFile(files)
     }

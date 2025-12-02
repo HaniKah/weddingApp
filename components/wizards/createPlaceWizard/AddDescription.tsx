@@ -6,11 +6,10 @@ import {CreatePlaceSteps, VendorPlaceDetailsViewModel} from "@/types/open-api";
 import {useApi} from "@/utils/api";
 import {useState} from "react";
 
-export default function AddDescription({onNext, data, setData, placeId}: {
+export default function AddDescription({onNext, data, setData}: {
     onNext: () => void,
     data: VendorPlaceDetailsViewModel | undefined,
     setData: (data: VendorPlaceDetailsViewModel) => void,
-    placeId: number | undefined
 }) {
     const API = useApi()
     const [description, setDescription] = useState<string | undefined>(data?.place.description)
@@ -20,7 +19,7 @@ export default function AddDescription({onNext, data, setData, placeId}: {
         try {
             setLoading(true)
             const res = await API.placesControllerUpdatePlace({
-                placeId: placeId,
+                placeId: data?.place.placeId,
                 createStep: CreatePlaceSteps.AddDescription,
                 description: description
             })

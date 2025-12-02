@@ -1,10 +1,10 @@
-import {ScrollView, StyleSheet, Switch, Text, View} from "react-native";
+import {ActivityIndicator, ScrollView, StyleSheet, Switch, Text, View} from "react-native";
 import {AppForm} from "@/contexts/form-context";
 import AppTextInput from "@/components/appComponents/AppTextInput";
 import {useEffect, useState} from "react";
 import {Theme} from "@/styles/Theme";
 import AppButton from "@/components/appComponents/AppButton";
-import {CreatePlaceSteps, PlacePrice, VendorPlaceDetailsViewModel} from "@/types/open-api";
+import {CreatePlaceSteps, PlacePriceRange, VendorPlaceDetailsViewModel} from "@/types/open-api";
 import {PickerItem} from "@/components/appComponents/AppPicker";
 import SelectPriceType from "@/components/SelectPriceType.ios";
 import {useApi} from "@/utils/api";
@@ -15,17 +15,16 @@ export enum PriceType {
     None = "None"
 }
 
-export default function FillPlaceInfo({onNext, data, setData, placeId}: {
+export default function FillPlaceInfo({onNext, data, setData}: {
     data: VendorPlaceDetailsViewModel | undefined,
     setData: (data: VendorPlaceDetailsViewModel) => void,
     onNext: () => void,
-    placeId: number | undefined
 }) {
 
     const API = useApi()
     const [placeName, setPlaceName] = useState<string | undefined>(data?.place.placeInfo?.name)
     const [phoneNumber, setPhoneNumber] = useState<string | undefined>(data?.place.placeInfo?.phoneNumber)
-    const [priceRange, setPriceRange] = useState<PlacePrice>(data?.place.placeInfo?.priceRange as PlacePrice)
+    const [priceRange, setPriceRange] = useState<PlacePriceRange | undefined>(data?.place.placeInfo?.priceRange?.priceRange)
     const [facebook, setFacebook] = useState<string>()
     const [instagram, setInstagram] = useState<string>()
     const [tiktok, setTiktok] = useState<string>()
@@ -38,10 +37,10 @@ export default function FillPlaceInfo({onNext, data, setData, placeId}: {
 
     const enterPriceRange = ({newMin, newMax}: { newMin?: string, newMax?: string }) => {
         if (newMin) {
-            setPriceRange((prev) => ({...prev, priceRange: {min: newMin, max: prev?.priceRange.max}}))
+            setPriceRange((prev) => ({min: newMin, max: prev?.max}))
         }
         if (newMax) {
-            setPriceRange((prev) => ({...prev, priceRange: {min: prev?.priceRange.min, max: newMax}}))
+            setPriceRange((prev) => ({max: newMax, min: prev?.min}))
         }
     }
 
@@ -59,10 +58,13 @@ export default function FillPlaceInfo({onNext, data, setData, placeId}: {
         try {
             setIsLoading(true)
             const res = await API.placesControllerUpdatePlace({
-                placeId: placeId,
+                placeId: data?.place.placeId,
                 createStep: CreatePlaceSteps.FillPlaceInfo,
                 placeInfo: {
-                    priceRange: priceRange,
+                    priceRange: {
+                        priceRange: priceRange,
+                        currency: "JOD"
+                    },
                     name: placeName,
                     phoneNumber: phoneNumber,
                     facebook,
@@ -79,133 +81,134 @@ export default function FillPlaceInfo({onNext, data, setData, placeId}: {
         }
     }
 
-    return (
-        <>
-            <View style={styles.container}>
-                <Text style={styles.title}>Your place&#39;s info</Text>
-                <AppForm onSubmit={updatePlace}>
-                    <ScrollView style={styles.list}>
-                        {/*<Picker*/}
-                        {/*    selectedValue={selectedLanguage}*/}
-                        {/*    onValueChange={(itemValue, itemIndex) =>*/}
-                        {/*        setSelectedLanguage(itemValue)*/}
-                        {/*    }>*/}
-                        {/*    <Picker.Item label="Java" value="java"/>*/}
-                        {/*    <Picker.Item label="JavaScript" value="js"/>*/}
-                        {/*</Picker>*/}
-                        <Text style={styles.subtitle}>
-                            Basic Info
-                        </Text>
-                        <AppTextInput value={placeName}
-                                      required
-                                      onTextChange={(s) => setPlaceName(s)} name="name"
-                                      label="Place's name"
-                                      placeholder="name of your place"
-                                      extraStyles={styles.input}/>
-                        <AppTextInput name="phoneNumber"
-                                      required
-                                      label="Phone number"
-                                      placeholder="Phone number"
-                                      onTextChange={(s) => setPhoneNumber(s)}
-                                      value={phoneNumber}
-                                      extraStyles={styles.input}
-                        />
-
-                        <Text style={styles.subtitle}>
-                            Price details
-                        </Text>
-                        <View style={styles.switchContainer}>
-                            <Text style={styles.switchText}>Price range </Text>
-                            <Switch
-                                trackColor={{false: '#767577', true: Theme.colors.green.S600}}
-                                thumbColor={Theme.colors.white}
-                                ios_backgroundColor="#3e3e3e"
-                                onValueChange={() => setSwitchEnabled(!switchEnabled)}
-                                value={switchEnabled}
-                            />
-
-                        </View>
-
-                        {!switchEnabled &&
-                            <AppTextInput onTextChange={(s) => enterPriceRange({newMin: s, newMax: s})} name="Price"
-                                          label="Price"
-                                          extraStyles={styles.input}
-                                          placeholder="Add your price here"
-                                          value={priceRange?.priceRange.min}
-                                          keyboardType={"decimal-pad"}
-                                          unit="JOD"
+    if (isLoading) return (<ActivityIndicator/>)
+    else
+        return (
+            <>
+                <View style={styles.container}>
+                    <Text style={styles.title}>Your place&#39;s info</Text>
+                    <AppForm onSubmit={updatePlace}>
+                        <ScrollView style={styles.list}>
+                            {/*<Picker*/}
+                            {/*    selectedValue={selectedLanguage}*/}
+                            {/*    onValueChange={(itemValue, itemIndex) =>*/}
+                            {/*        setSelectedLanguage(itemValue)*/}
+                            {/*    }>*/}
+                            {/*    <Picker.Item label="Java" value="java"/>*/}
+                            {/*    <Picker.Item label="JavaScript" value="js"/>*/}
+                            {/*</Picker>*/}
+                            <Text style={styles.subtitle}>
+                                Basic Info
+                            </Text>
+                            <AppTextInput value={placeName}
                                           required
+                                          onTextChange={(s) => setPlaceName(s)} name="name"
+                                          label="Place's name"
+                                          placeholder="name of your place"
+                                          extraStyles={styles.input}/>
+                            <AppTextInput name="phoneNumber"
+                                          required
+                                          label="Phone number"
+                                          placeholder="Phone number"
+                                          onTextChange={(s) => setPhoneNumber(s)}
+                                          value={phoneNumber}
+                                          extraStyles={styles.input}
                             />
 
-                        }
+                            <Text style={styles.subtitle}>
+                                Price details
+                            </Text>
+                            <View style={styles.switchContainer}>
+                                <Text style={styles.switchText}>Price range </Text>
+                                <Switch
+                                    trackColor={{false: '#767577', true: Theme.colors.green.S600}}
+                                    thumbColor={Theme.colors.white}
+                                    ios_backgroundColor="#3e3e3e"
+                                    onValueChange={() => setSwitchEnabled(!switchEnabled)}
+                                    value={switchEnabled}
+                                />
 
-                        {switchEnabled &&
-                            <View style={styles.priceRangeContainer}>
-                                <AppTextInput onTextChange={(s) => enterPriceRange({newMin: s})} name="minPrice"
-                                              label="Min. price"
-                                              extraStyles={[styles.input, {flex: 1}]}
-                                              placeholder="Minimum price"
-                                              value={priceRange?.priceRange.min}
-                                              keyboardType={"decimal-pad"}
-                                              unit="JOD"
-                                              required
-                                />
-                                <AppTextInput onTextChange={(s) => enterPriceRange({newMax: s})} name="minPrice"
-                                              label="Max. price"
-                                              extraStyles={[styles.input, {flex: 1}]}
-                                              placeholder="Maximum price"
-                                              value={priceRange?.priceRange.max}
-                                              keyboardType={"decimal-pad"}
-                                              unit="JOD"
-                                              required
-                                />
                             </View>
-                        }
+                            {!switchEnabled &&
+                                <AppTextInput onTextChange={(s) => enterPriceRange({newMin: s, newMax: s})} name="Price"
+                                              label="Price"
+                                              extraStyles={styles.input}
+                                              placeholder="Add your price here"
+                                              value={priceRange?.min}
+                                              keyboardType={"decimal-pad"}
+                                              unit="JOD"
+                                              required
+                                />
 
-                        <SelectPriceType style={styles.input} label="Price type" itemList={priceTypeList}
-                                         value={priceType}
-                                         setValue={setPriceType}/>
+                            }
+
+                            {switchEnabled &&
+                                <View style={styles.priceRangeContainer}>
+                                    <AppTextInput onTextChange={(s) => enterPriceRange({newMin: s})} name="minPrice"
+                                                  label="Min. price"
+                                                  extraStyles={[styles.input, {flex: 1}]}
+                                                  placeholder="Minimum price"
+                                                  value={priceRange?.min}
+                                                  keyboardType={"decimal-pad"}
+                                                  unit="JOD"
+                                                  required
+                                    />
+                                    <AppTextInput onTextChange={(s) => enterPriceRange({newMax: s})} name="minPrice"
+                                                  label="Max. price"
+                                                  extraStyles={[styles.input, {flex: 1}]}
+                                                  placeholder="Maximum price"
+                                                  value={priceRange?.max}
+                                                  keyboardType={"decimal-pad"}
+                                                  unit="JOD"
+                                                  required
+                                    />
+                                </View>
+                            }
+
+                            <SelectPriceType style={styles.input} label="Price type" itemList={priceTypeList}
+                                             value={priceType}
+                                             setValue={setPriceType}/>
 
 
-                        <Text style={styles.subtitle}>
-                            Social media
-                        </Text>
-                        <AppTextInput name="facebook"
-                                      label="Facebook"
-                                      placeholder="Link to your place's facebook account"
-                                      onTextChange={(s) => setFacebook(s)}
-                                      value={facebook}
-                                      extraStyles={styles.input}
-                        />
-                        <AppTextInput name="instagram"
-                                      label="Instagram"
-                                      placeholder="Link to your place's instagram account"
-                                      onTextChange={(s) => setInstagram(s)}
-                                      value={instagram}
-                                      extraStyles={styles.input}
-                        />
-                        <AppTextInput name="tiktok"
-                                      label="Tiktok"
-                                      placeholder="Link to your place's Tikok account"
-                                      onTextChange={(s) => setTiktok(s)}
-                                      value={tiktok}
-                                      extraStyles={styles.input}
-                        />
-                        <AppTextInput name="website"
-                                      label="Website"
-                                      placeholder="Link to your place's website"
-                                      onTextChange={(s) => setWebsite(s)}
-                                      value={website}
-                                      extraStyles={styles.input}
-                        />
+                            <Text style={styles.subtitle}>
+                                Social media
+                            </Text>
+                            <AppTextInput name="facebook"
+                                          label="Facebook"
+                                          placeholder="Link to your place's facebook account"
+                                          onTextChange={(s) => setFacebook(s)}
+                                          value={facebook}
+                                          extraStyles={styles.input}
+                            />
+                            <AppTextInput name="instagram"
+                                          label="Instagram"
+                                          placeholder="Link to your place's instagram account"
+                                          onTextChange={(s) => setInstagram(s)}
+                                          value={instagram}
+                                          extraStyles={styles.input}
+                            />
+                            <AppTextInput name="tiktok"
+                                          label="Tiktok"
+                                          placeholder="Link to your place's Tikok account"
+                                          onTextChange={(s) => setTiktok(s)}
+                                          value={tiktok}
+                                          extraStyles={styles.input}
+                            />
+                            <AppTextInput name="website"
+                                          label="Website"
+                                          placeholder="Link to your place's website"
+                                          onTextChange={(s) => setWebsite(s)}
+                                          value={website}
+                                          extraStyles={styles.input}
+                            />
 
-                    </ScrollView>
-                    <AppButton fullWidth isSubmit>next</AppButton>
-                </AppForm>
-            </View>
+                        </ScrollView>
+                        <AppButton fullWidth isSubmit>next</AppButton>
+                    </AppForm>
+                </View>
 
-        </>
-    )
+            </>
+        )
 }
 
 const styles = StyleSheet.create({

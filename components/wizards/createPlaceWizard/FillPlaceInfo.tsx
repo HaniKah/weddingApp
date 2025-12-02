@@ -1,7 +1,7 @@
 import {ActivityIndicator, ScrollView, StyleSheet, Switch, Text, View} from "react-native";
 import {AppForm} from "@/contexts/form-context";
 import AppTextInput from "@/components/appComponents/AppTextInput";
-import {useCallback, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {Theme} from "@/styles/Theme";
 import AppButton from "@/components/appComponents/AppButton";
 import {CreatePlaceSteps, PlacePriceRange, VendorPlaceDetailsViewModel} from "@/types/open-api";
@@ -24,12 +24,13 @@ export default function FillPlaceInfo({onNext, data, setData}: {
     const API = useApi()
     const [placeName, setPlaceName] = useState<string | undefined>(data?.place.placeInfo?.name)
     const [phoneNumber, setPhoneNumber] = useState<string | undefined>(data?.place.placeInfo?.phoneNumber)
-    const [priceRange, setPriceRange] = useState<PlacePriceRange | undefined>(data?.place.placeInfo?.priceRange.priceRange)
+    const [priceRange, setPriceRange] = useState<PlacePriceRange | undefined>(data?.place.placeInfo?.priceRange?.priceRange)
     const [facebook, setFacebook] = useState<string>()
     const [instagram, setInstagram] = useState<string>()
     const [tiktok, setTiktok] = useState<string>()
     const [website, setWebsite] = useState<string>()
-    //todo : to be added to the Db
+    // const [placeInfo, setPlaceInfo] = useState<VendorPlaceInfo | undefined>(data.place.placeInfo)
+    //todo : to be added to the Dbx
     const [priceType, setPriceType] = useState<PriceType>(PriceType.None)
     const [isLoading, setIsLoading] = useState(false)
     const [switchEnabled, setSwitchEnabled] = useState(false);
@@ -44,16 +45,14 @@ export default function FillPlaceInfo({onNext, data, setData}: {
     }
 
     useEffect(() => {
-        setSwitchEnabled(priceRange?.min !== priceRange?.max)
     }, [priceRange]);
-
 
     const priceTypeList: PickerItem<PriceType>[] = Object.values(PriceType).map((v) => ({
         label: v.toString(), // needs to be translated here
         value: v
     }))
 
-    const updatePlace = useCallback(async () => {
+    async function updatePlace() {
         //if condition is extra for ts. required fields are handled inside the form and will present an error if not filled
         if (!placeName || !phoneNumber || !priceRange) return
         try {
@@ -80,8 +79,7 @@ export default function FillPlaceInfo({onNext, data, setData}: {
         } finally {
             setIsLoading(false)
         }
-    }, [])
-
+    }
 
     if (isLoading) return (<ActivityIndicator/>)
     else
@@ -131,7 +129,6 @@ export default function FillPlaceInfo({onNext, data, setData}: {
                                 />
 
                             </View>
-
                             {!switchEnabled &&
                                 <AppTextInput onTextChange={(s) => enterPriceRange({newMin: s, newMax: s})} name="Price"
                                               label="Price"

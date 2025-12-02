@@ -16,13 +16,6 @@ export enum PlaceStatus {
   Published = "Published",
 }
 
-export enum CreatePlaceSteps {
-  PickPlaceType = "PickPlaceType",
-  FillPlaceInfo = "FillPlaceInfo",
-  AddDescription = "AddDescription",
-  PickPlaceLocation = "PickPlaceLocation",
-}
-
 export enum CoupleSide {
   Groom = "Groom",
   Bride = "Bride",
@@ -180,7 +173,7 @@ export interface NumRangeDto {
   max: string;
 }
 
-export interface UpdatePlaceInfo {
+export interface CreatePlaceInfo {
   name: string;
   phoneNumber: string;
   facebook?: string;
@@ -190,7 +183,7 @@ export interface UpdatePlaceInfo {
   priceRange: NumRangeDto;
 }
 
-export interface UpdatePlaceLocation {
+export interface CreatePlaceLocation {
   streetName: string;
   city: string;
   country: string;
@@ -200,21 +193,15 @@ export interface UpdatePlaceLocation {
   googleId?: string;
 }
 
-export interface CreateOrUpdatePlaceRequest {
-  weddingStep?: WeddingSteps;
-  createStep: CreatePlaceSteps;
-  placeId?: number;
-  placeInfo?: UpdatePlaceInfo;
+export interface CreatePlaceRequest {
+  type: WeddingSteps;
+  placeInfo: CreatePlaceInfo;
   description?: string;
-  location?: UpdatePlaceLocation;
+  location?: CreatePlaceLocation;
 }
 
-export interface CreateOrUpdatePlaceDto {
-  weddingStep: WeddingSteps;
-  placeId: number;
-  placeInfo?: UpdatePlaceInfo;
-  description?: string;
-  location?: UpdatePlaceLocation;
+export interface CreatePlaceDto {
+  id: number;
 }
 
 export interface VendorPlaceDto {
@@ -759,15 +746,15 @@ export class Api<
      * No description
      *
      * @tags Places
-     * @name PlacesControllerCreateOrUpdatePlace
-     * @request POST:/api/places/createOrUpdate
+     * @name PlacesControllerCreatePlace
+     * @request POST:/api/places/create
      */
-    placesControllerCreateOrUpdatePlace: (
-      data: CreateOrUpdatePlaceRequest,
+    placesControllerCreatePlace: (
+      data: CreatePlaceRequest,
       params: RequestParams = {},
     ) =>
-      this.request<CreateOrUpdatePlaceDto, any>({
-        path: `/api/places/createOrUpdate`,
+      this.request<CreatePlaceDto, any>({
+        path: `/api/places/create`,
         method: "POST",
         body: data,
         type: ContentType.Json,

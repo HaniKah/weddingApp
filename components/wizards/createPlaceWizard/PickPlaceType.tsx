@@ -8,7 +8,8 @@ import {useApi} from "@/utils/api";
 import {useState} from "react";
 
 
-export default function PickPlaceType({onNext, data, setData}: {
+export default function PickPlaceType({onNext, data, setData, placeId}: {
+    placeId: number | undefined
     data: VendorPlaceDetailsViewModel | undefined,
     setData: (data: VendorPlaceDetailsViewModel) => void,
     onNext: () => void
@@ -41,7 +42,7 @@ export default function PickPlaceType({onNext, data, setData}: {
     async function updateOrCreatePlace() {
         try {
             const res = await API.placesControllerUpdatePlace({
-                placeId: data?.place.placeId,
+                placeId: placeId,
                 weddingStep: weddingStep,
                 createStep: CreatePlaceSteps.PickPlaceType
             })

@@ -7,7 +7,6 @@ import FillPlaceInfo from "@/components/wizards/createPlaceWizard/FillPlaceInfo"
 import UploadImages from "@/components/wizards/createPlaceWizard/UploadImages";
 import {useApi} from "@/utils/api";
 import AddDescription from "@/components/wizards/createPlaceWizard/AddDescription";
-import {ActivityIndicator} from "react-native";
 
 
 export type ImageUploadModel = {
@@ -18,6 +17,7 @@ export type ImageUploadModel = {
 
 export default function CreatePlaceWizard({placeId}: { placeId: number | undefined }) {
     const wizardRef = useRef<WizardRef>(null);
+
     const stepsList: CreatePlaceSteps[] = Object.values(CreatePlaceSteps);
     const [data, setData] = useState<VendorPlaceDetailsViewModel>()
     const [currentStep, setCurrentStep] = useState<CreatePlaceSteps>(stepsList[0]);
@@ -47,25 +47,24 @@ export default function CreatePlaceWizard({placeId}: { placeId: number | undefin
         wizardRef.current?.nextStep();
     };
 
-    if (isLoading) return (<ActivityIndicator/>)
-    else
-        return (
-            <>
-                <Wizard stepsList={stepsList} currentStep={currentStep} setCurrentStep={setCurrentStep} ref={wizardRef}>
-                    <WizardStep step={CreatePlaceSteps.PickPlaceType} currentStep={currentStep}>
-                        <PickPlaceType data={data} setData={setData} onNext={onNext}/>
-                    </WizardStep>
-                    <WizardStep step={CreatePlaceSteps.FillPlaceInfo} currentStep={currentStep}>
-                        <FillPlaceInfo setData={setData} data={data} onNext={onNext}/>
-                    </WizardStep>
-                    <WizardStep step={CreatePlaceSteps.AddDescription} currentStep={currentStep}>
-                        <AddDescription data={data} setData={setData} onNext={onNext}/>
-                    </WizardStep>
-                    <WizardStep step={CreatePlaceSteps.PickPlaceLocation} currentStep={currentStep}>
-                        <UploadImages data={data} setData={setData}
-                                      onFinish={() => setTrigger((prev: boolean) => !prev)}/>
-                    </WizardStep>
-                </Wizard>
-            </>
-        )
+
+    return (
+        <>
+            <Wizard stepsList={stepsList} currentStep={currentStep} setCurrentStep={setCurrentStep} ref={wizardRef}>
+                <WizardStep step={CreatePlaceSteps.PickPlaceType} currentStep={currentStep}>
+                    <PickPlaceType data={data} setData={setData} placeId={placeId} onNext={onNext}/>
+                </WizardStep>
+                <WizardStep step={CreatePlaceSteps.FillPlaceInfo} currentStep={currentStep}>
+                    <FillPlaceInfo setData={setData} data={data} placeId={placeId} onNext={onNext}/>
+                </WizardStep>
+                <WizardStep step={CreatePlaceSteps.AddDescription} currentStep={currentStep}>
+                    <AddDescription data={data} setData={setData} placeId={placeId} onNext={onNext}/>
+                </WizardStep>
+                <WizardStep step={CreatePlaceSteps.PickPlaceLocation} currentStep={currentStep}>
+                    <UploadImages placeId={placeId} data={data} setData={setData}
+                                  onFinish={() => setTrigger((prev: boolean) => !prev)}/>
+                </WizardStep>
+            </Wizard>
+        </>
+    )
 }

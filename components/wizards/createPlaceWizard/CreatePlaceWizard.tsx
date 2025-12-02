@@ -1,5 +1,5 @@
 import Wizard, {WizardRef} from "@/components/wizards/Wizard";
-import {useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import WizardStep from "@/components/wizards/WizardStep";
 import PickPlaceType from "@/components/wizards/createPlaceWizard/PickPlaceType";
 import {CreateOrUpdatePlaceDto, CreatePlaceSteps, UpdatePlaceInfo, WeddingSteps} from "@/types/open-api";
@@ -30,17 +30,44 @@ export default function CreatePlaceWizard({placeId}: { placeId: number | undefin
 
     const API = useApi()
 
+    useEffect(() => {
+        if (!placeId) return
+        const getPlaceDetails = async () => {
+            try {
+                const res = await API.placesControllerCreateOrUpdatePlace({placeId: placeId, createStep: currentStep})
+                setData(res.data)
+
+            } catch (err) {
+                console.error(err)
+            } finally {
+            }
+        }
+        getPlaceDetails()
+    }, [placeId])
+
     const onNext = () => {
         wizardRef.current?.nextStep();
+        handleCreateOrUpdate()
     };
 
-    async function uploadImages() {
-        const files = constructRequest(data?.placeId)
+
+    const handleCreateOrUpdate = async () => {
+        if (!placeInfo || !selectedType) return
+        const res = await API.placesControllerCreateOrUpdatePlace({
+            placeId: placeId,
+            placeInfo: placeInfo,
+            weddingStep: selectedType,
+            description: description,
+            createStep: currentStep
+        })
+        const files = constructRequest(res.data.placeId)
         if (!files) return
         await API.photosControllerUploadFile(files)
     }
 
+
     function constructRequest(placeId: number): FormData | undefined {
+        if (!placeInfo || !selectedType) return //todo : to be handled with errors
         const formData = new FormData();
         formData.append('placeId', placeId.toString())
         images?.map((asset, i) => {

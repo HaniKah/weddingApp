@@ -1,34 +1,19 @@
 import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
-import {PlaceStatus, VendorPlaceDto} from '@/types/open-api';
+import {VendorPlaceDto} from '@/types/open-api';
 import {Theme} from '@/styles/Theme';
-import AppButton from '@/components/appComponents/AppButton';
-import {Dispatch, SetStateAction, useState} from "react";
-import {useApi} from "@/utils/api";
+import {Dispatch, SetStateAction} from "react";
 
 type VendorPlaceItemProps = {
     data: VendorPlaceDto;
     setTrigger: Dispatch<SetStateAction<boolean>>;
-    openBottomSheet: (placeId: number) => void;
+    onPress: (place: VendorPlaceDto) => void;
 }
 
-export default function VendorPlaceItem({data, setTrigger, openBottomSheet}: VendorPlaceItemProps) {
-    const API = useApi()
-    const [isLoading, setIsLoading] = useState(true);
+export default function VendorPlaceItem({data, setTrigger, onPress}: VendorPlaceItemProps) {
 
-    const publish = async (placeId: number, placeStatus: PlaceStatus) => {
-        try {
-            setIsLoading(true)
-            await API.placesControllerToggleStatus({placeId: placeId, status: placeStatus})
-        } catch (err) {
-
-        } finally {
-            setIsLoading(false)
-            setTrigger((prev: boolean) => !prev)
-        }
-    }
     return (
         <>
-            <Pressable onPress={() => openBottomSheet(data.id)}>
+            <Pressable onPress={() => onPress(data)}>
                 <View style={styles.container}>
                     <View style={styles.imageContainer}>
                         <Image style={styles.image} source={{uri: data.thumbnail}}/>
@@ -44,30 +29,6 @@ export default function VendorPlaceItem({data, setTrigger, openBottomSheet}: Ven
                             }
                             <Text style={styles.currency}>  {data.prices.currency}</Text>
                         </View>
-
-                    </View>
-                    <View>
-                        {
-                            data.status === PlaceStatus.Unpublished &&
-                            <AppButton buttonSize="SM" onPress={() => publish(data.id, PlaceStatus.Published)}
-                                       confirmative>
-                                Publish
-                            </AppButton>
-                        }
-                        {
-                            data.status === PlaceStatus.Published &&
-                            <AppButton buttonSize="SM" onPress={() => publish(data.id, PlaceStatus.Unpublished)}
-                                       destructive>
-                                Unpublish
-                            </AppButton>
-                        }
-                        {
-                            data.status === PlaceStatus.Incomplete &&
-                            <AppButton buttonSize="SM" confirmative>
-                                complete
-                            </AppButton>
-                        }
-
                     </View>
                 </View>
             </Pressable>

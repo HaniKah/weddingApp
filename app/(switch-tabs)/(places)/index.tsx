@@ -5,7 +5,7 @@ import {FlatList, StyleSheet, View} from 'react-native';
 import {Theme} from '@/styles/Theme';
 import {useEffect, useState} from 'react';
 import AddPlaceModal from '@/components/modals/AddPlaceModal';
-import {VendorPlaceDto} from '@/types/open-api';
+import {PlaceStatus, VendorPlaceDto} from '@/types/open-api';
 import VendorPlaceItem from '@/components/items/VendorPlaceItem';
 import {Link, Stack} from "expo-router";
 import BottomSheet from "@/components/bottomSheet/BottomSheet";
@@ -20,7 +20,7 @@ export default function Index() {
     const [trigger, setTrigger] = useState<boolean>(false);
 
     const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
-    const [pressedPlaceId, setPressedPlaceId] = useState<number>();
+    const [selectedPlace, setSelectedPlace] = useState<VendorPlaceDto>();
 
     useEffect(() => {
         const getPlaces = async () => {
@@ -37,15 +37,15 @@ export default function Index() {
         getPlaces();
     }, [trigger]);
 
-    function handlePlacePress(placeId: number) {
-        setPressedPlaceId(placeId);
+    function handlePlacePress(place: VendorPlaceDto) {
+        setSelectedPlace(place);
         setIsBottomSheetVisible(true);
 
     }
 
     function handleViewPlace() {
         setTimeout(() => {
-            setPressedPlaceId(undefined);
+            setSelectedPlace(undefined);
             setIsBottomSheetVisible(false);
         }, 700)
 
@@ -54,6 +54,19 @@ export default function Index() {
     function handleEditPlace() {
         setOpenModal(true)
         setIsBottomSheetVisible(false);
+    }
+
+    async function publish() {
+        if (!selectedPlace) return
+        try {
+            setIsLoading(true)
+            await API.placesControllerToggleStatus({placeId: selectedPlace.id, status: PlaceStatus.Published})
+        } catch (err) {
+            console.error(err)
+        } finally {
+            setIsLoading(false)
+            setTrigger((prev: boolean) => !prev)
+        }
     }
 
 
@@ -65,28 +78,38 @@ export default function Index() {
             <AppView withPadding isLoading={isLoading}>
                 <FlatList contentContainerStyle={styles.flatlist} keyExtractor={(item) => item.id.toString()}
                           data={places}
-                          renderItem={(item) => <VendorPlaceItem openBottomSheet={handlePlacePress}
+                          renderItem={(item) => <VendorPlaceItem onPress={handlePlacePress}
                                                                  setTrigger={setTrigger} data={item.item}/>
                           }/>
             </AppView>
 
             <AddPlaceModal setIsVisible={setOpenModal} isVisible={openModal}/>
             <BottomSheet setIsVisible={setIsBottomSheetVisible} isVisible={isBottomSheetVisible}>
-                {pressedPlaceId &&
+                {selectedPlace &&
                     <View>
-                        <AppButton extraStylesBtn={styles.editPlace} fullWidth buttonType={ButtonType.PLAIN}
+                        <Link asChild push href={{
+                            pathname: "/(switch-tabs)/(places)/[id]",
+                            params: {id: selectedPlace?.toString()}
+                        }}>
+                            <AppButton extraStylesBtn={styles.actionBtn} fullWidth onPress={handleViewPlace}>
+                                View place
+                            </AppButton>
+                        </Link>
+
+                        <AppButton extraStylesBtn={styles.actionBtn} fullWidth buttonType={ButtonType.PLAIN}
                                    onPress={handleEditPlace}>
                             Edit place
                         </AppButton>
 
-                        <Link asChild push href={{
-                            pathname: "/(switch-tabs)/(places)/[id]",
-                            params: {id: pressedPlaceId?.toString()}
-                        }}>
-                            <AppButton fullWidth onPress={handleViewPlace}>
-                                View place
-                            </AppButton>
-                        </Link>
+
+                        {selectedPlace.status === PlaceStatus.Unpublished &&
+                            <View style={styles.publishBtn}>
+                                <AppButton fullWidth confirmative>
+                                    Publish
+                                </AppButton>
+                            </View>
+
+                        }
 
                     </View>}
             </BottomSheet>
@@ -102,8 +125,14 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         padding: 10,
     },
-    editPlace: {
+    actionBtn: {
         marginBottom: 20
+    },
+    publishBtn: {
+        paddingVertical: 20,
+        borderColor: Theme.colors.gray.S300,
+        borderStyle: "dashed",
+        borderTopWidth: 1
     }
 
 

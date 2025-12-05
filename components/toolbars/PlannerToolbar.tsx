@@ -17,7 +17,7 @@ export default function PlannerToolbar({progress, note, fullfilled}: {
             <Toolbar>
                 <View style={styles.progressContainer}>
                     {fullfilled ?
-                        <IconSymbol color={Theme.colors.green["S100"]} name="checkmark.circle.fill"/> :
+                        <IconSymbol color={Theme.colors.green.S700} name="checkmark.circle.fill"/> :
 
                         <Progress.Pie style={styles.pie} progress={progress} size={20} color={Theme.colors.primary}
                                       borderWidth={2}/>
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
         alignSelf: "flex-end",
     },
     filled: {
-        color: Theme.colors.green["S100"],
+        color: Theme.colors.green.S700,
         fontWeight: "bold"
     }
 })

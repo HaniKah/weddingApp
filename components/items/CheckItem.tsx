@@ -18,7 +18,7 @@ export default function CheckItem({item, firstItem, lastItem}: {
 
                     {
                         item.isCompleted ?
-                            <IconSymbol size={30} color={Theme.colors.green["S100"]}
+                            <IconSymbol size={30} color={Theme.colors.green.S700}
                                         name="checkmark.circle.fill"/> :
                             <IconSymbol size={30} name="circle" color={Theme.colors.primary}/>
                     }
@@ -118,6 +118,6 @@ const styles = StyleSheet.create({
     },
 
     isCompleted: {
-        color: Theme.colors.green["S100"],
+        color: Theme.colors.green.S700,
     }
 })

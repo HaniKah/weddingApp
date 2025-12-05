@@ -10,6 +10,7 @@ import VendorPlaceItem from '@/components/items/VendorPlaceItem';
 import {Link, Stack} from "expo-router";
 import BottomSheet from "@/components/bottomSheet/BottomSheet";
 import AppButton from "@/components/appComponents/AppButton";
+import {ButtonType} from "@/styles/Button";
 
 export default function Index() {
     const API = useApi();
@@ -42,12 +43,17 @@ export default function Index() {
 
     }
 
-    function actionPressed() {
+    function handleViewPlace() {
         setTimeout(() => {
             setPressedPlaceId(undefined);
             setIsBottomSheetVisible(false);
         }, 1000)
 
+    }
+
+    function handleEditPlace() {
+        setOpenModal(true)
+        setIsBottomSheetVisible(false);
     }
 
 
@@ -67,21 +73,22 @@ export default function Index() {
             <AddPlaceModal setIsVisible={setOpenModal} isVisible={openModal}/>
             <BottomSheet setIsVisible={setIsBottomSheetVisible} isVisible={isBottomSheetVisible}>
                 {pressedPlaceId &&
-                    <View>
+                    <View style={styles.actionsContainer}>
+                        <AppButton fullWidth buttonType={ButtonType.PLAIN} onPress={handleEditPlace}>
+                            Edit place
+                        </AppButton>
+
                         <Link asChild push href={{
                             pathname: "/(switch-tabs)/(places)/[id]",
                             params: {id: pressedPlaceId?.toString()}
                         }}>
-                            <AppButton fullWidth onPress={actionPressed}>
+                            <AppButton fullWidth onPress={handleViewPlace}>
                                 View place
                             </AppButton>
                         </Link>
+
                     </View>}
-
-
             </BottomSheet>
-
-
         </>
     );
 }
@@ -94,5 +101,11 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         padding: 10,
     },
+    actionsContainer: {
+        display: 'flex',
+        flexDirection: 'column',
+        flex: 1,
+        gap: 20,
+    }
 
 });

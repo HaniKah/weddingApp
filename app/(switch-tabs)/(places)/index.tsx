@@ -47,7 +47,7 @@ export default function Index() {
         setTimeout(() => {
             setPressedPlaceId(undefined);
             setIsBottomSheetVisible(false);
-        }, 1000)
+        }, 700)
 
     }
 
@@ -73,8 +73,9 @@ export default function Index() {
             <AddPlaceModal setIsVisible={setOpenModal} isVisible={openModal}/>
             <BottomSheet setIsVisible={setIsBottomSheetVisible} isVisible={isBottomSheetVisible}>
                 {pressedPlaceId &&
-                    <View style={styles.actionsContainer}>
-                        <AppButton fullWidth buttonType={ButtonType.PLAIN} onPress={handleEditPlace}>
+                    <View>
+                        <AppButton extraStylesBtn={styles.editPlace} fullWidth buttonType={ButtonType.PLAIN}
+                                   onPress={handleEditPlace}>
                             Edit place
                         </AppButton>
 
@@ -101,11 +102,9 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         padding: 10,
     },
-    actionsContainer: {
-        display: 'flex',
-        flexDirection: 'column',
-        flex: 1,
-        gap: 20,
+    editPlace: {
+        marginBottom: 20
     }
+
 
 });

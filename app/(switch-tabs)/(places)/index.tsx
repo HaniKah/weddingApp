@@ -1,21 +1,23 @@
 import AppView from '@/components/appComponents/AppView';
 import PlacesToolbar from '@/components/toolbars/PlacesToolbar';
 import {useApi} from '@/utils/api';
-import {FlatList, StyleSheet, View} from 'react-native';
+import {SectionList, StyleSheet, Text, View} from 'react-native';
 import {Theme} from '@/styles/Theme';
 import {useEffect, useState} from 'react';
 import AddPlaceModal from '@/components/modals/AddPlaceModal';
-import {PlaceStatus, VendorPlaceDto} from '@/types/open-api';
+import {PlaceStatus, VendorPlaceDto, VendorPlaceViewModel} from '@/types/open-api';
 import VendorPlaceItem from '@/components/items/VendorPlaceItem';
 import {Link, Stack} from "expo-router";
 import BottomSheet from "@/components/bottomSheet/BottomSheet";
 import AppButton from "@/components/appComponents/AppButton";
 import {ButtonType} from "@/styles/Button";
+import {IconSymbol} from "@/components/symbols/IconSymbol";
+import AppIf from "@/components/appComponents/AppIf";
 
 export default function Index() {
     const API = useApi();
     const [openModal, setOpenModal] = useState<boolean>(false);
-    const [places, setPlaces] = useState<VendorPlaceDto[]>();
+    const [places, setPlaces] = useState<VendorPlaceViewModel>();
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [trigger, setTrigger] = useState<boolean>(false);
 
@@ -26,7 +28,7 @@ export default function Index() {
         const getPlaces = async () => {
             try {
                 const res = await API.placesControllerGetPlaces();
-                setPlaces(res.data.result);
+                setPlaces(res.data);
             } catch (err) {
                 console.error(err);
             } finally {
@@ -69,6 +71,21 @@ export default function Index() {
         }
     }
 
+    function SectionHeaderItem({title}: { title: string }) {
+        return (
+            <View style={styles.sectionHeaderContainer}>
+                <Text
+                    style={[styles.sectionHeader, title === PlaceStatus.Published ? styles.publishedSectionHeader : styles.unpublishedSectionHeader]}>{title}</Text>
+
+                <AppIf value={title === PlaceStatus.Published}>
+                    <IconSymbol name="checkmark.circle" size={20} color={Theme.colors.green.S700}/>
+                </AppIf>
+            </View>
+
+        )
+
+    }
+
 
     return (
         <>
@@ -76,40 +93,53 @@ export default function Index() {
             <PlacesToolbar onCreatePlace={() => setOpenModal(true)}/>
 
             <AppView withPadding isLoading={isLoading}>
-                <FlatList contentContainerStyle={styles.flatlist} keyExtractor={(item) => item.id.toString()}
-                          data={places}
-                          renderItem={(item) => <VendorPlaceItem onPress={handlePlacePress}
-                                                                 setTrigger={setTrigger} data={item.item}/>
-                          }/>
+                {places &&
+                    <SectionList
+                        renderSectionHeader={({section}) => (<SectionHeaderItem title={section.title}/>)}
+                        contentContainerStyle={styles.flatlist}
+                        keyExtractor={(item) => item.id.toString()}
+                        sections={[places.published, places.unpublished]}
+                        renderItem={(item) => <VendorPlaceItem onPress={handlePlacePress}
+                                                               setTrigger={setTrigger} data={item.item}/>
+                        }/>
+                }
+
             </AppView>
 
             <AddPlaceModal setIsVisible={setOpenModal} isVisible={openModal}/>
             <BottomSheet setIsVisible={setIsBottomSheetVisible} isVisible={isBottomSheetVisible}>
                 {selectedPlace &&
                     <View>
-                        <Link asChild push href={{
-                            pathname: "/(switch-tabs)/(places)/[id]",
-                            params: {id: selectedPlace?.toString()}
-                        }}>
-                            <AppButton extraStylesBtn={styles.actionBtn} fullWidth onPress={handleViewPlace}>
-                                View place
-                            </AppButton>
-                        </Link>
-
-                        <AppButton extraStylesBtn={styles.actionBtn} fullWidth buttonType={ButtonType.PLAIN}
-                                   onPress={handleEditPlace}>
-                            Edit place
-                        </AppButton>
-
 
                         {selectedPlace.status === PlaceStatus.Unpublished &&
-                            <View style={styles.publishBtn}>
+                            <View style={styles.actionBtn}>
                                 <AppButton fullWidth confirmative>
                                     Publish
                                 </AppButton>
                             </View>
 
                         }
+
+                        <Link asChild push href={{
+                            pathname: "/(switch-tabs)/(places)/[id]",
+                            params: {id: selectedPlace.id?.toString()}
+                        }}>
+                            <AppButton extraStylesBtn={styles.actionBtn} fullWidth onPress={handleViewPlace}>
+                                View place
+                            </AppButton>
+                        </Link>
+
+
+                        <AppButton extraStylesBtn={styles.actionBtn} fullWidth buttonType={ButtonType.PLAIN}
+                                   onPress={handleEditPlace}>
+                            Edit place
+                        </AppButton>
+
+                        <AppButton extraStylesTxt={{fontWeight: "bold"}} destructive buttonType={ButtonType.PLAIN}
+                                   fullWidth>
+                            Delete place
+                        </AppButton>
+
 
                     </View>}
             </BottomSheet>
@@ -133,7 +163,20 @@ const styles = StyleSheet.create({
         borderColor: Theme.colors.gray.S300,
         borderStyle: "dashed",
         borderTopWidth: 1
-    }
-
-
+    },
+    sectionHeaderContainer: {
+        display: "flex",
+        flexDirection: "row",
+        gap: 5,
+        alignItems: "center",
+    },
+    sectionHeader: {
+        fontWeight: "bold",
+    },
+    publishedSectionHeader: {
+        color: Theme.colors.green.S700,
+    },
+    unpublishedSectionHeader: {
+        color: Theme.colors.gray.S500,
+    },
 });

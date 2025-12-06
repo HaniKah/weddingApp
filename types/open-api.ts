@@ -11,7 +11,6 @@
  */
 
 export enum PlaceStatus {
-  Incomplete = "Incomplete",
   Unpublished = "Unpublished",
   Published = "Published",
 }
@@ -214,7 +213,14 @@ export interface VendorPlaceDto {
 }
 
 export interface VendorPlaceViewModel {
-  result: VendorPlaceDto[];
+  published: {
+    title: "Unpublished" | "Published";
+    data: VendorPlaceDto[];
+  };
+  unpublished: {
+    title: "Unpublished" | "Published";
+    data: VendorPlaceDto[];
+  };
 }
 
 export interface PublishPlaceRequest {

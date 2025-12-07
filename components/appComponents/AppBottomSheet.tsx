@@ -86,6 +86,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "space-between",
         padding: 20,
+        paddingBottom: 10
 
     },
     handler: {
@@ -96,9 +97,7 @@ const styles = StyleSheet.create({
         margin: "auto",
 
     },
-    content: {
-        padding: 20
-    },
+    content: {},
     touchable: {
         zIndex: 99,
         height: "100%",

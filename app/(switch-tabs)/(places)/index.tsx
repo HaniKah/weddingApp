@@ -138,7 +138,7 @@ export default function Index() {
 
                         {selectedPlace.status === PlaceStatus.Unpublished &&
                             <View style={styles.actionBtn}>
-                                <AppButton fullWidth confirmative>
+                                <AppButton icon="square.and.arrow.up" buttonType={ButtonType.PLAIN} confirmative>
                                     Publish
                                 </AppButton>
                             </View>
@@ -149,22 +149,28 @@ export default function Index() {
                             pathname: "/(switch-tabs)/(places)/[id]",
                             params: {id: selectedPlace.id?.toString()}
                         }}>
-                            <AppButton extraStylesBtn={styles.actionBtn} fullWidth onPress={handleViewPlace}>
-                                View place
-                            </AppButton>
+                            <View style={styles.actionBtn}>
+                                <AppButton icon="eye" buttonType={ButtonType.PLAIN}
+                                           onPress={handleViewPlace}>
+                                    View place
+                                </AppButton>
+                            </View>
+
                         </Link>
 
+                        <View style={styles.actionBtn}>
+                            <AppButton icon="pencil" buttonType={ButtonType.PLAIN}
+                                       onPress={handleEditPlace}>
+                                Edit place
+                            </AppButton>
+                        </View>
 
-                        <AppButton extraStylesBtn={styles.actionBtn} fullWidth buttonType={ButtonType.PLAIN}
-                                   onPress={handleEditPlace}>
-                            Edit place
-                        </AppButton>
-
-                        <AppButton onPress={handleDeletePlace} extraStylesTxt={{fontWeight: "bold"}} destructive
-                                   buttonType={ButtonType.PLAIN}
-                                   fullWidth>
-                            Delete place
-                        </AppButton>
+                        <View style={styles.actionBtn}>
+                            <AppButton icon="trash" onPress={handleDeletePlace} destructive
+                                       buttonType={ButtonType.PLAIN}>
+                                Delete place
+                            </AppButton>
+                        </View>
 
 
                     </View>}
@@ -182,7 +188,9 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     actionBtn: {
-        marginBottom: 20
+        borderBottomWidth: 1,
+        padding: 20,
+        borderColor: Theme.colors.gray.S200,
     },
     publishBtn: {
         paddingVertical: 20,

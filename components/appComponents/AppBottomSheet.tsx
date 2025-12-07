@@ -6,7 +6,7 @@ import {useEffect} from "react";
 import {IconButton} from "@/components/symbols/IconButton";
 
 
-export default function BottomSheet({isVisible, setIsVisible, children}: {
+export default function AppBottomSheet({isVisible, setIsVisible, children}: {
     isVisible: boolean,
     setIsVisible: (value: boolean) => void
     children: React.ReactNode
@@ -61,7 +61,7 @@ export default function BottomSheet({isVisible, setIsVisible, children}: {
                 <View style={styles.content}>
                     {children}
                 </View>
-                
+
             </Animated.View>
 
         </>

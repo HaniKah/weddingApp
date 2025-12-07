@@ -8,7 +8,7 @@ import AddPlaceModal from '@/components/modals/AddPlaceModal';
 import {PlaceStatus, VendorPlaceDto, VendorPlaceViewModel} from '@/types/open-api';
 import VendorPlaceItem from '@/components/items/VendorPlaceItem';
 import {Link, Stack} from "expo-router";
-import BottomSheet from "@/components/bottomSheet/BottomSheet";
+import AppBottomSheet from "@/components/appComponents/AppBottomSheet";
 import AppButton from "@/components/appComponents/AppButton";
 import {ButtonType} from "@/styles/Button";
 import {IconSymbol} from "@/components/symbols/IconSymbol";
@@ -132,7 +132,7 @@ export default function Index() {
             </AppView>
 
             <AddPlaceModal setIsVisible={setOpenModal} isVisible={openModal}/>
-            <BottomSheet setIsVisible={setIsBottomSheetVisible} isVisible={isBottomSheetVisible}>
+            <AppBottomSheet setIsVisible={setIsBottomSheetVisible} isVisible={isBottomSheetVisible}>
                 {selectedPlace &&
                     <View>
 
@@ -168,7 +168,7 @@ export default function Index() {
 
 
                     </View>}
-            </BottomSheet>
+            </AppBottomSheet>
         </>
     );
 }

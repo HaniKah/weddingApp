@@ -167,6 +167,10 @@ export interface ExchangeTokenDto {
   refreshToken: string;
 }
 
+export interface DeletePlaceRequest {
+  id: number;
+}
+
 export interface NumRangeDto {
   min: string;
   max: string;
@@ -745,6 +749,25 @@ export class Api<
         path: `/api/auth/exchangeToken`,
         method: "POST",
         format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Places
+     * @name PlacesControllerDeletePlace
+     * @request POST:/api/places/delete
+     */
+    placesControllerDeletePlace: (
+      data: DeletePlaceRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/places/delete`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
         ...params,
       }),
 

@@ -1,7 +1,7 @@
 import AppView from '@/components/appComponents/AppView';
 import PlacesToolbar from '@/components/toolbars/PlacesToolbar';
 import {useApi} from '@/utils/api';
-import {SectionList, StyleSheet, Text, View} from 'react-native';
+import {Alert, SectionList, StyleSheet, Text, View} from 'react-native';
 import {Theme} from '@/styles/Theme';
 import {useEffect, useState} from 'react';
 import AddPlaceModal from '@/components/modals/AddPlaceModal';
@@ -56,6 +56,31 @@ export default function Index() {
     function handleEditPlace() {
         setOpenModal(true)
         setIsBottomSheetVisible(false);
+    }
+
+    function handleDeletePlace() {
+        Alert.alert("Delete place", "Are you sure you want to delete this place? All promotions for this place will be cancelled as well.", [{
+            text: "Cancel", style: "default",
+        }, {
+            text: "Delete",
+            onPress: () => deletePlace(),
+            style: "destructive"
+        }])
+    }
+
+    async function deletePlace(): Promise<void> {
+        if (!selectedPlace) return
+        try {
+            setIsLoading(true)
+            await API.placesControllerDeletePlace({id: selectedPlace.id})
+        } catch (err) {
+            console.error(err)
+        } finally {
+            setTrigger((prev: boolean) => !prev)
+            setIsLoading(false)
+        }
+
+
     }
 
     async function publish() {
@@ -135,7 +160,8 @@ export default function Index() {
                             Edit place
                         </AppButton>
 
-                        <AppButton extraStylesTxt={{fontWeight: "bold"}} destructive buttonType={ButtonType.PLAIN}
+                        <AppButton onPress={handleDeletePlace} extraStylesTxt={{fontWeight: "bold"}} destructive
+                                   buttonType={ButtonType.PLAIN}
                                    fullWidth>
                             Delete place
                         </AppButton>

@@ -132,6 +132,10 @@ export interface ChecklistViewModel {
   list: ChecklistDto[];
 }
 
+export interface PhotosDto {
+  uri: string;
+}
+
 export interface GuestsDto {
   coupleSide: CoupleSide;
   id: number;
@@ -606,6 +610,21 @@ export class Api<
         method: "POST",
         body: data,
         type: ContentType.FormData,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Photos
+     * @name PhotosControllerGetPhotos
+     * @request GET:/api/photos/{id}
+     */
+    photosControllerGetPhotos: (id: string, params: RequestParams = {}) =>
+      this.request<PhotosDto[], any>({
+        path: `/api/photos/${id}`,
+        method: "GET",
+        format: "json",
         ...params,
       }),
 

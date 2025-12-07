@@ -1,7 +1,7 @@
 import {ActivityIndicator, Animated, Image, StyleSheet, Text, View} from "react-native";
 import {useEffect, useState} from "react";
-import {Stack, useLocalSearchParams, usePathname, useRouter} from "expo-router";
-import {PlaceDetailsDto} from "@/types/open-api";
+import {Link, Stack, useLocalSearchParams, usePathname, useRouter} from "expo-router";
+import {PlaceDetailsDto, WeddingSteps} from "@/types/open-api";
 import AppButton from "@/components/appComponents/AppButton";
 import {ButtonType} from "@/styles/Button";
 import AppIf from "@/components/appComponents/AppIf";
@@ -24,6 +24,7 @@ export default function PlaceId() {
 
     const router = useRouter()
     const path = usePathname()
+    const params = useLocalSearchParams<{ id: string, step: WeddingSteps }>()
 
     useEffect(() => {
         const getPlaceDetails = async () => {
@@ -79,9 +80,17 @@ export default function PlaceId() {
                         headerShown: true,
                         headerTintColor: Theme.colors.primary,
                     }}/>
-                <View style={styles.imageContainer}>
-                    <Image style={styles.image} source={{uri: placeDetails.mainPhoto}}/>
-                </View>
+
+                <Link href={{
+                    pathname: "/(tabs)/(planner)/[step]/[id]/images",
+                    params: {id: params.id, step: params.step}
+                }}>
+                    <View style={styles.imageContainer}>
+
+                        <Image style={styles.image} source={{uri: placeDetails.mainPhoto}}/>
+                    </View>
+                </Link>
+
                 <View style={styles.infosContainer}>
 
                     <View style={styles.titleContainer}>

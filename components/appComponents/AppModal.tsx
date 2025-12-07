@@ -9,12 +9,14 @@ export default function AppModal({
                                      children,
                                      presentationStyle = "pageSheet",
                                      allowSwipeDismissal = true,
+                                     animationType = "slide",
                                  }: {
     presentationStyle?: | 'fullScreen' | 'pageSheet' | 'formSheet' | 'overFullScreen' | undefined;
     isVisible: boolean,
     setIsVisible: (s: boolean) => void,
     children: React.ReactNode
     allowSwipeDismissal?: boolean
+    animationType?: "slide" | "fade" | "none"
 }) {
     const isFullScreen = presentationStyle === 'fullScreen' || presentationStyle === 'overFullScreen'
     return (
@@ -22,7 +24,7 @@ export default function AppModal({
 
             allowSwipeDismissal={allowSwipeDismissal}
             presentationStyle={presentationStyle}
-            animationType="slide"
+            animationType={animationType}
             visible={isVisible}
             onRequestClose={() => setIsVisible(false)}
 

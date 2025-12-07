@@ -1,14 +1,12 @@
-import {Stack, useLocalSearchParams} from "expo-router";
 import Gallery from "@/components/Gallery";
+import {useLocalSearchParams} from "expo-router";
 
-export default function Images() {
+export default function VendorImages() {
     const {id} = useLocalSearchParams<{ id: string }>();
 
     return (
         <>
-            <Stack.Screen options={{title: "images"}}/>
             <Gallery placeId={id}/>
         </>
     )
-
 }

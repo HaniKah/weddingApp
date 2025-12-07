@@ -1,4 +1,4 @@
-import {ActivityIndicator, Animated, Image, StyleSheet, Text, View} from "react-native";
+import {ActivityIndicator, Animated, Image, Pressable, StyleSheet, Text, View} from "react-native";
 import {useEffect, useState} from "react";
 import {Link, Stack, useLocalSearchParams, usePathname, useRouter} from "expo-router";
 import {PlaceDetailsDto, WeddingSteps} from "@/types/open-api";
@@ -81,14 +81,14 @@ export default function PlaceId() {
                         headerTintColor: Theme.colors.primary,
                     }}/>
 
-                <Link href={{
+                <Link asChild href={{
                     pathname: "/(tabs)/(planner)/[step]/[id]/images",
                     params: {id: params.id, step: params.step}
                 }}>
-                    <View style={styles.imageContainer}>
+                    <Pressable style={styles.imageContainer}>
 
                         <Image style={styles.image} source={{uri: placeDetails.mainPhoto}}/>
-                    </View>
+                    </Pressable>
                 </Link>
 
                 <View style={styles.infosContainer}>

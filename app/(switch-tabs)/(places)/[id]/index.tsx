@@ -1,4 +1,4 @@
-import {Stack, useLocalSearchParams} from "expo-router";
+import {Link, Stack, useLocalSearchParams} from "expo-router";
 import {Theme} from "@/styles/Theme";
 import {Image, Linking, Pressable, ScrollView, StyleSheet, Text, View} from "react-native";
 import AppIf from "@/components/appComponents/AppIf";
@@ -45,9 +45,14 @@ export default function Place() {
                         headerShown: true,
                         headerTintColor: Theme.colors.primary,
                     }}/>
-                <View style={styles.imageContainer}>
-                    <Image height={300} style={styles.image} source={{uri: placeDetails?.mainPhoto}}/>
-                </View>
+
+                <Link asChild href={{
+                    pathname: "/(switch-tabs)/(places)/[id]/images", params: {id: id}
+                }}>
+                    <Pressable style={styles.imageContainer}>
+                        <Image height={300} style={styles.image} source={{uri: placeDetails?.mainPhoto}}/>
+                    </Pressable>
+                </Link>
 
                 <View style={styles.infosContainer}>
 

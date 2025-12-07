@@ -6,7 +6,7 @@ export const Theme = {
         primaryInactive: '#C0C0C0',
         primaryTextInactive: '#606060',
         green: {
-            S100: '#d1ded1',
+            S100: '#D6F8D6',
             S200: '#A3F0A3',
             S300: '#70E670',
             S400: '#43DB43',

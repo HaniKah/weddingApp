@@ -1,7 +1,7 @@
 import AppView from "@/components/appComponents/AppView";
 import {Text} from "react-native";
 
-export default function Ads() {
+export default function Promotion() {
     return (
         <>
             <AppView>

@@ -15,10 +15,12 @@ export default function SwitchTabsLayout() {
                     title: 'Places',
                     tabBarIcon: ({color}) => <IconSymbol size={28} name="house.fill" color={color}/>,
                 }}/>
-                <Tabs.Screen name="ads"
+                <Tabs.Screen name="promotion"
                              options={{
-                                 title: 'ads',
-                                 tabBarIcon: ({color}) => <IconSymbol size={28} name="person.3.fill" color={color}/>,
+                                 title: 'promotions',
+                                 tabBarIcon: ({color}) => <IconSymbol size={28}
+                                                                      name="chart.line.uptrend.xyaxis"
+                                                                      color={color}/>,
                              }}/>
 
                 <Tabs.Screen name="settings"

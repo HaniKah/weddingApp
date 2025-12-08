@@ -159,7 +159,7 @@ export default function Index() {
                         </Link>
 
                         <View style={styles.actionBtn}>
-                            <AppButton icon="pencil" buttonType={ButtonType.PLAIN}
+                            <AppButton icon="square.and.pencil" buttonType={ButtonType.PLAIN}
                                        onPress={handleEditPlace}>
                                 Edit place
                             </AppButton>

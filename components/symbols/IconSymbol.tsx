@@ -19,7 +19,8 @@ const MAPPING = {
     'heart.text.clipboard.fill': 'description',
     'gearshape.fill': 'settings',
     'checklist': 'checklist',
-    'chart.line.uptrend.xyaxis': "trending-up"
+    'chart.line.uptrend.xyaxis': "trending-up",
+    'square.and.pencil': 'edit'
 } as IconMapping;
 
 /**

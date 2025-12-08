@@ -3,7 +3,6 @@ import Animated, {useAnimatedStyle, useSharedValue, withSpring} from 'react-nati
 import {Theme} from "@/styles/Theme";
 import {Directions, Gesture, GestureDetector} from "react-native-gesture-handler";
 import {useEffect} from "react";
-import {IconButton} from "@/components/symbols/IconButton";
 
 
 export default function AppBottomSheet({isVisible, setIsVisible, children}: {
@@ -51,9 +50,9 @@ export default function AppBottomSheet({isVisible, setIsVisible, children}: {
                 <GestureDetector gesture={flingUp}>
                     <GestureDetector gesture={flingDown}>
                         <View style={styles.handlerContainer}>
-                            <IconButton size={Theme.sizes.md} name="xmark" onPress={() => setIsVisible(false)}/>
+                            {/*<IconButton size={Theme.sizes.md} name="xmark" onPress={() => setIsVisible(false)}/>*/}
                             <View style={styles.handler}/>
-                            <View style={{width: 30}}></View>
+                            {/*<View style={{width: 30}}></View>*/}
                         </View>
                     </GestureDetector>
                 </GestureDetector>
@@ -85,7 +84,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        padding: 20,
+        padding: 15,
         paddingBottom: 10
 
     },

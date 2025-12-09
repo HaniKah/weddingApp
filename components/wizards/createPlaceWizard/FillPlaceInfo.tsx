@@ -33,7 +33,7 @@ export default function FillPlaceInfo({placeId, data, onNext}: {
 
     const API = useApi()
 
-    const [switchEnabled, setSwitchEnabled] = useState(false);
+    const [switchEnabled, setSwitchEnabled] = useState(data?.minPrice !== data?.maxPrice);
 
     function enterFixedPrice(price: string | undefined) {
         setMinPrice(price)

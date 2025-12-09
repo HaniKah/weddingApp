@@ -1,5 +1,5 @@
 import Wizard, {WizardRef} from "@/components/wizards/Wizard";
-import {useEffect, useRef, useState} from "react";
+import {Dispatch, SetStateAction, useEffect, useRef, useState} from "react";
 import WizardStep from "@/components/wizards/WizardStep";
 import PickPlaceType from "@/components/wizards/createPlaceWizard/PickPlaceType";
 import {CreatePlaceSteps, VendorPlaceDetailsDto} from "@/types/open-api";
@@ -15,9 +15,11 @@ export type ImageUploadModel = {
     name?: string | null
 }
 
-export default function CreatePlaceWizard({placeId, setIsModalVisible}: {
+export default function CreatePlaceWizard({placeId, setIsModalVisible, setTrigger}: {
     placeId: number | undefined,
     setIsModalVisible: (value: boolean) => void
+    setTrigger: Dispatch<SetStateAction<boolean>>
+
 }) {
     const wizardRef = useRef<WizardRef>(null);
 
@@ -49,6 +51,7 @@ export default function CreatePlaceWizard({placeId, setIsModalVisible}: {
 
     const onFinish = () => {
         setIsModalVisible(false)
+        setTrigger((prev) => !prev)
     }
 
 

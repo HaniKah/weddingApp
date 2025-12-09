@@ -132,7 +132,8 @@ export default function Index() {
 
             </AppView>
 
-            <AddPlaceModal placeId={selectedPlace?.id} setIsVisible={setOpenModal} isVisible={openModal}/>
+            <AddPlaceModal setTrigger={setTrigger} placeId={selectedPlace?.id} setIsVisible={setOpenModal}
+                           isVisible={openModal}/>
             <AppBottomSheet setIsVisible={setIsBottomSheetVisible} isVisible={isBottomSheetVisible}>
                 {selectedPlace &&
                     <View>

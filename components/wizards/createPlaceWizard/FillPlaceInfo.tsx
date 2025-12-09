@@ -36,7 +36,6 @@ export default function FillPlaceInfo({placeId, data, onNext}: {
     const [switchEnabled, setSwitchEnabled] = useState(false);
 
     function enterFixedPrice(price: string | undefined) {
-        if (!price) return;
         setMinPrice(price)
         setMaxPrice(price)
     }
@@ -116,7 +115,7 @@ export default function FillPlaceInfo({placeId, data, onNext}: {
                         </View>
 
                         {!switchEnabled &&
-                            <AppTextInput onTextChange={(s) => enterFixedPrice(minPrice)} name="Price"
+                            <AppTextInput onTextChange={(s) => enterFixedPrice(s)} name="Price"
                                           label="Price"
                                           extraStyles={styles.input}
                                           placeholder="Add your price here"

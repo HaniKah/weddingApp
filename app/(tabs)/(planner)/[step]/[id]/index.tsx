@@ -95,7 +95,7 @@ export default function PlaceId() {
 
                     <View style={styles.titleContainer}>
                         <Text style={styles.title}>{placeDetails?.name}</Text>
-                        <Text>{placeDetails?.price.currency}</Text>
+                        <Text>{placeDetails?.currency}</Text>
                     </View>
 
 

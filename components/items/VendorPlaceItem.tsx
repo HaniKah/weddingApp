@@ -22,12 +22,12 @@ export default function VendorPlaceItem({data, setTrigger, onPress}: VendorPlace
                         <Text style={styles.placeName}>{data.name}</Text>
                         <Text>{data.streetName}</Text>
                         <View style={styles.priceContainer}>
-                            {data.prices.priceRange.min === data.prices.priceRange.max ?
-                                <Text>{data.prices?.priceRange?.min}</Text> :
-                                <Text>{data.prices?.priceRange?.min} - {data.prices?.priceRange?.max}
+                            {data.minPrice === data.maxPrice ?
+                                <Text>{data.minPrice}</Text> :
+                                <Text>{data.minPrice} - {data.maxPrice}
                                 </Text>
                             }
-                            <Text style={styles.currency}>  {data.prices.currency}</Text>
+                            <Text style={styles.currency}>  {data.currency}</Text>
                         </View>
                     </View>
                 </View>

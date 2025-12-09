@@ -1,19 +1,23 @@
 import {FlatList, Pressable, StyleSheet, Text, View} from "react-native";
-import {WeddingSteps} from "@/types/open-api";
+import {CreatePlaceSteps, VendorPlaceDetailsDto, WeddingSteps} from "@/types/open-api";
 import {Theme} from "@/styles/Theme";
 import AppButton from "@/components/appComponents/AppButton";
 import IconStep from "@/components/symbols/IconStep";
 import {useColors} from "@/utils/colors";
+import {useEffect, useState} from "react";
+import {useApi} from "@/utils/api";
 
 
-export default function PickPlaceType({selectedType, setSelectedType, onNext}: {
-    selectedType: WeddingSteps | undefined,
-    setSelectedType: (type: WeddingSteps) => void
+export default function PickPlaceType({data, setData, onNext, placeId}: {
+    data: VendorPlaceDetailsDto | undefined
+    setData: (data: VendorPlaceDetailsDto | undefined) => void
     onNext: () => void
+    placeId: number | undefined
 }) {
     const placeTypeList: WeddingSteps[] = Object.values(WeddingSteps)
     const getColorByStep = useColors()
-
+    const [selectedType, setSelectedType] = useState<WeddingSteps | undefined>(data?.step)
+    const API = useApi()
 
     const PickPlaceItem = ({step}: { step: WeddingSteps }) => {
         return (
@@ -25,8 +29,33 @@ export default function PickPlaceType({selectedType, setSelectedType, onNext}: {
         )
     }
 
-    const preNext = () => {
+    useEffect(() => {
+        setSelectedType(data?.step)
+    }, [data]);
+
+
+    const updateOrCreatePlace = async () => {
+        if (!selectedType) return
+        try {
+            if (placeId) {
+                const res = await API.placesControllerUpdatePlace({
+                    id: placeId,
+                    createStep: CreatePlaceSteps.PickPlaceType,
+                    type: selectedType
+                })
+                setData(res.data)
+            } else {
+                const res = await API.placesControllerCreatePlace({step: selectedType})
+                setData(res.data)
+            }
+        } catch (err) {
+            console.error(err)
+        }
+    }
+
+    const preNext = async () => {
         if (selectedType) {
+            await updateOrCreatePlace()
             onNext()
         }
     }
@@ -34,7 +63,9 @@ export default function PickPlaceType({selectedType, setSelectedType, onNext}: {
         <>
             <View style={styles.container}>
                 <FlatList ListHeaderComponent={<Text style={styles.title}>Choose your place type</Text>}
-                          contentContainerStyle={styles.listContainer} data={placeTypeList} numColumns={3}
+                          contentContainerStyle={styles.listContainer}
+                          data={placeTypeList}
+                          numColumns={3}
                           renderItem={({item, index}) => (<PickPlaceItem step={item}/>)}/>
 
                 <AppButton extraStylesBtn={styles.button} onPress={preNext} fullWidth>

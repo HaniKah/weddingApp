@@ -78,6 +78,7 @@ export default function Index() {
         } finally {
             setTrigger((prev: boolean) => !prev)
             setIsLoading(false)
+            setIsBottomSheetVisible(false)
         }
 
 
@@ -131,7 +132,7 @@ export default function Index() {
 
             </AppView>
 
-            <AddPlaceModal setIsVisible={setOpenModal} isVisible={openModal}/>
+            <AddPlaceModal placeId={selectedPlace?.id} setIsVisible={setOpenModal} isVisible={openModal}/>
             <AppBottomSheet setIsVisible={setIsBottomSheetVisible} isVisible={isBottomSheetVisible}>
                 {selectedPlace &&
                     <View>

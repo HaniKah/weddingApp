@@ -4,13 +4,26 @@ import {ImagePickerAsset} from 'expo-image-picker';
 import AppButton from "@/components/appComponents/AppButton";
 import {ImageUploadModel} from "@/components/wizards/createPlaceWizard/CreatePlaceWizard";
 import {ImageManipulator, SaveFormat} from "expo-image-manipulator";
+import {useEffect, useState} from "react";
+import {useApi} from "@/utils/api";
+import {PhotosDto} from "@/types/open-api";
 
-export default function UploadImages({images, setImages, onFinish}: {
-    images: ImageUploadModel[] | undefined,
-    setImages: (images: ImageUploadModel[]) => void,
+export default function UploadImages({onFinish, placeId}: {
     onFinish: () => void,
+    placeId: number | undefined
 }) {
+    const API = useApi()
+    const [images, setImages] = useState<PhotosDto[]>([])
+    const [newImages, setNewImages] = useState<ImageUploadModel[]>([])
 
+    useEffect(() => {
+        if (!placeId) return
+        const getPhotos = async () => {
+            const res = await API.photosControllerGetPhotos(placeId)
+            setImages(res.data)
+        }
+        getPhotos()
+    }, []);
 
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
@@ -26,7 +39,7 @@ export default function UploadImages({images, setImages, onFinish}: {
             const [other, heic] = splitByMimeType(result.assets) // special handle for heic files
             const convertedImages: ImageUploadModel[] = await convertHeicToJPEGAndCreateUploadModel(heic)
             const imagesFormdata: ImageUploadModel[] = [...createImageUploadModelForOther(other), ...convertedImages]
-            setImages(imagesFormdata)
+            setNewImages(imagesFormdata)
         }
     };
 
@@ -65,12 +78,40 @@ export default function UploadImages({images, setImages, onFinish}: {
         })
     }
 
+
+    async function uploadImages() {
+        if (!placeId) return
+        const files = constructRequest(placeId)
+        if (newImages.length <= 0) return
+        console.log("uploading images :", files)
+        await API.photosControllerUploadFile(files)
+    }
+
+    function constructRequest(placeId: number): FormData | undefined {
+        const formData = new FormData();
+        formData.append('placeId', placeId.toString())
+        newImages?.map((asset, i) => {
+            formData.append('file', {
+                uri: asset.uri,
+                type: asset.type,
+                name: asset.name,
+            } as any)
+        })
+        return formData
+    }
+
+    async function preFinish() {
+        await uploadImages()
+        onFinish()
+    }
+
+
     return (
         <ScrollView contentContainerStyle={styles.container}>
             <Button title="Pick an image from camera roll" onPress={pickImage}/>
             <View>
                 <Text>before conversion</Text>
-                {images?.map((img, i) => {
+                {newImages?.map((img, i) => {
                     return (
                         <View key={i}>
                             {/*<Image source={{uri: img.uri}} style={styles.image}/>*/}
@@ -78,7 +119,7 @@ export default function UploadImages({images, setImages, onFinish}: {
                         </View>
                     )
                 })}
-                <AppButton onPress={onFinish}>finish</AppButton>
+                <AppButton onPress={preFinish}>finish</AppButton>
             </View>
 
         </ScrollView>

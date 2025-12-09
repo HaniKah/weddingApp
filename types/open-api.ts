@@ -10,6 +10,13 @@
  * ---------------------------------------------------------------
  */
 
+export enum CreatePlaceSteps {
+  PickPlaceType = "PickPlaceType",
+  FillPlaceInfo = "FillPlaceInfo",
+  AddDescription = "AddDescription",
+  PickPlaceLocation = "PickPlaceLocation",
+}
+
 export enum PlaceStatus {
   Unpublished = "Unpublished",
   Published = "Published",
@@ -47,16 +54,6 @@ export enum WeddingSteps {
   Extra = "Extra",
 }
 
-export interface PlacePriceRange {
-  min: string;
-  max: string;
-}
-
-export interface PlacePrice {
-  priceRange: PlacePriceRange;
-  currency: string;
-}
-
 export interface PlacesDto {
   step: WeddingSteps;
   mainPhoto: SearchFilter;
@@ -65,7 +62,8 @@ export interface PlacesDto {
   formattedAddress?: string | null;
   picked: boolean;
   favourite: boolean;
-  price: PlacePrice;
+  minPrice: string;
+  maxPrice: string;
 }
 
 export interface PlacesViewModel {
@@ -83,12 +81,13 @@ export interface PlaceDetailsDto {
   tiktok?: string;
   instagram?: string;
   phoneNumber: string;
-  price: PlacePrice;
   currency: string;
   picked: boolean;
   favourite: boolean;
   notes: string | null;
   mainPhoto: string;
+  maxPrice: string;
+  minPrice: string;
 }
 
 export interface StepsDto {
@@ -175,40 +174,74 @@ export interface DeletePlaceRequest {
   id: number;
 }
 
-export interface NumRangeDto {
-  min: string;
-  max: string;
+export interface CreatePlaceRequest {
+  step:
+    | "Host"
+    | "Dress"
+    | "Photographer"
+    | "Decorator"
+    | "Catering"
+    | "DancingCourse"
+    | "Dj"
+    | "MakeUpArtist"
+    | "Car"
+    | "Giveaways"
+    | "Aarada"
+    | "MusiciansAndPerformers"
+    | "Jewelry"
+    | "Perfumes"
+    | "Hammam"
+    | "CosmeticClinics"
+    | "Fireworks"
+    | "Extra";
 }
 
-export interface CreatePlaceInfo {
+export interface VendorPlaceDetailsDto {
+  step: WeddingSteps;
+  status: PlaceStatus;
+  id: number;
   name: string;
+  streetName?: string;
   phoneNumber: string;
   facebook?: string;
   instagram?: string;
   tiktok?: string;
   website?: string;
-  priceRange: NumRangeDto;
+  currency: string;
+  description?: string;
+  mainPhoto: string;
+  minPrice: string;
+  maxPrice: string;
 }
 
-export interface CreatePlaceLocation {
-  streetName: string;
-  city: string;
-  country: string;
-  postalCode: string;
+export interface PlaceInfo {
+  name?: string;
+  phoneNumber?: string;
+  facebook?: string;
+  instagram?: string;
+  tiktok?: string;
+  website?: string;
+  minPrice?: string;
+  maxPrice?: string;
+}
+
+export interface PlaceLocation {
+  streetName?: string;
+  city?: string;
+  country?: string;
+  postalCode?: string;
   lat?: number;
   lng?: number;
   googleId?: string;
 }
 
-export interface CreatePlaceRequest {
-  type: WeddingSteps;
-  placeInfo: CreatePlaceInfo;
-  description?: string;
-  location?: CreatePlaceLocation;
-}
-
-export interface CreatePlaceDto {
+export interface UpdatePlaceRequest {
+  createStep: CreatePlaceSteps;
+  type?: WeddingSteps;
   id: number;
+  placeInfo?: PlaceInfo;
+  description?: string;
+  location?: PlaceLocation;
 }
 
 export interface VendorPlaceDto {
@@ -216,8 +249,10 @@ export interface VendorPlaceDto {
   id: number;
   name: string;
   streetName?: string;
-  prices: PlacePrice;
+  currency: string;
   thumbnail: string;
+  minPrice: string;
+  maxPrice: string;
 }
 
 export interface VendorPlaceViewModel {
@@ -234,21 +269,6 @@ export interface VendorPlaceViewModel {
 export interface PublishPlaceRequest {
   status: PlaceStatus;
   placeId: number;
-}
-
-export interface VendorPlaceDetailsDto {
-  status: PlaceStatus;
-  id: number;
-  name: string;
-  streetName?: string;
-  phoneNumber: string;
-  facebook?: string;
-  instagram?: string;
-  tiktok?: string;
-  website?: string;
-  placePrice: PlacePrice;
-  description?: string;
-  mainPhoto: string;
 }
 
 import type {
@@ -620,7 +640,7 @@ export class Api<
      * @name PhotosControllerGetPhotos
      * @request GET:/api/photos/{id}
      */
-    photosControllerGetPhotos: (id: string, params: RequestParams = {}) =>
+    photosControllerGetPhotos: (id: number, params: RequestParams = {}) =>
       this.request<PhotosDto[], any>({
         path: `/api/photos/${id}`,
         method: "GET",
@@ -801,8 +821,28 @@ export class Api<
       data: CreatePlaceRequest,
       params: RequestParams = {},
     ) =>
-      this.request<CreatePlaceDto, any>({
+      this.request<VendorPlaceDetailsDto, any>({
         path: `/api/places/create`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Places
+     * @name PlacesControllerUpdatePlace
+     * @request POST:/api/places/update
+     */
+    placesControllerUpdatePlace: (
+      data: UpdatePlaceRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<VendorPlaceDetailsDto, any>({
+        path: `/api/places/update`,
         method: "POST",
         body: data,
         type: ContentType.Json,

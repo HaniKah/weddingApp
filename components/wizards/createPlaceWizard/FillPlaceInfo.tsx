@@ -1,12 +1,13 @@
 import {ScrollView, StyleSheet, Switch, Text, View} from "react-native";
 import {AppForm} from "@/contexts/form-context";
 import AppTextInput from "@/components/appComponents/AppTextInput";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {Theme} from "@/styles/Theme";
 import AppButton from "@/components/appComponents/AppButton";
-import {CreatePlaceInfo, NumRangeDto} from "@/types/open-api";
+import {CreatePlaceSteps, VendorPlaceDetailsDto} from "@/types/open-api";
 import {PickerItem} from "@/components/appComponents/AppPicker";
 import SelectPriceType from "@/components/SelectPriceType.ios";
+import {useApi} from "@/utils/api";
 
 export enum PriceType {
     Person = "Person",
@@ -14,49 +15,60 @@ export enum PriceType {
     None = "None"
 }
 
-export default function FillPlaceInfo({onNext, setPlaceInfo}: {
+export default function FillPlaceInfo({placeId, data, onNext}: {
+    placeId?: number,
+    data: VendorPlaceDetailsDto | undefined
     onNext: () => void,
-    setPlaceInfo: (info: CreatePlaceInfo) => void
 }) {
 
-    const [placeName, setPlaceName] = useState<string>()
-    const [phoneNumber, setPhoneNumber] = useState<string>()
-    const [facebook, setFacebook] = useState<string>()
-    const [instagram, setInstagram] = useState<string>()
-    const [tiktok, setTiktok] = useState<string>()
-    const [website, setWebsite] = useState<string>()
-    const [priceRange, setPriceRange] = useState<NumRangeDto>()
+    const [placeName, setPlaceName] = useState<string | undefined>(data?.name)
+    const [phoneNumber, setPhoneNumber] = useState<string | undefined>(data?.phoneNumber)
+    const [facebook, setFacebook] = useState<string | undefined>(data?.facebook)
+    const [instagram, setInstagram] = useState<string | undefined>(data?.instagram)
+    const [tiktok, setTiktok] = useState<string | undefined>(data?.tiktok)
+    const [website, setWebsite] = useState<string | undefined>(data?.website)
+    const [minPrice, setMinPrice] = useState<string | undefined>(data?.minPrice)
+    const [maxPrice, setMaxPrice] = useState<string | undefined>(data?.maxPrice)
     const [priceType, setPriceType] = useState<PriceType>(PriceType.None)
 
+    const API = useApi()
 
     const [switchEnabled, setSwitchEnabled] = useState(false);
 
-    const enterPriceRange = ({newMin, newMax}: { newMin?: string, newMax?: string }) => {
-        if (newMin) {
-            setPriceRange((p) => ({min: newMin, max: p?.max as string}))
-        }
-        if (newMax) {
-            setPriceRange((p) => ({min: p?.min as string, max: newMax}))
-        }
-
+    function enterFixedPrice(price: string | undefined) {
+        if (!price) return;
+        setMinPrice(price)
+        setMaxPrice(price)
     }
 
-    const handleSubmit = () => {
-//if condition is extra for ts. required fields are handled inside the form and will present an error if not filled
-        if (!placeName || !phoneNumber || !priceRange) return
-        setPlaceInfo({
-            name: placeName,
-            phoneNumber: phoneNumber,
-            facebook: facebook,
-            instagram: instagram,
-            tiktok: tiktok,
-            website: website,
-            priceRange: priceRange,
-        })
+    const updatePlace = async () => {
+        if (!placeId) return;
+        try {
+            await API.placesControllerUpdatePlace({
+                id: placeId,
+                createStep: CreatePlaceSteps.FillPlaceInfo,
+                placeInfo: {
+                    name: placeName,
+                    phoneNumber: phoneNumber,
+                    facebook: facebook,
+                    instagram: instagram,
+                    tiktok: tiktok,
+                    website: website,
+                    minPrice: minPrice,
+                    maxPrice: maxPrice,
+                }
+            })
+
+        } catch (err) {
+            console.error(err)
+        }
+    }
+
+    const preNext = (async () => {
+        await updatePlace()
         onNext()
-    }
-    useEffect(() => {
-    }, [priceRange]);
+    })
+
 
     const priceTypeList: PickerItem<PriceType>[] = Object.values(PriceType).map((v) => ({
         label: v.toString(), // needs to be translated here
@@ -67,16 +79,9 @@ export default function FillPlaceInfo({onNext, setPlaceInfo}: {
         <>
             <View style={styles.container}>
                 <Text style={styles.title}>Your place&#39;s info</Text>
-                <AppForm onSubmit={handleSubmit}>
+                <AppForm onSubmit={preNext}>
                     <ScrollView style={styles.list}>
-                        {/*<Picker*/}
-                        {/*    selectedValue={selectedLanguage}*/}
-                        {/*    onValueChange={(itemValue, itemIndex) =>*/}
-                        {/*        setSelectedLanguage(itemValue)*/}
-                        {/*    }>*/}
-                        {/*    <Picker.Item label="Java" value="java"/>*/}
-                        {/*    <Picker.Item label="JavaScript" value="js"/>*/}
-                        {/*</Picker>*/}
+
                         <Text style={styles.subtitle}>
                             Basic Info
                         </Text>
@@ -111,11 +116,11 @@ export default function FillPlaceInfo({onNext, setPlaceInfo}: {
                         </View>
 
                         {!switchEnabled &&
-                            <AppTextInput onTextChange={(s) => enterPriceRange({newMin: s, newMax: s})} name="Price"
+                            <AppTextInput onTextChange={(s) => enterFixedPrice(minPrice)} name="Price"
                                           label="Price"
                                           extraStyles={styles.input}
                                           placeholder="Add your price here"
-                                          value={priceRange?.min}
+                                          value={minPrice}
                                           keyboardType={"decimal-pad"}
                                           unit="JOD"
                                           required
@@ -125,20 +130,20 @@ export default function FillPlaceInfo({onNext, setPlaceInfo}: {
 
                         {switchEnabled &&
                             <View style={styles.priceRangeContainer}>
-                                <AppTextInput onTextChange={(s) => enterPriceRange({newMin: s})} name="minPrice"
+                                <AppTextInput onTextChange={(s) => setMinPrice(s)} name="minPrice"
                                               label="Min. price"
                                               extraStyles={[styles.input, {flex: 1}]}
                                               placeholder="Minimum price"
-                                              value={priceRange?.min}
+                                              value={minPrice}
                                               keyboardType={"decimal-pad"}
                                               unit="JOD"
                                               required
                                 />
-                                <AppTextInput onTextChange={(s) => enterPriceRange({newMax: s})} name="minPrice"
+                                <AppTextInput onTextChange={(s) => setMaxPrice(s)} name="minPrice"
                                               label="Max. price"
                                               extraStyles={[styles.input, {flex: 1}]}
                                               placeholder="Maximum price"
-                                              value={priceRange?.max}
+                                              value={maxPrice}
                                               keyboardType={"decimal-pad"}
                                               unit="JOD"
                                               required

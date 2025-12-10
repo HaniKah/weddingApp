@@ -1,18 +1,19 @@
 import {FlatList, Pressable, StyleSheet, Text, View} from "react-native";
-import {CreatePlaceSteps, VendorPlaceDetailsDto, WeddingSteps} from "@/types/open-api";
+import {CreatePlaceRequest, UpdateStep, VendorPlaceDetailsDto, WeddingSteps} from "@/types/open-api";
 import {Theme} from "@/styles/Theme";
 import AppButton from "@/components/appComponents/AppButton";
 import IconStep from "@/components/symbols/IconStep";
 import {useColors} from "@/utils/colors";
-import {useEffect, useState} from "react";
+import {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {useApi} from "@/utils/api";
 
 
-export default function PickPlaceType({data, setData, onNext, placeId}: {
+export default function PickPlaceType({data, setData, onNext, placeId, setCreateRequest}: {
     data: VendorPlaceDetailsDto | undefined
     setData: (data: VendorPlaceDetailsDto | undefined) => void
     onNext: () => void
-    placeId: number | undefined
+    placeId: number | undefined,
+    setCreateRequest: Dispatch<SetStateAction<CreatePlaceRequest>>
 }) {
     const placeTypeList: WeddingSteps[] = Object.values(WeddingSteps)
     const getColorByStep = useColors()
@@ -34,18 +35,15 @@ export default function PickPlaceType({data, setData, onNext, placeId}: {
     }, [data]);
 
 
-    const updateOrCreatePlace = async () => {
+    const updatePlace = async () => {
         if (!selectedType) return
         try {
             if (placeId) {
                 const res = await API.placesControllerUpdatePlace({
                     id: placeId,
-                    createStep: CreatePlaceSteps.PickPlaceType,
+                    updateStep: UpdateStep.PickPlaceType,
                     type: selectedType
                 })
-                setData(res.data)
-            } else {
-                const res = await API.placesControllerCreatePlace({step: selectedType})
                 setData(res.data)
             }
         } catch (err) {
@@ -54,10 +52,13 @@ export default function PickPlaceType({data, setData, onNext, placeId}: {
     }
 
     const preNext = async () => {
-        if (selectedType) {
-            await updateOrCreatePlace()
-            onNext()
+        if (!selectedType) return alert("Please select a place type")
+        if (placeId) {
+            await updatePlace()
+        } else {
+            setCreateRequest(prev => ({...prev, type: selectedType}))
         }
+        onNext()
     }
     return (
         <>

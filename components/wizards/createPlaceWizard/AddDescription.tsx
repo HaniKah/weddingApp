@@ -2,14 +2,15 @@ import AppTextInput from "@/components/appComponents/AppTextInput";
 import {StyleSheet, Text} from "react-native";
 import {Theme} from "@/styles/Theme";
 import AppButton from "@/components/appComponents/AppButton";
-import {CreatePlaceSteps, VendorPlaceDetailsDto} from "@/types/open-api";
-import {useState} from "react";
+import {CreatePlaceRequest, UpdateStep, VendorPlaceDetailsDto} from "@/types/open-api";
+import {Dispatch, SetStateAction, useState} from "react";
 import {useApi} from "@/utils/api";
 
-export default function AddDescription({onNext, data, placeId}: {
+export default function AddDescription({onNext, data, placeId, setCreateRequest}: {
     onNext: () => void,
     data: VendorPlaceDetailsDto | undefined
     placeId?: number
+    setCreateRequest: Dispatch<SetStateAction<CreatePlaceRequest>>
 
 }) {
 
@@ -17,17 +18,21 @@ export default function AddDescription({onNext, data, placeId}: {
     const API = useApi()
 
     const updatePlace = async () => {
-        if (!placeId) return;
-        try {
-            await API.placesControllerUpdatePlace({
-                id: placeId,
-                createStep: CreatePlaceSteps.AddDescription,
-                description: description
-            })
+        if (placeId) {
+            try {
+                await API.placesControllerUpdatePlace({
+                    id: placeId,
+                    updateStep: UpdateStep.AddDescription,
+                    description: description
+                })
 
-        } catch (err) {
-            console.error(err)
+            } catch (err) {
+                console.error(err)
+            }
+        } else {
+            setCreateRequest(prev => ({...prev, description: description}))
         }
+
     }
 
     const preNext = async () => {

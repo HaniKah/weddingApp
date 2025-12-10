@@ -2,7 +2,7 @@ import Wizard, {WizardRef} from "@/components/wizards/Wizard";
 import {Dispatch, SetStateAction, useEffect, useRef, useState} from "react";
 import WizardStep from "@/components/wizards/WizardStep";
 import PickPlaceType from "@/components/wizards/createPlaceWizard/PickPlaceType";
-import {CreatePlaceSteps, VendorPlaceDetailsDto} from "@/types/open-api";
+import {CreatePlaceRequest, UpdateStep, VendorPlaceDetailsDto} from "@/types/open-api";
 import FillPlaceInfo from "@/components/wizards/createPlaceWizard/FillPlaceInfo";
 import UploadImages from "@/components/wizards/createPlaceWizard/UploadImages";
 import {useApi} from "@/utils/api";
@@ -24,9 +24,10 @@ export default function CreatePlaceWizard({placeId, setIsModalVisible, setTrigge
     const wizardRef = useRef<WizardRef>(null);
 
     const [data, setData] = useState<VendorPlaceDetailsDto>()
+    const [createRequest, setCreateRequest] = useState<CreatePlaceRequest>({})
 
-    const stepsList: CreatePlaceSteps[] = Object.values(CreatePlaceSteps);
-    const [currentStep, setCurrentStep] = useState<CreatePlaceSteps>(stepsList[0]);
+    const stepsList: UpdateStep[] = Object.values(UpdateStep);
+    const [currentStep, setCurrentStep] = useState<UpdateStep>(stepsList[0]);
 
 
     const API = useApi()
@@ -49,6 +50,12 @@ export default function CreatePlaceWizard({placeId, setIsModalVisible, setTrigge
         wizardRef.current?.nextStep();
     };
 
+    const onCreate = async () => {
+        const res = await API.placesControllerCreatePlace(createRequest)
+        setData(res.data)
+        onNext()
+    }
+
     const onFinish = () => {
         setIsModalVisible(false)
         setTrigger((prev) => !prev)
@@ -58,17 +65,22 @@ export default function CreatePlaceWizard({placeId, setIsModalVisible, setTrigge
     return (
         <>
             <Wizard stepsList={stepsList} currentStep={currentStep} setCurrentStep={setCurrentStep} ref={wizardRef}>
-                <WizardStep step={CreatePlaceSteps.PickPlaceType} currentStep={currentStep}>
-                    <PickPlaceType setData={setData} placeId={placeId} data={data} onNext={onNext}/>
+                <WizardStep step={UpdateStep.PickPlaceType} currentStep={currentStep}>
+                    <PickPlaceType setCreateRequest={setCreateRequest}
+                                   setData={setData}
+                                   placeId={placeId}
+                                   data={data}
+                                   onNext={onNext}/>
                 </WizardStep>
-                <WizardStep step={CreatePlaceSteps.FillPlaceInfo} currentStep={currentStep}>
-                    <FillPlaceInfo placeId={placeId} data={data} onNext={onNext}/>
+                <WizardStep step={UpdateStep.FillPlaceInfo} currentStep={currentStep}>
+                    <FillPlaceInfo setCreateRequest={setCreateRequest} placeId={placeId} data={data} onNext={onNext}/>
                 </WizardStep>
-                <WizardStep step={CreatePlaceSteps.AddDescription} currentStep={currentStep}>
-                    <AddDescription data={data} placeId={placeId} onNext={onNext}/>
+                <WizardStep step={UpdateStep.AddDescription} currentStep={currentStep}>
+                    <AddDescription setCreateRequest={setCreateRequest} data={data} placeId={placeId}
+                                    onNext={onCreate}/>
                 </WizardStep>
-                <WizardStep step={CreatePlaceSteps.PickPlaceLocation} currentStep={currentStep}>
-                    <UploadImages placeId={placeId} onFinish={onFinish}/>
+                <WizardStep step={UpdateStep.PickPlaceLocation} currentStep={currentStep}>
+                    <UploadImages setCreateRequest={setCreateRequest} placeId={placeId} onFinish={onFinish}/>
                 </WizardStep>
             </Wizard>
         </>

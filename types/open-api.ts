@@ -10,7 +10,7 @@
  * ---------------------------------------------------------------
  */
 
-export enum CreatePlaceSteps {
+export enum UpdateStep {
   PickPlaceType = "PickPlaceType",
   FillPlaceInfo = "FillPlaceInfo",
   AddDescription = "AddDescription",
@@ -174,46 +174,6 @@ export interface DeletePlaceRequest {
   id: number;
 }
 
-export interface CreatePlaceRequest {
-  step:
-    | "Host"
-    | "Dress"
-    | "Photographer"
-    | "Decorator"
-    | "Catering"
-    | "DancingCourse"
-    | "Dj"
-    | "MakeUpArtist"
-    | "Car"
-    | "Giveaways"
-    | "Aarada"
-    | "MusiciansAndPerformers"
-    | "Jewelry"
-    | "Perfumes"
-    | "Hammam"
-    | "CosmeticClinics"
-    | "Fireworks"
-    | "Extra";
-}
-
-export interface VendorPlaceDetailsDto {
-  step: WeddingSteps;
-  status: PlaceStatus;
-  id: number;
-  name: string;
-  streetName?: string;
-  phoneNumber: string;
-  facebook?: string;
-  instagram?: string;
-  tiktok?: string;
-  website?: string;
-  currency: string;
-  description?: string;
-  mainPhoto: string;
-  minPrice: string;
-  maxPrice: string;
-}
-
 export interface PlaceInfo {
   name?: string;
   phoneNumber?: string;
@@ -235,8 +195,33 @@ export interface PlaceLocation {
   googleId?: string;
 }
 
+export interface CreatePlaceRequest {
+  type?: WeddingSteps;
+  placeInfo?: PlaceInfo;
+  description?: string;
+  location?: PlaceLocation;
+}
+
+export interface VendorPlaceDetailsDto {
+  step: WeddingSteps;
+  status: PlaceStatus;
+  id: number;
+  name: string;
+  streetName?: string;
+  phoneNumber: string;
+  facebook?: string;
+  instagram?: string;
+  tiktok?: string;
+  website?: string;
+  currency: string;
+  description?: string;
+  mainPhoto: string;
+  minPrice: string;
+  maxPrice: string;
+}
+
 export interface UpdatePlaceRequest {
-  createStep: CreatePlaceSteps;
+  updateStep: UpdateStep;
   type?: WeddingSteps;
   id: number;
   placeInfo?: PlaceInfo;

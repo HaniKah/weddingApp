@@ -1,10 +1,10 @@
 import {ScrollView, StyleSheet, Switch, Text, View} from "react-native";
 import {AppForm} from "@/contexts/form-context";
 import AppTextInput from "@/components/appComponents/AppTextInput";
-import {useState} from "react";
+import {Dispatch, SetStateAction, useState} from "react";
 import {Theme} from "@/styles/Theme";
 import AppButton from "@/components/appComponents/AppButton";
-import {CreatePlaceSteps, VendorPlaceDetailsDto} from "@/types/open-api";
+import {CreatePlaceRequest, UpdateStep, VendorPlaceDetailsDto} from "@/types/open-api";
 import {PickerItem} from "@/components/appComponents/AppPicker";
 import SelectPriceType from "@/components/SelectPriceType.ios";
 import {useApi} from "@/utils/api";
@@ -15,10 +15,11 @@ export enum PriceType {
     None = "None"
 }
 
-export default function FillPlaceInfo({placeId, data, onNext}: {
+export default function FillPlaceInfo({placeId, data, onNext, setCreateRequest}: {
     placeId?: number,
     data: VendorPlaceDetailsDto | undefined
     onNext: () => void,
+    setCreateRequest: Dispatch<SetStateAction<CreatePlaceRequest>>
 }) {
 
     const [placeName, setPlaceName] = useState<string | undefined>(data?.name)
@@ -45,7 +46,7 @@ export default function FillPlaceInfo({placeId, data, onNext}: {
         try {
             await API.placesControllerUpdatePlace({
                 id: placeId,
-                createStep: CreatePlaceSteps.FillPlaceInfo,
+                updateStep: UpdateStep.FillPlaceInfo,
                 placeInfo: {
                     name: placeName,
                     phoneNumber: phoneNumber,
@@ -64,7 +65,26 @@ export default function FillPlaceInfo({placeId, data, onNext}: {
     }
 
     const preNext = (async () => {
-        await updatePlace()
+        if (placeId) {
+            await updatePlace()
+        } else {
+            setCreateRequest(prev => {
+                return {
+                    ...prev,
+                    placeInfo: {
+                        name: placeName,
+                        phoneNumber: phoneNumber,
+                        facebook: facebook,
+                        instagram: instagram,
+                        tiktok: tiktok,
+                        website: website,
+                        minPrice: minPrice,
+                        maxPrice: maxPrice,
+                    }
+                }
+            })
+        }
+
         onNext()
     })
 

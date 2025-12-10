@@ -39,6 +39,10 @@ export default function Index() {
         getPlaces();
     }, [trigger]);
 
+    useEffect(() => {
+        !isBottomSheetVisible && setSelectedPlace(undefined)
+    }, [isBottomSheetVisible]);
+
     function handlePlacePress(place: VendorPlaceDto) {
         setSelectedPlace(place);
         setIsBottomSheetVisible(true);

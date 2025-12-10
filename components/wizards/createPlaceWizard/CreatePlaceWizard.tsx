@@ -64,17 +64,17 @@ export default function CreatePlaceWizard({placeId, setIsModalVisible, setTrigge
         }
     }
 
-    const onNext = async (updateRequest?: UpdatePlaceRequest) => {
+    const onNext = async () => {
         wizardRef.current?.nextStep();
     };
-
-
     const onCreate = async () => {
-        if (!placeId) {
+        if (!placeId && !data?.id) {
             await createPlace()
         }
         onNext()
+
     }
+
 
     const onFinish = () => {
         setIsModalVisible(false)

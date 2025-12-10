@@ -146,19 +146,18 @@ export default function Index() {
                             </View>
 
                         }
+                        <View style={styles.actionBtn}>
+                            <Link asChild push href={{
+                                pathname: "/(switch-tabs)/(places)/[id]",
+                                params: {id: selectedPlace.id?.toString()}
+                            }}>
 
-                        <Link asChild push href={{
-                            pathname: "/(switch-tabs)/(places)/[id]",
-                            params: {id: selectedPlace.id?.toString()}
-                        }}>
-                            <View style={styles.actionBtn}>
                                 <AppButton icon="eye" buttonType={ButtonType.PLAIN}
                                            onPress={handleViewPlace}>
                                     View place
                                 </AppButton>
-                            </View>
-
-                        </Link>
+                            </Link>
+                        </View>
 
                         <View style={styles.actionBtn}>
                             <AppButton icon="square.and.pencil" buttonType={ButtonType.PLAIN}

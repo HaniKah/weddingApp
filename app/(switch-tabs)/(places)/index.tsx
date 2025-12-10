@@ -72,6 +72,16 @@ export default function Index() {
         }])
     }
 
+    function handleUnpublishPlace() {
+        Alert.alert("Unpublish place", "Are you sure you want to unpublish this place?, visitors will not be able to see your listing anymore", [{
+            text: "Cancel", style: "default",
+        }, {
+            text: "Unpublish",
+            onPress: () => toggleStatus(PlaceStatus.Unpublished),
+        }
+        ])
+    }
+
     async function deletePlace(): Promise<void> {
         if (!selectedPlace) return
         try {
@@ -88,16 +98,17 @@ export default function Index() {
 
     }
 
-    async function publish() {
+    async function toggleStatus(newStatus: PlaceStatus) {
         if (!selectedPlace) return
         try {
             setIsLoading(true)
-            await API.placesControllerToggleStatus({placeId: selectedPlace.id, status: PlaceStatus.Published})
+            await API.placesControllerToggleStatus({placeId: selectedPlace.id, status: newStatus})
         } catch (err) {
             console.error(err)
         } finally {
             setIsLoading(false)
             setTrigger((prev: boolean) => !prev)
+            setIsBottomSheetVisible(false)
         }
     }
 
@@ -144,7 +155,10 @@ export default function Index() {
 
                         {selectedPlace.status === PlaceStatus.Unpublished &&
                             <View style={styles.actionBtn}>
-                                <AppButton icon="square.and.arrow.up" buttonType={ButtonType.PLAIN} confirmative>
+                                <AppButton onPress={() => toggleStatus(PlaceStatus.Published)}
+                                           icon="square.and.arrow.up"
+                                           buttonType={ButtonType.PLAIN}
+                                           confirmative>
                                     Publish
                                 </AppButton>
                             </View>
@@ -170,8 +184,20 @@ export default function Index() {
                             </AppButton>
                         </View>
 
+                        {selectedPlace.status === PlaceStatus.Published &&
+                            <View style={styles.actionBtn}>
+                                <AppButton
+                                    onPress={handleUnpublishPlace}
+                                    icon="square.and.arrow.down" buttonType={ButtonType.PLAIN}>
+                                    Unpublish
+                                </AppButton>
+                            </View>
+                        }
+
+
                         <View style={styles.actionBtn}>
-                            <AppButton icon="trash" onPress={handleDeletePlace} destructive
+                            <AppButton icon="trash"
+                                       onPress={handleDeletePlace} destructive
                                        buttonType={ButtonType.PLAIN}>
                                 Delete place
                             </AppButton>

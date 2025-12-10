@@ -29,11 +29,11 @@ export default function PlaceItem({item}: { item: PlacesDto }) {
                         {item.minPrice === item.maxPrice ?
 
                             <Text style={styles.price}>{item.minPrice}
-                                <Text style={styles.currency}> add currency here</Text>
+                                <Text style={styles.currency}>{item.currency}</Text>
                             </Text> :
 
                             <Text style={styles.price}>{item.minPrice} - {item.maxPrice}
-                                <Text style={styles.currency}> add currency here</Text>
+                                <Text style={styles.currency}>{item.currency}</Text>
                             </Text>
                         }
                     </View>

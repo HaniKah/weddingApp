@@ -64,6 +64,7 @@ export interface PlacesDto {
   favourite: boolean;
   minPrice: string;
   maxPrice: string;
+  currency: string;
 }
 
 export interface PlacesViewModel {

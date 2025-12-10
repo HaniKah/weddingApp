@@ -2,7 +2,7 @@ import Wizard, {WizardRef} from "@/components/wizards/Wizard";
 import {Dispatch, SetStateAction, useEffect, useRef, useState} from "react";
 import WizardStep from "@/components/wizards/WizardStep";
 import PickPlaceType from "@/components/wizards/createPlaceWizard/PickPlaceType";
-import {CreatePlaceRequest, UpdateStep, VendorPlaceDetailsDto} from "@/types/open-api";
+import {CreatePlaceRequest, UpdatePlaceRequest, UpdateStep, VendorPlaceDetailsDto} from "@/types/open-api";
 import FillPlaceInfo from "@/components/wizards/createPlaceWizard/FillPlaceInfo";
 import UploadImages from "@/components/wizards/createPlaceWizard/UploadImages";
 import {useApi} from "@/utils/api";
@@ -46,13 +46,33 @@ export default function CreatePlaceWizard({placeId, setIsModalVisible, setTrigge
     }, [placeId]);
 
 
-    const onNext = () => {
+    const createPlace = async () => {
+        try {
+            const res = await API.placesControllerCreatePlace(createRequest)
+            setData(res.data)
+        } catch (err) {
+            console.error(err)
+        }
+    }
+
+    const updatePlace = async (updateRequest: UpdatePlaceRequest) => {
+        try {
+            const res = await API.placesControllerUpdatePlace(updateRequest)
+            setData(res.data)
+        } catch (err) {
+            console.error(err)
+        }
+    }
+
+    const onNext = async (updateRequest?: UpdatePlaceRequest) => {
         wizardRef.current?.nextStep();
     };
 
+
     const onCreate = async () => {
-        const res = await API.placesControllerCreatePlace(createRequest)
-        setData(res.data)
+        if (!placeId) {
+            await createPlace()
+        }
         onNext()
     }
 
@@ -72,10 +92,15 @@ export default function CreatePlaceWizard({placeId, setIsModalVisible, setTrigge
                                    onNext={onNext}/>
                 </WizardStep>
                 <WizardStep step={UpdateStep.FillPlaceInfo} currentStep={currentStep}>
-                    <FillPlaceInfo setCreateRequest={setCreateRequest} data={data} onNext={onNext}/>
+                    <FillPlaceInfo setCreateRequest={setCreateRequest}
+                                   setData={setData}
+                                   data={data}
+                                   onNext={onNext}/>
                 </WizardStep>
                 <WizardStep step={UpdateStep.AddDescription} currentStep={currentStep}>
-                    <AddDescription setCreateRequest={setCreateRequest} data={data}
+                    <AddDescription setCreateRequest={setCreateRequest}
+                                    setData={setData}
+                                    data={data}
                                     onNext={onCreate}/>
                 </WizardStep>
                 <WizardStep step={UpdateStep.PickPlaceLocation} currentStep={currentStep}>

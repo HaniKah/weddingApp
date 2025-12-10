@@ -15,8 +15,7 @@ export enum PriceType {
     None = "None"
 }
 
-export default function FillPlaceInfo({placeId, data, onNext, setCreateRequest}: {
-    placeId?: number,
+export default function FillPlaceInfo({data, onNext, setCreateRequest}: {
     data: VendorPlaceDetailsDto | undefined
     onNext: () => void,
     setCreateRequest: Dispatch<SetStateAction<CreatePlaceRequest>>
@@ -42,10 +41,10 @@ export default function FillPlaceInfo({placeId, data, onNext, setCreateRequest}:
     }
 
     const updatePlace = async () => {
-        if (!placeId) return;
+        if (!data?.id) return;
         try {
             await API.placesControllerUpdatePlace({
-                id: placeId,
+                id: data.id,
                 updateStep: UpdateStep.FillPlaceInfo,
                 placeInfo: {
                     name: placeName,
@@ -65,7 +64,7 @@ export default function FillPlaceInfo({placeId, data, onNext, setCreateRequest}:
     }
 
     const preNext = (async () => {
-        if (placeId) {
+        if (data?.id) {
             await updatePlace()
         } else {
             setCreateRequest(prev => {

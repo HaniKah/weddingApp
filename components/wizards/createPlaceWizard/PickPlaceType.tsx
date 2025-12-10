@@ -8,11 +8,10 @@ import {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {useApi} from "@/utils/api";
 
 
-export default function PickPlaceType({data, setData, onNext, placeId, setCreateRequest}: {
+export default function PickPlaceType({data, setData, onNext, setCreateRequest}: {
     data: VendorPlaceDetailsDto | undefined
     setData: (data: VendorPlaceDetailsDto | undefined) => void
     onNext: () => void
-    placeId: number | undefined,
     setCreateRequest: Dispatch<SetStateAction<CreatePlaceRequest>>
 }) {
     const placeTypeList: WeddingSteps[] = Object.values(WeddingSteps)
@@ -38,9 +37,9 @@ export default function PickPlaceType({data, setData, onNext, placeId, setCreate
     const updatePlace = async () => {
         if (!selectedType) return
         try {
-            if (placeId) {
+            if (data?.id) {
                 const res = await API.placesControllerUpdatePlace({
-                    id: placeId,
+                    id: data.id,
                     updateStep: UpdateStep.PickPlaceType,
                     type: selectedType
                 })
@@ -53,7 +52,7 @@ export default function PickPlaceType({data, setData, onNext, placeId, setCreate
 
     const preNext = async () => {
         if (!selectedType) return alert("Please select a place type")
-        if (placeId) {
+        if (data?.id) {
             await updatePlace()
         } else {
             setCreateRequest(prev => ({...prev, type: selectedType}))

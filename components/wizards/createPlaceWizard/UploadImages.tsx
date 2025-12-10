@@ -4,14 +4,13 @@ import {ImagePickerAsset} from 'expo-image-picker';
 import AppButton from "@/components/appComponents/AppButton";
 import {ImageUploadModel} from "@/components/wizards/createPlaceWizard/CreatePlaceWizard";
 import {ImageManipulator, SaveFormat} from "expo-image-manipulator";
-import {Dispatch, SetStateAction, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {useApi} from "@/utils/api";
-import {CreatePlaceRequest, PhotosDto} from "@/types/open-api";
+import {PhotosDto} from "@/types/open-api";
 
-export default function UploadImages({onFinish, placeId, setCreateRequest}: {
+export default function UploadImages({onFinish, placeId}: {
     onFinish: () => void,
     placeId: number | undefined,
-    setCreateRequest: Dispatch<SetStateAction<CreatePlaceRequest>>
 }) {
     const API = useApi()
     const [images, setImages] = useState<PhotosDto[]>([])

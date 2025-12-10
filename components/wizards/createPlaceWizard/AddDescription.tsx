@@ -6,10 +6,9 @@ import {CreatePlaceRequest, UpdateStep, VendorPlaceDetailsDto} from "@/types/ope
 import {Dispatch, SetStateAction, useState} from "react";
 import {useApi} from "@/utils/api";
 
-export default function AddDescription({onNext, data, placeId, setCreateRequest}: {
+export default function AddDescription({onNext, data, setCreateRequest}: {
     onNext: () => void,
     data: VendorPlaceDetailsDto | undefined
-    placeId?: number
     setCreateRequest: Dispatch<SetStateAction<CreatePlaceRequest>>
 
 }) {
@@ -18,10 +17,10 @@ export default function AddDescription({onNext, data, placeId, setCreateRequest}
     const API = useApi()
 
     const updatePlace = async () => {
-        if (placeId) {
+        if (data?.id) {
             try {
                 await API.placesControllerUpdatePlace({
-                    id: placeId,
+                    id: data.id,
                     updateStep: UpdateStep.AddDescription,
                     description: description
                 })

@@ -68,19 +68,18 @@ export default function CreatePlaceWizard({placeId, setIsModalVisible, setTrigge
                 <WizardStep step={UpdateStep.PickPlaceType} currentStep={currentStep}>
                     <PickPlaceType setCreateRequest={setCreateRequest}
                                    setData={setData}
-                                   placeId={placeId}
                                    data={data}
                                    onNext={onNext}/>
                 </WizardStep>
                 <WizardStep step={UpdateStep.FillPlaceInfo} currentStep={currentStep}>
-                    <FillPlaceInfo setCreateRequest={setCreateRequest} placeId={placeId} data={data} onNext={onNext}/>
+                    <FillPlaceInfo setCreateRequest={setCreateRequest} data={data} onNext={onNext}/>
                 </WizardStep>
                 <WizardStep step={UpdateStep.AddDescription} currentStep={currentStep}>
-                    <AddDescription setCreateRequest={setCreateRequest} data={data} placeId={placeId}
+                    <AddDescription setCreateRequest={setCreateRequest} data={data}
                                     onNext={onCreate}/>
                 </WizardStep>
                 <WizardStep step={UpdateStep.PickPlaceLocation} currentStep={currentStep}>
-                    <UploadImages setCreateRequest={setCreateRequest} placeId={placeId} onFinish={onFinish}/>
+                    <UploadImages placeId={data?.id} onFinish={onFinish}/>
                 </WizardStep>
             </Wizard>
         </>

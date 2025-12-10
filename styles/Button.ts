@@ -61,7 +61,6 @@ export const ButtonStyles = StyleSheet.create({
 
     plainBtn: {
         ...GeneralButtonStyles.general,
-
     },
     plainTxt: {
         textAlign: "center",

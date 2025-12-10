@@ -19,6 +19,7 @@ export default function AppButton({
                                       fullWidth,
                                       underline,
                                       inactive,
+                                      textPosition
 
                                   }: {
     buttonSize?: 'SM' | 'MD' | 'LG',
@@ -34,6 +35,7 @@ export default function AppButton({
     fullWidth?: boolean,
     underline?: boolean,
     inactive?: boolean,
+    textPosition?: 'LEFT' | 'RIGHT'
 
 }) {
     let buttonStyles: StyleProp<ViewStyle> = {};
@@ -107,6 +109,16 @@ export default function AppButton({
     }
     if (fullWidth) {
         buttonStyles.alignSelf = 'stretch';
+
+    }
+
+    switch (textPosition) {
+        case "LEFT":
+            buttonStyles.justifyContent = 'flex-start';
+            break;
+        case "RIGHT":
+            buttonStyles.justifyContent = 'flex-end';
+            break;
     }
 
     const formContext = useFormContext();
@@ -115,10 +127,12 @@ export default function AppButton({
         formContext.setChecking(true);
     }
 
+//if Padding is not working , then probably you want to change the padding-Horizontal/Vertical and not the general padding
 
     return (
         <Pressable onPress={isSubmit ? handleSubmit : onPress} style={[buttonStyles, extraStylesBtn]}>
-            {icon && <IconSymbol size={iconSize} color={textStyles.color || 'black'} name={icon}/>}
+            {icon &&
+                <IconSymbol size={iconSize} color={textStyles.color || 'black'} name={icon}/>}
             <Text style={[textStyles, extraStylesTxt]}>
                 {children}
             </Text>

@@ -127,7 +127,6 @@ export default function Index() {
 
     }
 
-
     return (
         <>
             <Stack.Screen options={{headerShown: false}}/>
@@ -154,54 +153,65 @@ export default function Index() {
                     <View>
 
                         {selectedPlace.status === PlaceStatus.Unpublished &&
-                            <View style={styles.actionBtn}>
-                                <AppButton onPress={() => toggleStatus(PlaceStatus.Published)}
-                                           icon="square.and.arrow.up"
-                                           buttonType={ButtonType.PLAIN}
-                                           confirmative>
-                                    Publish
-                                </AppButton>
-                            </View>
+                            <AppButton
+                                extraStylesBtn={styles.actionBtn}
+                                fullWidth
+                                textPosition='LEFT'
+                                onPress={() => toggleStatus(PlaceStatus.Published)}
+                                icon="square.and.arrow.up"
+                                buttonType={ButtonType.PLAIN}
+                                confirmative>
+                                Publish
+                            </AppButton>
 
                         }
-                        <View style={styles.actionBtn}>
-                            <Link asChild push href={{
-                                pathname: "/(switch-tabs)/(places)/[id]",
-                                params: {id: selectedPlace.id?.toString()}
-                            }}>
-
-                                <AppButton icon="eye" buttonType={ButtonType.PLAIN}
-                                           onPress={handleViewPlace}>
-                                    View place
-                                </AppButton>
-                            </Link>
-                        </View>
-
-                        <View style={styles.actionBtn}>
-                            <AppButton icon="square.and.pencil" buttonType={ButtonType.PLAIN}
-                                       onPress={handleEditPlace}>
-                                Edit place
+                        <Link
+                            asChild push href={{
+                            pathname: "/(switch-tabs)/(places)/[id]",
+                            params: {id: selectedPlace.id?.toString()}
+                        }}>
+                            <AppButton
+                                extraStylesBtn={styles.actionBtn}
+                                fullWidth
+                                textPosition="LEFT"
+                                icon="eye"
+                                buttonType={ButtonType.PLAIN}
+                                onPress={handleViewPlace}>
+                                View place
                             </AppButton>
-                        </View>
+                        </Link>
+
+                        <AppButton
+                            extraStylesBtn={styles.actionBtn}
+                            fullWidth
+                            textPosition="LEFT"
+                            icon="square.and.pencil"
+                            buttonType={ButtonType.PLAIN}
+                            onPress={handleEditPlace}>
+                            Edit place
+                        </AppButton>
 
                         {selectedPlace.status === PlaceStatus.Published &&
-                            <View style={styles.actionBtn}>
-                                <AppButton
-                                    onPress={handleUnpublishPlace}
-                                    icon="square.and.arrow.down" buttonType={ButtonType.PLAIN}>
-                                    Unpublish
-                                </AppButton>
-                            </View>
+                            <AppButton
+                                fullWidth
+                                textPosition="LEFT"
+                                extraStylesBtn={styles.actionBtn}
+                                onPress={handleUnpublishPlace}
+                                icon="square.and.arrow.down" buttonType={ButtonType.PLAIN}>
+                                Unpublish
+                            </AppButton>
                         }
 
 
-                        <View style={styles.actionBtn}>
-                            <AppButton icon="trash"
-                                       onPress={handleDeletePlace} destructive
-                                       buttonType={ButtonType.PLAIN}>
-                                Delete place
-                            </AppButton>
-                        </View>
+                        <AppButton
+                            fullWidth
+                            textPosition="LEFT"
+                            extraStylesBtn={styles.actionBtn}
+                            icon="trash"
+                            onPress={handleDeletePlace} destructive
+                            buttonType={ButtonType.PLAIN}>
+                            Delete place
+                        </AppButton>
 
 
                     </View>}
@@ -220,8 +230,9 @@ const styles = StyleSheet.create({
     },
     actionBtn: {
         borderBottomWidth: 1,
-        padding: 20,
         borderColor: Theme.colors.gray.S200,
+        paddingVertical: 20,
+        paddingHorizontal: 20
     },
     publishBtn: {
         paddingVertical: 20,
@@ -244,4 +255,6 @@ const styles = StyleSheet.create({
     unpublishedSectionHeader: {
         color: Theme.colors.gray.S500,
     },
+
+
 });

@@ -34,7 +34,7 @@ export default function Wizard<T>({children, stepsList, currentStep, setCurrentS
     function onPrevious() {
         const i = stepsList.indexOf(currentStep)
         if (!isFirstStep()) {
-            return stepsList[i - 1]
+            setCurrentStep(stepsList[i - 1])
         }
     }
 

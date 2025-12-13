@@ -1,18 +1,30 @@
-import {useImperativeHandle} from "react";
+import {createContext, useContext, useImperativeHandle, useState} from "react";
+
+const WizardContext = createContext<WizardContextType<any>>({
+    registerStep: () => {
+    }
+})
+
+interface WizardContextType<T> {
+    registerStep: (step: T) => void;
+}
+
 
 export interface WizardRef {
     nextStep: () => void;
     previousStep: () => void;
 }
 
-
-export default function Wizard<T>({children, stepsList, currentStep, setCurrentStep, ref}: {
+export function Wizard<T>({children, currentStep, setCurrentStep, ref}: {
     children: React.ReactNode,
-    stepsList: T[]
     currentStep: T,
     setCurrentStep: (step: T) => void,
     ref: any
 }) {
+
+    const [stepsList, setStepsList] = useState<T[]>([])
+
+    const registerStep = (step: T) => setStepsList((prev: T[]) => ([...prev, step]))
 
     useImperativeHandle(ref, () => ({
         nextStep() {
@@ -48,7 +60,13 @@ export default function Wizard<T>({children, stepsList, currentStep, setCurrentS
 
     return (
         <>
-            {children}
+            <WizardContext.Provider value={{registerStep}}>
+                {children}
+            </WizardContext.Provider>
         </>
     )
+}
+
+export function useWizardContext() {
+    return useContext(WizardContext)
 }

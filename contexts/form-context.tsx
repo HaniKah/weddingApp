@@ -46,7 +46,7 @@ export function AppForm<T>({onSubmit, children}: { onSubmit: (data: T) => void, 
 
 
     return (
-        <FormContext.Provider value={{checking, setChecking, result, addValue}}>
+        <FormContext.Provider value={{checking, setChecking: setChecking, result, addValue}}>
             {children}
         </FormContext.Provider>
     );

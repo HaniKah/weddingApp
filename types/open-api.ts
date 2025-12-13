@@ -15,6 +15,7 @@ export enum UpdateStep {
   FillPlaceInfo = "FillPlaceInfo",
   AddDescription = "AddDescription",
   PickPlaceLocation = "PickPlaceLocation",
+  UploadImages = "UploadImages",
 }
 
 export enum PlaceStatus {
@@ -222,9 +223,9 @@ export interface VendorPlaceDetailsDto {
 }
 
 export interface UpdatePlaceRequest {
-  updateStep: UpdateStep;
+  updateStep?: UpdateStep;
   type?: WeddingSteps;
-  id: number;
+  id?: number;
   placeInfo?: PlaceInfo;
   description?: string;
   location?: PlaceLocation;

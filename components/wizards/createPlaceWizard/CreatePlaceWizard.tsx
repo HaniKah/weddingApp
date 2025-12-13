@@ -6,7 +6,7 @@ import FillPlaceInfo from "@/components/wizards/createPlaceWizard/FillPlaceInfo"
 import UploadImages from "@/components/wizards/createPlaceWizard/UploadImages";
 import {useApi} from "@/utils/api";
 import AddDescription from "@/components/wizards/createPlaceWizard/AddDescription";
-import ProgressNavigator from "@/components/wizards/createPlaceWizard/ProgressNavigator";
+import WizardController from "@/components/wizards/WizardController";
 import {Wizard, WizardRef} from "@/components/wizards/Wizard";
 
 
@@ -113,10 +113,8 @@ export default function CreatePlaceWizard({placeId, setIsModalVisible, setTrigge
                     <UploadImages placeId={data?.id} onFinish={onFinish}/>
                 </WizardStep>
 
-                <ProgressNavigator isFirstStep={false}
-                                   isLastStep={false}
-                                   onPrevious={onPrevious}
-                                   onNext={onNext}/>
+                <WizardController isFirstStep={false}
+                                  isLastStep={false}/>
             </Wizard>
         </>
     )

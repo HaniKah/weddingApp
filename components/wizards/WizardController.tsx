@@ -2,13 +2,13 @@ import {StyleSheet, View} from "react-native";
 import {Theme} from "@/styles/Theme";
 import AppButton from "@/components/appComponents/AppButton";
 import {ButtonType} from "@/styles/Button";
+import {useWizardContext} from "@/components/wizards/Wizard";
 
-export default function ProgressNavigator({onPrevious, onNext, isFirstStep, isLastStep}: {
-    onPrevious: () => void,
-    onNext: () => void,
+export default function WizardController({isFirstStep, isLastStep}: {
     isFirstStep?: boolean,
     isLastStep?: boolean,
 }) {
+    const wizard = useWizardContext()
     return (
         <><View style={styles.container}>
 
@@ -20,7 +20,7 @@ export default function ProgressNavigator({onPrevious, onNext, isFirstStep, isLa
                 <View>
                     <AppButton
                         buttonType={ButtonType.PLAIN}
-                        onPress={onPrevious}
+                        onPress={wizard.previousStep}
                         disable={isFirstStep}>
                         previous
                     </AppButton>
@@ -28,7 +28,7 @@ export default function ProgressNavigator({onPrevious, onNext, isFirstStep, isLa
                 <View>
                     <AppButton
                         fullRound
-                        onPress={onNext}
+                        onPress={wizard.nextStep}
                         disable={isLastStep}>
                         {isLastStep ? "upload and Finish" : "next"}
                     </AppButton>

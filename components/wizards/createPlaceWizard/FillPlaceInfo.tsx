@@ -19,7 +19,7 @@ export default function FillPlaceInfo({data, setData, onNext, setCreateRequest}:
     data: VendorPlaceDetailsDto | undefined
     setData: Dispatch<SetStateAction<VendorPlaceDetailsDto | undefined>>
     onNext: () => void,
-    setCreateRequest: Dispatch<SetStateAction<CreatePlaceRequest>>
+    setCreateRequest: Dispatch<SetStateAction<CreatePlaceRequest>>,
 }) {
 
     const [placeName, setPlaceName] = useState<string | undefined>(data?.name)

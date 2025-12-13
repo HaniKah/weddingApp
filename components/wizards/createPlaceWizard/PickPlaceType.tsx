@@ -1,18 +1,24 @@
 import {FlatList, Pressable, StyleSheet, Text, View} from "react-native";
-import {CreatePlaceRequest, UpdateStep, VendorPlaceDetailsDto, WeddingSteps} from "@/types/open-api";
+import {
+    CreatePlaceRequest,
+    UpdatePlaceRequest,
+    UpdateStep,
+    VendorPlaceDetailsDto,
+    WeddingSteps
+} from "@/types/open-api";
 import {Theme} from "@/styles/Theme";
-import AppButton from "@/components/appComponents/AppButton";
 import IconStep from "@/components/symbols/IconStep";
 import {useColors} from "@/utils/colors";
 import {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {useApi} from "@/utils/api";
 
 
-export default function PickPlaceType({data, setData, onNext, setCreateRequest}: {
+export default function PickPlaceType({data, setData, onNext, setCreateRequest, setUpdateRequest}: {
     data: VendorPlaceDetailsDto | undefined
     setData: (data: VendorPlaceDetailsDto | undefined) => void
     onNext: () => void
     setCreateRequest: Dispatch<SetStateAction<CreatePlaceRequest>>
+    setUpdateRequest: Dispatch<SetStateAction<UpdatePlaceRequest>>
 }) {
     const placeTypeList: WeddingSteps[] = Object.values(WeddingSteps)
     const getColorByStep = useColors()
@@ -59,6 +65,7 @@ export default function PickPlaceType({data, setData, onNext, setCreateRequest}:
         }
         onNext()
     }
+    
     return (
         <>
             <View style={styles.container}>
@@ -67,13 +74,7 @@ export default function PickPlaceType({data, setData, onNext, setCreateRequest}:
                           data={placeTypeList}
                           numColumns={3}
                           renderItem={({item, index}) => (<PickPlaceItem step={item}/>)}/>
-
-                <AppButton extraStylesBtn={styles.button} onPress={preNext} fullWidth>
-                    next
-                </AppButton>
             </View>
-
-
         </>
     )
 }
@@ -105,17 +106,10 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         color: Theme.colors.gray.S600,
     },
-    button: {
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        marginVertical: 30,
-        marginHorizontal: 15
-
-    },
     selected: {
         backgroundColor: Theme.colors.iconBackground,
         borderRadius: Theme.sizes.md,
-    }
+    },
+
+
 })

@@ -1,12 +1,14 @@
-import {createContext, useContext, useImperativeHandle, useState} from "react";
+import {createContext, useContext, useEffect, useImperativeHandle, useState} from "react";
 
 const WizardContext = createContext<WizardContextType<any>>({
     registerStep: () => {
-    }
+    },
+    currentStep: null
 })
 
 interface WizardContextType<T> {
     registerStep: (step: T) => void;
+    currentStep: T;
 }
 
 
@@ -15,16 +17,23 @@ export interface WizardRef {
     previousStep: () => void;
 }
 
-export function Wizard<T>({children, currentStep, setCurrentStep, ref}: {
+export function Wizard<T>({children, ref}: {
     children: React.ReactNode,
-    currentStep: T,
-    setCurrentStep: (step: T) => void,
     ref: any
 }) {
 
     const [stepsList, setStepsList] = useState<T[]>([])
 
+    //if you dont want to start from 0 always , then add ActiveStep to props , const [currentStep, setCurrentStep] = useState<T>(activeStep || stepsList[0])
+    const [currentStep, setCurrentStep] = useState<T>(stepsList[0])
+
     const registerStep = (step: T) => setStepsList((prev: T[]) => ([...prev, step]))
+
+//todo : any better practice ?
+    useEffect(() => {
+        setCurrentStep(stepsList[0])
+    }, [stepsList]);
+
 
     useImperativeHandle(ref, () => ({
         nextStep() {
@@ -60,7 +69,7 @@ export function Wizard<T>({children, currentStep, setCurrentStep, ref}: {
 
     return (
         <>
-            <WizardContext.Provider value={{registerStep}}>
+            <WizardContext.Provider value={{registerStep, currentStep,}}>
                 {children}
             </WizardContext.Provider>
         </>

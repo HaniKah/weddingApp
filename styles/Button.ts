@@ -81,7 +81,7 @@ export const ButtonStyles = StyleSheet.create({
 
     mdSizeBtn: {
         borderRadius: Theme.radius.md,
-        paddingHorizontal: 20,
+        paddingHorizontal: 24,
         paddingVertical: 14,
     },
     mdSizeTxt: {
@@ -90,7 +90,7 @@ export const ButtonStyles = StyleSheet.create({
 
     lgSizeBtn: {
         borderRadius: Theme.radius.md,
-        paddingHorizontal: 24,
+        paddingHorizontal: 28,
         paddingVertical: 18,
     },
     lgSizeTxt: {

@@ -19,7 +19,9 @@ export default function AppButton({
                                       fullWidth,
                                       underline,
                                       inactive,
-                                      textPosition
+                                      textPosition,
+                                      fullRound,
+                                      disable
 
                                   }: {
     buttonSize?: 'SM' | 'MD' | 'LG',
@@ -36,6 +38,8 @@ export default function AppButton({
     underline?: boolean,
     inactive?: boolean,
     textPosition?: 'LEFT' | 'RIGHT'
+    fullRound?: boolean,
+    disable?: boolean
 
 }) {
     let buttonStyles: StyleProp<ViewStyle> = {};
@@ -109,7 +113,9 @@ export default function AppButton({
     }
     if (fullWidth) {
         buttonStyles.alignSelf = 'stretch';
-
+    }
+    if (fullRound) {
+        buttonStyles.borderRadius = Theme.radius.full
     }
 
     switch (textPosition) {
@@ -130,7 +136,8 @@ export default function AppButton({
 //if Padding is not working , then probably you want to change the padding-Horizontal/Vertical and not the general padding
 
     return (
-        <Pressable onPress={isSubmit ? handleSubmit : onPress} style={[buttonStyles, extraStylesBtn]}>
+        <Pressable disabled={disable} onPress={isSubmit ? handleSubmit : onPress}
+                   style={[buttonStyles, extraStylesBtn]}>
             {icon &&
                 <IconSymbol size={iconSize} color={textStyles.color || 'black'} name={icon}/>}
             <Text style={[textStyles, extraStylesTxt]}>

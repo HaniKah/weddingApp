@@ -49,7 +49,6 @@ export function AppForm<T>({ref, onSubmit, children}: {
     useEffect(() => {
         if (result && submitting) {
             onSubmit(result)
-            console.log("submitting...")
         }
         if (!submitting) {
             setResult(undefined)

@@ -43,7 +43,7 @@ export function Wizard<T>({children}: {
     }, [stepsList]);
 
     useEffect(() => {
-        const percentage = (stepsList.indexOf(currentStep) + 1) / stepsList.length
+        const percentage = Number(((stepsList.indexOf(currentStep) + 1) / stepsList.length).toFixed(2))
         setProgress(percentage)
     }, [currentStep]);
 

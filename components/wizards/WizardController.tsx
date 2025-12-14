@@ -3,8 +3,7 @@ import {Theme} from "@/styles/Theme";
 import AppButton from "@/components/appComponents/AppButton";
 import {ButtonType} from "@/styles/Button";
 import {useWizardContext} from "@/components/wizards/Wizard";
-import Animated, {useAnimatedStyle, useSharedValue, withSpring} from "react-native-reanimated";
-import {useEffect} from "react";
+import Animated from "react-native-reanimated";
 
 export default function WizardController({isFirstStep, isLastStep, onNext}: {
     isFirstStep?: boolean,
@@ -12,21 +11,11 @@ export default function WizardController({isFirstStep, isLastStep, onNext}: {
     onNext?: () => void,
 }) {
     const wizard = useWizardContext()
-    const progressPercentage = useSharedValue(0);
-
-    const progressAnimation = useAnimatedStyle(() => ({
-        width: ((progressPercentage.value * 100).toFixed(2) + "%" as DimensionValue)
-    }))
-
-    useEffect(() => {
-        console.log(wizard.progress)
-        progressPercentage.value = withSpring(wizard.progress)
-    }, [wizard.progress]);
-
     return (
         <><View style={styles.container}>
             <View style={styles.progressContainer}>
-                <Animated.View style={[styles.progressBar, progressAnimation]}></Animated.View>
+                <Animated.View
+                    style={[styles.progressBar, {width: wizard.progress * 100 + "%" as DimensionValue}]}></Animated.View>
             </View>
             <View style={styles.navigatorContainer}>
                 <View>
@@ -66,6 +55,8 @@ const styles = StyleSheet.create({
     progressBar: {
         backgroundColor: Theme.colors.primary,
         height: 2,
+        transitionDuration: "200ms",
+        transitionTimingFunction: "ease-in-out",
     },
 
     navigatorContainer: {

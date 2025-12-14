@@ -21,17 +21,20 @@ This is an [Expo](https://expo.dev) project created with [
 
 - [Tech-Stack](#Project Stack)
 - [Authentication](#Authentication)
+- [React Contexts]()
 
 ### Tech-Stack
 
-- Expo : Frontend development
-- NestJs : Backend development
+- Expo
+- NestJs
+- PostgreSQL
 
 ### Authentication
 
 #### OAuth2 :
 
-1. when this signIn (with google/Apple/Facebook , etc ) is pressed we use the provided method from WebBrowser package to
+1. when the signIn button (with google/Apple/Facebook , etc ) is pressed we use the provided method from WebBrowser
+   package to
    open a window that create a request to our backend ( NestJs )
 
 2. our backend then will construct the object needed for the provider using the package 'passport' ( please learn the
@@ -59,3 +62,7 @@ This is an [Expo](https://expo.dev) project created with [
    because we are redirecting to web or using deep link , so instead we create an ExchangeToken ( quickly expired )
    and we send it back to the frontend , in which later the frontend will directly exchange it with the
    accessToken and refreshToken from the /api/auth/exchange endpoint
+
+### React Contexts
+
+to create a context start by:

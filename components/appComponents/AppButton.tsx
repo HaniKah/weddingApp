@@ -130,7 +130,7 @@ export default function AppButton({
     const formContext = useFormContext();
 
     function handleSubmit() {
-        formContext.setChecking(true);
+        formContext.setSubmitting(true)
     }
 
 //if Padding is not working , then probably you want to change the padding-Horizontal/Vertical and not the general padding

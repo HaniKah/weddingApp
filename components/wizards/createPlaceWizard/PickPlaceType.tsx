@@ -1,40 +1,38 @@
 import {FlatList, Pressable, StyleSheet, Text, View} from "react-native";
-import {
-    CreatePlaceRequest,
-    UpdatePlaceRequest,
-    UpdateStep,
-    VendorPlaceDetailsDto,
-    WeddingSteps
-} from "@/types/open-api";
+import {UpdateStep, VendorPlaceDetailsDto, WeddingSteps} from "@/types/open-api";
 import {Theme} from "@/styles/Theme";
 import IconStep from "@/components/symbols/IconStep";
 import {useColors} from "@/utils/colors";
-import {Dispatch, SetStateAction, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {useApi} from "@/utils/api";
+import WizardController from "@/components/wizards/WizardController";
+import {useWizardContext} from "@/components/wizards/Wizard";
 
 
-export default function PickPlaceType({data, setData, onNext, setCreateRequest, setUpdateRequest}: {
+export default function PickPlaceType({data, setData}: {
     data: VendorPlaceDetailsDto | undefined
     setData: (data: VendorPlaceDetailsDto | undefined) => void
-    onNext: () => void
-    setCreateRequest: Dispatch<SetStateAction<CreatePlaceRequest>>
-    setUpdateRequest: Dispatch<SetStateAction<UpdatePlaceRequest>>
 }) {
     const placeTypeList: WeddingSteps[] = Object.values(WeddingSteps)
     const getColorByStep = useColors()
     const [selectedType, setSelectedType] = useState<WeddingSteps | undefined>(data?.step)
     const API = useApi()
+    const wizard = useWizardContext()
 
     const PickPlaceItem = ({step}: { step: WeddingSteps }) => {
         return (
-            <Pressable onPress={() => setSelectedType(step)}
-                       style={[styles.placeItem, selectedType === step && styles.selected]}>
-                <IconStep step={step} width={50} height={50} fill={getColorByStep(step)}/>
-                <Text style={styles.placeText}>{step}</Text>
-            </Pressable>
+            <>
+                <Pressable onPress={() => setSelectedType(step)}
+                           style={[styles.placeItem, selectedType === step && styles.selected]}>
+                    <IconStep step={step} width={50} height={50} fill={getColorByStep(step)}/>
+                    <Text style={styles.placeText}>{step}</Text>
+                </Pressable>
+            </>
+
         )
     }
 
+    //todo : any better practice ?
     useEffect(() => {
         setSelectedType(data?.step)
     }, [data]);
@@ -56,16 +54,29 @@ export default function PickPlaceType({data, setData, onNext, setCreateRequest, 
         }
     }
 
-    const preNext = async () => {
+
+    const createPlace = async () => {
+        if (!selectedType) return
+        try {
+            const res = await API.placesControllerCreatePlace({
+                type: selectedType
+            })
+            setData(res.data)
+        } catch (err) {
+            console.error(err)
+        }
+    }
+
+    const onNext = async () => {
         if (!selectedType) return alert("Please select a place type")
         if (data?.id) {
             await updatePlace()
         } else {
-            setCreateRequest(prev => ({...prev, type: selectedType}))
+            await createPlace()
         }
-        onNext()
+        wizard.nextStep()
     }
-    
+
     return (
         <>
             <View style={styles.container}>
@@ -75,6 +86,10 @@ export default function PickPlaceType({data, setData, onNext, setCreateRequest, 
                           numColumns={3}
                           renderItem={({item, index}) => (<PickPlaceItem step={item}/>)}/>
             </View>
+            <WizardController
+                onNext={onNext}
+                isFirstStep={false}
+                isLastStep={false}/>
         </>
     )
 }

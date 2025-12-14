@@ -1,20 +1,32 @@
-import {StyleSheet, View} from "react-native";
+import {DimensionValue, StyleSheet, View} from "react-native";
 import {Theme} from "@/styles/Theme";
 import AppButton from "@/components/appComponents/AppButton";
 import {ButtonType} from "@/styles/Button";
 import {useWizardContext} from "@/components/wizards/Wizard";
+import Animated, {useAnimatedStyle, useSharedValue, withSpring} from "react-native-reanimated";
+import {useEffect} from "react";
 
-export default function WizardController({isFirstStep, isLastStep}: {
+export default function WizardController({isFirstStep, isLastStep, onNext}: {
     isFirstStep?: boolean,
     isLastStep?: boolean,
+    onNext?: () => void,
 }) {
     const wizard = useWizardContext()
+    const progressPercentage = useSharedValue(0);
+
+    const progressAnimation = useAnimatedStyle(() => ({
+        width: ((progressPercentage.value * 100).toFixed(2) + "%" as DimensionValue)
+    }))
+
+    useEffect(() => {
+        console.log(wizard.progress)
+        progressPercentage.value = withSpring(wizard.progress)
+    }, [wizard.progress]);
+
     return (
         <><View style={styles.container}>
-
-
             <View style={styles.progressContainer}>
-                <View style={styles.progressBar}></View>
+                <Animated.View style={[styles.progressBar, progressAnimation]}></Animated.View>
             </View>
             <View style={styles.navigatorContainer}>
                 <View>
@@ -28,12 +40,11 @@ export default function WizardController({isFirstStep, isLastStep}: {
                 <View>
                     <AppButton
                         fullRound
-                        onPress={wizard.nextStep}
+                        onPress={onNext}
                         disable={isLastStep}>
                         {isLastStep ? "upload and Finish" : "next"}
                     </AppButton>
                 </View>
-
             </View>
         </View>
         </>
@@ -46,8 +57,7 @@ const styles = StyleSheet.create({
         bottom: 0,
         left: 0,
         right: 0,
-    }
-    ,
+    },
     progressContainer: {
         backgroundColor: Theme.colors.gray.S200,
 
@@ -56,7 +66,6 @@ const styles = StyleSheet.create({
     progressBar: {
         backgroundColor: Theme.colors.primary,
         height: 2,
-        width: "30%",
     },
 
     navigatorContainer: {

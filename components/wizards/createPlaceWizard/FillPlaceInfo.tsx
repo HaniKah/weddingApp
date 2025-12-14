@@ -1,13 +1,14 @@
 import {ScrollView, StyleSheet, Switch, Text, View} from "react-native";
-import {AppForm} from "@/contexts/form-context";
+import {AppForm, FormRef} from "@/contexts/form-context";
 import AppTextInput from "@/components/appComponents/AppTextInput";
-import {Dispatch, SetStateAction, useState} from "react";
+import {Dispatch, SetStateAction, useRef, useState} from "react";
 import {Theme} from "@/styles/Theme";
-import AppButton from "@/components/appComponents/AppButton";
-import {CreatePlaceRequest, UpdateStep, VendorPlaceDetailsDto} from "@/types/open-api";
+import {UpdateStep, VendorPlaceDetailsDto} from "@/types/open-api";
 import {PickerItem} from "@/components/appComponents/AppPicker";
 import SelectPriceType from "@/components/SelectPriceType.ios";
 import {useApi} from "@/utils/api";
+import WizardController from "@/components/wizards/WizardController";
+import {useWizardContext} from "@/components/wizards/Wizard";
 
 export enum PriceType {
     Person = "Person",
@@ -15,11 +16,9 @@ export enum PriceType {
     None = "None"
 }
 
-export default function FillPlaceInfo({data, setData, onNext, setCreateRequest}: {
+export default function FillPlaceInfo({data, setData}: {
     data: VendorPlaceDetailsDto | undefined
     setData: Dispatch<SetStateAction<VendorPlaceDetailsDto | undefined>>
-    onNext: () => void,
-    setCreateRequest: Dispatch<SetStateAction<CreatePlaceRequest>>,
 }) {
 
     const [placeName, setPlaceName] = useState<string | undefined>(data?.name)
@@ -33,6 +32,7 @@ export default function FillPlaceInfo({data, setData, onNext, setCreateRequest}:
     const [priceType, setPriceType] = useState<PriceType>(PriceType.None)
 
     const API = useApi()
+    const wizard = useWizardContext()
 
     const [switchEnabled, setSwitchEnabled] = useState(data?.minPrice !== data?.maxPrice);
 
@@ -65,28 +65,11 @@ export default function FillPlaceInfo({data, setData, onNext, setCreateRequest}:
         }
     }
 
-    const preNext = (async () => {
+    const handleNextStep = (async () => {
         if (data?.id) {
             await updatePlace()
-        } else {
-            setCreateRequest(prev => {
-                return {
-                    ...prev,
-                    placeInfo: {
-                        name: placeName,
-                        phoneNumber: phoneNumber,
-                        facebook: facebook,
-                        instagram: instagram,
-                        tiktok: tiktok,
-                        website: website,
-                        minPrice: minPrice,
-                        maxPrice: maxPrice,
-                    }
-                }
-            })
         }
-
-        onNext()
+        wizard.nextStep()
     })
 
 
@@ -95,11 +78,14 @@ export default function FillPlaceInfo({data, setData, onNext, setCreateRequest}:
         value: v
     }))
 
+    const formRef = useRef<FormRef>(null)
+
+
     return (
         <>
             <View style={styles.container}>
                 <Text style={styles.title}>Your place&#39;s info</Text>
-                <AppForm onSubmit={preNext}>
+                <AppForm ref={formRef} onSubmit={handleNextStep}>
                     <ScrollView style={styles.list}>
 
                         <Text style={styles.subtitle}>
@@ -209,10 +195,12 @@ export default function FillPlaceInfo({data, setData, onNext, setCreateRequest}:
                         />
 
                     </ScrollView>
-                    <AppButton fullWidth isSubmit>next</AppButton>
                 </AppForm>
             </View>
-
+            <WizardController
+                onNext={formRef.current?.submit}
+                isFirstStep={false}
+                isLastStep={false}/>
         </>
     )
 }

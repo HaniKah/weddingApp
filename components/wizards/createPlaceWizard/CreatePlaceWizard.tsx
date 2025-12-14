@@ -1,13 +1,12 @@
-import {Dispatch, SetStateAction, useEffect, useRef, useState} from "react";
+import {Dispatch, SetStateAction, useEffect, useState} from "react";
 import WizardStep from "@/components/wizards/WizardStep";
 import PickPlaceType from "@/components/wizards/createPlaceWizard/PickPlaceType";
-import {CreatePlaceRequest, UpdatePlaceRequest, UpdateStep, VendorPlaceDetailsDto} from "@/types/open-api";
+import {UpdateStep, VendorPlaceDetailsDto} from "@/types/open-api";
 import FillPlaceInfo from "@/components/wizards/createPlaceWizard/FillPlaceInfo";
 import UploadImages from "@/components/wizards/createPlaceWizard/UploadImages";
 import {useApi} from "@/utils/api";
 import AddDescription from "@/components/wizards/createPlaceWizard/AddDescription";
-import WizardController from "@/components/wizards/WizardController";
-import {Wizard, WizardRef} from "@/components/wizards/Wizard";
+import {Wizard} from "@/components/wizards/Wizard";
 
 
 export type ImageUploadModel = {
@@ -22,12 +21,8 @@ export default function CreatePlaceWizard({placeId, setIsModalVisible, setTrigge
     setTrigger: Dispatch<SetStateAction<boolean>>
 
 }) {
-    const wizardRef = useRef<WizardRef>(null);
 
     const [data, setData] = useState<VendorPlaceDetailsDto>()
-    const [createRequest, setCreateRequest] = useState<CreatePlaceRequest>({})
-    const [updateRequest, setUpdateRequest] = useState<UpdatePlaceRequest>({})
-
 
     const API = useApi()
 
@@ -42,38 +37,7 @@ export default function CreatePlaceWizard({placeId, setIsModalVisible, setTrigge
             }
         }
         getPlaceDetails()
-    }, [placeId]);
-
-
-    const createPlace = async () => {
-        try {
-            const res = await API.placesControllerCreatePlace(createRequest)
-            setData(res.data)
-        } catch (err) {
-            console.error(err)
-        }
-    }
-
-    const updatePlace = async () => {
-        try {
-            const res = await API.placesControllerUpdatePlace(updateRequest)
-            setData(res.data)
-        } catch (err) {
-            console.error(err)
-        }
-    }
-
-    const onNext = async () => {
-        if (data?.id) {
-            await updatePlace()
-        }
-        // else if (
-        //     currentStep === UpdateStep.AddDescription
-        // ) {
-        //     await createPlace()
-        // }
-        wizardRef.current?.nextStep();
-    };
+    }, []);
 
 
     const onFinish = () => {
@@ -81,40 +45,31 @@ export default function CreatePlaceWizard({placeId, setIsModalVisible, setTrigge
         setTrigger((prev) => !prev)
     }
 
-    const onPrevious = () => {
-        wizardRef.current?.previousStep();
-    }
-
 
     return (
         <>
-            <Wizard ref={wizardRef}>
+            <Wizard>
                 <WizardStep step={UpdateStep.PickPlaceType}>
                     <PickPlaceType
-                        setUpdateRequest={setUpdateRequest}
-                        setCreateRequest={setCreateRequest}
                         setData={setData}
                         data={data}
-                        onNext={onNext}/>
+                    />
                 </WizardStep>
                 <WizardStep step={UpdateStep.FillPlaceInfo}>
-                    <FillPlaceInfo setCreateRequest={setCreateRequest}
-                                   setData={setData}
-                                   data={data}
-                                   onNext={onNext}/>
+                    <FillPlaceInfo
+                        setData={setData}
+                        data={data}
+                    />
                 </WizardStep>
                 <WizardStep step={UpdateStep.AddDescription}>
-                    <AddDescription setCreateRequest={setCreateRequest}
-                                    setData={setData}
-                                    data={data}
-                                    onNext={onNext}/>
+                    <AddDescription
+                        setData={setData}
+                        data={data}
+                    />
                 </WizardStep>
                 <WizardStep step={UpdateStep.UploadImages}>
-                    <UploadImages placeId={data?.id} onFinish={onFinish}/>
+                    <UploadImages onFinish={onFinish} placeId={data?.id}/>
                 </WizardStep>
-
-                <WizardController isFirstStep={false}
-                                  isLastStep={false}/>
             </Wizard>
         </>
     )

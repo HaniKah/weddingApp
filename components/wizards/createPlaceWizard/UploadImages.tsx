@@ -1,12 +1,12 @@
 import {Button, ScrollView, StyleSheet, Text, View} from "react-native";
 import * as ImagePicker from 'expo-image-picker';
 import {ImagePickerAsset} from 'expo-image-picker';
-import AppButton from "@/components/appComponents/AppButton";
 import {ImageUploadModel} from "@/components/wizards/createPlaceWizard/CreatePlaceWizard";
 import {ImageManipulator, SaveFormat} from "expo-image-manipulator";
 import {useEffect, useState} from "react";
 import {useApi} from "@/utils/api";
 import {PhotosDto} from "@/types/open-api";
+import WizardController from "@/components/wizards/WizardController";
 
 export default function UploadImages({onFinish, placeId}: {
     onFinish: () => void,
@@ -100,29 +100,33 @@ export default function UploadImages({onFinish, placeId}: {
         return formData
     }
 
-    async function preFinish() {
+    async function handleFinishPress() {
         await uploadImages()
         onFinish()
     }
 
 
     return (
-        <ScrollView contentContainerStyle={styles.container}>
-            <Button title="Pick an image from camera roll" onPress={pickImage}/>
-            <View>
-                <Text>before conversion</Text>
-                {newImages?.map((img, i) => {
-                    return (
-                        <View key={i}>
-                            {/*<Image source={{uri: img.uri}} style={styles.image}/>*/}
-                            <Text>{img.type}</Text>
-                        </View>
-                    )
-                })}
-                <AppButton onPress={preFinish}>finish</AppButton>
-            </View>
+        <>
 
-        </ScrollView>
+            <ScrollView contentContainerStyle={styles.container}>
+                <Button title="Pick an image from camera roll" onPress={pickImage}/>
+                <View>
+                    <Text>before conversion</Text>
+                    {newImages?.map((img, i) => {
+                        return (
+                            <View key={i}>
+                                {/*<Image source={{uri: img.uri}} style={styles.image}/>*/}
+                                <Text>{img.type}</Text>
+                            </View>
+                        )
+                    })}
+                </View>
+            </ScrollView>
+            <WizardController onNext={handleFinishPress}
+                              isFirstStep={false}
+                              isLastStep={false}/>
+        </>
     );
 }
 const styles = StyleSheet.create({

@@ -63,7 +63,7 @@ export default function AppTextInput({
 
 
     useEffect(() => {
-        if (form.checking) {
+        if (form.submitting) {
 
             let valid: string | undefined = value?.trim();
             if (!valid || valid.length === 0) {
@@ -75,14 +75,14 @@ export default function AppTextInput({
                     form.addValue({[name]: valid})
                 } else {
                     setError("Please check this field")
-                    form.setChecking(false)
+                    form.setSubmitting(false)
                 }
             } else {
                 form.addValue({[name]: valid})
             }
         }
 
-    }, [form.checking]);
+    }, [form.submitting]);
 
     return (
         <View style={extraStyles}>

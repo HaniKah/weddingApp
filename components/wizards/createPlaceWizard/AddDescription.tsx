@@ -1,21 +1,21 @@
 import AppTextInput from "@/components/appComponents/AppTextInput";
 import {StyleSheet, Text} from "react-native";
 import {Theme} from "@/styles/Theme";
-import AppButton from "@/components/appComponents/AppButton";
-import {CreatePlaceRequest, UpdateStep, VendorPlaceDetailsDto} from "@/types/open-api";
+import {UpdateStep, VendorPlaceDetailsDto} from "@/types/open-api";
 import {Dispatch, SetStateAction, useState} from "react";
 import {useApi} from "@/utils/api";
+import WizardController from "@/components/wizards/WizardController";
+import {useWizardContext} from "@/components/wizards/Wizard";
 
-export default function AddDescription({onNext, data, setData, setCreateRequest}: {
-    onNext: () => void,
+export default function AddDescription({data, setData}: {
     data: VendorPlaceDetailsDto | undefined
     setData: Dispatch<SetStateAction<VendorPlaceDetailsDto | undefined>>
-    setCreateRequest: Dispatch<SetStateAction<CreatePlaceRequest>>
 
 }) {
 
     const [description, setDescription] = useState<string | undefined>(data?.description)
     const API = useApi()
+    const wizard = useWizardContext()
 
     const updatePlace = async () => {
         if (data?.id) {
@@ -29,15 +29,13 @@ export default function AddDescription({onNext, data, setData, setCreateRequest}
             } catch (err) {
                 console.error(err)
             }
-        } else {
-            setCreateRequest(prev => ({...prev, description: description}))
         }
-
     }
 
-    const preNext = async () => {
+    const handleNextStep = async () => {
         await updatePlace()
-        onNext()
+        wizard.nextStep()
+
     }
 
     return (
@@ -53,7 +51,8 @@ export default function AddDescription({onNext, data, setData, setCreateRequest}
                           placeholder="Add your description to your place"
 
             />
-            <AppButton extraStylesBtn={styles.button} fullWidth onPress={preNext}>next</AppButton>
+            <WizardController onNext={handleNextStep} isFirstStep={false}
+                              isLastStep={false}/>
         </>
     )
 }

@@ -17,7 +17,7 @@ export default function AddPlaceModal({isVisible, setIsVisible, placeId, setTrig
                       presentationStyle="fullScreen"
                       isVisible={isVisible}
                       setIsVisible={setIsVisible}>
-                <AppView withPadding>
+                <AppView>
                     <CreatePlaceWizard setTrigger={setTrigger} placeId={placeId} setIsModalVisible={setIsVisible}/>
                 </AppView>
             </AppModal>

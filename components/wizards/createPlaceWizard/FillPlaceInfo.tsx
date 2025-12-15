@@ -70,7 +70,7 @@ export default function FillPlaceInfo({data, setData}: {
 
 
     const priceTypeList: PickerItem<PriceType>[] = Object.values(PriceType).map((v) => ({
-        label: v.toString(), // needs to be translated here
+        name: v.toString(), // needs to be translated here
         value: v
     }))
 

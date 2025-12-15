@@ -23,7 +23,7 @@ export default function AppDropDown<T>({itemList, label, value, onChange, style,
     function renderItem({item}: { item: PickerItem<T> }) {
         return (
             <Pressable style={styles.renderItem} onPress={() => onSelect(item.value)}>
-                <Text>{item.label}</Text>
+                <Text>{item.name}</Text>
                 {item.value === value && <IconSymbol name="checkmark" size={16} color={Theme.colors.primary}/>}
             </Pressable>
         )
@@ -34,7 +34,7 @@ export default function AppDropDown<T>({itemList, label, value, onChange, style,
             <Text>{label}</Text>
             <Pressable style={styles.pressable} onPress={() => setIsVisible(true)}>
                 <Text>
-                    hello
+                    {itemList.find(item => item.value === value)?.name ?? "Select an option"}
                 </Text>
                 <IconSymbol name="chevron.down" size={20} color={Theme.colors.gray.S400}/>
             </Pressable>
@@ -80,7 +80,8 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        padding: 15,
+        paddingHorizontal: 15,
+        paddingVertical: 20,
         borderBottomWidth: 1,
         borderBottomColor: Theme.colors.gray.S300,
 

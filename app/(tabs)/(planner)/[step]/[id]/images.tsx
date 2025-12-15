@@ -7,7 +7,7 @@ export default function Images() {
     return (
         <>
             <Stack.Screen options={{title: "images"}}/>
-            <Gallery placeId={id}/>
+            <Gallery placeId={Number(id)}/>
         </>
     )
 

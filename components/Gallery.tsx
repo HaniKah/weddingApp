@@ -5,7 +5,7 @@ import {Dimensions, FlatList, Image, Pressable} from "react-native";
 import ImageView from "react-native-image-viewing";
 
 
-export default function Gallery({placeId}: { placeId: string }) {
+export default function Gallery({placeId}: { placeId: number }) {
     const API = useApi()
     const [images, setImages] = useState<PhotosDto[]>([])
     const [selectedImage, setSelectedImage] = useState<number>(0)

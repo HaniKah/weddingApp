@@ -1,26 +1,26 @@
 import {PickerItem} from "@/components/appComponents/AppPicker";
 import {useState} from "react";
 import {FlatList, Pressable, StyleProp, StyleSheet, Text, View, ViewStyle} from "react-native";
-import AppModal from "@/components/appComponents/AppModal";
 import {Theme} from "@/styles/Theme";
 import {IconSymbol} from "@/components/symbols/IconSymbol";
-import {PriceType} from "@/types/open-api";
+import AppBottomSheet from "@/components/appComponents/AppBottomSheet";
 
-export default function SelectPriceType({itemList, label, value, setValue, style}: {
+export default function AppDropDown<T>({itemList, label, value, onChange, style, title}: {
     style?: StyleProp<ViewStyle>,
-    value: PriceType | undefined,
-    setValue: (value: PriceType) => void,
-    itemList: PickerItem<PriceType>[],
+    value: T | undefined,
+    onChange: (value: T) => void,
+    itemList: PickerItem<T>[],
     label?: string
+    title?: string
 }) {
     const [isVisible, setIsVisible] = useState(false)
 
-    const onSelect = (selectedValue: PriceType) => {
-        setValue(selectedValue)
+    const onSelect = (selectedValue: T) => {
+        onChange(selectedValue)
         setIsVisible(false)
     }
 
-    function renderItem({item}: { item: PickerItem<PriceType> }) {
+    function renderItem({item}: { item: PickerItem<T> }) {
         return (
             <Pressable style={styles.renderItem} onPress={() => onSelect(item.value)}>
                 <Text>{item.label}</Text>
@@ -30,32 +30,40 @@ export default function SelectPriceType({itemList, label, value, setValue, style
     }
 
     return (
-        <View style={style}>
+        <View>
             <Text>{label}</Text>
             <Pressable style={styles.pressable} onPress={() => setIsVisible(true)}>
                 <Text>
-                    {value ? value : "Pick your price type"}
+                    hello
                 </Text>
                 <IconSymbol name="chevron.down" size={20} color={Theme.colors.gray.S400}/>
             </Pressable>
 
-            <AppModal allowSwipeDismissal={false}
-                      presentationStyle="formSheet"
-                      isVisible={isVisible}
-                      setIsVisible={setIsVisible}>
+            <AppBottomSheet
+                isVisible={isVisible}
+                setIsVisible={setIsVisible}>
                 <View style={styles.viewContainer}>
-                    <Text style={styles.title}>Select price type</Text>
-                    <FlatList data={itemList} renderItem={renderItem}/>
+                    <Text style={styles.title}>{title}</Text>
+                    <FlatList contentContainerStyle={styles.flatListContainer} data={itemList} renderItem={renderItem}/>
+
                 </View>
-            </AppModal>
+            </AppBottomSheet>
         </View>
 
     )
 }
 const styles = StyleSheet.create({
     viewContainer: {
-        padding: 30,
-        flex: 1
+        padding: 10,
+        paddingTop: 20,
+    },
+    title: {
+        textAlign: "center",
+        fontSize: Theme.sizes.md,
+        fontWeight: "bold",
+    },
+    flatListContainer: {
+        marginTop: 30
     },
     pressable: {
         display: "flex",
@@ -77,9 +85,5 @@ const styles = StyleSheet.create({
         borderBottomColor: Theme.colors.gray.S300,
 
     },
-    title: {
-        textAlign: "center",
-        fontSize: Theme.sizes.md,
-        fontWeight: "bold",
-    }
+
 })

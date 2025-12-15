@@ -1,4 +1,4 @@
-import {Dimensions, StyleSheet, TouchableOpacity, View} from "react-native";
+import {Dimensions, Modal, StyleSheet, TouchableOpacity, View} from "react-native";
 import Animated, {useAnimatedStyle, useSharedValue, withSpring} from 'react-native-reanimated';
 import {Theme} from "@/styles/Theme";
 import {Directions, Gesture, GestureDetector} from "react-native-gesture-handler";
@@ -44,24 +44,26 @@ export default function AppBottomSheet({isVisible, setIsVisible, children}: {
 
     return (
         <>
-            {isVisible && <TouchableOpacity onPress={() => setIsVisible(false)} style={styles.touchable}/>}
-            <Animated.View style={[styles.container, animatedStyle]}>
+            <Modal transparent visible={isVisible} animationType="slide">
+                {isVisible && <TouchableOpacity onPress={() => setIsVisible(false)} style={styles.background}/>}
+                <Animated.View style={[styles.container, animatedStyle]}>
 
-                <GestureDetector gesture={flingUp}>
-                    <GestureDetector gesture={flingDown}>
-                        <View style={styles.handlerContainer}>
-                            {/*<IconButton size={Theme.sizes.md} name="xmark" onPress={() => setIsVisible(false)}/>*/}
-                            <View style={styles.handler}/>
-                            {/*<View style={{width: 30}}></View>*/}
-                        </View>
+                    <GestureDetector gesture={flingUp}>
+                        <GestureDetector gesture={flingDown}>
+                            <View style={styles.handlerContainer}>
+                                {/*<IconButton size={Theme.sizes.md} name="xmark" onPress={() => setIsVisible(false)}/>*/}
+                                <View style={styles.handler}/>
+                                {/*<View style={{width: 30}}></View>*/}
+                            </View>
+                        </GestureDetector>
                     </GestureDetector>
-                </GestureDetector>
 
-                <View style={styles.content}>
-                    {children}
-                </View>
+                    <View style={styles.content}>
+                        {children}
+                    </View>
 
-            </Animated.View>
+                </Animated.View>
+            </Modal>
 
         </>
 
@@ -97,7 +99,7 @@ const styles = StyleSheet.create({
 
     },
     content: {},
-    touchable: {
+    background: {
         zIndex: 99,
         height: "100%",
         width: "100%",

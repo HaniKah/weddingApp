@@ -5,10 +5,10 @@ import {Dispatch, SetStateAction, useRef, useState} from "react";
 import {Theme} from "@/styles/Theme";
 import {PriceType, UpdateStep, VendorPlaceDetailsDto} from "@/types/open-api";
 import {PickerItem} from "@/components/appComponents/AppPicker";
-import SelectPriceType from "@/components/SelectPriceType.ios";
 import {useApi} from "@/utils/api";
 import WizardController from "@/components/wizards/WizardController";
 import {useWizardContext} from "@/components/wizards/Wizard";
+import AppDropDown from "@/components/appComponents/AppDropDown";
 
 
 export default function FillPlaceInfo({data, setData}: {
@@ -153,9 +153,13 @@ export default function FillPlaceInfo({data, setData}: {
                             </View>
                         }
 
-                        <SelectPriceType style={styles.input} label="Price type" itemList={priceTypeList}
-                                         value={priceType}
-                                         setValue={setPriceType}/>
+                        <AppDropDown style={styles.input}
+                                     label="Price type"
+                                     itemList={priceTypeList}
+                                     value={priceType}
+                                     onChange={setPriceType}
+                                     title="Select price type"
+                        />
 
 
                         <Text style={styles.subtitle}>

@@ -44,7 +44,7 @@ export default function AppBottomSheet({isVisible, setIsVisible, children}: {
 
     return (
         <>
-            <Modal transparent visible={isVisible} animationType="slide">
+            <Modal transparent visible={isVisible}>
                 {isVisible && <TouchableOpacity onPress={() => setIsVisible(false)} style={styles.background}/>}
                 <Animated.View style={[styles.container, animatedStyle]}>
 

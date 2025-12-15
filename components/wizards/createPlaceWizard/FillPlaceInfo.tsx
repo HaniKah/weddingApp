@@ -208,7 +208,6 @@ export default function FillPlaceInfo({data, setData}: {
 const styles = StyleSheet.create({
     container: {
         padding: 15,
-        paddingBottom: 0,
     },
     title: {
         fontSize: Theme.sizes.xl,

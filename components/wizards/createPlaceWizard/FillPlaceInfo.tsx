@@ -3,18 +3,13 @@ import {AppForm, FormRef} from "@/contexts/form-context";
 import AppTextInput from "@/components/appComponents/AppTextInput";
 import {Dispatch, SetStateAction, useRef, useState} from "react";
 import {Theme} from "@/styles/Theme";
-import {UpdateStep, VendorPlaceDetailsDto} from "@/types/open-api";
+import {PriceType, UpdateStep, VendorPlaceDetailsDto} from "@/types/open-api";
 import {PickerItem} from "@/components/appComponents/AppPicker";
 import SelectPriceType from "@/components/SelectPriceType.ios";
 import {useApi} from "@/utils/api";
 import WizardController from "@/components/wizards/WizardController";
 import {useWizardContext} from "@/components/wizards/Wizard";
 
-export enum PriceType {
-    Person = "Person",
-    Hour = "Hour",
-    None = "None"
-}
 
 export default function FillPlaceInfo({data, setData}: {
     data: VendorPlaceDetailsDto | undefined
@@ -29,7 +24,7 @@ export default function FillPlaceInfo({data, setData}: {
     const [website, setWebsite] = useState<string | undefined>(data?.website)
     const [minPrice, setMinPrice] = useState<string | undefined>(data?.minPrice)
     const [maxPrice, setMaxPrice] = useState<string | undefined>(data?.maxPrice)
-    const [priceType, setPriceType] = useState<PriceType>(PriceType.None)
+    const [priceType, setPriceType] = useState<PriceType>(data?.priceType || PriceType.None)
 
     const API = useApi()
     const wizard = useWizardContext()
@@ -56,6 +51,7 @@ export default function FillPlaceInfo({data, setData}: {
                     website: website,
                     minPrice: minPrice,
                     maxPrice: maxPrice,
+                    priceType: priceType
                 }
             })
             setData(res.data)

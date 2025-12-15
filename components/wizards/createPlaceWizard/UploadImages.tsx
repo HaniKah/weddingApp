@@ -1,4 +1,4 @@
-import {Button, ScrollView, StyleSheet, Text, View} from "react-native";
+import {Dimensions, FlatList, Image, Pressable, StyleSheet, Text} from "react-native";
 import * as ImagePicker from 'expo-image-picker';
 import {ImagePickerAsset} from 'expo-image-picker';
 import {ImageUploadModel} from "@/components/wizards/createPlaceWizard/CreatePlaceWizard";
@@ -7,6 +7,9 @@ import {useEffect, useState} from "react";
 import {useApi} from "@/utils/api";
 import {PhotosDto} from "@/types/open-api";
 import WizardController from "@/components/wizards/WizardController";
+import {Theme} from "@/styles/Theme";
+import AppView from "@/components/appComponents/AppView";
+import {IconSymbol} from "@/components/symbols/IconSymbol";
 
 export default function UploadImages({onFinish, placeId}: {
     onFinish: () => void,
@@ -14,16 +17,21 @@ export default function UploadImages({onFinish, placeId}: {
 }) {
     const API = useApi()
     const [images, setImages] = useState<PhotosDto[]>([])
-    const [newImages, setNewImages] = useState<ImageUploadModel[]>([])
+
+    const IMAGE_GAP = 10
+    const COLUMN_PER_ROW = 3
+    const IMAGE_SIZE = (Dimensions.get("window").width - IMAGE_GAP * (COLUMN_PER_ROW - 1) - (Theme.spaces.appPadding * 2)) / COLUMN_PER_ROW
+
 
     useEffect(() => {
-        if (!placeId) return
         const getPhotos = async () => {
+            if (!placeId) return
             const res = await API.photosControllerGetPhotos(placeId)
             setImages(res.data)
         }
         getPhotos()
-    }, []);
+    }, [placeId]);
+
 
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
@@ -39,7 +47,7 @@ export default function UploadImages({onFinish, placeId}: {
             const [other, heic] = splitByMimeType(result.assets) // special handle for heic files
             const convertedImages: ImageUploadModel[] = await convertHeicToJPEGAndCreateUploadModel(heic)
             const imagesFormdata: ImageUploadModel[] = [...createImageUploadModelForOther(other), ...convertedImages]
-            setNewImages(imagesFormdata)
+            await uploadImages(imagesFormdata)
         }
     };
 
@@ -78,16 +86,16 @@ export default function UploadImages({onFinish, placeId}: {
         })
     }
 
-
-    async function uploadImages() {
+    async function uploadImages(newImages: ImageUploadModel[]) {
         if (!placeId) return
-        const files = constructRequest(placeId)
+        const files = constructRequest(placeId, newImages)
         if (newImages.length <= 0) return
         console.log("uploading images :", files)
         await API.photosControllerUploadFile(files)
+
     }
 
-    function constructRequest(placeId: number): FormData | undefined {
+    function constructRequest(placeId: number, newImages: ImageUploadModel[]): FormData | undefined {
         const formData = new FormData();
         formData.append('placeId', placeId.toString())
         newImages?.map((asset, i) => {
@@ -100,32 +108,46 @@ export default function UploadImages({onFinish, placeId}: {
         return formData
     }
 
-    async function handleFinishPress() {
-        await uploadImages()
+
+    function handleFinishPress() {
         onFinish()
+    }
+
+    function ImageItem({item}: { item: PhotosDto }) {
+        return (
+            <Image source={{uri: item.uri}} width={IMAGE_SIZE} height={IMAGE_SIZE} style={styles.image}/>
+        )
+    }
+
+    function AddImageItem() {
+        return (<Pressable onPress={pickImage} style={[styles.addImage, {width: IMAGE_SIZE, height: IMAGE_SIZE}]}>
+            <IconSymbol weight="thin" size={50} color={Theme.colors.gray.S300} name="plus"/>
+        </Pressable>)
+    }
+
+    function renderItem({item}: { item: PhotosDto }) {
+        if (item.uri === "add") return <AddImageItem/>
+        else return <ImageItem item={item}/>
     }
 
 
     return (
         <>
+            <AppView withPadding>
+                <Text style={styles.title}>Upload photos</Text>
 
-            <ScrollView contentContainerStyle={styles.container}>
-                <Button title="Pick an image from camera roll" onPress={pickImage}/>
-                <View>
-                    <Text>before conversion</Text>
-                    {newImages?.map((img, i) => {
-                        return (
-                            <View key={i}>
-                                {/*<Image source={{uri: img.uri}} style={styles.image}/>*/}
-                                <Text>{img.type}</Text>
-                            </View>
-                        )
-                    })}
-                </View>
-            </ScrollView>
-            <WizardController onNext={handleFinishPress}
-                              isFirstStep={false}
-                              isLastStep={false}/>
+                <FlatList
+                    numColumns={3}
+                    columnWrapperStyle={{gap: IMAGE_GAP}}
+                    data={[{uri: "add"}, ...images]}
+                    renderItem={renderItem}
+                    contentContainerStyle={{gap: 10}}
+                />
+
+                <WizardController onNext={handleFinishPress}
+                                  isFirstStep={false}
+                                  isLastStep={false}/>
+            </AppView>
         </>
     );
 }
@@ -135,8 +157,23 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+
+    addImage: {
+        backgroundColor: Theme.colors.gray.S200,
+        borderRadius: 10,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+    },
     image: {
-        width: 200,
-        height: 200,
+        borderRadius: 10,
+    },
+    title: {
+        fontSize: Theme.sizes.xl,
+        fontWeight: "bold",
+        textAlign: "center",
+        marginTop: 20,
+        marginBottom: 50,
+        width: "100%",
     },
 });

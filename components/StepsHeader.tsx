@@ -16,7 +16,7 @@ export default function StepsHeader({stepsList, activeStep, setActiveStep}: {
     const [itemWidth, setItemWidth] = useState(0)
 
     const ITEMS_GAP = 10
-    const NUMBER_OF_ITEMS = 4
+    const NUMBER_OF_ITEMS = 4 //number of items to show
 
 
     const flatListRef = useRef<FlatList>(null)

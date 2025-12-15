@@ -6,6 +6,7 @@ import {Dispatch, SetStateAction, useState} from "react";
 import {useApi} from "@/utils/api";
 import WizardController from "@/components/wizards/WizardController";
 import {useWizardContext} from "@/components/wizards/Wizard";
+import AppView from "@/components/appComponents/AppView";
 
 export default function AddDescription({data, setData}: {
     data: VendorPlaceDetailsDto | undefined
@@ -40,19 +41,21 @@ export default function AddDescription({data, setData}: {
 
     return (
         <>
-            <Text style={styles.title}>Add Description</Text>
+            <AppView withPadding>
+                <Text style={styles.title}>Add Description</Text>
 
-            <AppTextInput name="description"
-                          value={data?.description}
-                          onTextChange={(text) => setDescription(text)}
-                          design={1}
-                          textArea
-                          label="Description"
-                          placeholder="Add your description to your place"
+                <AppTextInput name="description"
+                              value={data?.description}
+                              onTextChange={(text) => setDescription(text)}
+                              design={1}
+                              textArea
+                              label="Description"
+                              placeholder="Add your description to your place"
 
-            />
-            <WizardController onNext={handleNextStep} isFirstStep={false}
-                              isLastStep={false}/>
+                />
+                <WizardController onNext={handleNextStep} isFirstStep={false}
+                                  isLastStep={false}/>
+            </AppView>
         </>
     )
 }

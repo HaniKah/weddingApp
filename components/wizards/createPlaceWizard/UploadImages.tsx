@@ -17,6 +17,8 @@ export default function UploadImages({onFinish, placeId}: {
 }) {
     const API = useApi()
     const [images, setImages] = useState<PhotosDto[]>([])
+    const [refresh, setRefresh] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
 
     const IMAGE_GAP = 10
     const COLUMN_PER_ROW = 3
@@ -26,11 +28,19 @@ export default function UploadImages({onFinish, placeId}: {
     useEffect(() => {
         const getPhotos = async () => {
             if (!placeId) return
-            const res = await API.photosControllerGetPhotos(placeId)
-            setImages(res.data)
+            try {
+                setIsLoading(true)
+                const res = await API.photosControllerGetPhotos(placeId)
+                setImages(res.data)
+            } catch (err) {
+                console.error(err)
+            } finally {
+                setIsLoading(false)
+            }
+
         }
         getPhotos()
-    }, [placeId]);
+    }, [placeId, refresh]);
 
 
     const pickImage = async () => {
@@ -48,6 +58,7 @@ export default function UploadImages({onFinish, placeId}: {
             const convertedImages: ImageUploadModel[] = await convertHeicToJPEGAndCreateUploadModel(heic)
             const imagesFormdata: ImageUploadModel[] = [...createImageUploadModelForOther(other), ...convertedImages]
             await uploadImages(imagesFormdata)
+            setRefresh((prev) => !prev)
         }
     };
 
@@ -133,7 +144,7 @@ export default function UploadImages({onFinish, placeId}: {
 
     return (
         <>
-            <AppView withPadding>
+            <AppView isLoading={isLoading} withPadding>
                 <Text style={styles.title}>Upload photos</Text>
 
                 <FlatList

@@ -1,10 +1,10 @@
-import {PriceType} from "@/components/wizards/createPlaceWizard/FillPlaceInfo";
 import {PickerItem} from "@/components/appComponents/AppPicker";
 import {useState} from "react";
 import {FlatList, Pressable, StyleProp, StyleSheet, Text, View, ViewStyle} from "react-native";
 import AppModal from "@/components/appComponents/AppModal";
 import {Theme} from "@/styles/Theme";
 import {IconSymbol} from "@/components/symbols/IconSymbol";
+import {PriceType} from "@/types/open-api";
 
 export default function SelectPriceType({itemList, label, value, setValue, style}: {
     style?: StyleProp<ViewStyle>,

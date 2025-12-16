@@ -15,25 +15,6 @@ export default function AppBottomSheet({isVisible, setIsVisible, children}: {
     const FULL_SCREEN = height * 0.1;
     const offset = useSharedValue(0);
     const start = useSharedValue(0);
-    const shouldClose = useSharedValue(false);
-    // console.log("height", height)
-    // console.log("halfScreen", HALF_SCREEN)
-    // console.log("fullScreen", FULL_SCREEN)
-    // console.log("start", start.value)
-
-
-    // const flingUp = Gesture.Fling()
-    //     .direction(Directions.UP)
-    //     .onStart((e) => {
-    //         offset.value = withSpring(FULL_SCREEN);
-    //     })
-    // const flingDown = Gesture.Fling()
-    //     .direction(Directions.DOWN)
-    //     .onStart((e) => {
-    //         if (offset.value !== HALF_SCREEN) {
-    //             offset.value = withSpring(HALF_SCREEN);
-    //         }
-    //     })
 
     const PanVertical = Gesture.Pan()
         .onStart((event) => {
@@ -53,23 +34,12 @@ export default function AppBottomSheet({isVisible, setIsVisible, children}: {
             }
         })
 
-
-    // useAnimatedReaction(
-    //     () => shouldClose.value,
-    //     (close) => {
-    //         if (close) {
-    //             setIsVisible(false); // ✅ safe: now running on JS thread
-    //             shouldClose.value = false; // reset
-    //         }
-    //     }
-    // );
-
     useEffect(() => {
         if (!isVisible) {
             offset.value = withSpring(height);
         } else {
             offset.value = withSpring(HALF_SCREEN);
-            // console.log("offset", offset.value)
+
         }
     }, [isVisible]);
 

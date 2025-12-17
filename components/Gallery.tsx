@@ -2,7 +2,7 @@ import {useApi} from "@/utils/api";
 import {PhotosDto} from "@/types/open-api";
 import {useEffect, useState} from "react";
 import {Dimensions, FlatList, Image, Pressable} from "react-native";
-import ImageView from "react-native-image-viewing";
+import AppImageViewer from "@/components/appComponents/AppImageViewer";
 
 
 export default function Gallery({placeId}: { placeId: number }) {
@@ -50,10 +50,10 @@ export default function Gallery({placeId}: { placeId: number }) {
                       )}
                       renderItem={({item, index}) => (<ImageItem item={item} index={index}/>)}/>
 
-            <ImageView imageIndex={selectedImage}
-                       images={images}
-                       visible={imageView}
-                       onRequestClose={() => setImageView(false)}/>
+            <AppImageViewer activeIndex={selectedImage}
+                            images={images}
+                            isVisible={imageView}
+                            onClose={() => setImageView(false)}/>
         </>
     )
 }

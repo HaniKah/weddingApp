@@ -50,11 +50,8 @@ export default function Index() {
     }
 
     function handleViewPlace() {
-        setTimeout(() => {
-            setSelectedPlace(undefined);
-            setIsBottomSheetVisible(false);
-        }, 700)
-
+        setSelectedPlace(undefined);
+        setIsBottomSheetVisible(false);
     }
 
     function handleEditPlace() {

@@ -51,7 +51,7 @@ export default function Gallery({placeId}: { placeId: number }) {
                       renderItem={({item, index}) => (<ImageItem item={item} index={index}/>)}/>
 
             <AppImageViewer activeIndex={selectedImage}
-                            images={images}
+                            images={images.map((i) => i.uri)}
                             isVisible={imageView}
                             onClose={() => setImageView(false)}/>
         </>

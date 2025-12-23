@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
         backgroundColor: Theme.colors.white,
         paddingHorizontal: 25,
         paddingVertical: 10,
-        borderRadius: Theme.radius.sm,
+        borderRadius: Theme.radius.full,
     },
     itemText: {
         fontSize: Theme.sizes.sm,

@@ -26,7 +26,7 @@ export const getDynamicAppConfig = (environment: Environments): Configurations =
     switch (environment) {
         case Environments.Development:
             return {
-                name: "App prod",
+                name: "App dev",
                 bundleIdentifier: "com.hanikah.weddingApp.dev",
                 packageName: "com.hanikah.weddingApp.dev",
                 icon: "./assets/images/icons/icon-dev.png",

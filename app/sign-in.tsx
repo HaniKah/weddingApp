@@ -32,6 +32,9 @@ export default function SignIn() {
             <Text>
                 {Constants?.expoConfig?.scheme}
             </Text>
+            <Text>
+                {process.env.EXPO_PUBLIC_API_URL}
+            </Text>
             <Button onPress={getHello} title="get Hello"/>
             <Text>{hello}</Text>
         </AppView>

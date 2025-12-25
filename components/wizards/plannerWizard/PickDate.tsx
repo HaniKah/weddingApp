@@ -1,7 +1,6 @@
 import WizardHeader from "@/components/wizards/plannerWizard/WizardHeader";
 import {Animated} from "react-native";
 import {StepsDto} from "@/types/open-api";
-import AppCalendar from "@/components/appComponents/AppCalendar";
 import {useEffect, useState} from "react";
 import AppButton from "@/components/appComponents/AppButton";
 import {useApi} from "@/utils/api";
@@ -59,7 +58,7 @@ export default function PickDate({onNextStep, onPreviousStep, isFirstStep, isLas
             <ScrollView>
                 <WizardHeader onNextStep={onNextStep} onPreviousStep={onPreviousStep} isFirstStep={isFirstStep}
                               isLastStep={isLastStep} currentStep={currentStep}/>
-                <AppCalendar onDateUpdate={handleUpdateDate} markedDate={selectedDate}/>
+                {/*<AppCalendar onDateUpdate={handleUpdateDate} markedDate={selectedDate}/>*/}
 
                 <AppButton onPress={storeWeddingDate}>
                     pick this date

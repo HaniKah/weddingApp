@@ -39,7 +39,7 @@ export function IconButton(
             </Link>
         )
     } else return (
-        <Pressable style={styles.container} onPress={onPress}>
+        <Pressable onPress={onPress}>
             <MyIcon/>
         </Pressable>
     )
@@ -47,7 +47,7 @@ export function IconButton(
 
 const styles = StyleSheet.create({
     container: {
-        padding: 4,
+        padding: 8,
         backgroundColor: Theme.colors.iconBackground,
         color: Theme.colors.primary,
         borderRadius: Theme.radius.full,

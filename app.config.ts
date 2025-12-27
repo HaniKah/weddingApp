@@ -6,11 +6,8 @@ const PROJECT_ID = "c2369dbe-f3a7-4a6f-a31d-0ed435547fd0"
 const PROJECT_SLUG = "weddingApp"
 const PROJECT_OWNER = "hanikah"
 
-enum Environments {
-    Development = "Development",
-    Production = "Production",
-    Preview = "Preview",
-}
+
+type Environments = "development" | "production" | "preview"
 
 interface Configurations {
     name: string
@@ -24,7 +21,7 @@ interface Configurations {
 
 export const getDynamicAppConfig = (environment: Environments): Configurations => {
     switch (environment) {
-        case Environments.Development:
+        case "development":
             return {
                 name: "App dev",
                 bundleIdentifier: "com.hanikah.weddingApp.dev",
@@ -33,7 +30,7 @@ export const getDynamicAppConfig = (environment: Environments): Configurations =
                 adaptiveIcon: "./assets/images/icons/icon-dev.png",
                 scheme: "app-scheme-dev"
             }
-        case Environments.Preview:
+        case "preview":
             return {
                 name: "App preview",
                 bundleIdentifier: "com.hanikah.weddingApp.preview",
@@ -42,7 +39,7 @@ export const getDynamicAppConfig = (environment: Environments): Configurations =
                 adaptiveIcon: "./assets/images/icons/icon-preview.png",
                 scheme: "app-scheme-preview"
             }
-        case Environments.Production:
+        case "production":
             return {
                 name: "App prod",
                 bundleIdentifier: "com.hanikah.weddingApp",
@@ -65,7 +62,7 @@ export default ({config}: ConfigContext): ExpoConfig => {
         icon,
         adaptiveIcon,
         scheme
-    } = getDynamicAppConfig(process.env.APP_ENV as Environments || Environments.Development);
+    } = getDynamicAppConfig(process.env.APP_VARIANT as Environments || "development");
 
 
     return {

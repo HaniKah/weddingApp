@@ -21,7 +21,7 @@ export default function AppButton({
                                       inactive,
                                       textPosition,
                                       fullRound,
-                                      disable
+
 
                                   }: {
     buttonSize?: 'SM' | 'MD' | 'LG',
@@ -39,7 +39,7 @@ export default function AppButton({
     inactive?: boolean,
     textPosition?: 'LEFT' | 'RIGHT'
     fullRound?: boolean,
-    disable?: boolean
+
 
 }) {
     let buttonStyles: StyleProp<ViewStyle> = {};
@@ -58,6 +58,10 @@ export default function AppButton({
             buttonStyles = {...buttonStyles, borderColor: Theme.colors.green.S500};
             textStyles = {...textStyles, color: Theme.colors.green.S500};
         }
+        if (inactive) {
+            buttonStyles = {...buttonStyles, borderColor: Theme.colors.gray.S300};
+            textStyles = {...textStyles, color: Theme.colors.gray.S500};
+        }
 
     } else if (buttonType === ButtonType.PLAIN) {
         buttonStyles = ButtonStyles.plainBtn;
@@ -67,6 +71,9 @@ export default function AppButton({
         }
         if (confirmative) {
             textStyles = {...textStyles, color: Theme.colors.green.S600};
+        }
+        if (inactive) {
+            textStyles = {...textStyles, color: Theme.colors.gray.S500};
         }
     } else {
         buttonStyles = ButtonStyles.primaryBtn;
@@ -78,6 +85,10 @@ export default function AppButton({
         if (confirmative) {
             buttonStyles = {...buttonStyles, backgroundColor: Theme.colors.green.S100};
             textStyles = {...textStyles, color: Theme.colors.green.S600};
+        }
+        if (inactive) {
+            buttonStyles = {...buttonStyles, backgroundColor: Theme.colors.gray.S300};
+            textStyles = {...textStyles, color: Theme.colors.gray.S600};
         }
     }
 
@@ -104,10 +115,7 @@ export default function AppButton({
         buttonStyles.paddingVertical = 0;
     }
 
-    if (inactive) {
-        buttonStyles = {...buttonStyles, ...ButtonStyles.inactiveBtn};
-        textStyles = {...textStyles, ...ButtonStyles.inactiveTxt};
-    }
+
     if (underline) {
         textStyles.textDecorationLine = 'underline';
     }
@@ -136,7 +144,7 @@ export default function AppButton({
 //if Padding is not working , then probably you want to change the padding-Horizontal/Vertical and not the general padding
 
     return (
-        <Pressable disabled={disable} onPress={isSubmit ? handleSubmit : onPress}
+        <Pressable disabled={inactive} onPress={isSubmit ? handleSubmit : onPress}
                    style={[buttonStyles, extraStylesBtn]}>
             {icon &&
                 <IconSymbol size={iconSize} color={textStyles.color || 'black'} name={icon}/>}

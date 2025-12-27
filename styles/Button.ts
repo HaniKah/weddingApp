@@ -43,19 +43,19 @@ export const ButtonStyles = StyleSheet.create({
 
 // ===========================
 
-    inactiveBtn: {
-        ...GeneralButtonStyles.general,
-        backgroundColor: Theme.colors.primaryInactive,
-        color: 'white',
-        fontWeight: 'normal',
-        textAlign: 'center',
-        pointerEvents: "none",
-    },
-    inactiveTxt: {
-        color: Theme.colors.primaryTextInactive,
-        textAlign: 'center',
-        pointerEvents: "none",
-    },
+    // inactiveBtn: {
+    //     ...GeneralButtonStyles.general,
+    //     backgroundColor: Theme.colors.primaryInactive,
+    //     color: 'white',
+    //     fontWeight: 'normal',
+    //     textAlign: 'center',
+    //     pointerEvents: "none",
+    // },
+    // inactiveTxt: {
+    //     color: Theme.colors.primaryTextInactive,
+    //     textAlign: 'center',
+    //     pointerEvents: "none",
+    // },
 
 // ===========================
 

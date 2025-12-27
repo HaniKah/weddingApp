@@ -18,6 +18,5 @@ const styles = StyleSheet.create({
         flex: 1,
         fontSize: Theme.sizes.xl,
         fontWeight: "bold",
-        color: "red"
     }
 })

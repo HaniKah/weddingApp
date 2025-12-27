@@ -1,5 +1,5 @@
 import AppTextInput from "@/components/appComponents/AppTextInput";
-import {StyleSheet, Text} from "react-native";
+import {ScrollView, StyleSheet, Text} from "react-native";
 import {Theme} from "@/styles/Theme";
 import {UpdateStep, VendorPlaceDetailsDto} from "@/types/open-api";
 import {Dispatch, SetStateAction, useState} from "react";
@@ -42,17 +42,23 @@ export default function AddDescription({data, setData}: {
     return (
         <>
             <AppView withPadding>
-                <Text style={styles.title}>Add Description</Text>
 
-                <AppTextInput name="description"
-                              value={data?.description}
-                              onTextChange={(text) => setDescription(text)}
-                              design={1}
-                              textArea
-                              label="Description"
-                              placeholder="Add your description to your place"
+                <ScrollView>
+                    <Text style={styles.title}>Add Description</Text>
 
-                />
+                    <AppTextInput name="description"
+                                  value={data?.description}
+                                  onTextChange={(text) => setDescription(text)}
+                                  design={1}
+                                  textArea
+                                  label="Description"
+                                  placeholder="Add your description to your place"
+
+
+                    />
+                </ScrollView>
+
+
                 <WizardController onNext={handleNextStep} isFirstStep={false}
                                   isLastStep={false}/>
             </AppView>

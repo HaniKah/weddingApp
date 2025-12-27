@@ -22,7 +22,7 @@ export default function WizardController({isFirstStep, isLastStep, onNext}: {
                     <AppButton
                         buttonType={ButtonType.PLAIN}
                         onPress={wizard.previousStep}
-                        disable={isFirstStep}>
+                        inactive={isFirstStep}>
                         previous
                     </AppButton>
                 </View>
@@ -30,8 +30,8 @@ export default function WizardController({isFirstStep, isLastStep, onNext}: {
                     <AppButton
                         fullRound
                         onPress={onNext}
-                        disable={isLastStep}>
-                        {isLastStep ? "upload and Finish" : "next"}
+                    >
+                        {isLastStep ? "finish" : "next"}
                     </AppButton>
                 </View>
             </View>

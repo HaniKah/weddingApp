@@ -88,7 +88,7 @@ export default function PickPlaceType({data, setData}: {
             </View>
             <WizardController
                 onNext={onNext}
-                isFirstStep={false}
+                isFirstStep={true}
                 isLastStep={false}/>
         </>
     )

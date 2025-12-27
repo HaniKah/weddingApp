@@ -157,7 +157,7 @@ export default function UploadImages({onFinish, placeId}: {
 
                 <WizardController onNext={handleFinishPress}
                                   isFirstStep={false}
-                                  isLastStep={false}/>
+                                  isLastStep={true}/>
             </AppView>
         </>
     );

@@ -51,6 +51,11 @@ const styles = StyleSheet.create({
         padding: 10,
 
     },
+    containerUncompleted: {
+        backgroundColor: "transparent",
+        borderWidth: 2,
+        borderColor: Theme.colors.gray.S300
+    },
     imageContainer: {
         height: 75,
         width: 75,

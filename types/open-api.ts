@@ -26,11 +26,6 @@ export enum PriceType {
   PerEvent = "PerEvent",
 }
 
-export enum PlaceStatus {
-  Unpublished = "Unpublished",
-  Published = "Published",
-}
-
 export enum CoupleSide {
   Groom = "Groom",
   Bride = "Bride",
@@ -215,7 +210,6 @@ export interface CreatePlaceRequest {
 
 export interface VendorPlaceDetailsDto {
   step: WeddingSteps;
-  status: PlaceStatus;
   priceType: PriceType;
   id: number;
   name: string;
@@ -226,6 +220,7 @@ export interface VendorPlaceDetailsDto {
   tiktok?: string;
   website?: string;
   currency: string;
+  isPublished: boolean;
   description?: string;
   mainPhoto: string;
   minPrice: string;
@@ -242,30 +237,35 @@ export interface UpdatePlaceRequest {
 }
 
 export interface VendorPlaceDto {
-  status: PlaceStatus;
   id: number;
   name: string;
   streetName?: string;
   currency: string;
   thumbnail: string;
+  isPublished: boolean;
+  isCompleted: boolean;
   minPrice: string;
   maxPrice: string;
 }
 
 export interface VendorPlaceViewModel {
   published: {
-    title: "Unpublished" | "Published";
+    title: string;
     data: VendorPlaceDto[];
   };
   unpublished: {
-    title: "Unpublished" | "Published";
+    title: string;
+    data: VendorPlaceDto[];
+  };
+  uncompleted: {
+    title: string;
     data: VendorPlaceDto[];
   };
 }
 
 export interface PublishPlaceRequest {
-  status: PlaceStatus;
   placeId: number;
+  isPublished: boolean;
 }
 
 import type {
@@ -899,6 +899,46 @@ export class Api<
         method: "GET",
         query: query,
         format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Packages
+     * @name PackagesControllerGeneratePackages
+     * @request GET:/api/packages/generatePackage
+     */
+    packagesControllerGeneratePackages: (
+      query: {
+        budget: number;
+        includedSteps: (
+          | "Host"
+          | "Dress"
+          | "Photographer"
+          | "Decorator"
+          | "Catering"
+          | "DancingCourse"
+          | "Dj"
+          | "MakeUpArtist"
+          | "Car"
+          | "Giveaways"
+          | "Aarada"
+          | "MusiciansAndPerformers"
+          | "Jewelry"
+          | "Perfumes"
+          | "Hammam"
+          | "CosmeticClinics"
+          | "Fireworks"
+          | "Extra"
+        )[];
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/packages/generatePackage`,
+        method: "GET",
+        query: query,
         ...params,
       }),
   };

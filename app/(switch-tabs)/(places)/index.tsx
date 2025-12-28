@@ -5,7 +5,7 @@ import {Alert, SectionList, StyleSheet, Text, View} from 'react-native';
 import {Theme} from '@/styles/Theme';
 import {useEffect, useState} from 'react';
 import AddPlaceModal from '@/components/modals/AddPlaceModal';
-import {PlaceStatus, VendorPlaceDto, VendorPlaceViewModel} from '@/types/open-api';
+import {VendorPlaceDto, VendorPlaceViewModel} from '@/types/open-api';
 import VendorPlaceItem from '@/components/items/VendorPlaceItem';
 import {Link, Stack} from "expo-router";
 import AppBottomSheet from "@/components/appComponents/AppBottomSheet";
@@ -74,7 +74,7 @@ export default function Index() {
             text: "Cancel", style: "default",
         }, {
             text: "Unpublish",
-            onPress: () => toggleStatus(PlaceStatus.Unpublished),
+            onPress: () => toggleStatus(false),
         }
         ])
     }
@@ -95,11 +95,11 @@ export default function Index() {
 
     }
 
-    async function toggleStatus(newStatus: PlaceStatus) {
+    async function toggleStatus(ispublished: boolean) {
         if (!selectedPlace) return
         try {
             setIsLoading(true)
-            await API.placesControllerToggleStatus({placeId: selectedPlace.id, status: newStatus})
+            await API.placesControllerToggleStatus({placeId: selectedPlace.id, isPublished: ispublished})
         } catch (err) {
             console.error(err)
         } finally {
@@ -113,9 +113,8 @@ export default function Index() {
         return (
             <View style={styles.sectionHeaderContainer}>
                 <Text
-                    style={[styles.sectionHeader, title === PlaceStatus.Published ? styles.publishedSectionHeader : styles.unpublishedSectionHeader]}>{title}</Text>
-
-                <AppIf value={title === PlaceStatus.Published}>
+                    style={[styles.sectionHeader, title === "Published" ? styles.publishedSectionHeader : styles.unpublishedSectionHeader]}>{title}</Text>
+                <AppIf value={title === "Published"}>
                     <IconSymbol name="checkmark.circle" size={20} color={Theme.colors.green.S700}/>
                 </AppIf>
             </View>
@@ -135,7 +134,7 @@ export default function Index() {
                         renderSectionHeader={({section}) => (<SectionHeaderItem title={section.title}/>)}
                         contentContainerStyle={styles.flatlist}
                         keyExtractor={(item) => item.id.toString()}
-                        sections={[places.published, places.unpublished]}
+                        sections={[places.published, places.unpublished, places.uncompleted]}
                         renderItem={(item) => <VendorPlaceItem onPress={handlePlacePress}
                                                                setTrigger={setTrigger} data={item.item}/>
                         }/>
@@ -149,12 +148,12 @@ export default function Index() {
                 {selectedPlace &&
                     <View>
 
-                        {selectedPlace.status === PlaceStatus.Unpublished &&
+                        {!selectedPlace.isPublished && selectedPlace.isCompleted &&
                             <AppButton
                                 extraStylesBtn={styles.actionBtn}
                                 fullWidth
                                 textPosition='LEFT'
-                                onPress={() => toggleStatus(PlaceStatus.Published)}
+                                onPress={() => toggleStatus(true)}
                                 icon="square.and.arrow.up"
                                 buttonType={ButtonType.PLAIN}
                                 confirmative>
@@ -162,21 +161,26 @@ export default function Index() {
                             </AppButton>
 
                         }
-                        <Link
-                            asChild push href={{
-                            pathname: "/(switch-tabs)/(places)/[id]",
-                            params: {id: selectedPlace.id?.toString()}
-                        }}>
-                            <AppButton
-                                extraStylesBtn={styles.actionBtn}
-                                fullWidth
-                                textPosition="LEFT"
-                                icon="eye"
-                                buttonType={ButtonType.PLAIN}
-                                onPress={handleViewPlace}>
-                                View place
-                            </AppButton>
-                        </Link>
+
+
+                        {selectedPlace.isCompleted &&
+                            <Link
+                                asChild push href={{
+                                pathname: "/(switch-tabs)/(places)/[id]",
+                                params: {id: selectedPlace.id?.toString()}
+                            }}>
+                                <AppButton
+                                    extraStylesBtn={styles.actionBtn}
+                                    fullWidth
+                                    textPosition="LEFT"
+                                    icon="eye"
+                                    buttonType={ButtonType.PLAIN}
+                                    onPress={handleViewPlace}>
+                                    View place
+                                </AppButton>
+                            </Link>
+                        }
+
 
                         <AppButton
                             extraStylesBtn={styles.actionBtn}
@@ -185,10 +189,10 @@ export default function Index() {
                             icon="square.and.pencil"
                             buttonType={ButtonType.PLAIN}
                             onPress={handleEditPlace}>
-                            Edit place
+                            {selectedPlace.isCompleted ? "Edit place" : "Continue"}
                         </AppButton>
 
-                        {selectedPlace.status === PlaceStatus.Published &&
+                        {selectedPlace.isPublished &&
                             <AppButton
                                 fullWidth
                                 textPosition="LEFT"

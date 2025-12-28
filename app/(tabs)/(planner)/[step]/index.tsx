@@ -77,13 +77,6 @@ export default function Index() {
 
     }, [activeStep, steps, searchText, selectedFilter]);
 
-//later on we might want to change the whole layout , for example to create an invitation card
-    function ActiveComponent() {
-        if (activeStep) {
-            return <PickPlace data={places}/>
-        }
-
-    }
 
     const filters: Filters[] = [
         {
@@ -110,7 +103,7 @@ export default function Index() {
                     <Text
                         style={places?.length > 0 ? styles.placesFound : styles.placesNotFound}>{places?.length > 0 ? places?.length + (places.length > 1 ? " places" : " place") : " no places were found for this search criteria"} </Text>
 
-                    <ActiveComponent/>
+                    <PickPlace data={places}/>
                 </AppView>}
 
         </>

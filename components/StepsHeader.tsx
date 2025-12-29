@@ -1,14 +1,16 @@
 import {StepsDto} from "@/types/open-api";
-import {FlatList, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {FlatList, StyleSheet, Text, TouchableOpacity} from "react-native";
 import {useEffect, useRef, useState} from "react";
 import IconStep from "@/components/symbols/IconStep";
 import {useColors} from "@/utils/colors";
 import {Theme} from "@/styles/Theme"
+import Animated from "react-native-reanimated";
 
-export default function StepsHeader({stepsList, activeStep, setActiveStep}: {
+export default function StepsHeader({stepsList, activeStep, setActiveStep, isScrollingDown}: {
     stepsList: StepsDto[],
     activeStep: StepsDto,
     setActiveStep: (value: StepsDto) => void,
+    isScrollingDown: boolean,
 }) {
 
     const getColorByStep = useColors()
@@ -34,8 +36,12 @@ export default function StepsHeader({stepsList, activeStep, setActiveStep}: {
         const color = getColorByStep(item.step)
         return (
             <TouchableOpacity onPress={() => setActiveStep(item)} style={[{width: itemWidth}, styles.itemContainer]}>
-                <IconStep step={item.step} width={isActive ? 40 : 30} height={isActive ? 40 : 30}
-                          fill={color}/>
+                {
+                    !isScrollingDown &&
+                    <IconStep step={item.step} width={isActive ? 40 : 30} height={isActive ? 40 : 30}
+                              fill={color}/>
+                }
+
                 <Text style={[styles.itemTitle, isActive && {
                     color: color,
                     fontWeight: "bold",
@@ -59,8 +65,8 @@ export default function StepsHeader({stepsList, activeStep, setActiveStep}: {
 
     return (
         <>
-            <View style={styles.container}
-                  onLayout={(event) => setHeaderWidth(event.nativeEvent.layout.width)}>
+            <Animated.View style={[styles.container, {height: isScrollingDown ? 50 : 100}]}
+                           onLayout={(event) => setHeaderWidth(event.nativeEvent.layout.width)}>
                 <FlatList
                     ref={flatListRef}
                     contentContainerStyle={{gap: ITEMS_GAP}}
@@ -70,15 +76,14 @@ export default function StepsHeader({stepsList, activeStep, setActiveStep}: {
                     horizontal
                     data={stepsList}
                     renderItem={({item}) => <RenderItem item={item}/>}/>
-            </View>
+            </Animated.View>
         </>
     )
 }
 const styles = StyleSheet.create({
     container: {
-        height: 100,
-
-        // backgroundColor: "blue"
+        transitionTimingFunction: "linear",
+        transitionDuration: "500ms",
     },
     itemContainer: {
         display: "flex",

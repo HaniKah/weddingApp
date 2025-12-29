@@ -1,16 +1,18 @@
-import {FlatList, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {FlatList, StyleSheet, Text, TouchableOpacity} from "react-native";
 import {SearchFilter} from "@/types/open-api";
 import {Theme} from "@/styles/Theme";
+import Animated from "react-native-reanimated";
 
 export type Filters = {
     name: string,
     value: SearchFilter
 }
 
-export default function SearchFilters({filters, selectedFilter, setSelectedFilter}: {
+export default function SearchFilters({filters, selectedFilter, setSelectedFilter, isScrollingDown}: {
     filters: Filters[],
     selectedFilter: any,
-    setSelectedFilter: (value: any) => void
+    setSelectedFilter: (value: any) => void,
+    isScrollingDown: boolean
 }) {
 
     function toggleSelectFilter(clickedfilter: Filters) {
@@ -34,19 +36,26 @@ export default function SearchFilters({filters, selectedFilter, setSelectedFilte
         )
     }
 
+
     return (
-        <View>
-            <FlatList horizontal data={filters} contentContainerStyle={styles.flatlistContainer}
-                      renderItem={({item}) => <RenderItem value={item.value} name={item.name}/>}/>
-        </View>
+        <>
+            <Animated.View style={[styles.container, {height: isScrollingDown ? 0 : 40}]}>
+                <FlatList horizontal data={filters} contentContainerStyle={styles.flatlistContainer}
+                          renderItem={({item}) => <RenderItem value={item.value} name={item.name}/>}/>
+            </Animated.View>
+        </>
+
 
     )
 }
 
 const styles = StyleSheet.create({
+    container: {
+        transitionDuration: "300ms",
+        transitionTimingFunction: "linear",
+    },
 
     flatlistContainer: {
-        height: 40,
         gap: 10,
     },
     itemContainer: {

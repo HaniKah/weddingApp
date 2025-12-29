@@ -1,6 +1,5 @@
 import {useEffect, useState} from "react";
 import {PlacesDto, SearchFilter, StepsDto} from "@/types/open-api";
-import {PickPlace} from "@/components/wizards/plannerWizard/PickPlace";
 import PlannerToolbar from "@/components/toolbars/PlannerToolbar";
 import {Stack, useLocalSearchParams} from "expo-router";
 import AppView from "@/components/appComponents/AppView";
@@ -10,6 +9,7 @@ import AppSearchBar from "@/components/appComponents/AppSearchBar";
 import SearchFilters, {Filters} from "@/components/SearchFilters";
 import {StyleSheet, Text} from "react-native";
 import {Theme} from "@/styles/Theme";
+import {PickPlace} from "@/components/wizards/plannerWizard/PickPlace";
 
 
 export default function Index() {
@@ -88,6 +88,32 @@ export default function Index() {
             value: SearchFilter.MyFavourite
         }
     ]
+    // const isScrollingDown = useSharedValue<boolean>(false)
+    // const y = useSharedValue<number>(0)
+    // const filterHeight = useSharedValue<number>(40)
+    //
+    // // const offset = useSharedValue<number>(50)
+    //
+    // function onScroll({nativeEvent}: NativeSyntheticEvent<NativeScrollEvent>) {
+    //
+    //     if (nativeEvent.contentOffset.y > y.value) {
+    //         // isScrollingDown.value = true
+    //         // offset.value = nativeEvent.contentOffset.y
+    //         filterHeight.value = withSpring(0)
+    //         console.log("scrolling down")
+    //     } else {
+    //         // isScrollingDown.value = false
+    //         // offset.value = nativeEvent.contentOffset.y
+    //         filterHeight.value = withSpring(40)
+    //         console.log("scrolling up")
+    //     }
+    // }
+    //
+    // function onScrollEnd({nativeEvent}: NativeSyntheticEvent<NativeScrollEvent>) {
+    //     y.value = nativeEvent.contentOffset.y
+    //     console.log(nativeEvent.contentOffset.y)
+    // }
+    const [isScrollingDown, setIsScrollingDown] = useState<boolean>(false)
 
     return (
         <>
@@ -96,14 +122,18 @@ export default function Index() {
                 <AppView withPadding isLoading={isLoading}>
                     <PlannerToolbar progress={progress} note={activeStep.note}
                                     fullfilled={activeStep.isCompleted}/>
-                    <StepsHeader stepsList={steps} activeStep={activeStep} setActiveStep={setActiveStep}/>
+                    <StepsHeader isScrollingDown={isScrollingDown} stepsList={steps} activeStep={activeStep}
+                                 setActiveStep={setActiveStep}/>
                     <AppSearchBar searchText={searchText} setSearchText={setSearchText}/>
-                    <SearchFilters filters={filters} selectedFilter={selectedFilter}
+                    <SearchFilters isScrollingDown={isScrollingDown}
+                                   filters={filters}
+                                   selectedFilter={selectedFilter}
                                    setSelectedFilter={setSelectedFilter}/>
+
                     <Text
                         style={places?.length > 0 ? styles.placesFound : styles.placesNotFound}>{places?.length > 0 ? places?.length + (places.length > 1 ? " places" : " place") : " no places were found for this search criteria"} </Text>
 
-                    <PickPlace data={places}/>
+                    <PickPlace setScrollingDown={setIsScrollingDown} data={places}/>
                 </AppView>}
 
         </>

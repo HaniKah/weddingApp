@@ -227,7 +227,8 @@ const styles = StyleSheet.create({
 
     },
     input: {
-        marginTop: 15
+        marginTop: 15,
+        marginBottom: 5
     },
     list: {
         height: "80%"

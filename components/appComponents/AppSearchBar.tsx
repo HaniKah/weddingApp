@@ -1,5 +1,6 @@
 import AppTextInput from "./AppTextInput";
-import {View} from "react-native";
+import {StyleSheet, View} from "react-native";
+import {Theme} from "@/styles/Theme";
 
 export default function AppSearchBar({searchText, setSearchText}: {
     searchText: string | undefined,
@@ -8,10 +9,25 @@ export default function AppSearchBar({searchText, setSearchText}: {
 
     return (
         <>
-            <View>
-                <AppTextInput debounceTime={300} design={2} placeholder="search" value={searchText} name="search"
-                              onTextChange={(text) => setSearchText(text)}/>
+            <View style={styles.container}>
+                <AppTextInput debounceTime={300}
+                              design={2}
+                              placeholder="search"
+                              value={searchText}
+                              name="search"
+                              onTextChange={(text) => setSearchText(text)}
+                              extraStyles={styles.input}
+                />
             </View>
         </>
     )
 }
+const styles = StyleSheet.create({
+    container: {
+        marginBottom: 15
+    },
+    input: {
+        borderRadius: Theme.radius.full,
+        overflow: "hidden",
+    }
+})

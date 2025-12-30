@@ -30,7 +30,7 @@ export default function AppDropDown<T>({itemList, label, value, onChange, style,
     }
 
     return (
-        <View>
+        <View style={style}>
             <Text>{label}</Text>
             <Pressable style={styles.pressable} onPress={() => setIsVisible(true)}>
                 <Text>

@@ -53,7 +53,7 @@ export default function SearchFilters({filters, selectedFilter, setSelectedFilte
 }
 
 const styles = StyleSheet.create({
-   
+
     flatlistContainer: {
         gap: 10,
     },

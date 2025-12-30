@@ -101,7 +101,9 @@ export default function AppTextInput({
                 {unit && <Text style={styles.unit}>JOD</Text>}
             </View>
 
-            <Text style={styles.error}>{error}</Text>
+            {error &&
+                <Text style={styles.error}>{error}</Text>
+            }
         </View>
     )
 }

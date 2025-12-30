@@ -7,10 +7,10 @@ import {useApi} from "@/utils/api";
 import StepsHeader from "@/components/StepsHeader";
 import AppSearchBar from "@/components/appComponents/AppSearchBar";
 import SearchFilters, {Filters} from "@/components/SearchFilters";
-import {StyleSheet, Text} from "react-native";
+import {StyleSheet} from "react-native";
 import {Theme} from "@/styles/Theme";
 import {PickPlace} from "@/components/wizards/plannerWizard/PickPlace";
-import {useSharedValue} from "react-native-reanimated";
+import Animated, {useAnimatedStyle, useSharedValue} from "react-native-reanimated";
 
 
 export default function Index() {
@@ -93,6 +93,13 @@ export default function Index() {
 
     const isScrollingDown = useSharedValue(false)
 
+    const animatedFoundPlaces = useAnimatedStyle(() => ({
+        marginVertical: isScrollingDown.value ? 0 : 20,
+        fontWeight: "normal",
+        fontSize: Theme.sizes.md,
+        height: isScrollingDown.value ? 0 : "auto"
+    }))
+
 
     return (
         <>
@@ -101,7 +108,7 @@ export default function Index() {
                 <AppView withPadding isLoading={isLoading}>
                     <PlannerToolbar progress={progress} note={activeStep.note}
                                     fullfilled={activeStep.isCompleted}/>
-                    
+
                     <StepsHeader isScrollingDown={isScrollingDown}
                                  stepsList={steps}
                                  activeStep={activeStep}
@@ -115,8 +122,9 @@ export default function Index() {
                         selectedFilter={selectedFilter}
                         setSelectedFilter={setSelectedFilter}/>
 
-                    <Text
-                        style={places?.length > 0 ? styles.placesFound : styles.placesNotFound}>{places?.length > 0 ? places?.length + (places.length > 1 ? " places" : " place") : " no places were found for this search criteria"} </Text>
+                    <Animated.Text
+                        style={places?.length > 0 ? animatedFoundPlaces : styles.placesNotFound}>{places?.length > 0 ? places?.length + (places.length > 1 ? " places found" : " place found") : " no places were found for this search criteria"}
+                    </Animated.Text>
 
                     <PickPlace isScrollDown={isScrollingDown} data={places}/>
                 </AppView>}
@@ -126,11 +134,7 @@ export default function Index() {
 }
 
 const styles = StyleSheet.create({
-    placesFound: {
-        marginVertical: 15,
-        fontWeight: "bold",
-        fontSize: Theme.sizes.md
-    },
+    placesFound: {},
     placesNotFound: {
         textAlign: "center",
         marginVertical: 50,

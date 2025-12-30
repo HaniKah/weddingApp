@@ -32,6 +32,7 @@ export function PickPlace({data, isScrollDown}: {
                       onScroll={onScroll}
                       onScrollEndDrag={onScrollEnd}
                       scrollEventThrottle={100}
+
             />
         </View>
     )
@@ -41,7 +42,7 @@ export function PickPlace({data, isScrollDown}: {
 const styles = StyleSheet.create({
 
     scrollContent: {
-        marginBottom: 180
+        marginBottom: 120
     },
 
 })

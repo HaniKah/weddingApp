@@ -4,13 +4,13 @@ import {useEffect, useRef, useState} from "react";
 import IconStep from "@/components/symbols/IconStep";
 import {useColors} from "@/utils/colors";
 import {Theme} from "@/styles/Theme"
-import Animated from "react-native-reanimated";
+import Animated, {SharedValue, useAnimatedStyle, withSpring} from "react-native-reanimated";
 
 export default function StepsHeader({stepsList, activeStep, setActiveStep, isScrollingDown}: {
     stepsList: StepsDto[],
     activeStep: StepsDto,
     setActiveStep: (value: StepsDto) => void,
-    isScrollingDown: boolean,
+    isScrollingDown: SharedValue<boolean>
 }) {
 
     const getColorByStep = useColors()
@@ -34,13 +34,18 @@ export default function StepsHeader({stepsList, activeStep, setActiveStep, isScr
     function RenderItem({item}: { item: StepsDto }) {
         const isActive = item === activeStep
         const color = getColorByStep(item.step)
+
+        // const iconAnimatedStyle = useAnimatedStyle(() => ({
+        //     opacity: isScrollingDown.value ? withSpring(0) : withSpring(1)
+        // }))
+
         return (
             <TouchableOpacity onPress={() => setActiveStep(item)} style={[{width: itemWidth}, styles.itemContainer]}>
-                {
-                    !isScrollingDown &&
-                    <IconStep step={item.step} width={isActive ? 40 : 30} height={isActive ? 40 : 30}
+                <Animated.View>
+                    <IconStep step={item.step} width={isActive ? 45 : 30} height={isActive ? 45 : 30}
                               fill={color}/>
-                }
+
+                </Animated.View>
 
                 <Text style={[styles.itemTitle, isActive && {
                     color: color,
@@ -63,9 +68,13 @@ export default function StepsHeader({stepsList, activeStep, setActiveStep, isScr
         }
     }
 
+    const animatedStyle = useAnimatedStyle(() => ({
+        height: isScrollingDown.value ? withSpring(0) : withSpring(100),
+    }))
+
     return (
         <>
-            <Animated.View style={[styles.container, {height: isScrollingDown ? 50 : 100}]}
+            <Animated.View style={animatedStyle}
                            onLayout={(event) => setHeaderWidth(event.nativeEvent.layout.width)}>
                 <FlatList
                     ref={flatListRef}
@@ -81,16 +90,11 @@ export default function StepsHeader({stepsList, activeStep, setActiveStep, isScr
     )
 }
 const styles = StyleSheet.create({
-    container: {
-        transitionTimingFunction: "linear",
-        transitionDuration: "500ms",
-    },
     itemContainer: {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        // backgroundColor: "red"
 
 
     },

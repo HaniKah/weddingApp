@@ -2,27 +2,25 @@ import {FlatList, NativeScrollEvent, NativeSyntheticEvent, StyleSheet, View} fro
 
 import PlaceItem from "@/components/wizards/plannerWizard/PlaceItem";
 import {PlacesDto} from "@/types/open-api";
-import {Dispatch, SetStateAction, useState} from "react";
+import {SharedValue, useSharedValue} from "react-native-reanimated";
 
 
-export function PickPlace({data, setScrollingDown}: {
+export function PickPlace({data, isScrollDown}: {
     data: PlacesDto[] | undefined | null,
-    setScrollingDown: Dispatch<SetStateAction<boolean>>
+    isScrollDown: SharedValue<boolean>
 
 
 }) {
-    const [y, setY] = useState<number>(0);
+
+
+    const y = useSharedValue(0)
 
     function onScroll({nativeEvent}: NativeSyntheticEvent<NativeScrollEvent>) {
-        if (nativeEvent.contentOffset.y > y) {
-            setScrollingDown(true);
-        } else {
-            setScrollingDown(false);
-        }
+        isScrollDown.value = nativeEvent.contentOffset.y > 0 && nativeEvent.contentOffset.y > y.value
     }
 
     function onScrollEnd({nativeEvent}: NativeSyntheticEvent<NativeScrollEvent>) {
-        setY(nativeEvent.contentOffset.y);
+        y.value = nativeEvent.contentOffset.y > nativeEvent.layoutMeasurement.height ? nativeEvent.layoutMeasurement.height : nativeEvent.contentOffset.y
     }
 
 
@@ -32,10 +30,8 @@ export function PickPlace({data, setScrollingDown}: {
                       data={data}
                       renderItem={PlaceItem}
                       onScroll={onScroll}
-                // onScrollAnimationEnd={onScrollEnd}
                       onScrollEndDrag={onScrollEnd}
-                      scrollEventThrottle={16}
-
+                      scrollEventThrottle={100}
             />
         </View>
     )
@@ -45,7 +41,7 @@ export function PickPlace({data, setScrollingDown}: {
 const styles = StyleSheet.create({
 
     scrollContent: {
-        marginBottom: 55
+        marginBottom: 180
     },
 
 })

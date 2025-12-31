@@ -504,9 +504,9 @@ export class Api<
           | "CosmeticClinics"
           | "Fireworks"
           | "Extra";
+        offset: number;
         search?: string;
         filter?: "MyPick" | "MyFavourite" | "onSale";
-        offset: number;
       },
       params: RequestParams = {},
     ) =>

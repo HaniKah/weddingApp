@@ -17,16 +17,18 @@ export default function ProfilePage() {
                 <View style={styles.container}>
                     <Text style={styles.name}>{user?.firstName} {user.lastName}</Text>
                     {userType === UserType.Vendor ?
-                        <AppButton onPress={() => switchRole(UserType.User)} fullWidth buttonType={ButtonType.PRIMARY}
+                        <AppButton onPress={() => switchRole(UserType.User)} fullWidth
+                                   buttonType={ButtonType.PRIMARY}
                                    fullRound>
                             switch to user
                         </AppButton> :
-                        <AppButton onPress={() => switchRole(UserType.Vendor)} fullWidth buttonType={ButtonType.PRIMARY}
+                        <AppButton onPress={() => switchRole(UserType.Vendor)} fullWidth
+                                   buttonType={ButtonType.PRIMARY}
                                    fullRound>
                             switch to vendor
                         </AppButton>
                     }
-                    
+
                     <AppButton extraStylesBtn={{marginTop: 20}} fullWidth destructive buttonType={ButtonType.PLAIN}
                                buttonSize="LG" onPress={signOut}>
                         Logout

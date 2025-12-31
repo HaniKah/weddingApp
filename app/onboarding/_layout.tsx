@@ -1,7 +1,10 @@
 import {Stack} from "expo-router";
+import AppSafeAreaView from "@/components/appComponents/AppSafeAreaView";
 
 export default function OnboardingLayout() {
     return (
-        <Stack screenOptions={{headerShown: false}}/>
+        <AppSafeAreaView>
+            <Stack screenOptions={{headerShown: false}}/>
+        </AppSafeAreaView>
     )
 }

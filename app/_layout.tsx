@@ -2,10 +2,8 @@ import {useFonts} from 'expo-font';
 import {SplashScreen, Stack} from 'expo-router';
 import {StatusBar} from 'expo-status-bar';
 import 'react-native-reanimated';
-import {SafeAreaProvider, SafeAreaView} from "react-native-safe-area-context";
-import {StyleSheet} from "react-native";
-import {Theme} from "@/styles/Theme";
-import {useEffect} from "react";
+import {Edges, SafeAreaProvider} from "react-native-safe-area-context";
+import {useEffect, useState} from "react";
 import {useAuthStore} from "@/utils/authStore";
 import {AuthProvider} from "@/contexts/auth-context";
 import {UserType} from "@/types/user-type";
@@ -13,13 +11,16 @@ import {GestureHandlerRootView} from "react-native-gesture-handler";
 
 
 export default function RootLayout() {
+    const [safeAreaEdges, setSafeAreaEdges] = useState<Edges>(['top'])
     const {isLoggedIn, shouldCreateAccount, hasCompletedOnboarding, userType} = useAuthStore()
+
     SplashScreen.preventAutoHideAsync();
 
     const [loaded, error] = useFonts({
         'MeaCulpa-Regular': require('../assets/fonts/MeaCulpa-Regular.ttf'),
         'Aboreto-Regular': require('../assets/fonts/Aboreto-Regular.ttf'),
     });
+
     useEffect(() => {
         if (loaded || error) {
             SplashScreen.hideAsync();
@@ -31,33 +32,30 @@ export default function RootLayout() {
         return null;
     }
 
+
     return (
         <AuthProvider>
             <SafeAreaProvider>
-                <SafeAreaView style={styles.container} edges={['top']}>
-                    <GestureHandlerRootView>
-                        <Stack screenOptions={{headerShown: false}}>
-                            <Stack.Protected guard={isLoggedIn && userType === UserType.User}>
-                                <Stack.Screen name="(tabs)"/>
-                            </Stack.Protected>
-                            <Stack.Protected guard={isLoggedIn && userType === UserType.Vendor}>
-                                <Stack.Screen name="(switch-tabs)"/>
-                            </Stack.Protected>
-                            <Stack.Protected guard={!isLoggedIn && !shouldCreateAccount && hasCompletedOnboarding}>
-                                <Stack.Screen name="sign-in"/>
-                            </Stack.Protected>
-                            <Stack.Protected guard={shouldCreateAccount}>
-                                <Stack.Screen name="sign-up"/>
-                            </Stack.Protected>
-                            <Stack.Protected guard={!hasCompletedOnboarding}>
-                                <Stack.Screen name="onboarding"/>
-                            </Stack.Protected>
-                            <Stack.Screen name="+not-found"/>
-                        </Stack>
+                <GestureHandlerRootView>
+                    <Stack screenOptions={{headerShown: false}}>
+                        <Stack.Protected guard={isLoggedIn && userType === UserType.User}>
+                            <Stack.Screen name="(tabs)"/>
+                        </Stack.Protected>
+                        <Stack.Protected guard={isLoggedIn && userType === UserType.Vendor}>
+                            <Stack.Screen name="(switch-tabs)"/>
+                        </Stack.Protected>
+                        <Stack.Protected guard={!isLoggedIn && !shouldCreateAccount && hasCompletedOnboarding}>
+                            <Stack.Screen name="sign-in"/>
+                        </Stack.Protected>
+                        <Stack.Protected guard={!hasCompletedOnboarding}>
+                            <Stack.Screen
+                                name="onboarding"/>
+                        </Stack.Protected>
+                        <Stack.Screen name="+not-found"/>
+                    </Stack>
 
-                        <StatusBar style="auto"/>
-                    </GestureHandlerRootView>
-                </SafeAreaView>
+                    <StatusBar style="auto"/>
+                </GestureHandlerRootView>
             </SafeAreaProvider>
         </AuthProvider>
 
@@ -65,12 +63,3 @@ export default function RootLayout() {
     );
 
 }
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: Theme.colors.background,
-
-    },
-
-
-});

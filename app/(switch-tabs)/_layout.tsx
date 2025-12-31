@@ -23,10 +23,10 @@ export default function SwitchTabsLayout() {
                                                                       color={color}/>,
                              }}/>
 
-                <Tabs.Screen name="settings"
+                <Tabs.Screen name="profile"
                              options={{
-                                 title: 'Settings',
-                                 tabBarIcon: ({color}) => <IconSymbol size={28} name="gearshape.fill" color={color}/>,
+                                 title: 'Profile',
+                                 tabBarIcon: ({color}) => <IconSymbol size={28} name="person.fill" color={color}/>,
                              }}/>
 
             </Tabs>

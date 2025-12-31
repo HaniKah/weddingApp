@@ -26,10 +26,10 @@ export default function TabsLayout() {
                                  tabBarIcon: ({color}) => <IconSymbol size={28} name="heart.text.clipboard.fill"
                                                                       color={color}/>,
                              }}/>
-                <Tabs.Screen name="settings"
+                <Tabs.Screen name="profile"
                              options={{
-                                 title: 'Settings',
-                                 tabBarIcon: ({color}) => <IconSymbol size={28} name="gearshape.fill" color={color}/>,
+                                 title: 'profile',
+                                 tabBarIcon: ({color}) => <IconSymbol size={28} name="person.fill" color={color}/>,
                              }}/>
 
             </Tabs>

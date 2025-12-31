@@ -5,21 +5,27 @@ import {useApi} from "@/utils/api";
 import {useAuthStore} from "@/utils/authStore";
 
 
-export type AuthUser = {
-    id: string;
-    email: string;
-    name: string;
-    picture?: string;
-    given_name?: string;
-    family_name?: string;
-    email_verified?: boolean;
-    provider?: string;
-    exp?: number;
-    cookieExpiration?: number; // Added for web cookie expiration tracking
-};
+// export type AuthUser = {
+//     id: string;
+//     email: string;
+//     name: string;
+//     picture?: string;
+//     given_name?: string;
+//     family_name?: string;
+//     email_verified?: boolean;
+//     provider?: string;
+//     exp?: number;
+//     cookieExpiration?: number; // Added for web cookie expiration tracking
+// };
+
+// export type AuthUser = {
+//     firstName: string,
+//     lastName: string,
+//     email: string,
+// }
 
 const AuthContext = React.createContext({
-    user: null as AuthUser | null,
+    // user: null as AuthUser | null,
     signInWithGoogle: () => {
     },
     signOut: () => {
@@ -30,7 +36,7 @@ const AuthContext = React.createContext({
 
 
 export const AuthProvider = ({children}: { children: React.ReactNode }) => {
-    const [user, setUser] = React.useState<AuthUser | null>(null);
+    // const [user, setUser] = React.useState<AuthUser | null>(null);
     const [isLoading, setIsLoading] = React.useState(false);
     const [error, setError] = React.useState<AuthError | null>(null);
     const API = useApi()
@@ -70,12 +76,13 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
                 Authorization: `Bearer ${code}`,
             }
         })
-        logIn(response.data.accessToken, response.data.refreshToken)
+        logIn(response.data.accessToken, response.data.refreshToken, response.data.user.firstName, response.data.user.lastName, response.data.user.email)
+
     }
 
     return (
         <AuthContext.Provider value={{
-            user,
+
             signInWithGoogle,
             signOut,
             isLoading,

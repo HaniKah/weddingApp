@@ -3,17 +3,23 @@ import {deleteItemAsync, getItem, setItem} from "expo-secure-store";
 import {create} from "zustand";
 import {UserType} from "@/types/user-type";
 
+type UserInfo = {
+    firstName: string | null,
+    lastName: string | null,
+    email: string | null,
+}
 
 type userState = {
     isLoggedIn: boolean;
     shouldCreateAccount: boolean;
     hasCompletedOnboarding: boolean;
-    logIn: (accessToken: string, refreshToken: string) => void;
+    logIn: (accessToken: string, refreshToken: string, firstName?: string, lastName?: string, email?: string) => void;
     logOut: () => void;
     completeOnboarding: () => void;
     resetOnboarding: () => void;
     userType: UserType
     switchRole: (role: UserType) => void
+    user: UserInfo
 }
 
 export const useAuthStore = create(persist<userState>((set) => ({
@@ -21,10 +27,18 @@ export const useAuthStore = create(persist<userState>((set) => ({
     shouldCreateAccount: false,
     hasCompletedOnboarding: false,
     userType: UserType.User,
+    user: {
+        firstName: getItem("firstName"),
+        lastName: getItem("lastName"),
+        email: getItem("email"),
+    },
 
-    logIn: (accessToken: string, refreshToken: string) => set((state) => {
+    logIn: (accessToken: string, refreshToken: string, firstName?: string, lastName?: string, email?: string) => set((state) => {
         setItem("accessToken", accessToken)
         setItem("refreshToken", refreshToken)
+        if (firstName) setItem("firstName", firstName);
+        if (lastName) setItem("lastName", lastName);
+        if (email) setItem("email", email)
         return {
             ...state,
             isLoggedIn: true,
@@ -33,6 +47,9 @@ export const useAuthStore = create(persist<userState>((set) => ({
     logOut: () => set((state) => {
         deleteItemAsync("accessToken")
         deleteItemAsync("refreshToken")
+        deleteItemAsync("firstName")
+        deleteItemAsync("lastName")
+        deleteItemAsync("email")
         return {
             ...state,
             isLoggedIn: false,

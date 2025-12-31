@@ -169,10 +169,17 @@ export interface DeleteGuestRequest {
   id: number;
 }
 
+export interface UserInfo {
+  firstName: string;
+  lastName: string;
+  email: string;
+}
+
 export interface ExchangeTokenDto {
   id: number;
   accessToken: string;
   refreshToken: string;
+  user: UserInfo;
 }
 
 export interface DeletePlaceRequest {

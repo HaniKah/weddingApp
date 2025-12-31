@@ -506,6 +506,7 @@ export class Api<
           | "Extra";
         search?: string;
         filter?: "MyPick" | "MyFavourite" | "onSale";
+        offset: number;
       },
       params: RequestParams = {},
     ) =>

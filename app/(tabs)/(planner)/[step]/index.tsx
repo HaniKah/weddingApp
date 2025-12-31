@@ -32,6 +32,8 @@ export default function Index() {
 
     const [selectedFilter, setSelectedFilter] = useState<SearchFilter>()
 
+    const [pagination, setPagination] = useState<number>(0)
+
 
     // console.log("step :", step)
 
@@ -61,9 +63,9 @@ export default function Index() {
         const getPlaces = async (): Promise<void> => {
             try {
                 const response = await API.plannerControllerGetPlaces({
-                    step: activeStep?.step, search: searchText, filter: selectedFilter
+                    step: activeStep?.step, search: searchText, filter: selectedFilter, offset: pagination
                 }) //todo : doesnt make sense , rethink it
-                setPlaces(response.data.places)
+                setPlaces(prev => ([...prev, ...response.data.places]))
 
             } catch (err) {
                 console.error(err)
@@ -76,7 +78,7 @@ export default function Index() {
             getPlaces()
         }
 
-    }, [activeStep, steps, searchText, selectedFilter]);
+    }, [activeStep, steps, searchText, selectedFilter, pagination]);
 
 
     const filters: Filters[] = [
@@ -126,7 +128,7 @@ export default function Index() {
                         style={places?.length > 0 ? animatedFoundPlaces : styles.placesNotFound}>{places?.length > 0 ? places?.length + (places.length > 1 ? " places found" : " place found") : " no places were found for this search criteria"}
                     </Animated.Text>
 
-                    <PickPlace isScrollDown={isScrollingDown} data={places}/>
+                    <PickPlace setPagination={setPagination} isScrollDown={isScrollingDown} data={places}/>
                 </AppView>}
 
         </>

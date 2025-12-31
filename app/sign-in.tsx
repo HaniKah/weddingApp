@@ -1,42 +1,56 @@
-import {Button, Text} from "react-native";
 import {useAuth} from "@/contexts/auth-context";
-import AppView from "@/components/appComponents/AppView";
-import {useAuthStore} from "@/utils/authStore";
-import Constants from "expo-constants"
-import {useState} from "react";
-import {useApi} from "@/utils/api";
+import AppButton from "@/components/appComponents/AppButton";
+import {ButtonType} from "@/styles/Button";
+import {useVideoPlayer, VideoView} from "expo-video";
+import {Dimensions, StyleSheet, View} from "react-native";
+
+const videoSource =
+    'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
+
 
 export default function SignIn() {
     const {signInWithGoogle} = useAuth()
-    const {resetOnboarding} = useAuthStore()
-    const API = useApi()
-    const [hello, setHello] = useState<string>()
+    const {height, width} = Dimensions.get("window");
 
-    async function getHello() {
-        try {
-            const resp = await API.appControllerGetHello()
-            setHello(resp.data)
-        } catch (error) {
-            console.log(error)
-        }
-    }
+
+    const player = useVideoPlayer(videoSource, player => {
+        player.loop = true;
+        player.play();
+    });
 
 
     return (
-        <AppView withPadding>
-            <Text>
-                Sign in
-            </Text>
-            <Button onPress={signInWithGoogle} title="Sign In with google"/>
-            <Button onPress={resetOnboarding} title="reset onboarding "/>
-            <Text>
-                {Constants?.expoConfig?.scheme}
-            </Text>
-            <Text>
-                {process.env.EXPO_PUBLIC_API_URL}
-            </Text>
-            <Button onPress={getHello} title="get Hello"/>
-            <Text>{hello}</Text>
-        </AppView>
+        <>
+            <View style={styles.container}>
+
+                <VideoView style={{height}} player={player}/>
+
+                <View style={styles.signInContainer}>
+                    <AppButton fullWidth buttonType={ButtonType.OUTLINED} onPress={signInWithGoogle}>Sign In with
+                        google
+                    </AppButton>
+                </View>
+
+            </View>
+
+        </>
+
+
     )
 }
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        position: "relative",
+
+    },
+    controlsContainer: {
+        padding: 10,
+    },
+    signInContainer: {
+        position: 'absolute',
+        bottom: 50,
+        width: '100%',
+        padding: 40
+    }
+});

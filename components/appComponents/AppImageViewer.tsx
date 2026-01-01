@@ -2,6 +2,8 @@ import {Dimensions, FlatList, Image, Modal, Pressable, StyleSheet, View} from "r
 import {useEffect, useRef, useState} from "react";
 import {useSafeAreaInsets} from "react-native-safe-area-context";
 import {IconSymbol} from "@/components/symbols/IconSymbol";
+import {Gesture, GestureDetector} from "react-native-gesture-handler";
+import Animated, {useAnimatedStyle, useSharedValue, withSpring} from "react-native-reanimated";
 
 export interface ImageView {
     uri: string,
@@ -16,22 +18,10 @@ export default function AppImageViewer({isVisible, onClose, images, activeIndex}
 
 }) {
     const screenWidth = Dimensions.get('window').width;
-    // const [height, setHeight] = useState(0);
     const [imageView, setImageView] = useState<ImageView[]>([]);
     const insets = useSafeAreaInsets();
     const flatListRef = useRef<FlatList>(null);
 
-    //
-    // useEffect(() => {
-    //     if (images.length === 0) return
-    //     let list: ImageView[] = []
-    //     images.forEach((uri) => {
-    //         Image.getSize(uri, (width, height) => {
-    //             list.push({uri, ratio: height / width})
-    //         })
-    //     })
-    //     setImageView(list)
-    // }, [images]);
 
     useEffect(() => {
         if (!images.length) return;
@@ -54,9 +44,44 @@ export default function AppImageViewer({isVisible, onClose, images, activeIndex}
 
 
     function ImageItem({image}: { image: ImageView }) {
+
+        const UNZOOM = 1
+        const ZOOM = 1.5
+        const scale = useSharedValue(UNZOOM)
+        const savedScale = useSharedValue(UNZOOM);
+
+        const pinchGesture = Gesture.Pinch()
+            .onUpdate((e) => {
+                scale.value = savedScale.value * e.scale;
+            })
+            .onEnd(() => {
+                scale.value = withSpring(UNZOOM)
+            });
+
+
+        const doubleTapGesture = Gesture.Tap().numberOfTaps(2).onStart(() => {
+            if (scale.value === UNZOOM) {
+                scale.value = withSpring(ZOOM)
+            } else {
+                scale.value = withSpring(UNZOOM)
+            }
+        })
+
+        const imageAnimatedStyle = useAnimatedStyle(() => ({
+            width: screenWidth,
+            height: screenWidth * image.ratio,
+            transform: [{scale: scale.value}]
+        }))
+        
+        const composedGestures = Gesture.Race(doubleTapGesture, pinchGesture)
+
         return (
             <>
-                <Image source={{uri: image.uri}} style={{width: screenWidth, height: screenWidth * image.ratio}}/>
+                <GestureDetector gesture={composedGestures}>
+                    <Animated.Image source={{uri: image.uri}}
+                                    style={imageAnimatedStyle}/>
+                </GestureDetector>
+
             </>
         )
     }

@@ -13,6 +13,7 @@ import AppButton from "@/components/appComponents/AppButton";
 import {ButtonType} from "@/styles/Button";
 import {IconSymbol} from "@/components/symbols/IconSymbol";
 import AppIf from "@/components/appComponents/AppIf";
+import {CommonStyles} from "@/styles/Common";
 
 export default function Index() {
     const API = useApi();
@@ -29,6 +30,7 @@ export default function Index() {
             try {
                 const res = await API.placesControllerGetPlaces();
                 setPlaces(res.data);
+
             } catch (err) {
                 console.error(err);
             } finally {
@@ -109,7 +111,7 @@ export default function Index() {
         }
     }
 
-    function SectionHeaderItem({title}: { title: string }) {
+    function SectionHeaderItem({title}: { title: string | null }) {
         return (
             <View style={styles.sectionHeaderContainer}>
                 <Text
@@ -129,16 +131,26 @@ export default function Index() {
             <PlacesToolbar onCreatePlace={() => setOpenModal(true)}/>
 
             <AppView withPadding isLoading={isLoading}>
-                {places &&
-                    <SectionList
-                        renderSectionHeader={({section}) => (<SectionHeaderItem title={section.title}/>)}
-                        contentContainerStyle={styles.flatlist}
-                        keyExtractor={(item) => item.id.toString()}
-                        sections={[places.published, places.unpublished, places.uncompleted]}
-                        renderItem={(item) => <VendorPlaceItem onPress={handlePlacePress}
-                                                               setTrigger={setTrigger} data={item.item}/>
-                        }/>
+
+
+                {
+                    places && Object.values(places).flatMap(s => s.data).length > 0 ?
+                        <SectionList
+                            renderSectionHeader={({section}) => (
+                                <SectionHeaderItem title={section.data.length > 0 ? section.title : null}/>)}
+                            contentContainerStyle={styles.flatlist}
+                            keyExtractor={(item) => item.id.toString()}
+                            sections={[places.published, places.unpublished, places.uncompleted]}
+                            renderItem={(item) => <VendorPlaceItem onPress={handlePlacePress}
+                                                                   setTrigger={setTrigger} data={item.item}/>
+                            }/>
+                        :
+                        <Text style={[{marginVertical: "auto"}, CommonStyles.dataNotFound]}>You dont have places yet ,
+                            create one
+                            now</Text>
+
                 }
+
 
             </AppView>
 

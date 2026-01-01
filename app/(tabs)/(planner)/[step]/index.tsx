@@ -7,10 +7,10 @@ import {useApi} from "@/utils/api";
 import StepsHeader from "@/components/StepsHeader";
 import AppSearchBar from "@/components/appComponents/AppSearchBar";
 import SearchFilters, {Filters} from "@/components/SearchFilters";
-import {StyleSheet} from "react-native";
 import {Theme} from "@/styles/Theme";
 import {PickPlace} from "@/components/wizards/plannerWizard/PickPlace";
 import Animated, {useAnimatedStyle, useSharedValue} from "react-native-reanimated";
+import {CommonStyles} from "@/styles/Common";
 
 
 export default function Index() {
@@ -125,7 +125,7 @@ export default function Index() {
                         setSelectedFilter={setSelectedFilter}/>
 
                     <Animated.Text
-                        style={places?.length > 0 ? animatedFoundPlaces : styles.placesNotFound}>{places?.length > 0 ? places?.length + (places.length > 1 ? " places found" : " place found") : " no places were found for this search criteria"}
+                        style={places?.length > 0 ? animatedFoundPlaces : CommonStyles.dataNotFound}>{places?.length > 0 ? places?.length + (places.length > 1 ? " places found" : " place found") : " no places were found for this search criteria"}
                     </Animated.Text>
 
                     <PickPlace setPagination={setPagination} isScrollDown={isScrollingDown} data={places}/>
@@ -134,13 +134,3 @@ export default function Index() {
         </>
     )
 }
-
-const styles = StyleSheet.create({
-    placesFound: {},
-    placesNotFound: {
-        textAlign: "center",
-        marginVertical: 50,
-        fontStyle: "italic",
-        color: Theme.colors.gray.S600
-    }
-})

@@ -2,13 +2,8 @@ import {Dimensions, FlatList, Image, Modal, Pressable, StyleSheet, View} from "r
 import {useEffect, useRef, useState} from "react";
 import {useSafeAreaInsets} from "react-native-safe-area-context";
 import {IconSymbol} from "@/components/symbols/IconSymbol";
-import {Gesture, GestureDetector} from "react-native-gesture-handler";
-import Animated, {useAnimatedStyle, useSharedValue, withSpring} from "react-native-reanimated";
+import ImageItem, {ImageView} from "@/components/items/ImageItem";
 
-export interface ImageView {
-    uri: string,
-    ratio: number
-}
 
 export default function AppImageViewer({isVisible, onClose, images, activeIndex}: {
     isVisible: boolean,
@@ -43,93 +38,6 @@ export default function AppImageViewer({isVisible, onClose, images, activeIndex}
     }, [images]);
 
 
-    function ImageItem({image}: { image: ImageView }) {
-
-        const DEFAULT_ZOOM = 1
-        const DOUBLE_TAP_ZOOM = 2
-        const DEFAULT_POSITION = {x: 0, y: 0}
-        const offset = useSharedValue(DEFAULT_POSITION);
-        const start = useSharedValue(DEFAULT_POSITION);
-        const scale = useSharedValue(DEFAULT_ZOOM);
-        const savedScale = useSharedValue(DEFAULT_ZOOM);
-
-        const doubleTapGesture = Gesture.Tap()
-            .numberOfTaps(2)
-            .onStart(() => {
-                if (scale.value === DEFAULT_ZOOM) {
-                    scale.value = withSpring(DOUBLE_TAP_ZOOM)
-                } else {
-                    scale.value = withSpring(DEFAULT_ZOOM)
-                    offset.value = withSpring(DEFAULT_POSITION);
-                    start.value = withSpring(DEFAULT_POSITION);
-                }
-            })
-
-
-        const dragGesture = Gesture.Pan()
-            .minPointers(2)
-            .averageTouches(true)
-
-            .onUpdate((e) => {
-                offset.value = {
-                    x: e.translationX + start.value.x,
-                    y: e.translationY + start.value.y,
-                };
-            })
-            .onEnd(() => {
-                if (scale.value === DEFAULT_ZOOM) {
-                    offset.value = withSpring(DEFAULT_POSITION);
-                    start.value = withSpring(DEFAULT_POSITION);
-                } else {
-
-                    start.value = {
-                        x: offset.value.x,
-                        y: offset.value.y,
-                    };
-
-
-                }
-
-
-            });
-
-        const pinchGesture = Gesture.Pinch()
-            .onUpdate((event) => {
-                scale.value = savedScale.value * event.scale;
-            })
-            .onEnd(() => {
-                savedScale.value = scale.value;
-            });
-
-
-        const composed = Gesture.Race(
-            doubleTapGesture,
-            Gesture.Simultaneous(dragGesture, pinchGesture)
-        );
-
-        const animatedStyles = useAnimatedStyle(() => {
-            return {
-                width: width,
-                height: width * image.ratio,
-
-                transform: [
-                    {translateX: offset.value.x},
-                    {translateY: offset.value.y},
-                    {scale: scale.value},
-                ],
-            };
-        });
-
-
-        return (
-            <GestureDetector gesture={composed}>
-                <View style={[styles.imageContainer, {height, width}]}>
-                    <Animated.Image source={{uri: image.uri}} style={animatedStyles}/>
-                </View>
-            </GestureDetector>
-        );
-    }
-
     function ImageHeader() {
         return (
             <>
@@ -151,11 +59,12 @@ export default function AppImageViewer({isVisible, onClose, images, activeIndex}
                 onRequestClose={onClose}
                 animationType="none">
                 <View style={{paddingTop: insets.top, paddingBottom: insets.bottom, flex: 1, backgroundColor: "black"}}>
-                    {/*<SafeAreaView style={styles.safeArea} edges={["top", "bottom"]}>*/}
                     <ImageHeader/>
+
                     <View style={styles.container}>
                         <View style={styles.listContainer}>
                             <FlatList
+
                                 pagingEnabled
                                 snapToInterval={width}
                                 snapToAlignment="start"
@@ -175,7 +84,6 @@ export default function AppImageViewer({isVisible, onClose, images, activeIndex}
                             />
                         </View>
                     </View>
-                    {/*</SafeAreaView>*/}
                 </View>
             </Modal>
         </>
@@ -207,10 +115,5 @@ const styles = StyleSheet.create({
         display: "flex",
         alignItems: "center",
     },
-    imageContainer: {
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        overflow: "hidden",
-    }
+
 })

@@ -28,7 +28,7 @@ export function PickPlace({data, isScrollDown, setPagination}: {
     }
 
     function onEndReached() {
- 
+
         setPagination(prev => (prev + 1))
     }
 
@@ -36,6 +36,7 @@ export function PickPlace({data, isScrollDown, setPagination}: {
     return (
         <View>
             <FlatList style={styles.scrollContent}
+                      contentContainerStyle={{gap: 20}}
                       data={data}
                       renderItem={PlaceItem}
                       onScroll={onScroll}
@@ -51,7 +52,7 @@ export function PickPlace({data, isScrollDown, setPagination}: {
 const styles = StyleSheet.create({
 
     scrollContent: {
-        marginBottom: 120
+        marginBottom: 120,
     },
 
 })

@@ -21,9 +21,9 @@ export default function PlaceItem({item}: { item: PlacesDto }) {
                         <Text style={styles.name}>
                             {item.name}
                         </Text>
-                        <Text>
-                            {item.formattedAddress}
-                        </Text>
+                        {/*<Text>*/}
+                        {/*    {item.formattedAddress} this is the address*/}
+                        {/*</Text>*/}
                     </View>
                     <View>
                         {item.minPrice === item.maxPrice ?
@@ -56,16 +56,13 @@ const styles = StyleSheet.create({
         marginBottom: 10
     },
     imageContainer: {
-        height: 170,
+        height: 220,
         borderRadius: 10,
         overflow: "hidden",
     },
     container: {
         width: "100%",
-
-
         gap: 10,
-
         borderRadius: 10,
     },
     image: {
@@ -75,7 +72,7 @@ const styles = StyleSheet.create({
     },
     name: {
         fontWeight: "bold",
-        fontSize: Theme.sizes.lg,
+        fontSize: Theme.sizes.md,
     },
     currency: {
         color: Theme.colors.gray.S500,
@@ -83,6 +80,6 @@ const styles = StyleSheet.create({
     },
     price: {
         fontWeight: "bold",
-        fontSize: Theme.sizes.md,
+        fontSize: Theme.sizes.sm,
     }
 })

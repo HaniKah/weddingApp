@@ -17,7 +17,7 @@ export default function AppImageViewer({isVisible, onClose, images, activeIndex}
     activeIndex: number
 
 }) {
-    const screenWidth = Dimensions.get('window').width;
+    const {width, height} = Dimensions.get('window')
     const [imageView, setImageView] = useState<ImageView[]>([]);
     const insets = useSafeAreaInsets();
     const flatListRef = useRef<FlatList>(null);
@@ -109,8 +109,8 @@ export default function AppImageViewer({isVisible, onClose, images, activeIndex}
 
         const animatedStyles = useAnimatedStyle(() => {
             return {
-                width: screenWidth,
-                height: screenWidth * image.ratio,
+                width: width,
+                height: width * image.ratio,
 
                 transform: [
                     {translateX: offset.value.x},
@@ -123,9 +123,9 @@ export default function AppImageViewer({isVisible, onClose, images, activeIndex}
 
         return (
             <GestureDetector gesture={composed}>
-                <Animated.View>
+                <View style={[styles.imageContainer, {height, width}]}>
                     <Animated.Image source={{uri: image.uri}} style={animatedStyles}/>
-                </Animated.View>
+                </View>
             </GestureDetector>
         );
     }
@@ -157,12 +157,12 @@ export default function AppImageViewer({isVisible, onClose, images, activeIndex}
                         <View style={styles.listContainer}>
                             <FlatList
                                 pagingEnabled
-                                snapToInterval={screenWidth}
+                                snapToInterval={width}
                                 snapToAlignment="start"
                                 decelerationRate="fast"
                                 getItemLayout={(data, index) => ({
-                                    length: screenWidth,
-                                    offset: screenWidth * index,
+                                    length: width,
+                                    offset: width * index,
                                     index
                                 })}
                                 ref={flatListRef}
@@ -206,5 +206,11 @@ const styles = StyleSheet.create({
     flatlistContainer: {
         display: "flex",
         alignItems: "center",
+    },
+    imageContainer: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        overflow: "hidden",
     }
 })

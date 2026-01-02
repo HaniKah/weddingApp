@@ -30,7 +30,7 @@ export default function ProfilePage() {
                     }
 
                     <AppButton extraStylesBtn={{marginTop: 20}} fullWidth destructive buttonType={ButtonType.PLAIN}
-                               buttonSize="LG" onPress={signOut}>
+                               buttonSize="MD" onPress={signOut}>
                         Logout
                     </AppButton>
                 </View>

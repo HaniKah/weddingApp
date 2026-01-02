@@ -45,45 +45,89 @@ export default function AppImageViewer({isVisible, onClose, images, activeIndex}
 
     function ImageItem({image}: { image: ImageView }) {
 
-        const UNZOOM = 1
-        const ZOOM = 1.5
-        const scale = useSharedValue(UNZOOM)
-        const savedScale = useSharedValue(UNZOOM);
+        const DEFAULT_ZOOM = 1
+        const DOUBLE_TAP_ZOOM = 2
+        const DEFAULT_POSITION = {x: 0, y: 0}
+        const offset = useSharedValue(DEFAULT_POSITION);
+        const start = useSharedValue(DEFAULT_POSITION);
+        const scale = useSharedValue(DEFAULT_ZOOM);
+        const savedScale = useSharedValue(DEFAULT_ZOOM);
 
-        const pinchGesture = Gesture.Pinch()
+        const doubleTapGesture = Gesture.Tap()
+            .numberOfTaps(2)
+            .onStart(() => {
+                if (scale.value === DEFAULT_ZOOM) {
+                    scale.value = withSpring(DOUBLE_TAP_ZOOM)
+                } else {
+                    scale.value = withSpring(DEFAULT_ZOOM)
+                    offset.value = withSpring(DEFAULT_POSITION);
+                    start.value = withSpring(DEFAULT_POSITION);
+                }
+            })
+
+
+        const dragGesture = Gesture.Pan()
+            .minPointers(2)
+            .averageTouches(true)
+
             .onUpdate((e) => {
-                scale.value = savedScale.value * e.scale;
+                offset.value = {
+                    x: e.translationX + start.value.x,
+                    y: e.translationY + start.value.y,
+                };
             })
             .onEnd(() => {
-                scale.value = withSpring(UNZOOM)
+                if (scale.value === DEFAULT_ZOOM) {
+                    offset.value = withSpring(DEFAULT_POSITION);
+                    start.value = withSpring(DEFAULT_POSITION);
+                } else {
+
+                    start.value = {
+                        x: offset.value.x,
+                        y: offset.value.y,
+                    };
+
+
+                }
+
+
+            });
+
+        const pinchGesture = Gesture.Pinch()
+            .onUpdate((event) => {
+                scale.value = savedScale.value * event.scale;
+            })
+            .onEnd(() => {
+                savedScale.value = scale.value;
             });
 
 
-        const doubleTapGesture = Gesture.Tap().numberOfTaps(2).onStart(() => {
-            if (scale.value === UNZOOM) {
-                scale.value = withSpring(ZOOM)
-            } else {
-                scale.value = withSpring(UNZOOM)
-            }
-        })
+        const composed = Gesture.Race(
+            doubleTapGesture,
+            Gesture.Simultaneous(dragGesture, pinchGesture)
+        );
 
-        const imageAnimatedStyle = useAnimatedStyle(() => ({
-            width: screenWidth,
-            height: screenWidth * image.ratio,
-            transform: [{scale: scale.value}]
-        }))
-        
-        const composedGestures = Gesture.Race(doubleTapGesture, pinchGesture)
+        const animatedStyles = useAnimatedStyle(() => {
+            return {
+                width: screenWidth,
+                height: screenWidth * image.ratio,
+
+                transform: [
+                    {translateX: offset.value.x},
+                    {translateY: offset.value.y},
+                    {scale: scale.value},
+                ],
+            };
+        });
+
 
         return (
-            <>
-                <GestureDetector gesture={composedGestures}>
-                    <Animated.Image source={{uri: image.uri}}
-                                    style={imageAnimatedStyle}/>
-                </GestureDetector>
-
-            </>
-        )
+            <GestureDetector gesture={composed}>
+                <Animated.View>
+                    <Animated.Image source={{uri: image.uri}} style={animatedStyles}/>
+                </Animated.View>
+            </GestureDetector>
+        );
     }
 
     function ImageHeader() {

@@ -18,7 +18,7 @@ export default function PlaceItem({item}: { item: PlacesDto }) {
                 </View>
                 <View style={styles.infoContainer}>
                     <View>
-                        <Text style={styles.name}>
+                        <Text numberOfLines={1} ellipsizeMode="tail" style={styles.name}>
                             {item.name}
                         </Text>
                         {/*<Text>*/}
@@ -29,7 +29,7 @@ export default function PlaceItem({item}: { item: PlacesDto }) {
                         {item.minPrice === item.maxPrice ?
 
                             <Text style={styles.price}>{item.minPrice}
-                                <Text style={styles.currency}>{item.currency}</Text>
+                                <Text style={styles.currency}> {item.currency}</Text>
                             </Text> :
 
                             <Text style={styles.price}>{item.minPrice} - {item.maxPrice}
@@ -73,8 +73,13 @@ const styles = StyleSheet.create({
     name: {
         fontWeight: "bold",
         fontSize: Theme.sizes.md,
+        width: 220,
+        backgroundColor: "blue"
+
+
     },
     currency: {
+        fontWeight: "normal",
         color: Theme.colors.gray.S500,
 
     },

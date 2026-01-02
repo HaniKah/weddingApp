@@ -74,7 +74,6 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         fontSize: Theme.sizes.md,
         width: 220,
-        backgroundColor: "blue"
 
 
     },

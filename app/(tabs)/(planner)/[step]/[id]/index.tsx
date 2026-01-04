@@ -95,13 +95,13 @@ export default function PlaceId() {
 
                     <View style={styles.titleContainer}>
                         <Text style={styles.title}>{placeDetails?.name}</Text>
-                        <Text>{placeDetails?.currency}</Text>
+                        <Text>{placeDetails.minPrice === placeDetails.maxPrice ? placeDetails.minPrice : placeDetails.minPrice + " - " + placeDetails.maxPrice}{placeDetails?.currency}</Text>
                     </View>
 
 
-                    <AppIf value={placeDetails?.address}>
-                        <PlaceInfo iconName="location.circle" info={placeDetails?.address}/>
-                    </AppIf>
+                    {/*<AppIf value={placeDetails?.address}>*/}
+                    {/*    <PlaceInfo iconName="location.circle" info={placeDetails?.address}/>*/}
+                    {/*</AppIf>*/}
 
 
                     <AppIf value={placeDetails.phoneNumber}>

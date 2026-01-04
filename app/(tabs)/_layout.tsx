@@ -23,12 +23,7 @@ export default function TabsLayout() {
                                      tabBarIcon: ({color}) => <IconSymbol size={28} name="person.3.fill"
                                                                           color={color}/>,
                                  }}/>
-                    <Tabs.Screen name="notes"
-                                 options={{
-                                     title: 'Notes',
-                                     tabBarIcon: ({color}) => <IconSymbol size={28} name="heart.text.clipboard.fill"
-                                                                          color={color}/>,
-                                 }}/>
+                  
                     <Tabs.Screen name="profile"
                                  options={{
                                      title: 'profile',

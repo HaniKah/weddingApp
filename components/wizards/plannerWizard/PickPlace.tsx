@@ -43,6 +43,7 @@ export function PickPlace({data, isScrollDown, setPagination}: {
                       onScrollEndDrag={onScrollEnd}
                       scrollEventThrottle={100}
                       onEndReached={onEndReached}
+                      keyExtractor={(item) => item.id.toString()}
             />
         </View>
     )

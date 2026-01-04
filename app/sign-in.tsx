@@ -7,7 +7,9 @@ import {StyleSheet, View} from "react-native";
 // const videoSource =
 //     'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
 
-const videoSource = require("../assets/videos/sample.mp4")
+// const videoSource = require("../assets/videos/ring.mp4")
+const videoSource = process.env.EXPO_PUBLIC_VIDEO_URL as string
+
 
 export default function SignIn() {
     const {signInWithGoogle} = useAuth()

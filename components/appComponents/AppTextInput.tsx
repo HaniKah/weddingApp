@@ -1,8 +1,7 @@
 import {KeyboardTypeOptions, StyleProp, StyleSheet, Text, TextInput, TextStyle, View, ViewStyle} from "react-native";
 import {Theme} from "@/styles/Theme";
 import {useFormContext} from "@/contexts/form-context";
-import {useEffect, useRef, useState} from "react";
-import {Timeout} from "@radix-ui/primitive";
+import {useEffect, useMemo, useRef, useState} from "react";
 
 export default function AppTextInput({
                                          onTextChange,
@@ -45,19 +44,21 @@ export default function AppTextInput({
     const form = useFormContext()
 
 
-    let timeout: Timeout
+    const debouncer = useMemo(() => {
+        let timeout: ReturnType<typeof setTimeout>
 
-    function debouncer(func: () => void) {
-        if (timeout) clearTimeout(timeout)
-        timeout = setTimeout(() => {
-            func()
-        }, debounceTime)
-    }
+        return (text: string) => {
+            clearTimeout(timeout)
+            timeout = setTimeout(() => {
+                onTextChange(text)
+            }, debounceTime)
+        }
+    }, [onTextChange, debounceTime])
 
     function preTextChange(text: string) {
         setTextInput(text)
         setError(undefined)
-        debouncer(() => onTextChange(text))
+        debouncer(text)
 
     }
 

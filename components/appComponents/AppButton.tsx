@@ -4,6 +4,8 @@ import {useFormContext} from '@/contexts/form-context';
 import {IconSymbol} from '@/components/symbols/IconSymbol';
 import {SFSymbols6_0} from 'sf-symbols-typescript';
 import {Theme} from '@/styles/Theme';
+import {SvgProps} from "react-native-svg";
+import {FC} from "react";
 
 export default function AppButton({
                                       buttonType,
@@ -14,6 +16,7 @@ export default function AppButton({
                                       extraStylesBtn,
                                       extraStylesTxt,
                                       icon,
+                                      CustomIcon,
                                       destructive,
                                       confirmative,
                                       fullWidth,
@@ -32,6 +35,7 @@ export default function AppButton({
     extraStylesBtn?: StyleProp<ViewStyle>,
     extraStylesTxt?: StyleProp<TextStyle>,
     icon?: SFSymbols6_0,
+    CustomIcon?: FC<SvgProps>,
     destructive?: boolean,
     confirmative?: boolean,
     fullWidth?: boolean,
@@ -141,11 +145,13 @@ export default function AppButton({
         formContext.setSubmitting(true)
     }
 
+
 //if Padding is not working , then probably you want to change the padding-Horizontal/Vertical and not the general padding
 
     return (
         <Pressable disabled={inactive} onPress={isSubmit ? handleSubmit : onPress}
                    style={[buttonStyles, extraStylesBtn]}>
+            {CustomIcon && <CustomIcon/>}
             {icon &&
                 <IconSymbol size={iconSize} color={textStyles.color || 'black'} name={icon}/>}
             <Text style={[textStyles, extraStylesTxt]}>

@@ -3,7 +3,7 @@ import AppButton from "@/components/appComponents/AppButton";
 import {ButtonType} from "@/styles/Button";
 import {useVideoPlayer, VideoView} from "expo-video";
 import {StyleSheet, View} from "react-native";
-
+import Google from "@/assets/icons/social-media/google.svg"
 // const videoSource =
 //     'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
 
@@ -47,6 +47,7 @@ export default function SignIn() {
                     fullWidth
                     buttonType={ButtonType.PRIMARY}
                     onPress={signInWithGoogle}
+                    CustomIcon={Google}
                 >
                     Sign In with Google
                 </AppButton>

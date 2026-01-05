@@ -26,11 +26,13 @@
         "APP_VARIANT": "production"
       }
     },
-    "ios-simulator": {
-      "extends": "development",
+    "development-simulator": {
+      "developmentClient": true,
+      "distribution": "internal",
       "ios": {
         "simulator": true
-      }
+      },
+      "environment": "development"
     }
   },
   "submit": {

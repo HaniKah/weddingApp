@@ -77,7 +77,10 @@ export default ({config}: ConfigContext): ExpoConfig => {
         "newArchEnabled": true,
         "ios": {
             "supportsTablet": true,
-            "bundleIdentifier": bundleIdentifier
+            "bundleIdentifier": bundleIdentifier,
+            "config": {
+                "googleMapsApiKey": "process.env.GOOGLE_MAPS_API_KEY_IOS"
+            },
         },
         "android": {
             "adaptiveIcon": {
@@ -85,7 +88,12 @@ export default ({config}: ConfigContext): ExpoConfig => {
                 "backgroundColor": "#ffffff"
             },
             "edgeToEdgeEnabled": true,
-            "package": packageName
+            "package": packageName,
+            "config": {
+                "googleMaps": {
+                    "apiKey": "process.env.GOOGLE_MAPS_API_KEY",
+                },
+            },
         },
         "web": {
             "bundler": "metro",

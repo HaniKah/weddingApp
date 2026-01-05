@@ -1,7 +1,7 @@
-import {Text} from "react-native"
 import WizardController from "@/components/wizards/WizardController";
 import {useWizardContext} from "@/components/wizards/Wizard";
-import AppView from "@/components/appComponents/AppView";
+import MapView, {PROVIDER_GOOGLE} from "react-native-maps";
+import {StyleSheet, View} from "react-native";
 
 export default function PickPlaceLocation() {
     const wizard = useWizardContext()
@@ -12,12 +12,9 @@ export default function PickPlaceLocation() {
 
     return (
         <>
-            <AppView withPadding>
-                <Text>
-                    this is the location page
-
-                </Text>
-            </AppView>
+            <View style={styles.container}>
+                <MapView provider={PROVIDER_GOOGLE} style={styles.map}/>
+            </View>
             <WizardController
                 onNext={onNext}
                 isFirstStep={false}
@@ -25,3 +22,12 @@ export default function PickPlaceLocation() {
         </>
     )
 }
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+    map: {
+        width: '100%',
+        height: '100%',
+    },
+});

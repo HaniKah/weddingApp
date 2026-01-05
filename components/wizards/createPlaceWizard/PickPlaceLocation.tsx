@@ -13,7 +13,14 @@ export default function PickPlaceLocation() {
     return (
         <>
             <View style={styles.container}>
-                <MapView provider={PROVIDER_GOOGLE} style={styles.map}/>
+                <MapView initialRegion={{
+                    latitude: 37.78825,
+                    longitude: -122.4324,
+                    latitudeDelta: 0.0922,
+                    longitudeDelta: 0.0421,
+                }}
+                         provider={PROVIDER_GOOGLE}
+                         style={styles.map}/>
             </View>
             <WizardController
                 onNext={onNext}
@@ -27,7 +34,10 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     map: {
+        position: 'absolute',
+        left: 0,
+        top: 0,
         width: '100%',
-        height: '100%',
+        height: '50%',
     },
 });

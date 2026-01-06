@@ -1,4 +1,4 @@
-import {Dimensions, Modal, StyleSheet, TouchableOpacity, View} from "react-native";
+import {Dimensions, DimensionValue, Modal, StyleSheet, TouchableOpacity, View} from "react-native";
 import Animated, {useAnimatedStyle, useSharedValue, withSpring} from 'react-native-reanimated';
 import {Theme} from "@/styles/Theme";
 import {Gesture, GestureDetector} from "react-native-gesture-handler";
@@ -46,6 +46,7 @@ export default function AppBottomSheet({isVisible, setIsVisible, children}: {
 
     const animatedStyle = useAnimatedStyle(() => ({
         transform: [{translateY: offset.value}],
+        height: offset.value === HALF_SCREEN ? "50%" : "90%" as DimensionValue
     }));
 
     return (
@@ -78,7 +79,6 @@ const styles = StyleSheet.create({
     container: {
         position: "absolute",
         width: "100%",
-        height: "100%",
         backgroundColor: Theme.colors.white,
         borderTopEndRadius: 25,
         borderTopStartRadius: 25,
@@ -102,12 +102,16 @@ const styles = StyleSheet.create({
         margin: "auto",
 
     },
-    content: {},
+    content: {
+        paddingTop: 0,
+        marginBottom: 50,
+    },
     background: {
         zIndex: 99,
         height: "100%",
         width: "100%",
         position: "absolute",
         backgroundColor: "rgba(0,0,0,0.5)",
+
     }
 })

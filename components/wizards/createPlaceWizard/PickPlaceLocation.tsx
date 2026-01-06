@@ -24,8 +24,8 @@ export default function PickPlaceLocation({data, setData}: {
     const API = useApi()
     const wizard = useWizardContext()
 
-    const [selectedPlaceId, setSelectedPlaceId] = useState<string | undefined>(data.googleId)
-    const [coordinates, setCoodinates] = useState<Location>()
+    const [selectedPlaceId, setSelectedPlaceId] = useState<string | undefined>(data?.googleId)
+    const [coordinates, setCoordinates] = useState<Location>()
 
     function onNext() {
         wizard.nextStep()
@@ -41,10 +41,12 @@ export default function PickPlaceLocation({data, setData}: {
     }
 
     useEffect(() => {
+        if (!selectedPlaceId) return;
+
         async function fetchPlaceDetails(): Promise<void> {
             try {
                 fetch(`https://maps.googleapis.com/maps/api/place/details/json?fields=geometry&place_id=${selectedPlaceId}&key=AIzaSyDA4psVuPD849WqrT1PZEPC_F9Du3HPfKw`)
-                    .then(res => res.json()).then(res => setCoodinates({
+                    .then(res => res.json()).then(res => setCoordinates({
                     lat: res.result.geometry.location.lat,
                     lng: res.result.geometry.location.lng
                 }))

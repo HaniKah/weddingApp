@@ -2,56 +2,34 @@ import {Dispatch, SetStateAction, useEffect, useState} from "react";
 import AppTextInput from "@/components/appComponents/AppTextInput";
 import {FlatList, Pressable, StyleSheet, Text, View} from "react-native";
 import {Theme} from "@/styles/Theme";
+import {useApi} from "@/utils/api";
+import {Prediction} from "@/types/open-api";
+
 
 export default function GooglePlacesAutoComplete({setSelectedPlace}: {
     setSelectedPlace: Dispatch<SetStateAction<string | undefined>>
 }) {
 
-    type GooglePrediction = {
-        description: string
-        place_id: string
-        reference: string
-        structured_formatting: { main_text: string, secondary_text: string }
-        matched_substrings: any[]
-        terms: any[]
-        types: string[]
-    }
-
+    const API = useApi()
 
     const [input, setInput] = useState<string>("")
-    const [results, setResults] = useState<any>([])
+    const [results, setResults] = useState<Prediction[]>([])
 
     useEffect(() => {
         if (!input || input === "") return
-        fetch(`https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${input}&key=AIzaSyDA4psVuPD849WqrT1PZEPC_F9Du3HPfKw`)
-            .then(res => res.json())
-            .then(res => {
-                setResults(res.predictions)
-            })
+        const getAutoCompletePredictions = async () => {
+            const res = await API.placesControllerGetGoogleAutoCompletePredictions({input: input})
+            setResults(res.data.result)
+        }
+        getAutoCompletePredictions()
     }, [input]);
 
 
-    // async function selectPlace(place: GooglePrediction) {
-    //     // setSelected(place)
-    //     const resp = await fetchPlaceDetails(place.place_id)
-    //     setSelectedPlace({
-    //         placeId: place.place_id,
-    //         mainText: place.structured_formatting.main_text,
-    //         secondaryText: place.structured_formatting.secondary_text,
-    //         location: {
-    //             lat: resp.result.geometry.location.lat,
-    //             lng: resp.result.geometry.location.lng,
-    //         }
-    //     })
-    //     setResults([])
-    // }
-
-
-    function renderItem({item}: { item: GooglePrediction }) {
+    function renderItem({item}: { item: Prediction }) {
         return (
-            <Pressable onPress={() => setSelectedPlace(item.place_id)} style={styles.itemContainer}>
-                <Text style={styles.mainText}>{item.structured_formatting.main_text}</Text>
-                <Text>{item.structured_formatting.secondary_text}</Text>
+            <Pressable onPress={() => setSelectedPlace(item.placeId)} style={styles.itemContainer}>
+                <Text style={styles.mainText}>{item.main_text}</Text>
+                <Text>{item.secondary_text}</Text>
             </Pressable>
         )
     }

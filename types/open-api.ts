@@ -276,6 +276,16 @@ export interface PublishPlaceRequest {
   isPublished: boolean;
 }
 
+export interface Prediction {
+  placeId: string;
+  main_text: string;
+  secondary_text: string;
+}
+
+export interface PredictionViewModel {
+  result: Prediction[];
+}
+
 import type {
   AxiosInstance,
   AxiosRequestConfig,
@@ -905,6 +915,27 @@ export class Api<
     ) =>
       this.request<VendorPlaceDetailsDto, any>({
         path: `/api/places/getPlaceDetails`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Places
+     * @name PlacesControllerGetGoogleAutoCompletePredictions
+     * @request GET:/api/places/getGoogleAutoCompletePredictions
+     */
+    placesControllerGetGoogleAutoCompletePredictions: (
+      query: {
+        input: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<PredictionViewModel, any>({
+        path: `/api/places/getGoogleAutoCompletePredictions`,
         method: "GET",
         query: query,
         format: "json",

@@ -6,30 +6,55 @@ import AppView from "@/components/appComponents/AppView";
 import {Theme} from "@/styles/Theme";
 import GooglePlacesAutoComplete from "@/components/GooglePlacesAutoComplete";
 import AppButton from "@/components/appComponents/AppButton";
-import {useState} from "react";
+import {Dispatch, SetStateAction, useEffect, useState} from "react";
+import {useApi} from "@/utils/api";
+import {VendorPlaceDetailsDto} from "@/types/open-api";
 
 export type Location = {
     lat: number,
     lng: number
 }
 
-export type SelectedPlace = {
-    placeId: string,
-    mainText: string,
-    secondaryText: string,
-    location: Location
 
-}
+export default function PickPlaceLocation({data, setData}: {
+    data: VendorPlaceDetailsDto,
+    setData: Dispatch<SetStateAction<VendorPlaceDetailsDto>>
+}) {
 
-export default function PickPlaceLocation() {
+    const API = useApi()
     const wizard = useWizardContext()
 
-    const [selectedPlace, setSelectedPlace] = useState<SelectedPlace | undefined>(undefined)
-
+    const [selectedPlaceId, setSelectedPlaceId] = useState<string | undefined>(data.googleId)
+    const [coordinates, setCoodinates] = useState<Location>()
 
     function onNext() {
         wizard.nextStep()
     }
+
+    async function updateGooglePlaceId(placeId: string) {
+        try {
+            const res = await API.placesControllerUpdatePlace({location: {googleId: placeId}})
+            setData(res.data)
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    useEffect(() => {
+        async function fetchPlaceDetails(): Promise<void> {
+            try {
+                fetch(`https://maps.googleapis.com/maps/api/place/details/json?fields=geometry&place_id=${selectedPlaceId}&key=AIzaSyDA4psVuPD849WqrT1PZEPC_F9Du3HPfKw`)
+                    .then(res => res.json()).then(res => setCoodinates({
+                    lat: res.result.geometry.location.lat,
+                    lng: res.result.geometry.location.lng
+                }))
+            } catch (err) {
+                console.log(err)
+            }
+        }
+
+        fetchPlaceDetails()
+    }, [selectedPlaceId]);
 
 
     return (
@@ -37,13 +62,13 @@ export default function PickPlaceLocation() {
             <AppView withPadding>
                 <View style={styles.container}>
                     <Text style={styles.title}>Add location info</Text>
-                    <GooglePlacesAutoComplete setSelectedPlace={setSelectedPlace}/>
+                    <GooglePlacesAutoComplete setSelectedPlace={setSelectedPlaceId}/>
                     <MapView
                         cacheEnabled={true}
                         camera={{
                             center: {
-                                latitude: selectedPlace?.location.lat!,
-                                longitude: selectedPlace?.location.lng!,
+                                latitude: coordinates?.lat!,
+                                longitude: coordinates?.lng!
                             },
                             zoom: 18,
                             heading: 2,
@@ -61,15 +86,15 @@ export default function PickPlaceLocation() {
                         provider={PROVIDER_GOOGLE}
                         style={styles.map}>
 
-                        {selectedPlace &&
+                        {coordinates &&
                             <Marker coordinate={{
-                                latitude: selectedPlace?.location.lat,
-                                longitude: selectedPlace?.location.lng,
+                                latitude: coordinates.lat,
+                                longitude: coordinates.lng,
                             }}/>
                         }
                     </MapView>
 
-                    <AppButton extraStylesBtn={styles.confirmBtn} fullWidth>
+                    <AppButton onPress={updateGooglePlaceId} extraStylesBtn={styles.confirmBtn} fullWidth>
                         Confirm
                     </AppButton>
                 </View>

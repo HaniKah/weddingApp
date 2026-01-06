@@ -232,6 +232,7 @@ export interface VendorPlaceDetailsDto {
   mainPhoto: string;
   minPrice: string;
   maxPrice: string;
+  googleId?: string;
 }
 
 export interface UpdatePlaceRequest {

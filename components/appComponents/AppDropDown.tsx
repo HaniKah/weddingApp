@@ -1,19 +1,25 @@
 import {PickerItem} from "@/components/appComponents/AppPicker";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {FlatList, Pressable, StyleProp, StyleSheet, Text, View, ViewStyle} from "react-native";
 import {Theme} from "@/styles/Theme";
 import {IconSymbol} from "@/components/symbols/IconSymbol";
 import AppBottomSheet from "@/components/appComponents/AppBottomSheet";
+import {useFormContext} from "@/contexts/form-context";
 
-export default function AppDropDown<T>({itemList, label, value, onChange, style, title}: {
+export default function AppDropDown<T>({itemList, label, value, onChange, style, title, required, name}: {
     style?: StyleProp<ViewStyle>,
     value: T | undefined,
     onChange: (value: T) => void,
     itemList: PickerItem<T>[],
     label?: string
     title?: string
+    required?: boolean,
+    name: string
 }) {
+
+    const form = useFormContext()
     const [isVisible, setIsVisible] = useState(false)
+    const [error, setError] = useState<string | undefined>()
 
     const onSelect = (selectedValue: T) => {
         onChange(selectedValue)
@@ -29,21 +35,44 @@ export default function AppDropDown<T>({itemList, label, value, onChange, style,
         )
     }
 
+    useEffect(() => {
+        if (form.submitting) {
+
+            let valid: boolean = false
+            if (value !== undefined && value !== null) {
+                valid = true
+            }
+
+            if (required) {
+                if (valid) {
+                    form.addValue({[name]: valid})
+                } else {
+                    setError("Please check this field")
+                    form.setSubmitting(false)
+                }
+            } else {
+                form.addValue({[name]: valid})
+            }
+        }
+
+    }, [form.submitting]);
+
     return (
         <View style={style}>
-            <Text>{label}</Text>
+            {label && <Text>{label}</Text>}
             <Pressable style={styles.pressable} onPress={() => setIsVisible(true)}>
                 <Text>
                     {itemList.find(item => item.value === value)?.name ?? "Select an option"}
                 </Text>
                 <IconSymbol name="chevron.down" size={20} color={Theme.colors.gray.S400}/>
             </Pressable>
+            {error && <Text style={styles.error}>{error}</Text>}
 
             <AppBottomSheet
                 isVisible={isVisible}
                 setIsVisible={setIsVisible}>
                 <View style={styles.viewContainer}>
-                    <Text style={styles.title}>{title}</Text>
+                    {title && <Text style={styles.title}>{title}</Text>}
                     <FlatList contentContainerStyle={styles.flatListContainer} data={itemList} renderItem={renderItem}/>
 
                 </View>
@@ -55,7 +84,6 @@ export default function AppDropDown<T>({itemList, label, value, onChange, style,
 const styles = StyleSheet.create({
     viewContainer: {
         padding: 10,
-        paddingTop: 20,
     },
     title: {
         textAlign: "center",
@@ -63,7 +91,8 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
     },
     flatListContainer: {
-        marginTop: 30
+        marginTop: 0,
+
     },
     pressable: {
         display: "flex",
@@ -85,6 +114,11 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: Theme.colors.gray.S300,
 
+    },
+    error: {
+        fontSize: Theme.sizes.xs,
+        color: Theme.colors.red["S500"],
+        marginTop: 5,
     },
 
 })

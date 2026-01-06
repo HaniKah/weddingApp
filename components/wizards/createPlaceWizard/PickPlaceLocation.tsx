@@ -67,7 +67,6 @@ export default function PickPlaceLocation() {
                                 longitude: selectedPlace?.location.lng,
                             }}/>
                         }
-
                     </MapView>
 
                     <AppButton extraStylesBtn={styles.confirmBtn} fullWidth>

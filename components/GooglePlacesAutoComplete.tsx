@@ -103,6 +103,13 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         borderRadius: Theme.radius.md,
         width: "100%",
+        boxShadow: [{
+            offsetX: 5,
+            offsetY: 20,
+            blurRadius: '20px',
+            spreadDistance: '1px',
+            color: 'gray',
+        }]
     },
     itemContainer: {
         paddingVertical: 10

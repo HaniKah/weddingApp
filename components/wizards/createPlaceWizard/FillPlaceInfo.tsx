@@ -91,10 +91,9 @@ export default function FillPlaceInfo({data, setData}: {
     return (
         <>
             <View style={styles.container}>
-                <Text style={styles.title}>Your place&#39;s info</Text>
                 <AppForm ref={formRef} onSubmit={handleNextStep}>
-                    <ScrollView style={styles.list}>
-
+                    <ScrollView>
+                        <Text style={styles.title}>Your place&#39;s info</Text>
                         <Text style={styles.subtitle}>
                             Basic Info
                         </Text>
@@ -228,12 +227,12 @@ export default function FillPlaceInfo({data, setData}: {
 const styles = StyleSheet.create({
     container: {
         padding: 15,
+        marginBottom: 100,
     },
     title: {
         fontSize: Theme.sizes.xl,
         fontWeight: "bold",
         textAlign: "center",
-        marginVertical: 20,
         width: "100%",
     },
     subtitle: {
@@ -251,9 +250,7 @@ const styles = StyleSheet.create({
         marginTop: 15,
         marginBottom: 5
     },
-    list: {
-        height: "80%"
-    },
+
     switchContainer: {
         display: "flex",
         flexDirection: "row",

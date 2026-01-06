@@ -18,6 +18,25 @@ export enum UpdateStep {
   UploadImages = "UploadImages",
 }
 
+export enum CountryCode {
+  BAHRAIN = "BHR",
+  CYPRUS = "CYP",
+  EGYPT = "EGY",
+  IRAN = "IRN",
+  IRAQ = "IRQ",
+  JORDAN = "JOR",
+  KUWAIT = "KWT",
+  LEBANON = "LBN",
+  OMAN = "OMN",
+  PALESTINE = "PSE",
+  QATAR = "QAT",
+  SAUDI_ARABIA = "SAU",
+  SYRIA = "SYR",
+  TURKEY = "TUR",
+  UNITED_ARAB_EMIRATES = "ARE",
+  YEMEN = "YEM",
+}
+
 export enum PriceType {
   None = "None",
   PerPerson = "PerPerson",
@@ -218,6 +237,7 @@ export interface CreatePlaceRequest {
 export interface VendorPlaceDetailsDto {
   step: WeddingSteps;
   priceType: PriceType;
+  country: CountryCode;
   id: number;
   name: string;
   streetName?: string;
@@ -274,16 +294,6 @@ export interface VendorPlaceViewModel {
 export interface PublishPlaceRequest {
   placeId: number;
   isPublished: boolean;
-}
-
-export interface Prediction {
-  placeId: string;
-  main_text: string;
-  secondary_text: string;
-}
-
-export interface PredictionViewModel {
-  result: Prediction[];
 }
 
 import type {
@@ -915,27 +925,6 @@ export class Api<
     ) =>
       this.request<VendorPlaceDetailsDto, any>({
         path: `/api/places/getPlaceDetails`,
-        method: "GET",
-        query: query,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Places
-     * @name PlacesControllerGetGoogleAutoCompletePredictions
-     * @request GET:/api/places/getGoogleAutoCompletePredictions
-     */
-    placesControllerGetGoogleAutoCompletePredictions: (
-      query: {
-        input: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<PredictionViewModel, any>({
-        path: `/api/places/getGoogleAutoCompletePredictions`,
         method: "GET",
         query: query,
         format: "json",

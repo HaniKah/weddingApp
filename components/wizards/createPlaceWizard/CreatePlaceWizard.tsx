@@ -7,7 +7,6 @@ import UploadImages from "@/components/wizards/createPlaceWizard/UploadImages";
 import {useApi} from "@/utils/api";
 import AddDescription from "@/components/wizards/createPlaceWizard/AddDescription";
 import {Wizard} from "@/components/wizards/Wizard";
-import PickPlaceLocation from "@/components/wizards/createPlaceWizard/PickPlaceLocation";
 
 
 export type ImageUploadModel = {
@@ -68,9 +67,7 @@ export default function CreatePlaceWizard({placeId, setIsModalVisible, setTrigge
                         data={data}
                     />
                 </WizardStep>
-                <WizardStep step={UpdateStep.PickPlaceLocation}>
-                    <PickPlaceLocation/>
-                </WizardStep>
+
                 <WizardStep step={UpdateStep.UploadImages}>
                     <UploadImages onFinish={onFinish} placeId={data?.id}/>
                 </WizardStep>

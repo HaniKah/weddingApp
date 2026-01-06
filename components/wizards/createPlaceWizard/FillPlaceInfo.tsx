@@ -3,7 +3,7 @@ import {AppForm, FormRef} from "@/contexts/form-context";
 import AppTextInput from "@/components/appComponents/AppTextInput";
 import {Dispatch, SetStateAction, useRef, useState} from "react";
 import {Theme} from "@/styles/Theme";
-import {PriceType, UpdateStep, VendorPlaceDetailsDto} from "@/types/open-api";
+import {CountryCode, PriceType, UpdateStep, VendorPlaceDetailsDto} from "@/types/open-api";
 import {PickerItem} from "@/components/appComponents/AppPicker";
 import {useApi} from "@/utils/api";
 import WizardController from "@/components/wizards/WizardController";
@@ -25,6 +25,7 @@ export default function FillPlaceInfo({data, setData}: {
     const [minPrice, setMinPrice] = useState<string | undefined>(data?.minPrice)
     const [maxPrice, setMaxPrice] = useState<string | undefined>(data?.maxPrice)
     const [priceType, setPriceType] = useState<PriceType>(data?.priceType || PriceType.None)
+    const [country, setCountry] = useState<CountryCode | undefined>(data?.country)
 
     const API = useApi()
     const wizard = useWizardContext()
@@ -51,7 +52,11 @@ export default function FillPlaceInfo({data, setData}: {
                     website: website,
                     minPrice: minPrice,
                     maxPrice: maxPrice,
-                    priceType: priceType
+                    priceType: priceType,
+
+                },
+                location: {
+                    country: country
                 }
             })
             setData(res.data)
@@ -75,6 +80,12 @@ export default function FillPlaceInfo({data, setData}: {
     }))
 
     const formRef = useRef<FormRef>(null)
+
+    const countryCodes: PickerItem<CountryCode>[] = Object.entries(CountryCode).map(([key, value]) => ({
+        name: key,
+        value: value
+    }))
+    console.log(countryCodes)
 
 
     return (
@@ -101,6 +112,13 @@ export default function FillPlaceInfo({data, setData}: {
                                       value={phoneNumber}
                                       extraStyles={styles.input}
                         />
+
+                        <Text style={styles.subtitle}>
+                            Location
+                        </Text>
+                        <AppDropDown name="country" required label="Country" onChange={setCountry} value={country}
+                                     itemList={countryCodes}/>
+
 
                         <Text style={styles.subtitle}>
                             Price details
@@ -159,6 +177,8 @@ export default function FillPlaceInfo({data, setData}: {
                                      value={priceType}
                                      onChange={setPriceType}
                                      title="Select price type"
+                                     name="priceType"
+                                     required
                         />
 
 
@@ -220,7 +240,8 @@ const styles = StyleSheet.create({
         fontSize: Theme.sizes.xl,
         fontWeight: "bold",
         color: Theme.colors.gray.S300,
-        paddingVertical: 15
+        paddingTop: 25,
+        paddingBottom: 25,
 
         // backgroundColor: Theme.colors.gray.S200,
         // padding: 10

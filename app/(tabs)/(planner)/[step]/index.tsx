@@ -58,27 +58,33 @@ export default function Index() {
     }, [step])
 
 
+    async function getPlaces(): Promise<PlacesDto[]> {
+        console.log(pagination)
+        if (!activeStep) return []
+        let data: PlacesDto[] = []
+        try {
+            const resp = await API.plannerControllerGetPlaces({
+                step: activeStep?.step, search: searchText, filter: selectedFilter, offset: pagination
+            })
+            data = resp.data.places
+        } catch (err) {
+            console.log(err)
+        }
+        return data
+    }
+
     useEffect(() => {
-        if (!activeStep) return
-        const getPlaces = async (): Promise<void> => {
-            try {
-                const response = await API.plannerControllerGetPlaces({
-                    step: activeStep?.step, search: searchText, filter: selectedFilter, offset: pagination
-                }) //todo : doesnt make sense , rethink it
-                setPlaces(prev => ([...prev, ...response.data.places]))
-
-            } catch (err) {
-                console.error(err)
-            } finally {
-                setLoading(false)
-            }
+        if (pagination !== 0) {
+            setPagination(0)
+            setPlaces([])
+        } else {
+            getPlaces().then((data) => setPlaces(data))
         }
+    }, [activeStep, steps, searchText, selectedFilter]);
 
-        if (activeStep) {
-            getPlaces()
-        }
-
-    }, [activeStep, steps, searchText, selectedFilter, pagination]);
+    useEffect(() => {
+        getPlaces().then((data) => setPlaces(prev => ([...prev, ...data])))
+    }, [pagination]);
 
 
     const filters: Filters[] = [

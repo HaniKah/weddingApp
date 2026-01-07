@@ -59,7 +59,6 @@ export default function Index() {
 
 
     async function getPlaces(): Promise<PlacesDto[]> {
-        console.log(pagination)
         if (!activeStep) return []
         let data: PlacesDto[] = []
         try {

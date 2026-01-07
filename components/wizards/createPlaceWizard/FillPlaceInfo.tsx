@@ -85,7 +85,6 @@ export default function FillPlaceInfo({data, setData}: {
         name: key,
         value: value
     }))
-    console.log(countryCodes)
 
 
     return (

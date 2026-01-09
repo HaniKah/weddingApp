@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
     },
     link: {
-        marginBottom: 10
+        marginBottom: 30
     },
     imageContainer: {
         height: 220,

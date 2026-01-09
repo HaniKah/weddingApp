@@ -2,7 +2,7 @@ import {Link, Stack, useLocalSearchParams} from "expo-router";
 import {Theme} from "@/styles/Theme";
 import {Image, Linking, Pressable, ScrollView, StyleSheet, Text, View} from "react-native";
 import AppIf from "@/components/appComponents/AppIf";
-import PlaceInfo from "@/components/wizards/plannerWizard/PlaceInfo";
+import PlaceInfo from "@/components/PlaceInfo";
 import {useApi} from "@/utils/api";
 import {useEffect, useState} from "react";
 import {VendorPlaceDetailsDto} from "@/types/open-api";

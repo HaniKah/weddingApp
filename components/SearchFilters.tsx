@@ -1,20 +1,28 @@
 import {FlatList, StyleSheet, Text, TouchableOpacity} from "react-native";
 import {SearchFilter} from "@/types/open-api";
 import {Theme} from "@/styles/Theme";
-import Animated, {SharedValue, useAnimatedStyle, withSpring} from "react-native-reanimated";
+import Animated from "react-native-reanimated";
 
 export type Filters = {
     name: string,
     value: SearchFilter
 }
 
-export default function SearchFilters({filters, selectedFilter, setSelectedFilter, isScrollDown}: {
-    filters: Filters[],
+export default function SearchFilters({selectedFilter, setSelectedFilter}: {
     selectedFilter: any,
     setSelectedFilter: (value: any) => void,
 
-    isScrollDown: SharedValue<boolean>
 }) {
+    const filters: Filters[] = [
+        {
+            name: "My Pick",
+            value: SearchFilter.MyPick
+        },
+        {
+            name: "My Favourites",
+            value: SearchFilter.MyFavourite
+        }
+    ]
 
     function toggleSelectFilter(clickedfilter: Filters) {
         if (clickedfilter.value === selectedFilter) {
@@ -37,12 +45,10 @@ export default function SearchFilters({filters, selectedFilter, setSelectedFilte
         )
     }
 
-    const animatedStyle = useAnimatedStyle(() => ({height: isScrollDown.value ? withSpring(0) : withSpring(40)}))
-
 
     return (
         <>
-            <Animated.View style={animatedStyle}>
+            <Animated.View style={styles.container}>
                 <FlatList horizontal data={filters} contentContainerStyle={styles.flatlistContainer}
                           renderItem={({item}) => <RenderItem value={item.value} name={item.name}/>}/>
             </Animated.View>
@@ -53,7 +59,9 @@ export default function SearchFilters({filters, selectedFilter, setSelectedFilte
 }
 
 const styles = StyleSheet.create({
-
+    container: {
+        height: 40
+    },
     flatlistContainer: {
         gap: 10,
     },

@@ -4,13 +4,12 @@ import {useEffect, useRef, useState} from "react";
 import IconStep from "@/components/symbols/IconStep";
 import {useColors} from "@/utils/colors";
 import {Theme} from "@/styles/Theme"
-import Animated, {SharedValue, useAnimatedStyle, withSpring} from "react-native-reanimated";
+import Animated from "react-native-reanimated";
 
-export default function StepsHeader({stepsList, activeStep, setActiveStep, isScrollingDown}: {
+export default function StepsHeader({stepsList, activeStep, setActiveStep}: {
     stepsList: StepsDto[],
     activeStep: StepsDto,
     setActiveStep: (value: StepsDto) => void,
-    isScrollingDown: SharedValue<boolean>
 }) {
 
     const getColorByStep = useColors()
@@ -68,13 +67,10 @@ export default function StepsHeader({stepsList, activeStep, setActiveStep, isScr
         }
     }
 
-    const animatedStyle = useAnimatedStyle(() => ({
-        height: isScrollingDown.value ? withSpring(0) : withSpring(100),
-    }))
 
     return (
         <>
-            <Animated.View style={animatedStyle}
+            <Animated.View style={styles.container}
                            onLayout={(event) => setHeaderWidth(event.nativeEvent.layout.width)}>
                 <FlatList
                     ref={flatListRef}
@@ -90,6 +86,9 @@ export default function StepsHeader({stepsList, activeStep, setActiveStep, isScr
     )
 }
 const styles = StyleSheet.create({
+    container: {
+        height: 100
+    },
     itemContainer: {
         display: "flex",
         flexDirection: "column",

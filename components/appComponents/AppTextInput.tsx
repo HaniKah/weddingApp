@@ -93,6 +93,7 @@ export default function AppTextInput({
                            autoCorrect={false}
                            keyboardType={keyboardType}
                            placeholder={placeholder}
+                           placeholderTextColor={Theme.colors.gray.S500}
                            ref={inputRef}
                            style={[styles.input, textArea && styles.textArea]}
                            onChangeText={preTextChange}

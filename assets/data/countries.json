@@ -1,0 +1,94 @@
+{
+  "bahrain": {
+    "states": []
+  },
+  "egypt": {
+    "states": []
+  },
+  "iran": {
+    "states": []
+  },
+  "iraq": {
+    "states": []
+  },
+  "jordan": {
+    "states": [
+      "amman",
+      "irbid",
+      "zarqa",
+      "mafraq",
+      "ajloun",
+      "jerash",
+      "madaba",
+      "balqa",
+      "karak",
+      "tafilah",
+      "ma'an",
+      "aqaba"
+    ]
+  },
+  "kuwait": {
+    "states": []
+  },
+  "lebanon": {
+    "states": []
+  },
+  "oman": {
+    "states": []
+  },
+  "palestine": {
+    "states": []
+  },
+  "qatar": {
+    "states": [
+      "doha",
+      "al rayyan",
+      "al wakra",
+      "al khor",
+      "umm salal",
+      "al daayen",
+      "al shamal",
+      "al shahaniya"
+    ]
+  },
+  "saudi_arabia": {
+    "states": [
+      "riyadh",
+      "makkah",
+      "madinah",
+      "eastern province",
+      "asir",
+      "tabuk",
+      "hail",
+      "northern borders",
+      "jizan",
+      "najran",
+      "al bahah",
+      "al jawf",
+      "qassim"
+    ]
+  },
+  "syria": {
+    "states": []
+  },
+  "turkey": {
+    "states": []
+  },
+  "united_arab_emirates": {
+    "states": [
+      "abu dhabi",
+      "dubai",
+      "sharjah",
+      "ajman",
+      "umm al quwain",
+      "ras al khaimah",
+      "fujairah"
+    ]
+  },
+  "yemen": {
+    "states": []
+  },
+  "sudan": {
+    "states": []
+  }
+}

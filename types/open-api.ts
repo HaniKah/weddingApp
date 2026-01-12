@@ -19,22 +19,22 @@ export enum UpdateStep {
 }
 
 export enum CountryCode {
-  BAHRAIN = "BHR",
-  CYPRUS = "CYP",
-  EGYPT = "EGY",
-  IRAN = "IRN",
-  IRAQ = "IRQ",
-  JORDAN = "JOR",
-  KUWAIT = "KWT",
-  LEBANON = "LBN",
-  OMAN = "OMN",
-  PALESTINE = "PSE",
-  QATAR = "QAT",
-  SAUDI_ARABIA = "SAU",
-  SYRIA = "SYR",
-  TURKEY = "TUR",
-  UNITED_ARAB_EMIRATES = "ARE",
-  YEMEN = "YEM",
+  BH = "BH",
+  EG = "EG",
+  IR = "IR",
+  IQ = "IQ",
+  JO = "JO",
+  KW = "KW",
+  LB = "LB",
+  OM = "OM",
+  PS = "PS",
+  QA = "QA",
+  SA = "SA",
+  SY = "SY",
+  TR = "TR",
+  AE = "AE",
+  YE = "YE",
+  SD = "SD",
 }
 
 export enum PriceType {
@@ -205,6 +205,37 @@ export interface DeletePlaceRequest {
   id: number;
 }
 
+export interface CreatePlaceRequest {
+  type?: WeddingSteps;
+}
+
+export interface CountryInfo {
+  countryCode: CountryCode;
+  countryName: string;
+  states: string[];
+}
+
+export interface VendorPlaceDetailsDto {
+  step: WeddingSteps;
+  priceType: PriceType;
+  id: number;
+  name: string;
+  streetName?: string;
+  phoneNumber: string;
+  facebook?: string;
+  instagram?: string;
+  tiktok?: string;
+  website?: string;
+  currency: string;
+  isPublished: boolean;
+  description?: string;
+  mainPhoto: string;
+  minPrice: string;
+  maxPrice: string;
+  googleId?: string;
+  country: CountryInfo;
+}
+
 export interface PlaceInfo {
   name?: string;
   phoneNumber?: string;
@@ -220,38 +251,26 @@ export interface PlaceInfo {
 export interface PlaceLocation {
   streetName?: string;
   city?: string;
-  country?: string;
+  countryCode?:
+    | "BH"
+    | "EG"
+    | "IR"
+    | "IQ"
+    | "JO"
+    | "KW"
+    | "LB"
+    | "OM"
+    | "PS"
+    | "QA"
+    | "SA"
+    | "SY"
+    | "TR"
+    | "AE"
+    | "YE"
+    | "SD";
   postalCode?: string;
   lat?: number;
   lng?: number;
-  googleId?: string;
-}
-
-export interface CreatePlaceRequest {
-  type?: WeddingSteps;
-  placeInfo?: PlaceInfo;
-  description?: string;
-  location?: PlaceLocation;
-}
-
-export interface VendorPlaceDetailsDto {
-  step: WeddingSteps;
-  priceType: PriceType;
-  country: CountryCode;
-  id: number;
-  name: string;
-  streetName?: string;
-  phoneNumber: string;
-  facebook?: string;
-  instagram?: string;
-  tiktok?: string;
-  website?: string;
-  currency: string;
-  isPublished: boolean;
-  description?: string;
-  mainPhoto: string;
-  minPrice: string;
-  maxPrice: string;
   googleId?: string;
 }
 
@@ -294,6 +313,10 @@ export interface VendorPlaceViewModel {
 export interface PublishPlaceRequest {
   placeId: number;
   isPublished: boolean;
+}
+
+export interface CountryDtoViewModel {
+  result: CountryInfo[];
 }
 
 import type {
@@ -927,6 +950,21 @@ export class Api<
         path: `/api/places/getPlaceDetails`,
         method: "GET",
         query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Places
+     * @name PlacesControllerGetCountries
+     * @request GET:/api/places/getCountries
+     */
+    placesControllerGetCountries: (params: RequestParams = {}) =>
+      this.request<CountryDtoViewModel, any>({
+        path: `/api/places/getCountries`,
+        method: "GET",
         format: "json",
         ...params,
       }),

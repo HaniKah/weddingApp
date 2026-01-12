@@ -10,7 +10,7 @@ export default function AppDropDown<T>({itemList, label, value, onChange, style,
     style?: StyleProp<ViewStyle>,
     value: T | undefined,
     onChange: (value: T) => void,
-    itemList: PickerItem<T>[],
+    itemList: PickerItem<T>[] | undefined
     label?: string
     title?: string
     required?: boolean,
@@ -62,7 +62,7 @@ export default function AppDropDown<T>({itemList, label, value, onChange, style,
             {label && <Text>{label}</Text>}
             <Pressable style={styles.pressable} onPress={() => setIsVisible(true)}>
                 <Text>
-                    {itemList.find(item => item.value === value)?.name ?? "Select an option"}
+                    {itemList?.find(item => item.value === value)?.name ?? "Select an option"}
                 </Text>
                 <IconSymbol name="chevron.down" size={20} color={Theme.colors.gray.S400}/>
             </Pressable>

@@ -58,8 +58,8 @@ export default function Place() {
 
                     <View style={styles.titleContainer}>
                         <Text style={styles.title}>{placeDetails?.name}</Text>
+                        <Text style={styles.country}>{placeDetails?.country.countryName}</Text>
                     </View>
-
 
                     <View>
                         <AppIf value={placeDetails?.streetName}>
@@ -130,16 +130,17 @@ const styles = StyleSheet.create({
         // gap: 20
     },
     titleContainer: {
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
         marginBottom: 20,
     },
     title: {
-        fontSize: 24,
+        fontSize: Theme.sizes.lg,
         fontWeight: "bold",
-        flexShrink: 1
+        flexShrink: 1,
+        marginBottom: 5
+    },
+    country: {
+        fontSize: Theme.sizes.md,
+        color: Theme.colors.gray.S500
     },
 
 

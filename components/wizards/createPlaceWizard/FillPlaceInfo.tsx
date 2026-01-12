@@ -1,9 +1,9 @@
 import {ScrollView, StyleSheet, Switch, Text, View} from "react-native";
 import {AppForm, FormRef} from "@/contexts/form-context";
 import AppTextInput from "@/components/appComponents/AppTextInput";
-import {Dispatch, SetStateAction, useRef, useState} from "react";
+import {Dispatch, SetStateAction, useEffect, useRef, useState} from "react";
 import {Theme} from "@/styles/Theme";
-import {CountryCode, PriceType, UpdateStep, VendorPlaceDetailsDto} from "@/types/open-api";
+import {CountryCode, CountryInfo, PriceType, UpdateStep, VendorPlaceDetailsDto} from "@/types/open-api";
 import {PickerItem} from "@/components/appComponents/AppPicker";
 import {useApi} from "@/utils/api";
 import WizardController from "@/components/wizards/WizardController";
@@ -25,7 +25,11 @@ export default function FillPlaceInfo({data, setData}: {
     const [minPrice, setMinPrice] = useState<string | undefined>(data?.minPrice)
     const [maxPrice, setMaxPrice] = useState<string | undefined>(data?.maxPrice)
     const [priceType, setPriceType] = useState<PriceType>(data?.priceType || PriceType.None)
-    const [country, setCountry] = useState<CountryCode | undefined>(data?.country)
+    const [country, setCountry] = useState<CountryInfo | undefined>(data?.country)
+    const [countryCode, setCountryCode] = useState<CountryCode | undefined>(data?.country?.countryCode)
+    const [countriesList, setCountriesList] = useState<PickerItem<CountryCode>[]>([])
+
+    // let countriesList: PickerItem<CountryCode>[] = []
 
     const API = useApi()
     const wizard = useWizardContext()
@@ -36,6 +40,23 @@ export default function FillPlaceInfo({data, setData}: {
         setMinPrice(price)
         setMaxPrice(price)
     }
+
+    useEffect(() => {
+        const getCountries = async () => {
+            try {
+                const res = await API.placesControllerGetCountries()
+                const countries: PickerItem<CountryCode>[] = res.data.result.map((c) => ({
+                    name: c.countryName,
+                    value: c.countryCode
+                }))
+                setCountriesList(countries)
+
+            } catch (err) {
+                console.log(err)
+            }
+        }
+        getCountries()
+    }, []);
 
     const updatePlace = async () => {
         if (!data?.id) return;
@@ -56,7 +77,7 @@ export default function FillPlaceInfo({data, setData}: {
 
                 },
                 location: {
-                    country: country
+                    countryCode: countryCode
                 }
             })
             setData(res.data)
@@ -80,11 +101,6 @@ export default function FillPlaceInfo({data, setData}: {
     }))
 
     const formRef = useRef<FormRef>(null)
-
-    const countryCodes: PickerItem<CountryCode>[] = Object.entries(CountryCode).map(([key, value]) => ({
-        name: key,
-        value: value
-    }))
 
 
     return (
@@ -114,8 +130,9 @@ export default function FillPlaceInfo({data, setData}: {
                         <Text style={styles.subtitle}>
                             Location
                         </Text>
-                        <AppDropDown name="country" required label="Country" onChange={setCountry} value={country}
-                                     itemList={countryCodes}/>
+                        <AppDropDown name="country" required label="Country" onChange={setCountryCode}
+                                     value={countryCode}
+                                     itemList={countriesList}/>
 
 
                         <Text style={styles.subtitle}>

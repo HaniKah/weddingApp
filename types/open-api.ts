@@ -209,15 +209,10 @@ export interface CreatePlaceRequest {
   type?: WeddingSteps;
 }
 
-export interface CountryInfo {
-  countryCode: CountryCode;
-  countryName: string;
-  states: string[];
-}
-
 export interface VendorPlaceDetailsDto {
   step: WeddingSteps;
   priceType: PriceType;
+  countryCode: CountryCode;
   id: number;
   name: string;
   streetName?: string;
@@ -226,17 +221,15 @@ export interface VendorPlaceDetailsDto {
   instagram?: string;
   tiktok?: string;
   website?: string;
-  currency: string;
   isPublished: boolean;
   description?: string;
   mainPhoto: string;
   minPrice: string;
   maxPrice: string;
   googleId?: string;
-  country: CountryInfo;
 }
 
-export interface PlaceInfo {
+export interface UpdatePlaceInfo {
   name?: string;
   phoneNumber?: string;
   facebook?: string;
@@ -248,7 +241,7 @@ export interface PlaceInfo {
   priceType?: "None" | "PerPerson" | "PerHour" | "PerItem" | "PerEvent";
 }
 
-export interface PlaceLocation {
+export interface UpdateLocationInfo {
   streetName?: string;
   city?: string;
   countryCode?:
@@ -278,9 +271,9 @@ export interface UpdatePlaceRequest {
   updateStep?: UpdateStep;
   type?: WeddingSteps;
   id?: number;
-  placeInfo?: PlaceInfo;
+  placeInfo?: UpdatePlaceInfo;
   description?: string;
-  location?: PlaceLocation;
+  location?: UpdateLocationInfo;
 }
 
 export interface VendorPlaceDto {
@@ -315,7 +308,14 @@ export interface PublishPlaceRequest {
   isPublished: boolean;
 }
 
-export interface CountryDtoViewModel {
+export interface CountryInfo {
+  countryCode: CountryCode;
+  countryName: string;
+  states: string[];
+  currency: string;
+}
+
+export interface CountryInfoViewModel {
   result: CountryInfo[];
 }
 
@@ -962,7 +962,7 @@ export class Api<
      * @request GET:/api/places/getCountries
      */
     placesControllerGetCountries: (params: RequestParams = {}) =>
-      this.request<CountryDtoViewModel, any>({
+      this.request<CountryInfoViewModel, any>({
         path: `/api/places/getCountries`,
         method: "GET",
         format: "json",

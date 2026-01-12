@@ -100,7 +100,7 @@ export default function AppTextInput({
                            multiline={textArea}
 
                 />
-                {unit && <Text style={styles.unit}>JOD</Text>}
+                {unit && <Text style={styles.unit}>{unit}</Text>}
             </View>
 
             {error &&

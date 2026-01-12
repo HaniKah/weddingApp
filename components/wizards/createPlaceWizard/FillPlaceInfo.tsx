@@ -25,9 +25,11 @@ export default function FillPlaceInfo({data, setData}: {
     const [minPrice, setMinPrice] = useState<string | undefined>(data?.minPrice)
     const [maxPrice, setMaxPrice] = useState<string | undefined>(data?.maxPrice)
     const [priceType, setPriceType] = useState<PriceType>(data?.priceType || PriceType.None)
-    const [country, setCountry] = useState<CountryInfo | undefined>(data?.country)
-    const [countryCode, setCountryCode] = useState<CountryCode | undefined>(data?.country?.countryCode)
-    const [countriesList, setCountriesList] = useState<PickerItem<CountryCode>[]>([])
+
+    const [selectedCountryCode, setSelectedCountryCode] = useState<CountryCode | undefined>(data?.countryCode)
+    const [countriesList, setCountriesList] = useState<CountryInfo[]>([])
+    const [countriesDropDownOptions, setCountriesDropDownOption] = useState<PickerItem<CountryCode>[]>([])
+    const [currency, setCurrency] = useState<string>()
 
     // let countriesList: PickerItem<CountryCode>[] = []
 
@@ -45,11 +47,14 @@ export default function FillPlaceInfo({data, setData}: {
         const getCountries = async () => {
             try {
                 const res = await API.placesControllerGetCountries()
-                const countries: PickerItem<CountryCode>[] = res.data.result.map((c) => ({
+
+                setCountriesList(res.data.result)
+
+                const options: PickerItem<CountryCode>[] = res.data.result.map((c) => ({
                     name: c.countryName,
                     value: c.countryCode
                 }))
-                setCountriesList(countries)
+                setCountriesDropDownOption(options)
 
             } catch (err) {
                 console.log(err)
@@ -57,6 +62,12 @@ export default function FillPlaceInfo({data, setData}: {
         }
         getCountries()
     }, []);
+
+    useEffect(() => {
+        if (!selectedCountryCode) return
+        const selected = countriesList.find(c => c.countryCode === selectedCountryCode)
+        setCurrency(selected?.currency)
+    }, [selectedCountryCode]);
 
     const updatePlace = async () => {
         if (!data?.id) return;
@@ -77,7 +88,7 @@ export default function FillPlaceInfo({data, setData}: {
 
                 },
                 location: {
-                    countryCode: countryCode
+                    countryCode: selectedCountryCode
                 }
             })
             setData(res.data)
@@ -130,9 +141,12 @@ export default function FillPlaceInfo({data, setData}: {
                         <Text style={styles.subtitle}>
                             Location
                         </Text>
-                        <AppDropDown name="country" required label="Country" onChange={setCountryCode}
-                                     value={countryCode}
-                                     itemList={countriesList}/>
+                        <AppDropDown name="country"
+                                     required
+                                     label="Country"
+                                     onChange={setSelectedCountryCode}
+                                     value={selectedCountryCode}
+                                     itemList={countriesDropDownOptions}/>
 
 
                         <Text style={styles.subtitle}>
@@ -157,7 +171,7 @@ export default function FillPlaceInfo({data, setData}: {
                                           placeholder="Add your price here"
                                           value={minPrice}
                                           keyboardType={"decimal-pad"}
-                                          unit="JOD"
+                                          unit={currency}
                                           required
                             />
 
@@ -171,7 +185,7 @@ export default function FillPlaceInfo({data, setData}: {
                                               placeholder="Minimum price"
                                               value={minPrice}
                                               keyboardType={"decimal-pad"}
-                                              unit="JOD"
+                                              unit={currency}
                                               required
                                 />
                                 <AppTextInput onTextChange={(s) => setMaxPrice(s)} name="minPrice"
@@ -180,7 +194,7 @@ export default function FillPlaceInfo({data, setData}: {
                                               placeholder="Maximum price"
                                               value={maxPrice}
                                               keyboardType={"decimal-pad"}
-                                              unit="JOD"
+                                              unit={currency}
                                               required
                                 />
                             </View>

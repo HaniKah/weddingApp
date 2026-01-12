@@ -105,13 +105,14 @@ export interface PlaceDetailsDto {
   tiktok?: string;
   instagram?: string;
   phoneNumber: string;
-  currency: string;
   picked: boolean;
   favourite: boolean;
   notes: string | null;
   mainPhoto: string;
   maxPrice: string;
   minPrice: string;
+  countryName: string;
+  currency: string;
 }
 
 export interface StepsDto {

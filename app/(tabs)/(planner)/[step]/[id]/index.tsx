@@ -95,7 +95,10 @@ export default function PlaceId() {
 
                     <View style={styles.titleContainer}>
                         <Text style={styles.title}>{placeDetails?.name}</Text>
-                        <Text>{placeDetails.minPrice === placeDetails.maxPrice ? placeDetails.minPrice : placeDetails.minPrice + " - " + placeDetails.maxPrice}{placeDetails?.currency}</Text>
+                        <View style={styles.priceContainer}>
+                            <Text>{placeDetails.minPrice === placeDetails.maxPrice ? placeDetails.minPrice : placeDetails.minPrice + " - " + placeDetails.maxPrice}</Text>
+                            <Text style={styles.currency}>{placeDetails?.currency}</Text>
+                        </View>
                     </View>
 
 
@@ -165,6 +168,14 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: "bold",
         flexShrink: 1
+    },
+    priceContainer: {
+        display: "flex",
+        flexDirection: "row",
+        gap: 10
+    },
+    currency: {
+        color: Theme.colors.gray.S500
     },
     imageContainer: {
         height: 400,

@@ -29,10 +29,8 @@ export default function FillPlaceInfo({data, setData}: {
     const [selectedCountryCode, setSelectedCountryCode] = useState<CountryCode | undefined>(data?.countryCode)
     const [countriesList, setCountriesList] = useState<CountryInfo[]>([])
     const [countriesDropDownOptions, setCountriesDropDownOption] = useState<PickerItem<CountryCode>[]>([])
-    const [currency, setCurrency] = useState<string>()
-
-    // let countriesList: PickerItem<CountryCode>[] = []
-
+    const [currency, setCurrency] = useState<string | undefined>(data?.currency)
+    
     const API = useApi()
     const wizard = useWizardContext()
 
@@ -64,9 +62,7 @@ export default function FillPlaceInfo({data, setData}: {
     }, []);
 
     useEffect(() => {
-        if (!selectedCountryCode) return
-        const selected = countriesList.find(c => c.countryCode === selectedCountryCode)
-        setCurrency(selected?.currency)
+        setCurrency(countriesList?.find(c => c.countryCode === selectedCountryCode)?.currency)
     }, [selectedCountryCode]);
 
     const updatePlace = async () => {

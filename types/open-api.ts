@@ -227,6 +227,8 @@ export interface VendorPlaceDetailsDto {
   minPrice: string;
   maxPrice: string;
   googleId?: string;
+  currency: string;
+  countryName: string;
 }
 
 export interface UpdatePlaceInfo {

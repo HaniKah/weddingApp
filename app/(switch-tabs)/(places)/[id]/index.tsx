@@ -58,7 +58,7 @@ export default function Place() {
 
                     <View style={styles.titleContainer}>
                         <Text style={styles.title}>{placeDetails?.name}</Text>
-                        <Text style={styles.country}>{placeDetails?.country.countryName}</Text>
+                        <Text style={styles.country}>{placeDetails?.countryName}</Text>
                     </View>
 
                     <View>

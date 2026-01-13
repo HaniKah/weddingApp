@@ -6,16 +6,22 @@ import AppButton from "@/components/appComponents/AppButton";
 import {UserType} from "@/types/user-type";
 import {ButtonType} from "@/styles/Button";
 import {Theme} from "@/styles/Theme";
+import {useLocationContext} from "@/contexts/location-context";
 
 export default function ProfilePage() {
     const {signOut} = useAuth()
     const {switchRole, user, userType} = useAuthStore()
+    const {address} = useLocationContext()
 
     return (
         <>
             <AppView withPadding>
                 <View style={styles.container}>
-                    <Text style={styles.name}>{user?.firstName} {user.lastName}</Text>
+                    <View style={styles.info}>
+                        <Text style={styles.name}>{user?.firstName} {user.lastName}</Text>
+                        <Text style={styles.address}>{address?.city},{address?.country}</Text>
+                    </View>
+
                     {userType === UserType.Vendor ?
                         <AppButton onPress={() => switchRole(UserType.User)} fullWidth
                                    buttonType={ButtonType.PRIMARY}
@@ -45,10 +51,16 @@ const styles = StyleSheet.create({
         paddingVertical: 40,
         paddingHorizontal: 20
     },
+    info: {
+        flex: 1
+    },
     name: {
         fontSize: Theme.sizes.xl,
         fontWeight: "bold",
         textAlign: "center",
-        flex: 1
+    },
+    address: {
+        color: Theme.colors.gray.S400,
+        textAlign: "center"
     }
 })

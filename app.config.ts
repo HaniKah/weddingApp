@@ -110,6 +110,12 @@ export default ({config}: ConfigContext): ExpoConfig => {
         },
         "plugins": [
             [
+                "expo-location",
+                {
+                    "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
+                }
+            ],
+            [
                 "expo-image-picker",
                 {
                     "photosPermission": "The app accesses your photos in case you want to create a place"

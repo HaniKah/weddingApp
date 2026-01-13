@@ -30,7 +30,7 @@ export default function FillPlaceInfo({data, setData}: {
     const [countriesList, setCountriesList] = useState<CountryInfo[]>([])
     const [countriesDropDownOptions, setCountriesDropDownOption] = useState<PickerItem<CountryCode>[]>([])
     const [currency, setCurrency] = useState<string | undefined>(data?.currency)
-    
+
     const API = useApi()
     const wizard = useWizardContext()
 
@@ -153,7 +153,6 @@ export default function FillPlaceInfo({data, setData}: {
                             <Switch
                                 trackColor={{false: '#767577', true: Theme.colors.green.S600}}
                                 thumbColor={Theme.colors.white}
-                                ios_backgroundColor="#3e3e3e"
                                 onValueChange={() => setSwitchEnabled(!switchEnabled)}
                                 value={switchEnabled}
                             />

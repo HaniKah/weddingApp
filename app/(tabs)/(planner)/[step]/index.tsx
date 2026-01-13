@@ -7,6 +7,8 @@ import {useApi} from "@/utils/api";
 import PickPlaceHeader from "@/components/PickPlaceHeader";
 import {FlatList} from "react-native";
 import PlaceItem from "@/components/items/PlaceItem";
+import {useLocationContext} from "@/contexts/location-context";
+import LocationAccessDenied from "@/components/errors/LocationAccessDenied";
 
 
 export default function Index() {
@@ -29,6 +31,8 @@ export default function Index() {
     const [selectedFilter, setSelectedFilter] = useState<SearchFilter>()
 
     const [pagination, setPagination] = useState<number>(0)
+
+    const {isLocationGranted, errorMsg, retryGetLocation} = useLocationContext()
 
 
     useEffect(() => {
@@ -87,25 +91,27 @@ export default function Index() {
                 <AppView withPadding isLoading={isLoading}>
                     <PlannerToolbar progress={progress} note={activeStep.note}
                                     fullfilled={activeStep.isCompleted}/>
+                    {isLocationGranted ? <FlatList
+                            ListHeaderComponent={
+                                <PickPlaceHeader stepsList={steps}
+                                                 activeStep={activeStep}
+                                                 setActiveStep={setActiveStep}
+                                                 searchText={searchText}
+                                                 setSearchText={setSearchText}
+                                                 selectedFilter={selectedFilter}
+                                                 setSelectedFilter={setSelectedFilter}
+                                                 places={places}
+                                />}
 
-                    <FlatList
-                        ListHeaderComponent={
-                            <PickPlaceHeader stepsList={steps}
-                                             activeStep={activeStep}
-                                             setActiveStep={setActiveStep}
-                                             searchText={searchText}
-                                             setSearchText={setSearchText}
-                                             selectedFilter={selectedFilter}
-                                             setSelectedFilter={setSelectedFilter}
-                                             places={places}
-                            />}
+                            data={places}
+                            renderItem={PlaceItem}
+                            scrollEventThrottle={100}
+                            onEndReached={() => setPagination(prev => (prev + 1))}
+                            keyExtractor={(item, index) => index.toString()}
+                        /> :
 
-                        data={places}
-                        renderItem={PlaceItem}
-                        scrollEventThrottle={100}
-                        onEndReached={() => setPagination(prev => (prev + 1))}
-                        keyExtractor={(item, index) => index.toString()}
-                    />
+                        <LocationAccessDenied errorMsg={errorMsg} tryAgain={() => retryGetLocation()}/>
+                    }
                 </AppView>
             }
 

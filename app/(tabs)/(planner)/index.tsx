@@ -12,7 +12,6 @@ export default function Index() {
 
 
     useEffect(() => {
-
         const getSteps = async () => {
             try {
                 const response = await API.plannerControllerGetSteps()
@@ -26,7 +25,6 @@ export default function Index() {
             }
         }
         getSteps()
-
     }, [])
 
     return currentStep ? <Redirect href={`/${currentStep}`}/> : <ActivityIndicator/>

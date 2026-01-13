@@ -8,6 +8,7 @@ import {useAuthStore} from "@/utils/authStore";
 import {AuthProvider} from "@/contexts/auth-context";
 import {UserType} from "@/types/user-type";
 import {GestureHandlerRootView} from "react-native-gesture-handler";
+import {LocationProvider} from "@/contexts/location-context";
 
 
 export default function RootLayout() {
@@ -36,22 +37,24 @@ export default function RootLayout() {
         <AuthProvider>
             <SafeAreaProvider>
                 <GestureHandlerRootView>
-                    <Stack screenOptions={{headerShown: false}}>
-                        <Stack.Protected guard={isLoggedIn && userType === UserType.User}>
-                            <Stack.Screen name="(tabs)"/>
-                        </Stack.Protected>
-                        <Stack.Protected guard={isLoggedIn && userType === UserType.Vendor}>
-                            <Stack.Screen name="(switch-tabs)"/>
-                        </Stack.Protected>
-                        <Stack.Protected guard={!isLoggedIn && !shouldCreateAccount && hasCompletedOnboarding}>
-                            <Stack.Screen name="sign-in"/>
-                        </Stack.Protected>
-                        <Stack.Protected guard={!hasCompletedOnboarding}>
-                            <Stack.Screen
-                                name="onboarding"/>
-                        </Stack.Protected>
-                        <Stack.Screen name="+not-found"/>
-                    </Stack>
+                    <LocationProvider>
+                        <Stack screenOptions={{headerShown: false}}>
+                            <Stack.Protected guard={isLoggedIn && userType === UserType.User}>
+                                <Stack.Screen name="(tabs)"/>
+                            </Stack.Protected>
+                            <Stack.Protected guard={isLoggedIn && userType === UserType.Vendor}>
+                                <Stack.Screen name="(switch-tabs)"/>
+                            </Stack.Protected>
+                            <Stack.Protected guard={!isLoggedIn && !shouldCreateAccount && hasCompletedOnboarding}>
+                                <Stack.Screen name="sign-in"/>
+                            </Stack.Protected>
+                            <Stack.Protected guard={!hasCompletedOnboarding}>
+                                <Stack.Screen
+                                    name="onboarding"/>
+                            </Stack.Protected>
+                            <Stack.Screen name="+not-found"/>
+                        </Stack>
+                    </LocationProvider>
 
                     <StatusBar style="auto"/>
                 </GestureHandlerRootView>

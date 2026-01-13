@@ -1,27 +1,22 @@
-import {createContext, Dispatch, SetStateAction, useCallback, useContext, useEffect, useState} from "react";
+import {createContext, useCallback, useContext, useEffect, useState} from "react";
 import * as Location from 'expo-location';
+import {LocationGeocodedAddress} from 'expo-location';
 import {Platform} from "react-native";
 import * as Device from "expo-device";
 
 type LocationContextType = {
     isLocationGranted: boolean,
-    setIsLocationGranted: Dispatch<SetStateAction<boolean>>
     location: Location.LocationObject | null,
-    setLocation: Dispatch<SetStateAction<Location.LocationObject | null>>
     errorMsg: string | null,
-    setErrorMsg: Dispatch<SetStateAction<string | null>>
+    countryCode: LocationGeocodedAddress | null
 }
 
 const LocationContext = createContext<LocationContextType>({
     isLocationGranted: false,
-    setIsLocationGranted: () => {
-    },
     location: null,
-    setLocation: () => {
-    },
     errorMsg: "",
-    setErrorMsg: () => {
-    },
+    countryCode: null,
+
 })
 
 export function LocationProvider({children}: { children: React.ReactNode }) {
@@ -29,6 +24,7 @@ export function LocationProvider({children}: { children: React.ReactNode }) {
     const [isLocationGranted, setIsLocationGranted] = useState<boolean>(false)
     const [location, setLocation] = useState<Location.LocationObject | null>(null)
     const [errorMsg, setErrorMsg] = useState<string | null>(null);
+    const [countryCode, setCountryCode] = useState<LocationGeocodedAddress | null>(null)
 
 
     const getCurrentLocation = useCallback(async () => {
@@ -45,9 +41,17 @@ export function LocationProvider({children}: { children: React.ReactNode }) {
         }
 
         let location = await Location.getCurrentPositionAsync({});
-        console.log(location);
-        setLocation(location);
-        setIsLocationGranted(true);
+        if (location) {
+            setLocation(location);
+            setIsLocationGranted(true);
+
+            const postalAddress: LocationGeocodedAddress[] = await Location.reverseGeocodeAsync({
+                latitude: location.coords.latitude,
+                longitude: location.coords.longitude
+            });
+            setCountryCode(postalAddress[0])
+        }
+
 
     }, [])
 
@@ -59,11 +63,9 @@ export function LocationProvider({children}: { children: React.ReactNode }) {
         <LocationContext.Provider
             value={{
                 isLocationGranted,
-                setIsLocationGranted,
                 location,
-                setLocation,
-                setErrorMsg,
                 errorMsg,
+                countryCode,
             }}>
             {children}
         </LocationContext.Provider>

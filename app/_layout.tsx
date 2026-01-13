@@ -2,8 +2,8 @@ import {useFonts} from 'expo-font';
 import {SplashScreen, Stack} from 'expo-router';
 import {StatusBar} from 'expo-status-bar';
 import 'react-native-reanimated';
-import {Edges, SafeAreaProvider} from "react-native-safe-area-context";
-import {useEffect, useState} from "react";
+import {SafeAreaProvider} from "react-native-safe-area-context";
+import {useEffect} from "react";
 import {useAuthStore} from "@/utils/authStore";
 import {AuthProvider} from "@/contexts/auth-context";
 import {UserType} from "@/types/user-type";
@@ -11,7 +11,6 @@ import {GestureHandlerRootView} from "react-native-gesture-handler";
 
 
 export default function RootLayout() {
-    const [safeAreaEdges, setSafeAreaEdges] = useState<Edges>(['top'])
     const {isLoggedIn, shouldCreateAccount, hasCompletedOnboarding, userType} = useAuthStore()
 
     SplashScreen.preventAutoHideAsync();

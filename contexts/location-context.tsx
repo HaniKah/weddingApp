@@ -1,4 +1,4 @@
-import {createContext, useCallback, useContext, useEffect, useState} from "react";
+import {createContext, useContext, useEffect, useState} from "react";
 import * as Location from 'expo-location';
 import {LocationGeocodedAddress} from 'expo-location';
 import {Platform} from "react-native";
@@ -27,35 +27,36 @@ export function LocationProvider({children}: { children: React.ReactNode }) {
     const [countryCode, setCountryCode] = useState<LocationGeocodedAddress | null>(null)
 
 
-    const getCurrentLocation = useCallback(async () => {
-        if (Platform.OS === 'android' && !Device.isDevice) {
-            setErrorMsg(
-                'Oops, this will not work on Snack in an Android Emulator. Try it on your device!'
-            );
-            return;
-        }
-        let {status} = await Location.requestForegroundPermissionsAsync();
-        if (status !== 'granted') {
-            setErrorMsg('Permission to access location was denied , please change location accessibility in your phone settings to be able to use this app properly');
-            return;
-        }
-
-        let location = await Location.getCurrentPositionAsync({});
-        if (location) {
-            setLocation(location);
-            setIsLocationGranted(true);
-
-            const postalAddress: LocationGeocodedAddress[] = await Location.reverseGeocodeAsync({
-                latitude: location.coords.latitude,
-                longitude: location.coords.longitude
-            });
-            setCountryCode(postalAddress[0])
-        }
-
-
-    }, [])
-
     useEffect(() => {
+
+        const getCurrentLocation = async () => {
+            if (Platform.OS === 'android' && !Device.isDevice) {
+                setErrorMsg(
+                    'Oops, this will not work on Snack in an Android Emulator. Try it on your device!'
+                );
+                return;
+            }
+            let {status} = await Location.requestForegroundPermissionsAsync();
+            if (status !== 'granted') {
+                setErrorMsg('Permission to access location was denied , please change location accessibility in your phone settings to be able to use this app properly');
+                return;
+            }
+
+            let location = await Location.getCurrentPositionAsync({});
+            if (location) {
+                setLocation(location);
+                setIsLocationGranted(true);
+
+                const postalAddress: LocationGeocodedAddress[] = await Location.reverseGeocodeAsync({
+                    latitude: location.coords.latitude,
+                    longitude: location.coords.longitude
+                });
+                setCountryCode(postalAddress[0])
+            }
+
+
+        }
+
         getCurrentLocation();
     }, []);
 

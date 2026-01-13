@@ -8,14 +8,14 @@ type LocationContextType = {
     isLocationGranted: boolean,
     location: Location.LocationObject | null,
     errorMsg: string | null,
-    countryCode: LocationGeocodedAddress | null
+    address: LocationGeocodedAddress | null
 }
 
 const LocationContext = createContext<LocationContextType>({
     isLocationGranted: false,
     location: null,
     errorMsg: "",
-    countryCode: null,
+    address: null,
 
 })
 
@@ -24,7 +24,7 @@ export function LocationProvider({children}: { children: React.ReactNode }) {
     const [isLocationGranted, setIsLocationGranted] = useState<boolean>(false)
     const [location, setLocation] = useState<Location.LocationObject | null>(null)
     const [errorMsg, setErrorMsg] = useState<string | null>(null);
-    const [countryCode, setCountryCode] = useState<LocationGeocodedAddress | null>(null)
+    const [address, setAddress] = useState<LocationGeocodedAddress | null>(null)
 
 
     useEffect(() => {
@@ -51,7 +51,7 @@ export function LocationProvider({children}: { children: React.ReactNode }) {
                     latitude: location.coords.latitude,
                     longitude: location.coords.longitude
                 });
-                setCountryCode(postalAddress[0])
+                setAddress(postalAddress[0])
             }
 
 
@@ -66,7 +66,7 @@ export function LocationProvider({children}: { children: React.ReactNode }) {
                 isLocationGranted,
                 location,
                 errorMsg,
-                countryCode,
+                address,
             }}>
             {children}
         </LocationContext.Provider>

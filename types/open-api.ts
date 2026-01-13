@@ -552,6 +552,23 @@ export class Api<
           | "Fireworks"
           | "Extra";
         offset: number;
+        countryCode:
+          | "BH"
+          | "EG"
+          | "IR"
+          | "IQ"
+          | "JO"
+          | "KW"
+          | "LB"
+          | "OM"
+          | "PS"
+          | "QA"
+          | "SA"
+          | "SY"
+          | "TR"
+          | "AE"
+          | "YE"
+          | "SD";
         search?: string;
         filter?: "MyPick" | "MyFavourite" | "onSale";
       },

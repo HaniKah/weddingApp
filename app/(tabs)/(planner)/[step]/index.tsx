@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {PlacesDto, SearchFilter, StepsDto} from "@/types/open-api";
+import {CountryCode, PlacesDto, SearchFilter, StepsDto} from "@/types/open-api";
 import PlannerToolbar from "@/components/toolbars/PlannerToolbar";
 import {Stack, useLocalSearchParams} from "expo-router";
 import AppView from "@/components/appComponents/AppView";
@@ -32,7 +32,7 @@ export default function Index() {
 
     const [pagination, setPagination] = useState<number>(0)
 
-    const {isLocationGranted, errorMsg, retryGetLocation} = useLocationContext()
+    const {isLocationGranted, errorMsg, address} = useLocationContext()
 
 
     useEffect(() => {
@@ -54,13 +54,31 @@ export default function Index() {
 
     }, [step])
 
+    function isCountryIncluded(country: string | null | undefined): boolean {
+        if (!country) return false
+        return (country in CountryCode)
+    }
+
+    // function toCountryCode(key: string | null | undefined): CountryCode | undefined {
+    //     if (key && key in CountryCode) {
+    //         return CountryCode[key as keyof typeof CountryCode];
+    //     }
+    //     return undefined;
+    // }
+
 
     async function getPlaces(): Promise<PlacesDto[]> {
         if (!activeStep) return []
+        if (!isCountryIncluded(address?.isoCountryCode)) return []
+
         let data: PlacesDto[] = []
         try {
             const resp = await API.plannerControllerGetPlaces({
-                step: activeStep?.step, search: searchText, filter: selectedFilter, offset: pagination
+                step: activeStep?.step,
+                search: searchText,
+                filter: selectedFilter,
+                offset: pagination,
+                countryCode: address?.isoCountryCode as CountryCode
             })
             data = resp.data.places
         } catch (err) {
@@ -110,7 +128,7 @@ export default function Index() {
                             keyExtractor={(item, index) => index.toString()}
                         /> :
 
-                        <LocationAccessDenied errorMsg={errorMsg} tryAgain={() => retryGetLocation()}/>
+                        <LocationAccessDenied errorMsg={errorMsg}/>
                     }
                 </AppView>
             }

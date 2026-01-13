@@ -4,16 +4,16 @@ import {create} from "zustand";
 import {UserType} from "@/types/user-type";
 
 type UserInfo = {
-    firstName: string | null,
-    lastName: string | null,
-    email: string | null,
+    firstName: string
+    lastName: string
+    email: string
 }
 
 type userState = {
     isLoggedIn: boolean;
     shouldCreateAccount: boolean;
     hasCompletedOnboarding: boolean;
-    logIn: (accessToken: string, refreshToken: string, firstName?: string, lastName?: string, email?: string) => void;
+    logIn: (accessToken: string, refreshToken: string, firstName: string, lastName: string, email: string) => void;
     logOut: () => void;
     completeOnboarding: () => void;
     resetOnboarding: () => void;
@@ -28,20 +28,23 @@ export const useAuthStore = create(persist<userState>((set) => ({
     hasCompletedOnboarding: false,
     userType: UserType.User,
     user: {
-        firstName: getItem("firstName"),
-        lastName: getItem("lastName"),
-        email: getItem("email"),
+        firstName: "initial name",
+        lastName: "inital last",
+        email: "inital email"
     },
 
-    logIn: (accessToken: string, refreshToken: string, firstName?: string, lastName?: string, email?: string) => set((state) => {
+    logIn: (accessToken: string, refreshToken: string, firstName: string, lastName: string, email: string) => set((state) => {
         setItem("accessToken", accessToken)
         setItem("refreshToken", refreshToken)
-        if (firstName) setItem("firstName", firstName);
-        if (lastName) setItem("lastName", lastName);
-        if (email) setItem("email", email)
+        setItem("firstName", firstName);
+        setItem("lastName", lastName);
+        setItem("email", email)
         return {
             ...state,
             isLoggedIn: true,
+            user: {
+                firstName, lastName, email
+            }
         }
     }),
     logOut: () => set((state) => {

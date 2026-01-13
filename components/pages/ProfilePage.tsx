@@ -19,7 +19,7 @@ export default function ProfilePage() {
                 <View style={styles.container}>
                     <View style={styles.info}>
                         <Text style={styles.name}>{user?.firstName} {user.lastName}</Text>
-                        <Text style={styles.address}>{address?.city},{address?.country}</Text>
+                        <Text style={styles.address}>{address?.city}, {address?.country}</Text>
                     </View>
 
                     {userType === UserType.Vendor ?
@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
         fontSize: Theme.sizes.xl,
         fontWeight: "bold",
         textAlign: "center",
+        marginBottom: 10
     },
     address: {
         color: Theme.colors.gray.S400,

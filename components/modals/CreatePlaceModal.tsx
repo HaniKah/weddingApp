@@ -3,7 +3,7 @@ import AppView from "@/components/appComponents/AppView";
 import CreatePlaceWizard from "@/components/wizards/createPlaceWizard/CreatePlaceWizard";
 import {Dispatch, SetStateAction} from "react";
 
-export default function AddPlaceModal({isVisible, setIsVisible, placeId, setTrigger}: {
+export default function CreatePlaceModal({isVisible, setIsVisible, placeId, setTrigger}: {
     isVisible: boolean,
     setIsVisible: (value: boolean) => void,
     placeId: number | undefined

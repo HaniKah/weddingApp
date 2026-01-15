@@ -20,7 +20,8 @@ const MAPPING = {
     'gearshape.fill': 'settings',
     'checklist': 'checklist',
     'chart.line.uptrend.xyaxis': "trending-up",
-    'square.and.pencil': 'edit'
+    'square.and.pencil': 'edit',
+    'horn.blast': 'campaign',
 } as IconMapping;
 
 /**

@@ -4,7 +4,7 @@ import {useApi} from '@/utils/api';
 import {Alert, SectionList, StyleSheet, Text, View} from 'react-native';
 import {Theme} from '@/styles/Theme';
 import {useEffect, useState} from 'react';
-import AddPlaceModal from '@/components/modals/AddPlaceModal';
+import CreatePlaceModal from '@/components/modals/CreatePlaceModal';
 import {VendorPlaceDto, VendorPlaceViewModel} from '@/types/open-api';
 import VendorPlaceItem from '@/components/items/VendorPlaceItem';
 import {Link, Stack} from "expo-router";
@@ -14,10 +14,13 @@ import {ButtonType} from "@/styles/Button";
 import {IconSymbol} from "@/components/symbols/IconSymbol";
 import AppIf from "@/components/appComponents/AppIf";
 import {CommonStyles} from "@/styles/Common";
+import PromotePlaceModal from "@/components/modals/PromotePlaceModal";
 
 export default function Index() {
     const API = useApi();
-    const [openModal, setOpenModal] = useState<boolean>(false);
+    const [showCreateModal, setShowCreateModal] = useState<boolean>(false);
+    const [showPromoteModal, setShowPromoteModal] = useState<boolean>(false);
+
     const [places, setPlaces] = useState<VendorPlaceViewModel>();
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [trigger, setTrigger] = useState<boolean>(false);
@@ -57,7 +60,12 @@ export default function Index() {
     }
 
     function handleEditPlace() {
-        setOpenModal(true)
+        setShowCreateModal(true)
+        setIsBottomSheetVisible(false);
+    }
+
+    function handlePromotePlace() {
+        setShowPromoteModal(true)
         setIsBottomSheetVisible(false);
     }
 
@@ -128,7 +136,7 @@ export default function Index() {
     return (
         <>
             <Stack.Screen options={{headerShown: false}}/>
-            <PlacesToolbar onCreatePlace={() => setOpenModal(true)}/>
+            <PlacesToolbar onCreatePlace={() => setShowCreateModal(true)}/>
 
             <AppView withPadding isLoading={isLoading}>
 
@@ -154,11 +162,34 @@ export default function Index() {
 
             </AppView>
 
-            <AddPlaceModal setTrigger={setTrigger} placeId={selectedPlace?.id} setIsVisible={setOpenModal}
-                           isVisible={openModal}/>
+            <CreatePlaceModal setTrigger={setTrigger}
+                              placeId={selectedPlace?.id}
+                              setIsVisible={setShowCreateModal}
+                              isVisible={showCreateModal}/>
+
+
+            <PromotePlaceModal placeId={selectedPlace?.id}
+                               setIsVisible={setShowPromoteModal}
+                               isVisible={showPromoteModal}/>
+
+
             <AppBottomSheet setIsVisible={setIsBottomSheetVisible} isVisible={isBottomSheetVisible}>
                 {selectedPlace &&
                     <View>
+                        {selectedPlace.isPublished &&
+                            <AppButton extraStylesBtn={styles.actionBtn}
+                                       informative
+                                       fullWidth
+                                       textPosition="LEFT"
+                                       onPress={handlePromotePlace}
+                                       buttonType={ButtonType.PLAIN}
+                                       icon="horn.blast"
+                            >
+                                Promote
+                            </AppButton>
+
+                        }
+
 
                         {!selectedPlace.isPublished && selectedPlace.isCompleted &&
                             <AppButton
@@ -209,6 +240,7 @@ export default function Index() {
                                 fullWidth
                                 textPosition="LEFT"
                                 extraStylesBtn={styles.actionBtn}
+                                destructive
                                 onPress={handleUnpublishPlace}
                                 icon="square.and.arrow.down" buttonType={ButtonType.PLAIN}>
                                 Unpublish

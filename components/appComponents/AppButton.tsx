@@ -19,6 +19,7 @@ export default function AppButton({
                                       CustomIcon,
                                       destructive,
                                       confirmative,
+                                      informative,
                                       fullWidth,
                                       underline,
                                       inactive,
@@ -38,6 +39,7 @@ export default function AppButton({
     CustomIcon?: FC<SvgProps>,
     destructive?: boolean,
     confirmative?: boolean,
+    informative?: boolean,
     fullWidth?: boolean,
     underline?: boolean,
     inactive?: boolean,
@@ -62,6 +64,10 @@ export default function AppButton({
             buttonStyles = {...buttonStyles, borderColor: Theme.colors.green.S500};
             textStyles = {...textStyles, color: Theme.colors.green.S500};
         }
+        if (informative) {
+            buttonStyles = {...buttonStyles, borderColor: Theme.colors.blue.S500};
+            textStyles = {...textStyles, color: Theme.colors.blue.S500};
+        }
         if (inactive) {
             buttonStyles = {...buttonStyles, borderColor: Theme.colors.gray.S300};
             textStyles = {...textStyles, color: Theme.colors.gray.S500};
@@ -76,6 +82,9 @@ export default function AppButton({
         if (confirmative) {
             textStyles = {...textStyles, color: Theme.colors.green.S600};
         }
+        if (informative) {
+            textStyles = {...textStyles, color: Theme.colors.blue.S500};
+        }
         if (inactive) {
             textStyles = {...textStyles, color: Theme.colors.gray.S500};
         }
@@ -89,6 +98,10 @@ export default function AppButton({
         if (confirmative) {
             buttonStyles = {...buttonStyles, backgroundColor: Theme.colors.green.S100};
             textStyles = {...textStyles, color: Theme.colors.green.S600};
+        }
+        if (informative) {
+            buttonStyles = {...buttonStyles, backgroundColor: Theme.colors.blue.S100};
+            textStyles = {...textStyles, color: Theme.colors.blue.S500};
         }
         if (inactive) {
             buttonStyles = {...buttonStyles, backgroundColor: Theme.colors.gray.S300};

@@ -1,5 +1,5 @@
 import {ScrollView, StyleSheet, Text, View} from "react-native";
-import {Dispatch, SetStateAction} from "react";
+import {Dispatch, SetStateAction, useRef} from "react";
 import {PromotionInfoDto} from "@/components/wizards/promotePlaceWizard/PromotePlaceWizard";
 import {Theme} from "@/styles/Theme";
 import Horn from "@/assets/icons/horn.svg"
@@ -10,6 +10,8 @@ import {useWizardContext} from "@/components/wizards/Wizard";
 import AppDropDown from "@/components/appComponents/AppDropDown";
 import {PickerItem} from "@/components/appComponents/AppPickerDepr";
 import AppPicker from "@/components/appComponents/AppPicker";
+import {AppForm, FormRef} from "@/contexts/form-context";
+import AppFieldSet from "@/components/appComponents/AppFieldSet";
 
 export enum PromotionDuration {
     OneMonth = "OneMonth",
@@ -28,8 +30,10 @@ export default function PromotionInfo({promotionInfo, setPromotionInfo}: {
     setPromotionInfo: Dispatch<SetStateAction<PromotionInfoDto>>
 }) {
 
+    const formRef = useRef<FormRef>(null)
+
     const wizard = useWizardContext()
-    
+
     const saleLabels: PickerItem<SaleType>[] = Object.entries(SaleType).map(([key, value]) => ({
         name: key,
         value: value
@@ -54,57 +58,72 @@ export default function PromotionInfo({promotionInfo, setPromotionInfo}: {
         setPromotionInfo((prev) => ({...prev, salePercentage: newValue}))
     }
 
+
+    function handleNextStep() {
+        wizard.nextStep()
+    }
+
     return (
         <>
             <ScrollView style={styles.scrollContainer}>
                 <Text style={styles.title}>Promotions</Text>
-                <AppView extraStyles={styles.AppViewContainer} withPadding>
-                    <View>
-                        <Horn width={100} height={100} style={styles.image}/>
-                        <Text style={styles.headerText}>
-                            With place promotion , you will get x2 more visitors on your place , and it will be on the
-                            top search
-                        </Text>
-                    </View>
-                    <View>
-                        <Text style={styles.subtitle}>Select promotion duration</Text>
-                        <View style={styles.itemsList}>
-                            <PromotionItem onPress={() => onPromotionDurationChange(PromotionDuration.OneMonth)}
-                                           isSelected={promotionInfo.promotionDuration === PromotionDuration.OneMonth}
-                                           title="1 month"
-                                           price="3.99"
-                                           currency="JOD"/>
-                            <PromotionItem onPress={() => onPromotionDurationChange(PromotionDuration.ThreeMonths)}
-                                           isSelected={promotionInfo.promotionDuration === PromotionDuration.ThreeMonths}
-                                           title="3 months"
-                                           price="7.99"
-                                           currency="JOD"/>
-                            <PromotionItem onPress={() => onPromotionDurationChange(PromotionDuration.SixMonths)}
-                                           isSelected={promotionInfo.promotionDuration === PromotionDuration.SixMonths}
-                                           title="6 months"
-                                           price="14.99"
-                                           currency="JOD"/>
-                        </View>
-                    </View>
-                    <View>
-                        <Text style={styles.subtitle}>Add sale label</Text>
-                        <AppDropDown name="sale"
-                                     onChange={onSaleTypeChange}
-                                     value={promotionInfo.saleType}
-                                     itemList={saleLabels}/>
-                    </View>
-                    {promotionInfo.saleType === SaleType.Percentage &&
+                <AppForm onSubmit={handleNextStep} ref={formRef}>
+                    <AppView extraStyles={styles.AppViewContainer} withPadding>
                         <View>
-                            <Text style={styles.subtitle}>Choose a percentage</Text>
-                            <AppPicker name="percentage"
-                                       onChange={(v) => onSalePercentageChange(v)}
-                                       value={promotionInfo.salePercentage}
-                                       itemList={saleList}/>
+                            <Horn width={100} height={100} style={styles.image}/>
+                            <Text style={styles.headerText}>
+                                With place promotion , you will get x2 more visitors on your place , and it will be on
+                                the
+                                top search
+                            </Text>
                         </View>
-                    }
-                </AppView>
+                        <View>
+                            <Text style={styles.subtitle}>Select promotion duration</Text>
+                            <View style={styles.itemsList}>
+                                <AppFieldSet value={promotionInfo.promotionDuration} name="promotionDuration" required>
+                                    <PromotionItem onPress={() => onPromotionDurationChange(PromotionDuration.OneMonth)}
+                                                   isSelected={promotionInfo.promotionDuration === PromotionDuration.OneMonth}
+                                                   title="1 month"
+                                                   price="3.99"
+                                                   currency="JOD"/>
+                                    <PromotionItem
+                                        onPress={() => onPromotionDurationChange(PromotionDuration.ThreeMonths)}
+                                        isSelected={promotionInfo.promotionDuration === PromotionDuration.ThreeMonths}
+                                        title="3 months"
+                                        price="7.99"
+                                        currency="JOD"/>
+                                    <PromotionItem
+                                        onPress={() => onPromotionDurationChange(PromotionDuration.SixMonths)}
+                                        isSelected={promotionInfo.promotionDuration === PromotionDuration.SixMonths}
+                                        title="6 months"
+                                        price="14.99"
+                                        currency="JOD"/>
+                                </AppFieldSet>
+
+                            </View>
+                        </View>
+                        <View>
+                            <Text style={styles.subtitle}>Add sale label</Text>
+                            <AppDropDown name="sale"
+                                         required={true}
+                                         onChange={onSaleTypeChange}
+                                         value={promotionInfo.saleType}
+                                         itemList={saleLabels}/>
+                        </View>
+                        {promotionInfo.saleType === SaleType.Percentage &&
+                            <View>
+                                <Text style={styles.subtitle}>Choose a percentage</Text>
+                                <AppPicker name="percentage"
+                                           required
+                                           onChange={(v) => onSalePercentageChange(v)}
+                                           value={promotionInfo.salePercentage}
+                                           itemList={saleList}/>
+                            </View>
+                        }
+                    </AppView>
+                </AppForm>
             </ScrollView>
-            <WizardController isFirstStep={true} onNext={wizard.nextStep}/>
+            <WizardController isFirstStep={true} onNext={formRef.current?.submit}/>
         </>
     )
 }
@@ -138,7 +157,6 @@ const styles = StyleSheet.create({
     itemsList: {
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
         gap: 5,
         marginTop: 10,
     },

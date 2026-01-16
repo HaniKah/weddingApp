@@ -43,7 +43,11 @@ export default function AppPicker<T>({itemList, label, value, onChange, style, t
             }
         }
 
-    }, [form.submitting]);
+        if (value) {
+            setError(undefined)
+        }
+
+    }, [form.submitting, value]);
 
     return (
         <View style={style}>

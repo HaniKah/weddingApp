@@ -55,7 +55,11 @@ export default function AppDropDown<T>({itemList, label, value, onChange, style,
             }
         }
 
-    }, [form.submitting]);
+        if (value) {
+            setError(undefined)
+        }
+
+    }, [form.submitting, value]);
 
     return (
         <View style={style}>
@@ -118,7 +122,7 @@ const styles = StyleSheet.create({
     error: {
         fontSize: Theme.sizes.xs,
         color: Theme.colors.red["S500"],
-        marginTop: 5,
+
     },
 
 })

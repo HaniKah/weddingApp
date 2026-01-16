@@ -51,9 +51,10 @@ export default function PromotionInfo({setPromotionInfo}: {
     return (
         <>
             <ScrollView style={styles.scrollContainer}>
-                <AppView withPadding>
+                <Text style={styles.title}>Promotions</Text>
+                <AppView extraStyles={styles.AppViewContainer} withPadding>
                     <View>
-                        <Horn width={150} height={150} style={styles.image}/>
+                        <Horn width={100} height={100} style={styles.image}/>
                         <Text style={styles.headerText}>
                             With place promotion , you will get x2 more visitors on your place , and it will be on the
                             top search
@@ -61,7 +62,7 @@ export default function PromotionInfo({setPromotionInfo}: {
                     </View>
                     <View>
                         <Text style={styles.subtitle}>Select promotion duration</Text>
-                        <View style={styles.itemsContainer}>
+                        <View style={styles.itemsList}>
                             <PromotionItem onPress={() => setSelectedDuration(PromotionDurations.OneMonth)}
                                            isSelected={selectedDuration === PromotionDurations.OneMonth}
                                            title="1 month"
@@ -79,7 +80,7 @@ export default function PromotionInfo({setPromotionInfo}: {
                                            currency="JOD"/>
                         </View>
                     </View>
-                    <View style={styles.labelContainer}>
+                    <View>
                         <Text style={styles.subtitle}>Add sale label</Text>
                         <AppDropDown name="sale"
                                      onChange={onSaleTypeChange}
@@ -87,7 +88,7 @@ export default function PromotionInfo({setPromotionInfo}: {
                                      itemList={saleLabels}/>
                     </View>
                     {selectedSale === SaleType.Percentage &&
-                        <View style={styles.percentageContainer}>
+                        <View>
                             <Text style={styles.subtitle}>Choose a percentage</Text>
                             <AppPicker name="percentage"
                                        onChange={setSalePercentage}
@@ -103,31 +104,36 @@ export default function PromotionInfo({setPromotionInfo}: {
 }
 const styles = StyleSheet.create({
     scrollContainer: {
-        marginBottom: Theme.global.wizardControllerBottomMargin
+        marginBottom: Theme.global.wizardControllerBottomMargin,
+    },
+    title: {
+        fontSize: Theme.sizes.xl,
+        fontWeight: "bold",
+        textAlign: "center",
+        marginVertical: 20,
+    },
+    AppViewContainer: {
+        display: "flex",
+        flexDirection: "column",
+        gap: 30,
     },
     image: {
         marginHorizontal: "auto"
     },
     headerText: {
         textAlign: "center",
-        marginVertical: 30,
+        marginTop: 30,
         color: Theme.colors.gray.S700
     },
     subtitle: {
         fontWeight: "bold"
     },
-    itemsContainer: {
+
+    itemsList: {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         gap: 5,
         marginTop: 10,
     },
-    labelContainer: {
-        marginTop: 20
-    },
-    percentageContainer: {
-        marginTop: 20,
-    },
-
 })

@@ -8,7 +8,7 @@ import Animated from "react-native-reanimated";
 export default function WizardController({isFirstStep, isLastStep, onNext}: {
     isFirstStep?: boolean,
     isLastStep?: boolean,
-    onNext?: () => void,
+    onNext: () => void,
 }) {
     const wizard = useWizardContext()
     return (

@@ -2,10 +2,11 @@ import {Wizard} from "@/components/wizards/Wizard";
 import WizardStep from "@/components/wizards/WizardStep";
 import PromotionInfo from "@/components/wizards/promotePlaceWizard/PromotionInfo";
 import {useState} from "react";
+import PaymentInfo from "@/components/wizards/promotePlaceWizard/PaymentInfo";
 
 enum PromotionSteps {
     PromotionInfo = "PromotionInfo",
-    Payment = "Payment"
+    PaymentInfo = "PaymentInfo"
 }
 
 enum PromotionType {
@@ -28,6 +29,9 @@ export default function PromotePlaceWizard({placeId}: { placeId: number | undefi
         <Wizard>
             <WizardStep step={PromotionSteps.PromotionInfo}>
                 <PromotionInfo setPromotionInfo={setPromotionInfo}/>
+            </WizardStep>
+            <WizardStep step={PromotionSteps.PaymentInfo}>
+                <PaymentInfo/>
             </WizardStep>
         </Wizard>
     )

@@ -1,5 +1,5 @@
 import {ScrollView, StyleSheet, Text, View} from "react-native";
-import {Dispatch, SetStateAction, useState} from "react";
+import {Dispatch, SetStateAction} from "react";
 import {PromotionInfoDto} from "@/components/wizards/promotePlaceWizard/PromotePlaceWizard";
 import {Theme} from "@/styles/Theme";
 import Horn from "@/assets/icons/horn.svg"
@@ -11,7 +11,7 @@ import AppDropDown from "@/components/appComponents/AppDropDown";
 import {PickerItem} from "@/components/appComponents/AppPickerDepr";
 import AppPicker from "@/components/appComponents/AppPicker";
 
-enum PromotionDurations {
+export enum PromotionDuration {
     OneMonth = "OneMonth",
     ThreeMonths = "ThreeMonths",
     SixMonths = "SixMonths"
@@ -23,15 +23,13 @@ export enum SaleType {
     None = "None"
 }
 
-export default function PromotionInfo({setPromotionInfo}: {
-    setPromotionInfo: Dispatch<SetStateAction<PromotionInfoDto | undefined>>
+export default function PromotionInfo({promotionInfo, setPromotionInfo}: {
+    promotionInfo: PromotionInfoDto
+    setPromotionInfo: Dispatch<SetStateAction<PromotionInfoDto>>
 }) {
 
     const wizard = useWizardContext()
-    const [selectedDuration, setSelectedDuration] = useState<PromotionDurations | undefined>(undefined)
-    const [selectedSale, setSelectedSale] = useState<SaleType>(SaleType.None)
-    const [salePercentage, setSalePercentage] = useState<number | undefined>(undefined)
-
+    
     const saleLabels: PickerItem<SaleType>[] = Object.entries(SaleType).map(([key, value]) => ({
         name: key,
         value: value
@@ -44,8 +42,16 @@ export default function PromotionInfo({setPromotionInfo}: {
     }
 
     function onSaleTypeChange(newValue: SaleType) {
-        setSalePercentage(undefined)
-        setSelectedSale(newValue)
+        setPromotionInfo((prev) => ({...prev, salePercentage: undefined, saleType: newValue}))
+    }
+
+    function onPromotionDurationChange(newValue: PromotionDuration) {
+        setPromotionInfo((prev) => ({...prev, promotionDuration: newValue}))
+
+    }
+
+    function onSalePercentageChange(newValue: number) {
+        setPromotionInfo((prev) => ({...prev, salePercentage: newValue}))
     }
 
     return (
@@ -63,18 +69,18 @@ export default function PromotionInfo({setPromotionInfo}: {
                     <View>
                         <Text style={styles.subtitle}>Select promotion duration</Text>
                         <View style={styles.itemsList}>
-                            <PromotionItem onPress={() => setSelectedDuration(PromotionDurations.OneMonth)}
-                                           isSelected={selectedDuration === PromotionDurations.OneMonth}
+                            <PromotionItem onPress={() => onPromotionDurationChange(PromotionDuration.OneMonth)}
+                                           isSelected={promotionInfo.promotionDuration === PromotionDuration.OneMonth}
                                            title="1 month"
                                            price="3.99"
                                            currency="JOD"/>
-                            <PromotionItem onPress={() => setSelectedDuration(PromotionDurations.ThreeMonths)}
-                                           isSelected={selectedDuration === PromotionDurations.ThreeMonths}
+                            <PromotionItem onPress={() => onPromotionDurationChange(PromotionDuration.ThreeMonths)}
+                                           isSelected={promotionInfo.promotionDuration === PromotionDuration.ThreeMonths}
                                            title="3 months"
                                            price="7.99"
                                            currency="JOD"/>
-                            <PromotionItem onPress={() => setSelectedDuration(PromotionDurations.SixMonths)}
-                                           isSelected={selectedDuration === PromotionDurations.SixMonths}
+                            <PromotionItem onPress={() => onPromotionDurationChange(PromotionDuration.SixMonths)}
+                                           isSelected={promotionInfo.promotionDuration === PromotionDuration.SixMonths}
                                            title="6 months"
                                            price="14.99"
                                            currency="JOD"/>
@@ -84,15 +90,15 @@ export default function PromotionInfo({setPromotionInfo}: {
                         <Text style={styles.subtitle}>Add sale label</Text>
                         <AppDropDown name="sale"
                                      onChange={onSaleTypeChange}
-                                     value={selectedSale}
+                                     value={promotionInfo.saleType}
                                      itemList={saleLabels}/>
                     </View>
-                    {selectedSale === SaleType.Percentage &&
+                    {promotionInfo.saleType === SaleType.Percentage &&
                         <View>
                             <Text style={styles.subtitle}>Choose a percentage</Text>
                             <AppPicker name="percentage"
-                                       onChange={setSalePercentage}
-                                       value={salePercentage}
+                                       onChange={(v) => onSalePercentageChange(v)}
+                                       value={promotionInfo.salePercentage}
                                        itemList={saleList}/>
                         </View>
                     }

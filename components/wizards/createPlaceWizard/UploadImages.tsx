@@ -22,7 +22,7 @@ export default function UploadImages({onFinish, placeId}: {
 
     const IMAGE_GAP = 10
     const COLUMN_PER_ROW = 3
-    const IMAGE_SIZE = (Dimensions.get("window").width - IMAGE_GAP * (COLUMN_PER_ROW - 1) - (Theme.spaces.appPadding * 2)) / COLUMN_PER_ROW
+    const IMAGE_SIZE = (Dimensions.get("window").width - IMAGE_GAP * (COLUMN_PER_ROW - 1) - (Theme.global.appPadding * 2)) / COLUMN_PER_ROW
 
 
     useEffect(() => {

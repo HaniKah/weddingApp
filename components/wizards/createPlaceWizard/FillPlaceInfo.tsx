@@ -4,7 +4,7 @@ import AppTextInput from "@/components/appComponents/AppTextInput";
 import {Dispatch, SetStateAction, useEffect, useRef, useState} from "react";
 import {Theme} from "@/styles/Theme";
 import {CountryCode, CountryInfo, PriceType, UpdateStep, VendorPlaceDetailsDto} from "@/types/open-api";
-import {PickerItem} from "@/components/appComponents/AppPicker";
+import {PickerItem} from "@/components/appComponents/AppPickerDepr";
 import {useApi} from "@/utils/api";
 import WizardController from "@/components/wizards/WizardController";
 import {useWizardContext} from "@/components/wizards/Wizard";

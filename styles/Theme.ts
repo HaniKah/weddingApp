@@ -85,8 +85,9 @@ export const Theme = {
         xxxxl: 40,
         full: 9999,
     },
-    spaces: {
+    global: {
         appPadding: 10,
+        wizardControllerBottomMargin: 102
     },
 
 };

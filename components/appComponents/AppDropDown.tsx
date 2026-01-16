@@ -1,4 +1,4 @@
-import {PickerItem} from "@/components/appComponents/AppPicker";
+import {PickerItem} from "@/components/appComponents/AppPickerDepr";
 import {useEffect, useState} from "react";
 import {FlatList, Pressable, StyleProp, StyleSheet, Text, View, ViewStyle} from "react-native";
 import {Theme} from "@/styles/Theme";

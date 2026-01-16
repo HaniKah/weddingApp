@@ -1,6 +1,6 @@
 import {Wizard} from "@/components/wizards/Wizard";
 import WizardStep from "@/components/wizards/WizardStep";
-import PromotionInfo from "@/components/wizards/promotePlaceWizard/PromotionInfo";
+import PromotionInfo, {SaleType} from "@/components/wizards/promotePlaceWizard/PromotionInfo";
 import {useState} from "react";
 import PaymentInfo from "@/components/wizards/promotePlaceWizard/PaymentInfo";
 
@@ -9,15 +9,11 @@ enum PromotionSteps {
     PaymentInfo = "PaymentInfo"
 }
 
-enum PromotionType {
-    Percentage = "Percentage",
-    Buy1Get1Free = "Buy1Get1Free"
-}
 
 export interface PromotionInfoDto {
     startDate: Date
     endDate: Date
-    PromotionType: PromotionType
+    PromotionType: SaleType
 }
 
 export default function PromotePlaceWizard({placeId}: { placeId: number | undefined }) {

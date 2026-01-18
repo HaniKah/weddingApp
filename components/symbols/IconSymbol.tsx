@@ -22,6 +22,12 @@ const MAPPING = {
     'chart.line.uptrend.xyaxis': "trending-up",
     'square.and.pencil': 'edit',
     'horn.blast': 'campaign',
+    'person.fill': 'person',
+    'plus': "add",
+    "eye": "preview",
+    "square.and.arrow.down": "download",
+    "square.and.arrow.up": "publish",
+    "trash": "delete-outline"
 } as IconMapping;
 
 /**

@@ -2,11 +2,12 @@ import {Api} from "@/types/open-api";
 import {getItem, setItem} from "expo-secure-store";
 import {useAuthStore} from "@/utils/authStore";
 import axios from "axios";
+import {Platform} from "react-native";
 
 
 export function useApi() {
     const api = new Api({
-        baseURL: process.env.EXPO_PUBLIC_API_URL,
+        baseURL: process.env.NODE_ENV === "development" && Platform.OS === "android" ? process.env.EXPO_PUBLIC_API_URL_ANDROID : process.env.EXPO_PUBLIC_API_URL
     })
 
 
@@ -24,7 +25,6 @@ export function useApi() {
         Promise.reject(error)
     })
 
-
     // response interceptor to handle token refresh
     api.instance.interceptors.response.use(response => response, async (error) => {
         const originalRequest = error.config
@@ -34,7 +34,7 @@ export function useApi() {
             // attempt to refresh token
             try {
                 const oldRefreshToken = getItem("refreshToken")
-                const res = await axios.post(`${process.env.EXPO_PUBLIC_API_URL}/api/auth/refresh`, null, {headers: {Authorization: `Bearer ${oldRefreshToken}`}})
+                const res = await axios.post(`${api.instance.getUri()}/api/auth/refresh`, null, {headers: {Authorization: `Bearer ${oldRefreshToken}`}})
                 const {accessToken, refreshToken} = res.data
 
                 setItem("accessToken", accessToken)
@@ -51,7 +51,7 @@ export function useApi() {
     })
 
 
-    return api.api
+    return api
 }
 
 

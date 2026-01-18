@@ -21,7 +21,7 @@ export default function PickPlaceLocation({data, setData}: {
     setData: Dispatch<SetStateAction<VendorPlaceDetailsDto>>
 }) {
 
-    const API = useApi()
+    const API = useApi().api
     const wizard = useWizardContext()
 
     const [selectedPlaceId, setSelectedPlaceId] = useState<string | undefined>(data?.googleId)

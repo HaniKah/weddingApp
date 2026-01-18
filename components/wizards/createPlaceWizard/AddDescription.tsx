@@ -15,7 +15,7 @@ export default function AddDescription({data, setData}: {
 }) {
 
     const [description, setDescription] = useState<string | undefined>(data?.description)
-    const API = useApi()
+    const API = useApi().api
     const wizard = useWizardContext()
 
     const updatePlace = async () => {

@@ -15,7 +15,7 @@ export default function UploadImages({onFinish, placeId}: {
     onFinish: () => void,
     placeId: number | undefined,
 }) {
-    const API = useApi()
+    const {api} = useApi()
     const [images, setImages] = useState<PhotosDto[]>([])
     const [refresh, setRefresh] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
@@ -30,7 +30,7 @@ export default function UploadImages({onFinish, placeId}: {
             if (!placeId) return
             try {
                 setIsLoading(true)
-                const res = await API.photosControllerGetPhotos(placeId)
+                const res = await api.photosControllerGetPhotos(placeId)
                 setImages(res.data)
             } catch (err) {
                 console.error(err)
@@ -102,7 +102,7 @@ export default function UploadImages({onFinish, placeId}: {
         const files = constructRequest(placeId, newImages)
         if (newImages.length <= 0) return
         console.log("uploading images :", files)
-        await API.photosControllerUploadFile(files)
+        await api.photosControllerUploadFile(files)
 
     }
 

@@ -1,4 +1,4 @@
-import {AuthError} from "expo-auth-session";
+import {AuthError, makeRedirectUri} from "expo-auth-session";
 import React from "react";
 import * as WebBrowser from "expo-web-browser";
 import {useApi} from "@/utils/api";
@@ -47,9 +47,11 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
 
     WebBrowser.maybeCompleteAuthSession(); // still not sure what this does
 
+    const redirectUri = makeRedirectUri()
+
     const signInWithGoogle = async () => {
         try {
-            const response = await WebBrowser.openAuthSessionAsync(`${process.env.EXPO_PUBLIC_API_URL}/api/auth/google/login`);
+            const response = await WebBrowser.openAuthSessionAsync(`${API.instance.getUri()}/api/auth/google/login`, redirectUri);
             if (response.type === "success") {
                 const url = new URL(response.url);
                 await exchangeWithToken(url.searchParams.get("exchangeToken")!)
@@ -62,7 +64,7 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
 
     const signOut = async () => {
         try {
-            await API.authControllerSignOut()
+            await API.api.authControllerSignOut()
             logOut()
         } catch (error) {
             console.error(error)
@@ -71,7 +73,7 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
     }
 
     const exchangeWithToken = async (code: string) => {
-        const response = await API.authControllerExchangeToken({
+        const response = await API.api.authControllerExchangeToken({
             headers: {
                 Authorization: `Bearer ${code}`,
             }

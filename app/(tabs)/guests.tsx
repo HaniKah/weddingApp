@@ -18,7 +18,7 @@ export default function Guests() {
     const [trigger, setTrigger] = useState(false)
     const [selectedGuest, setSelectedGuest] = useState<GuestsDto>()
 
-    const API = useApi()
+    const API = useApi().api
 
 
     const handleAddGuest = (side: CoupleSide) => {

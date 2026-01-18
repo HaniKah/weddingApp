@@ -31,7 +31,7 @@ export default function FillPlaceInfo({data, setData}: {
     const [countriesDropDownOptions, setCountriesDropDownOption] = useState<PickerItem<CountryCode>[]>([])
     const [currency, setCurrency] = useState<string | undefined>(data?.currency)
 
-    const API = useApi()
+    const API = useApi().api
     const wizard = useWizardContext()
 
     const [switchEnabled, setSwitchEnabled] = useState(data?.minPrice !== data?.maxPrice);

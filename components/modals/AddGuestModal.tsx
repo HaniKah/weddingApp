@@ -1,11 +1,11 @@
 import {Alert, StyleSheet, Text, View} from "react-native";
 import {Theme} from "@/styles/Theme";
 import {AddGuestRequest, CoupleSide, GuestsDto, UpdateGuestRequest} from "@/types/open-api";
-import React, {Dispatch, useEffect, useState} from "react";
+import React, {Dispatch, useEffect, useRef, useState} from "react";
 import AppTextInput from "@/components/appComponents/AppTextInput";
 import AppButton from "@/components/appComponents/AppButton";
 import {ButtonType} from "@/styles/Button";
-import {AppForm} from "@/contexts/form-context";
+import {AppForm, FormRef} from "@/contexts/form-context";
 
 import AppModal from "@/components/appComponents/AppModal";
 import {useApi} from "@/utils/api";
@@ -26,7 +26,8 @@ export default function AddGuestModal({guestInfo, isVisible, setIsVisible, setRe
     const [guestSide, setGuestSide] = useState<CoupleSide>(CoupleSide.Groom)
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
-    const API = useApi()
+    const API = useApi().api
+    const formRef = useRef<FormRef>(null)
 
 
     useEffect(() => {
@@ -114,7 +115,7 @@ export default function AddGuestModal({guestInfo, isVisible, setIsVisible, setRe
                     <Text style={styles.text}> {guestSide}&#39;s guests </Text>
                     <View style={styles.symbol}></View>
 
-                    <AppForm onSubmit={(data: checkedGuestInfo) => handleSave(data)}>
+                    <AppForm ref={formRef} onSubmit={(data: checkedGuestInfo) => handleSave(data)}>
                         <View style={styles.form}>
                             <View style={{display: "flex", gap: 40, flex: 1}}>
                                 <AppTextInput name="name"

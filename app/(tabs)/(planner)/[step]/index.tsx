@@ -13,7 +13,7 @@ import LocationAccessDenied from "@/components/errors/LocationAccessDenied";
 
 export default function Index() {
 
-    const API = useApi()
+    const API = useApi().api
 
     const {step} = useLocalSearchParams<{ step: string }>()
 

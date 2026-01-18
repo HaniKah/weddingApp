@@ -10,7 +10,7 @@ export default function GooglePlacesAutoComplete({setSelectedPlace}: {
     setSelectedPlace: Dispatch<SetStateAction<string | undefined>>
 }) {
 
-    const API = useApi()
+    const API = useApi().api
 
     const [input, setInput] = useState<string>("")
     const [results, setResults] = useState<Prediction[]>([])

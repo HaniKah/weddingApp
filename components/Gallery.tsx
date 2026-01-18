@@ -6,7 +6,7 @@ import AppImageViewer from "@/components/appComponents/AppImageViewer";
 
 
 export default function Gallery({placeId}: { placeId: number }) {
-    const API = useApi()
+    const API = useApi().api
     const [images, setImages] = useState<PhotosDto[]>([])
     const [selectedImage, setSelectedImage] = useState<number>(0)
     const [imageView, setImageView] = useState(false)

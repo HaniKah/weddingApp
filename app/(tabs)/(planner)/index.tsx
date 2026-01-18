@@ -7,7 +7,7 @@ import {useApi} from "@/utils/api";
 
 export default function Index() {
 
-    const API = useApi()
+    const API = useApi().api
     const [currentStep, setCurrentStep] = useState<WeddingSteps>()
 
 

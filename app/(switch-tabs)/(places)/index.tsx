@@ -17,7 +17,7 @@ import {CommonStyles} from "@/styles/Common";
 import PromotePlaceModal from "@/components/modals/PromotePlaceModal";
 
 export default function Index() {
-    const API = useApi();
+    const API = useApi().api;
     const [showCreateModal, setShowCreateModal] = useState<boolean>(false);
     const [showPromoteModal, setShowPromoteModal] = useState<boolean>(false);
 

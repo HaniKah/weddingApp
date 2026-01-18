@@ -8,7 +8,7 @@ import {useApi} from "@/utils/api";
 
 
 export default function Checklist() {
-    const API = useApi()
+    const API = useApi().api
     const [checklist, setChecklist] = useState<ChecklistViewModel>()
     const [isLoading, setIsLoading] = useState(true)
 

@@ -12,7 +12,7 @@ import Instagram from "@/assets/icons/social-media/instagram.svg"
 import Tiktok from "@/assets/icons/social-media/tiktok.svg"
 
 export default function Place() {
-    const API = useApi()
+    const API = useApi().api
     const {id} = useLocalSearchParams<{ id: string }>()
     const [placeDetails, setPlaceDetails] = useState<VendorPlaceDetailsDto>()
     const [isLoading, setIsLoading] = useState<boolean>(true)

@@ -12,7 +12,7 @@ import ScrollView = Animated.ScrollView;
 
 
 export default function PlaceId() {
-    const API = useApi()
+    const API = useApi().api
     const {id} = useLocalSearchParams<{ id: string }>();
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const [placeDetails, setPlaceDetails] = useState<PlaceDetailsDto>()

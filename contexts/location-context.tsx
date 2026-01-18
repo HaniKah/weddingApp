@@ -1,8 +1,6 @@
 import {createContext, useContext, useEffect, useState} from "react";
 import * as Location from 'expo-location';
 import {LocationGeocodedAddress} from 'expo-location';
-import {Platform} from "react-native";
-import * as Device from "expo-device";
 
 type LocationContextType = {
     isLocationGranted: boolean,
@@ -30,12 +28,7 @@ export function LocationProvider({children}: { children: React.ReactNode }) {
     useEffect(() => {
 
         const getCurrentLocation = async () => {
-            if (Platform.OS === 'android' && !Device.isDevice) {
-                setErrorMsg(
-                    'Oops, this will not work on Snack in an Android Emulator. Try it on your device!'
-                );
-                return;
-            }
+
             let {status} = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
                 setErrorMsg('Permission to access location was denied , please change location accessibility in your phone settings to be able to use this app properly');

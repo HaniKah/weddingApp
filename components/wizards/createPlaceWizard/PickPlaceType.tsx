@@ -16,7 +16,7 @@ export default function PickPlaceType({data, setData}: {
     const placeTypeList: WeddingSteps[] = Object.values(WeddingSteps)
     const getColorByStep = useColors()
     const [selectedType, setSelectedType] = useState<WeddingSteps | undefined>(data?.step)
-    const API = useApi()
+    const API = useApi().api
     const wizard = useWizardContext()
 
     const PickPlaceItem = ({step}: { step: WeddingSteps }) => {

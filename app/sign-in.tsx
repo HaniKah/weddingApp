@@ -1,7 +1,7 @@
 import {useAuth} from "@/contexts/auth-context";
 import AppButton from "@/components/appComponents/AppButton";
 import {ButtonType} from "@/styles/Button";
-import {useVideoPlayer, VideoView} from "expo-video";
+import {useVideoPlayer} from "expo-video";
 import {StyleSheet, View} from "react-native";
 import Google from "@/assets/icons/social-media/google.svg"
 // const videoSource =
@@ -24,12 +24,12 @@ export default function SignIn() {
 
         <View style={styles.container}>
 
-            <VideoView
-                player={player}
-                nativeControls={false}
-                style={StyleSheet.absoluteFill}
-                contentFit="cover"
-            />
+            {/*<VideoView*/}
+            {/*    player={player}*/}
+            {/*    nativeControls={false}*/}
+            {/*    style={StyleSheet.absoluteFill}*/}
+            {/*    contentFit="cover"*/}
+            {/*/>*/}
             <View style={{
                 width: "100%",
                 height: "100%",

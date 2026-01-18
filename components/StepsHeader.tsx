@@ -41,7 +41,7 @@ export default function StepsHeader({stepsList, activeStep, setActiveStep}: {
         return (
             <TouchableOpacity onPress={() => setActiveStep(item)} style={[{width: itemWidth}, styles.itemContainer]}>
                 <Animated.View>
-                    <IconStep step={item.step} width={isActive ? 45 : 30} height={isActive ? 45 : 30}
+                    <IconStep step={item.step} width={isActive ? 45 : 25} height={isActive ? 45 : 25}
                               fill={color}/>
 
                 </Animated.View>
@@ -102,5 +102,6 @@ const styles = StyleSheet.create({
         fontWeight: "semibold",
         textAlign: "center",
         marginTop: 10,
+        color: Theme.colors.gray.S600
     },
 })

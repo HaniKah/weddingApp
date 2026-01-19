@@ -27,7 +27,8 @@ const MAPPING = {
     "eye": "preview",
     "square.and.arrow.down": "download",
     "square.and.arrow.up": "publish",
-    "trash": "delete-outline"
+    "trash": "delete-outline",
+    "checkmark.circle.fill": "check-circle",
 } as IconMapping;
 
 /**

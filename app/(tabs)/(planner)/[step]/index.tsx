@@ -59,14 +59,6 @@ export default function Index() {
         return (country in CountryCode)
     }
 
-    // function toCountryCode(key: string | null | undefined): CountryCode | undefined {
-    //     if (key && key in CountryCode) {
-    //         return CountryCode[key as keyof typeof CountryCode];
-    //     }
-    //     return undefined;
-    // }
-
-
     async function getPlaces(): Promise<PlacesDto[]> {
         if (!activeStep) return []
         if (!isCountryIncluded(address?.isoCountryCode)) return []

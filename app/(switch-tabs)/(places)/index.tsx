@@ -1,9 +1,9 @@
 import AppView from '@/components/appComponents/AppView';
 import PlacesToolbar from '@/components/toolbars/PlacesToolbar';
 import {useApi} from '@/utils/api';
-import {Alert, SectionList, StyleSheet, Text, View} from 'react-native';
+import {Alert, RefreshControl, SectionList, StyleSheet, Text, View} from 'react-native';
 import {Theme} from '@/styles/Theme';
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import CreatePlaceModal from '@/components/modals/CreatePlaceModal';
 import {VendorPlaceDto, VendorPlaceViewModel} from '@/types/open-api';
 import VendorPlaceItem from '@/components/items/VendorPlaceItem';
@@ -23,26 +23,27 @@ export default function Index() {
 
     const [places, setPlaces] = useState<VendorPlaceViewModel>();
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [trigger, setTrigger] = useState<boolean>(false);
+    const [refreshing, setRefreshing] = useState<boolean>(false);
 
     const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
     const [selectedPlace, setSelectedPlace] = useState<VendorPlaceDto>();
 
+
+    const getPlaces = useCallback(async () => {
+        try {
+            const res = await API.placesControllerGetPlaces();
+            setPlaces(res.data);
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setIsLoading(false);
+            setRefreshing(false);
+        }
+    }, [])
+
     useEffect(() => {
-        const getPlaces = async () => {
-            try {
-                const res = await API.placesControllerGetPlaces();
-                setPlaces(res.data);
-
-            } catch (err) {
-                console.error(err);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
         getPlaces();
-    }, [trigger]);
+    }, [refreshing]);
 
     useEffect(() => {
         !isBottomSheetVisible && setSelectedPlace(undefined)
@@ -97,12 +98,10 @@ export default function Index() {
         } catch (err) {
             console.error(err)
         } finally {
-            setTrigger((prev: boolean) => !prev)
+            setRefreshing((prev: boolean) => !prev)
             setIsLoading(false)
             setIsBottomSheetVisible(false)
         }
-
-
     }
 
     async function toggleStatus(ispublished: boolean) {
@@ -114,10 +113,15 @@ export default function Index() {
             console.error(err)
         } finally {
             setIsLoading(false)
-            setTrigger((prev: boolean) => !prev)
+            setRefreshing((prev: boolean) => !prev)
             setIsBottomSheetVisible(false)
         }
     }
+
+    const onRefresh = useCallback(() => {
+        setRefreshing(true)
+    }, []);
+
 
     function SectionHeaderItem({title}: { title: string | null }) {
         return (
@@ -144,13 +148,14 @@ export default function Index() {
                 {
                     places && Object.values(places).flatMap(s => s.data).length > 0 ?
                         <SectionList
+                            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}
                             renderSectionHeader={({section}) => (
                                 <SectionHeaderItem title={section.data.length > 0 ? section.title : null}/>)}
                             contentContainerStyle={styles.flatlist}
                             keyExtractor={(item) => item.id.toString()}
                             sections={[places.published, places.unpublished, places.uncompleted]}
                             renderItem={(item) => <VendorPlaceItem onPress={handlePlacePress}
-                                                                   setTrigger={setTrigger} data={item.item}/>
+                                                                   setTrigger={setRefreshing} data={item.item}/>
                             }/>
                         :
                         <Text style={[{marginVertical: "auto"}, CommonStyles.dataNotFound]}>You dont have places yet ,
@@ -162,7 +167,7 @@ export default function Index() {
 
             </AppView>
 
-            <CreatePlaceModal setTrigger={setTrigger}
+            <CreatePlaceModal setTrigger={setRefreshing}
                               placeId={selectedPlace?.id}
                               setIsVisible={setShowCreateModal}
                               isVisible={showCreateModal}/>
@@ -300,6 +305,4 @@ const styles = StyleSheet.create({
     unpublishedSectionHeader: {
         color: Theme.colors.gray.S500,
     },
-
-
 });

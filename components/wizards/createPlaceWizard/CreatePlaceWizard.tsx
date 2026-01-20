@@ -2,11 +2,11 @@ import {Dispatch, SetStateAction, useEffect, useState} from "react";
 import WizardStep from "@/components/wizards/WizardStep";
 import PickPlaceType from "@/components/wizards/createPlaceWizard/PickPlaceType";
 import {UpdateStep, VendorPlaceDetailsDto} from "@/types/open-api";
-import FillPlaceInfo from "@/components/wizards/createPlaceWizard/FillPlaceInfo";
 import UploadImages from "@/components/wizards/createPlaceWizard/UploadImages";
 import {useApi} from "@/utils/api";
 import AddDescription from "@/components/wizards/createPlaceWizard/AddDescription";
 import {Wizard} from "@/components/wizards/Wizard";
+import FillPlaceInfo from "@/components/wizards/createPlaceWizard/FillPlaceInfo";
 
 
 export type ImageUploadModel = {
@@ -24,13 +24,13 @@ export default function CreatePlaceWizard({placeId, setIsModalVisible, setTrigge
 
     const [data, setData] = useState<VendorPlaceDetailsDto>()
 
-    const API = useApi()
+    const {api} = useApi()
 
     useEffect(() => {
         if (!placeId) return
         const getPlaceDetails = async () => {
             try {
-                const res = await API.placesControllerGetPlaceDetails({id: placeId})
+                const res = await api.placesControllerGetPlaceDetails({id: placeId})
                 setData(res.data)
             } catch (err) {
                 console.error(err)

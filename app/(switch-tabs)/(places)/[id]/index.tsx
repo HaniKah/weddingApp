@@ -12,7 +12,7 @@ import Instagram from "@/assets/icons/social-media/instagram.svg"
 import Tiktok from "@/assets/icons/social-media/tiktok.svg"
 
 export default function Place() {
-    const API = useApi().api
+    const {api} = useApi()
     const {id} = useLocalSearchParams<{ id: string }>()
     const [placeDetails, setPlaceDetails] = useState<VendorPlaceDetailsDto>()
     const [isLoading, setIsLoading] = useState<boolean>(true)
@@ -21,7 +21,7 @@ export default function Place() {
         const getPlaceDetails = async () => {
             try {
 
-                const data = await API.placesControllerGetPlaceDetails({id: Number(id)})
+                const data = await api.placesControllerGetPlaceDetails({id: Number(id)})
                 setPlaceDetails(data.data)
 
             } catch (err) {

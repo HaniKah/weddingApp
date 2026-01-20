@@ -6,10 +6,10 @@ import {useColors} from "@/utils/colors";
 import {Theme} from "@/styles/Theme"
 import Animated from "react-native-reanimated";
 
-export default function StepsHeader({stepsList, activeStep, setActiveStep}: {
+export default function StepsHeader({stepsList, activeStep, onActiveStepChange}: {
     stepsList: StepsDto[],
     activeStep: StepsDto,
-    setActiveStep: (value: StepsDto) => void,
+    onActiveStepChange: (value: StepsDto) => void,
 }) {
 
     const getColorByStep = useColors()
@@ -39,7 +39,8 @@ export default function StepsHeader({stepsList, activeStep, setActiveStep}: {
         // }))
 
         return (
-            <TouchableOpacity onPress={() => setActiveStep(item)} style={[{width: itemWidth}, styles.itemContainer]}>
+            <TouchableOpacity onPress={() => onActiveStepChange(item)}
+                              style={[{width: itemWidth}, styles.itemContainer]}>
                 <Animated.View>
                     <IconStep step={item.step} width={isActive ? 45 : 25} height={isActive ? 45 : 25}
                               fill={color}/>

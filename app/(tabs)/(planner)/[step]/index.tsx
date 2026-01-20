@@ -17,7 +17,7 @@ export default function Index() {
 
     const {step} = useLocalSearchParams<{ step: string }>()
 
-    const [isLoading, setLoading] = useState<boolean>(true)
+    const [isLoading, setLoading] = useState<boolean>(false)
 
     const [steps, setSteps] = useState<StepsDto[]>()
     const [activeStep, setActiveStep] = useState<StepsDto>()
@@ -30,7 +30,6 @@ export default function Index() {
 
     const [selectedFilter, setSelectedFilter] = useState<SearchFilter>()
 
-    const [pagination, setPagination] = useState<number>(0)
 
     const {isLocationGranted, errorMsg, address} = useLocationContext()
 
@@ -39,6 +38,7 @@ export default function Index() {
 
         const getSteps = async () => {
             try {
+                setLoading(true)
                 const response = await API.plannerControllerGetSteps()
                 setSteps(response.data.steps)
                 setProgress(response.data.progress)
@@ -69,7 +69,7 @@ export default function Index() {
                 step: activeStep?.step,
                 search: searchText,
                 filter: selectedFilter,
-                offset: pagination,
+                offset: 0,
                 countryCode: address?.isoCountryCode as CountryCode
             })
             data = resp.data.places
@@ -79,19 +79,24 @@ export default function Index() {
         return data
     }
 
+
     useEffect(() => {
-        if (pagination !== 0) {
-            setPagination(0)
-            setPlaces([])
-        } else {
-            getPlaces().then((data) => setPlaces(data))
+        const fetch = async () => {
+            const resp = await getPlaces()
+            setPlaces(resp)
         }
+        fetch()
+
     }, [activeStep, steps, searchText, selectedFilter]);
 
 
-    useEffect(() => {
-        getPlaces().then((data) => setPlaces(prev => ([...prev, ...data])))
-    }, [pagination]);
+    async function onEndReached() {
+        console.log("end reached")
+    }
+
+    function onActiveStepChange(step: StepsDto) {
+        setActiveStep(step)
+    }
 
 
     return (
@@ -105,7 +110,7 @@ export default function Index() {
                             ListHeaderComponent={
                                 <PickPlaceHeader stepsList={steps}
                                                  activeStep={activeStep}
-                                                 setActiveStep={setActiveStep}
+                                                 onActiveStepChange={onActiveStepChange}
                                                  searchText={searchText}
                                                  setSearchText={setSearchText}
                                                  selectedFilter={selectedFilter}
@@ -116,7 +121,7 @@ export default function Index() {
                             data={places}
                             renderItem={PlaceItem}
                             scrollEventThrottle={100}
-                            onEndReached={() => setPagination(prev => (prev + 1))}
+                            onEndReached={onEndReached}
                             keyExtractor={(item, index) => index.toString()}
                         /> :
 

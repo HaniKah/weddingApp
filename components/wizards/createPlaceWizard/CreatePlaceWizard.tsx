@@ -1,4 +1,4 @@
-import {Dispatch, SetStateAction, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import WizardStep from "@/components/wizards/WizardStep";
 import PickPlaceType from "@/components/wizards/createPlaceWizard/PickPlaceType";
 import {UpdateStep, VendorPlaceDetailsDto} from "@/types/open-api";
@@ -15,10 +15,10 @@ export type ImageUploadModel = {
     name?: string | null
 }
 
-export default function CreatePlaceWizard({placeId, setIsModalVisible, setTrigger}: {
+export default function CreatePlaceWizard({placeId, setIsModalVisible, onFinish}: {
     placeId: number | undefined,
     setIsModalVisible: (value: boolean) => void
-    setTrigger: Dispatch<SetStateAction<boolean>>
+    onFinish: () => void
 
 }) {
 
@@ -40,9 +40,9 @@ export default function CreatePlaceWizard({placeId, setIsModalVisible, setTrigge
     }, []);
 
 
-    const onFinish = () => {
+    const handleFinish = () => {
         setIsModalVisible(false)
-        setTrigger((prev) => !prev)
+        onFinish()
     }
 
 
@@ -69,7 +69,7 @@ export default function CreatePlaceWizard({placeId, setIsModalVisible, setTrigge
                 </WizardStep>
 
                 <WizardStep step={UpdateStep.UploadImages}>
-                    <UploadImages onFinish={onFinish} placeId={data?.id}/>
+                    <UploadImages onFinish={handleFinish} placeId={data?.id}/>
                 </WizardStep>
             </Wizard>
         </>

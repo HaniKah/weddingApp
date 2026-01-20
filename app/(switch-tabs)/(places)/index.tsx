@@ -22,8 +22,8 @@ export default function Index() {
     const [showPromoteModal, setShowPromoteModal] = useState<boolean>(false);
 
     const [places, setPlaces] = useState<VendorPlaceViewModel>();
-    const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [refreshing, setRefreshing] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
 
     const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
     const [selectedPlace, setSelectedPlace] = useState<VendorPlaceDto>();
@@ -36,14 +36,29 @@ export default function Index() {
         } catch (err) {
             console.error(err);
         } finally {
-            setIsLoading(false);
-            setRefreshing(false);
         }
     }, [])
 
     useEffect(() => {
         getPlaces();
-    }, [refreshing]);
+    }, [getPlaces]);
+
+    const refreshPlaces = useCallback(() => {
+        setIsRefreshing(true);
+        setTimeout(async () => {
+            await getPlaces()
+            setIsRefreshing(false)
+        }, 1000)
+    }, [getPlaces])
+
+    const reloadPlaces = useCallback(() => {
+        setIsLoading(true)
+        setTimeout(async () => {
+            await getPlaces()
+            setIsLoading(false)
+        }, 1000)
+    }, [getPlaces])
+
 
     useEffect(() => {
         !isBottomSheetVisible && setSelectedPlace(undefined)
@@ -98,7 +113,6 @@ export default function Index() {
         } catch (err) {
             console.error(err)
         } finally {
-            setRefreshing((prev: boolean) => !prev)
             setIsLoading(false)
             setIsBottomSheetVisible(false)
         }
@@ -113,14 +127,9 @@ export default function Index() {
             console.error(err)
         } finally {
             setIsLoading(false)
-            setRefreshing((prev: boolean) => !prev)
             setIsBottomSheetVisible(false)
         }
     }
-
-    const onRefresh = useCallback(() => {
-        setRefreshing(true)
-    }, []);
 
 
     function SectionHeaderItem({title}: { title: string | null }) {
@@ -142,20 +151,20 @@ export default function Index() {
             <Stack.Screen options={{headerShown: false}}/>
             <PlacesToolbar onCreatePlace={() => setShowCreateModal(true)}/>
 
-            <AppView withPadding isLoading={isLoading}>
+            <AppView isLoading={isLoading} withPadding>
 
 
                 {
                     places && Object.values(places).flatMap(s => s.data).length > 0 ?
                         <SectionList
-                            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}
+                            refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refreshPlaces}/>}
                             renderSectionHeader={({section}) => (
                                 <SectionHeaderItem title={section.data.length > 0 ? section.title : null}/>)}
                             contentContainerStyle={styles.flatlist}
                             keyExtractor={(item) => item.id.toString()}
                             sections={[places.published, places.unpublished, places.uncompleted]}
                             renderItem={(item) => <VendorPlaceItem onPress={handlePlacePress}
-                                                                   setTrigger={setRefreshing} data={item.item}/>
+                                                                   setTrigger={setIsLoading} data={item.item}/>
                             }/>
                         :
                         <Text style={[{marginVertical: "auto"}, CommonStyles.dataNotFound]}>You dont have places yet ,
@@ -167,7 +176,7 @@ export default function Index() {
 
             </AppView>
 
-            <CreatePlaceModal setTrigger={setRefreshing}
+            <CreatePlaceModal onFinish={reloadPlaces}
                               placeId={selectedPlace?.id}
                               setIsVisible={setShowCreateModal}
                               isVisible={showCreateModal}/>

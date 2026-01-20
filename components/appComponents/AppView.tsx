@@ -9,7 +9,9 @@ export default function AppView({isLoading, withPadding, children, extraStyles}:
 }) {
     if (isLoading) {
         return (
-            <ActivityIndicator size={"large"}/>
+            <View style={styles.container}>
+                <ActivityIndicator style={{marginVertical: "auto"}} size={"large"}/>
+            </View>
         )
     } else return (
         <View style={[styles.container, withPadding && {padding: Theme.global.appPadding}, extraStyles]}>

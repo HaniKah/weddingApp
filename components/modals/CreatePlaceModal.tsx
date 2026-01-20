@@ -1,13 +1,12 @@
 import AppModal from "@/components/appComponents/AppModal";
 import AppView from "@/components/appComponents/AppView";
 import CreatePlaceWizard from "@/components/wizards/createPlaceWizard/CreatePlaceWizard";
-import {Dispatch, SetStateAction} from "react";
 
-export default function CreatePlaceModal({isVisible, setIsVisible, placeId, setTrigger}: {
+export default function CreatePlaceModal({isVisible, setIsVisible, placeId, onFinish}: {
     isVisible: boolean,
     setIsVisible: (value: boolean) => void,
     placeId: number | undefined
-    setTrigger: Dispatch<SetStateAction<boolean>>
+    onFinish: () => void
 
 }) {
 
@@ -16,9 +15,11 @@ export default function CreatePlaceModal({isVisible, setIsVisible, placeId, setT
             <AppModal allowSwipeDismissal={true}
                       presentationStyle="fullScreen"
                       isVisible={isVisible}
-                      setIsVisible={setIsVisible}>
+                      setIsVisible={setIsVisible}
+                      onCancel={onFinish}
+            >
                 <AppView>
-                    <CreatePlaceWizard setTrigger={setTrigger} placeId={placeId} setIsModalVisible={setIsVisible}/>
+                    <CreatePlaceWizard onFinish={onFinish} placeId={placeId} setIsModalVisible={setIsVisible}/>
                 </AppView>
             </AppModal>
         </>

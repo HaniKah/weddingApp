@@ -10,6 +10,7 @@ export default function AppModal({
                                      presentationStyle = "pageSheet",
                                      allowSwipeDismissal = true,
                                      animationType = "slide",
+                                     onCancel
                                  }: {
     presentationStyle?: | 'fullScreen' | 'pageSheet' | 'formSheet' | 'overFullScreen' | undefined;
     isVisible: boolean,
@@ -17,8 +18,15 @@ export default function AppModal({
     children: React.ReactNode
     allowSwipeDismissal?: boolean
     animationType?: "slide" | "fade" | "none"
+    onCancel?: () => void
 }) {
     const isFullScreen = presentationStyle === 'fullScreen' || presentationStyle === 'overFullScreen'
+
+    function handleCancel() {
+        onCancel?.()
+        setIsVisible(false)
+    }
+
     return (
         <Modal
 
@@ -36,7 +44,7 @@ export default function AppModal({
                     <AppButton
                         extraStylesBtn={{flex: 1, justifyContent: "flex-start"}}
                         buttonType={ButtonType.PLAIN}
-                        onPress={() => setIsVisible(false)}>
+                        onPress={handleCancel}>
                         cancel
                     </AppButton>
                     <View style={[styles.handle, isFullScreen && styles.handleFullScreen]}></View>

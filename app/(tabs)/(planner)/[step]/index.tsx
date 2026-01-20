@@ -30,6 +30,7 @@ export default function Index() {
 
     const [selectedFilter, setSelectedFilter] = useState<SearchFilter>()
 
+    const [pagination, setPagination] = useState<number>(0)
 
     const {isLocationGranted, errorMsg, address} = useLocationContext()
 
@@ -59,31 +60,9 @@ export default function Index() {
         return (country in CountryCode)
     }
 
-    // async function getPlaces(): Promise<PlacesDto[]> {
-    //     if (!activeStep) return []
-    //     if (!isCountryViable(address?.isoCountryCode)) return []
-    //
-    //     let data: PlacesDto[] = []
-    //     try {
-    //         const resp = await API.plannerControllerGetPlaces({
-    //             step: activeStep?.step,
-    //             search: searchText,
-    //             filter: selectedFilter,
-    //             offset: 0,
-    //             countryCode: address?.isoCountryCode as CountryCode
-    //         })
-    //         data = resp.data.places
-    //         console.log(data)
-    //     } catch (err) {
-    //         console.log(err)
-    //     }
-    //     return data
-    // }
+    const getPlaces: (offset: number) => Promise<PlacesDto[]> = async (offset) => {
 
-    const getPlaces: () => Promise<PlacesDto[]> = async () => {
 
-        console.log("active step", activeStep?.step)
-        console.log("address :", address?.isoCountryCode)
         if (!activeStep || !address?.isoCountryCode) return []
         if (!isCountryViable(address?.isoCountryCode)) return []
 
@@ -93,11 +72,11 @@ export default function Index() {
                 step: activeStep?.step,
                 search: searchText,
                 filter: selectedFilter,
-                offset: 0,
+                offset: offset,
                 countryCode: address?.isoCountryCode as CountryCode
             })
             data = resp.data.places
-            console.log(data)
+            // console.log(data)
         } catch (err) {
             console.log(err)
         }
@@ -107,8 +86,8 @@ export default function Index() {
 
     useEffect(() => {
         const fetch = async () => {
-            console.log("fetching...")
-            const resp = await getPlaces()
+            setPagination(0)
+            const resp = await getPlaces(0)
             setPlaces(resp)
         }
         fetch()
@@ -116,8 +95,20 @@ export default function Index() {
     }, [activeStep, steps, searchText, selectedFilter, address?.isoCountryCode]);
 
 
+    useEffect(() => {
+        const fetch = async () => {
+            if (pagination === 0) return
+            const resp = await getPlaces(pagination)
+            setPlaces((prev) => [...prev, ...resp])
+        }
+        fetch()
+
+    }, [pagination]);
+
+
     async function onEndReached() {
-        console.log("end reached")
+        if (places.length === 0) return
+        setPagination(prev => prev + 1)
     }
 
     function onActiveStepChange(step: StepsDto) {

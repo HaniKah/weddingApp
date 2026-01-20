@@ -59,8 +59,32 @@ export default function Index() {
         return (country in CountryCode)
     }
 
-    async function getPlaces(): Promise<PlacesDto[]> {
-        if (!activeStep) return []
+    // async function getPlaces(): Promise<PlacesDto[]> {
+    //     if (!activeStep) return []
+    //     if (!isCountryViable(address?.isoCountryCode)) return []
+    //
+    //     let data: PlacesDto[] = []
+    //     try {
+    //         const resp = await API.plannerControllerGetPlaces({
+    //             step: activeStep?.step,
+    //             search: searchText,
+    //             filter: selectedFilter,
+    //             offset: 0,
+    //             countryCode: address?.isoCountryCode as CountryCode
+    //         })
+    //         data = resp.data.places
+    //         console.log(data)
+    //     } catch (err) {
+    //         console.log(err)
+    //     }
+    //     return data
+    // }
+
+    const getPlaces: () => Promise<PlacesDto[]> = async () => {
+
+        console.log("active step", activeStep?.step)
+        console.log("address :", address?.isoCountryCode)
+        if (!activeStep || !address?.isoCountryCode) return []
         if (!isCountryViable(address?.isoCountryCode)) return []
 
         let data: PlacesDto[] = []
@@ -82,9 +106,6 @@ export default function Index() {
 
 
     useEffect(() => {
-        console.log("active step", activeStep?.step)
-        console.log("address :", address?.isoCountryCode)
-        if (!activeStep || !address?.isoCountryCode) return
         const fetch = async () => {
             console.log("fetching...")
             const resp = await getPlaces()
@@ -92,7 +113,7 @@ export default function Index() {
         }
         fetch()
 
-    }, [activeStep, steps, searchText, selectedFilter, address]);
+    }, [activeStep, steps, searchText, selectedFilter, address?.isoCountryCode]);
 
 
     async function onEndReached() {

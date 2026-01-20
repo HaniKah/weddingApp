@@ -54,14 +54,14 @@ export default function Index() {
 
     }, [step])
 
-    function isCountryIncluded(country: string | null | undefined): boolean {
+    function isCountryViable(country: string | null | undefined): boolean {
         if (!country) return false
         return (country in CountryCode)
     }
 
     async function getPlaces(): Promise<PlacesDto[]> {
         if (!activeStep) return []
-        if (!isCountryIncluded(address?.isoCountryCode)) return []
+        if (!isCountryViable(address?.isoCountryCode)) return []
 
         let data: PlacesDto[] = []
         try {

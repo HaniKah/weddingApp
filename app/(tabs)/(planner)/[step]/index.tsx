@@ -96,8 +96,8 @@ export default function Index() {
 
 
     useEffect(() => {
+        if (pagination === 0) return
         const fetch = async () => {
-            if (pagination === 0) return
             const resp = await getPlaces(pagination)
             setPlaces((prev) => [...prev, ...resp])
         }

@@ -73,6 +73,7 @@ export default function Index() {
                 countryCode: address?.isoCountryCode as CountryCode
             })
             data = resp.data.places
+            console.log(data)
         } catch (err) {
             console.log(err)
         }
@@ -81,13 +82,17 @@ export default function Index() {
 
 
     useEffect(() => {
+        console.log("active step", activeStep?.step)
+        console.log("address :", address?.isoCountryCode)
+        if (!activeStep || !address?.isoCountryCode) return
         const fetch = async () => {
+            console.log("fetching...")
             const resp = await getPlaces()
             setPlaces(resp)
         }
         fetch()
 
-    }, [activeStep, steps, searchText, selectedFilter]);
+    }, [activeStep, steps, searchText, selectedFilter, address]);
 
 
     async function onEndReached() {

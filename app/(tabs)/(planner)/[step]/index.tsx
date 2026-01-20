@@ -111,10 +111,6 @@ export default function Index() {
         setPagination(prev => prev + 1)
     }
 
-    function onActiveStepChange(step: StepsDto) {
-        setActiveStep(step)
-    }
-
 
     return (
         <>
@@ -127,7 +123,7 @@ export default function Index() {
                             ListHeaderComponent={
                                 <PickPlaceHeader stepsList={steps}
                                                  activeStep={activeStep}
-                                                 onActiveStepChange={onActiveStepChange}
+                                                 setActiveStep={setActiveStep}
                                                  searchText={searchText}
                                                  setSearchText={setSearchText}
                                                  selectedFilter={selectedFilter}

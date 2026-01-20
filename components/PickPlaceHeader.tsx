@@ -11,7 +11,7 @@ import {Theme} from "@/styles/Theme";
 export default function PickPlaceHeader({
                                             stepsList,
                                             activeStep,
-                                            onActiveStepChange,
+                                            setActiveStep,
                                             searchText,
                                             setSearchText,
                                             selectedFilter,
@@ -20,7 +20,7 @@ export default function PickPlaceHeader({
                                         }: {
     stepsList: StepsDto[],
     activeStep: StepsDto,
-    onActiveStepChange: (value: StepsDto) => void,
+    setActiveStep: Dispatch<SetStateAction<StepsDto | undefined>>
     searchText: string | undefined,
     setSearchText: Dispatch<SetStateAction<string | undefined>>
     selectedFilter: SearchFilter | undefined
@@ -33,7 +33,7 @@ export default function PickPlaceHeader({
             <StepsHeader
                 stepsList={stepsList}
                 activeStep={activeStep}
-                onActiveStepChange={onActiveStepChange}/>
+                setActiveStep={setActiveStep}/>
 
             <AppSearchBar searchText={searchText} setSearchText={setSearchText}/>
 

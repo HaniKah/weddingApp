@@ -1,15 +1,15 @@
 import {StepsDto} from "@/types/open-api";
 import {FlatList, StyleSheet, Text, TouchableOpacity} from "react-native";
-import {useEffect, useRef, useState} from "react";
+import {Dispatch, SetStateAction, useEffect, useRef, useState} from "react";
 import IconStep from "@/components/symbols/IconStep";
 import {useColors} from "@/utils/colors";
 import {Theme} from "@/styles/Theme"
 import Animated from "react-native-reanimated";
 
-export default function StepsHeader({stepsList, activeStep, onActiveStepChange}: {
+export default function StepsHeader({stepsList, activeStep, setActiveStep}: {
     stepsList: StepsDto[],
     activeStep: StepsDto,
-    onActiveStepChange: (value: StepsDto) => void,
+    setActiveStep: Dispatch<SetStateAction<StepsDto | undefined>>
 }) {
 
     const getColorByStep = useColors()
@@ -39,7 +39,7 @@ export default function StepsHeader({stepsList, activeStep, onActiveStepChange}:
         // }))
 
         return (
-            <TouchableOpacity onPress={() => onActiveStepChange(item)}
+            <TouchableOpacity onPress={() => setActiveStep(item)}
                               style={[{width: itemWidth}, styles.itemContainer]}>
                 <Animated.View>
                     <IconStep step={item.step} width={isActive ? 45 : 25} height={isActive ? 45 : 25}

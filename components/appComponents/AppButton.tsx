@@ -1,4 +1,4 @@
-import {Pressable, StyleProp, Text, TextStyle, ViewStyle} from 'react-native';
+import {StyleProp, Text, TextStyle, ViewStyle} from 'react-native';
 import {ButtonSize, ButtonStyles, ButtonType} from '@/styles/Button';
 import {useFormContext} from '@/contexts/form-context';
 import {IconSymbol} from '@/components/symbols/IconSymbol';
@@ -7,6 +7,7 @@ import {Theme} from '@/styles/Theme';
 import {SvgProps} from "react-native-svg";
 import {FC} from "react";
 import Animated from "react-native-reanimated";
+import AppPressable from "@/components/appComponents/AppPressable";
 
 export default function AppButton({
                                       buttonType,
@@ -163,8 +164,8 @@ export default function AppButton({
 //if Padding is not working , then probably you want to change the padding-Horizontal/Vertical and not the general padding
 
     return (
-        <Pressable disabled={inactive}
-                   onPress={isSubmit ? handleSubmit : onPress}
+        <AppPressable disabled={inactive}
+                      onPress={isSubmit ? handleSubmit : onPress}
 
         >
             <Animated.View style={[buttonStyles, extraStylesBtn]}>
@@ -178,6 +179,6 @@ export default function AppButton({
                     {children}
                 </Text>
             </Animated.View>
-        </Pressable>
+        </AppPressable>
     );
 }

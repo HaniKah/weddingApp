@@ -42,7 +42,7 @@ const AppPressable = forwardRef<any, PressableProps>((props, ref) => {
             {...rest}
             onPressIn={(e) => {
                 scale.value = withSpring(0.95);
-                opacity.value = withSpring(0.6);
+                opacity.value = withSpring(0.8);
                 onPressIn?.(e); // this is just if we add onPressIn prop to AppPressable
             }}
             onPressOut={(e) => {

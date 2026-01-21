@@ -15,6 +15,7 @@ import {IconSymbol} from "@/components/symbols/IconSymbol";
 import AppIf from "@/components/appComponents/AppIf";
 import {CommonStyles} from "@/styles/Common";
 import PromotePlaceModal from "@/components/modals/PromotePlaceModal";
+import {REFRESH_DELAY} from "@/constants/general";
 
 export default function Index() {
     const API = useApi().api;
@@ -48,7 +49,7 @@ export default function Index() {
         setTimeout(async () => {
             await getPlaces()
             setIsRefreshing(false)
-        }, 1000)
+        }, REFRESH_DELAY)
     }, [getPlaces])
 
     const reloadPlaces = useCallback(() => {
@@ -56,7 +57,7 @@ export default function Index() {
         setTimeout(async () => {
             await getPlaces()
             setIsLoading(false)
-        }, 1000)
+        }, REFRESH_DELAY)
     }, [getPlaces])
 
 

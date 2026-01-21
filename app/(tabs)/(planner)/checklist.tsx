@@ -5,6 +5,7 @@ import {useCallback, useEffect, useState} from "react";
 
 import CheckItem from "@/components/items/CheckItem";
 import {useApi} from "@/utils/api";
+import {REFRESH_DELAY} from "@/constants/general";
 
 
 export default function Checklist() {
@@ -33,7 +34,10 @@ export default function Checklist() {
 
     function handleRefresh() {
         setIsRefreshing(true)
-        getChecklist().then(() => setIsRefreshing(false))
+        setTimeout(async () => {
+            await getChecklist()
+            setIsRefreshing(false)
+        }, REFRESH_DELAY)
     }
 
     return (

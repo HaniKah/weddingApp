@@ -9,6 +9,7 @@ import {FlatList} from "react-native";
 import PlaceItem from "@/components/items/PlaceItem";
 import {useLocationContext} from "@/contexts/location-context";
 import LocationAccessDenied from "@/components/errors/LocationAccessDenied";
+import {REFRESH_DELAY} from "@/constants/general";
 
 
 export default function Index() {
@@ -111,13 +112,14 @@ export default function Index() {
         setPagination(prev => prev + 1)
     }
 
-    const handleRefresh = () => {
+    function handleRefresh() {
         setRefreshing(true)
         setPagination(0)
-        getPlaces(0).then((data) => {
-            setPlaces(data)
+        setTimeout(async () => {
+            const resp = await getPlaces(0)
+            setPlaces(resp)
             setRefreshing(false)
-        })
+        }, REFRESH_DELAY)
     }
 
 

@@ -1,5 +1,5 @@
-import {AuthError, makeRedirectUri} from "expo-auth-session";
-import React from "react";
+import {AuthError, AuthRequestConfig, DiscoveryDocument, makeRedirectUri, useAuthRequest} from "expo-auth-session";
+import React, {useEffect} from "react";
 import * as WebBrowser from "expo-web-browser";
 import {useApi} from "@/utils/api";
 import {useAuthStore} from "@/utils/authStore";
@@ -34,11 +34,26 @@ const AuthContext = React.createContext({
     error: null as AuthError | null,
 })
 
+const config: AuthRequestConfig = {
+    clientId: "google",
+    redirectUri: makeRedirectUri(),
+    // scopes: ["openid", "profile", "email"], //defined in the backend
+};
+
+
+const discovery: DiscoveryDocument = {
+    authorizationEndpoint: `${process.env.EXPO_PUBLIC_API_URL}/api/auth/google/login`,
+    // tokenEndpoint: `${process.env.EXPO_PUBLIC_API_URL}/api/auth/google/token`,
+
+};
+
 
 export const AuthProvider = ({children}: { children: React.ReactNode }) => {
     // const [user, setUser] = React.useState<AuthUser | null>(null);
     const [isLoading, setIsLoading] = React.useState(false);
     const [error, setError] = React.useState<AuthError | null>(null);
+    const [request, response, promptAsync] = useAuthRequest(config, discovery);
+
     const API = useApi()
     // we are not using useAuthRequest because we are implementing oAuth2.0 with passport in the backend
     // const [request, response, promptAsync] = useAuthRequest(config, discovery)
@@ -47,20 +62,37 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
 
     WebBrowser.maybeCompleteAuthSession(); // still not sure what this does
 
-    const redirectUri = makeRedirectUri()
 
     const signInWithGoogle = async () => {
+        console.log("sign in with google");
         try {
-            const response = await WebBrowser.openAuthSessionAsync(`${API.instance.getUri()}/api/auth/google/login`, redirectUri);
-            if (response.type === "success") {
-                const url = new URL(response.url);
-                await exchangeWithToken(url.searchParams.get("exchangeToken")!)
+            if (!request) {
+                console.log("No request fon google sign in");
+                return;
             }
-
-        } catch (error) {
-            console.error(error);
+            await promptAsync();
+        } catch (e) {
+            console.error(e);
         }
-    }
+    };
+
+    useEffect(() => {
+        const exchangeToken = async () => {
+
+            if (response?.type === "success") {
+                console.log("response", response)
+
+                await exchangeWithToken(response.params.exchangeToken)
+            }
+        }
+        exchangeToken()
+    }, [response]);
+
+
+    useEffect(() => {
+        console.log("request", request)
+    }, [request]);
+
 
     const signOut = async () => {
         try {

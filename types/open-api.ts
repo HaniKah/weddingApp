@@ -838,10 +838,16 @@ export class Api<
      * @name AuthControllerGoogleCallback
      * @request GET:/api/auth/google/callback
      */
-    authControllerGoogleCallback: (params: RequestParams = {}) =>
+    authControllerGoogleCallback: (
+      query: {
+        state: string;
+      },
+      params: RequestParams = {},
+    ) =>
       this.request<void, any>({
         path: `/api/auth/google/callback`,
         method: "GET",
+        query: query,
         ...params,
       }),
 

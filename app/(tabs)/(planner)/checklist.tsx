@@ -1,35 +1,47 @@
 import {FlatList} from "react-native";
 import AppView from "@/components/appComponents/AppView";
 import {ChecklistViewModel} from "@/types/open-api";
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 
 import CheckItem from "@/components/items/CheckItem";
 import {useApi} from "@/utils/api";
 
 
 export default function Checklist() {
-    const API = useApi().api
+    const {api} = useApi()
     const [checklist, setChecklist] = useState<ChecklistViewModel>()
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
+    const [isRefreshing, setIsRefreshing] = useState(false)
+
+    const getChecklist = useCallback(async () => {
+        try {
+            const response = await api.plannerControllerGetChecklist()
+            setChecklist(response.data)
+        } catch (error) {
+            console.error(error)
+        } finally {
+            setIsLoading(false)
+        }
+    }, [])
+
 
     useEffect(() => {
-        const getChecklist = async () => {
-            try {
-                const response = await API.plannerControllerGetChecklist()
-                setChecklist(response.data)
-            } catch (error) {
-                console.error(error)
-            } finally {
-                setIsLoading(false)
-            }
-        }
-        getChecklist()
-    }, []);
+        setIsLoading(true)
+        getChecklist().then(() => setIsLoading(false))
+
+    }, [getChecklist]);
+
+    function handleRefresh() {
+        setIsRefreshing(true)
+        getChecklist().then(() => setIsRefreshing(false))
+    }
 
     return (
         <>
             <AppView withPadding isLoading={isLoading}>
                 <FlatList data={checklist?.list}
+                          refreshing={isRefreshing}
+                          onRefresh={handleRefresh}
                           keyExtractor={(data, index) => index.toString()}
                           renderItem={({item, index}) => (
                               <CheckItem item={item} firstItem={index === 0}

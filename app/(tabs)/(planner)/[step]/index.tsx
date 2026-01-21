@@ -18,6 +18,8 @@ export default function Index() {
     const {step} = useLocalSearchParams<{ step: string }>()
 
     const [isLoading, setLoading] = useState<boolean>(false)
+    const [isRefreshing, setRefreshing] = useState<boolean>(false)
+
 
     const [steps, setSteps] = useState<StepsDto[]>()
     const [activeStep, setActiveStep] = useState<StepsDto>()
@@ -36,7 +38,6 @@ export default function Index() {
 
 
     useEffect(() => {
-
         const getSteps = async () => {
             try {
                 setLoading(true)
@@ -52,8 +53,8 @@ export default function Index() {
             }
         }
         getSteps()
-
     }, [step])
+
 
     function isCountryViable(country: string | null | undefined): boolean {
         if (!country) return false
@@ -61,7 +62,6 @@ export default function Index() {
     }
 
     const getPlaces: (offset: number) => Promise<PlacesDto[]> = async (offset) => {
-
 
         if (!activeStep || !address?.isoCountryCode) return []
         if (!isCountryViable(address?.isoCountryCode)) return []
@@ -106,9 +106,18 @@ export default function Index() {
     }, [pagination]);
 
 
-    async function onEndReached() {
+    async function handleEndReached() {
         if (places.length === 0) return
         setPagination(prev => prev + 1)
+    }
+
+    const handleRefresh = () => {
+        setRefreshing(true)
+        setPagination(0)
+        getPlaces(0).then((data) => {
+            setPlaces(data)
+            setRefreshing(false)
+        })
     }
 
 
@@ -130,11 +139,12 @@ export default function Index() {
                                                  setSelectedFilter={setSelectedFilter}
                                                  places={places}
                                 />}
-
+                            refreshing={isRefreshing}
+                            onRefresh={handleRefresh}
                             data={places}
                             renderItem={PlaceItem}
                             scrollEventThrottle={100}
-                            onEndReached={onEndReached}
+                            onEndReached={handleEndReached}
                             keyExtractor={(item, index) => index.toString()}
                         /> :
 

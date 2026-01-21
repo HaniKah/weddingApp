@@ -1,9 +1,10 @@
-import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, Text, View} from 'react-native';
 import {VendorPlaceDto} from '@/types/open-api';
 import {Theme} from '@/styles/Theme';
 import {Dispatch, SetStateAction} from "react";
 import AppIf from "@/components/appComponents/AppIf";
 import {IconSymbol} from "@/components/symbols/IconSymbol";
+import AppPressable from "@/components/appComponents/AppPressable";
 
 type VendorPlaceItemProps = {
     data: VendorPlaceDto;
@@ -15,7 +16,7 @@ export default function VendorPlaceItem({data, setTrigger, onPress}: VendorPlace
 
     return (
         <>
-            <Pressable onPress={() => onPress(data)}>
+            <AppPressable onPress={() => onPress(data)}>
                 <View style={[styles.container, !data.isCompleted && styles.containerUncompleted]}>
 
                     <View style={[styles.imageContainer, !data.isCompleted && styles.imagesContainerUncompleted]}>
@@ -42,7 +43,7 @@ export default function VendorPlaceItem({data, setTrigger, onPress}: VendorPlace
                         </View>
                     </View>
                 </View>
-            </Pressable>
+            </AppPressable>
         </>
     );
 }

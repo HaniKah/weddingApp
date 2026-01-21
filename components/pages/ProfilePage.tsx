@@ -22,6 +22,7 @@ export default function ProfilePage() {
                         <Text style={styles.address}>{address?.city}, {address?.country}</Text>
                     </View>
 
+
                     {userType === UserType.Vendor ?
                         <AppButton onPress={() => switchRole(UserType.User)} fullWidth
                                    buttonType={ButtonType.PRIMARY}

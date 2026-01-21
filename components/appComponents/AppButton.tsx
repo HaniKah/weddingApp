@@ -6,6 +6,7 @@ import {SFSymbols6_0} from 'sf-symbols-typescript';
 import {Theme} from '@/styles/Theme';
 import {SvgProps} from "react-native-svg";
 import {FC} from "react";
+import Animated from "react-native-reanimated";
 
 export default function AppButton({
                                       buttonType,
@@ -162,14 +163,21 @@ export default function AppButton({
 //if Padding is not working , then probably you want to change the padding-Horizontal/Vertical and not the general padding
 
     return (
-        <Pressable disabled={inactive} onPress={isSubmit ? handleSubmit : onPress}
-                   style={[buttonStyles, extraStylesBtn]}>
-            {CustomIcon && <CustomIcon/>}
-            {icon &&
-                <IconSymbol size={iconSize} color={textStyles.color || 'black'} name={icon}/>}
-            <Text style={[textStyles, extraStylesTxt]}>
-                {children}
-            </Text>
+        <Pressable disabled={inactive}
+                   onPress={isSubmit ? handleSubmit : onPress}
+
+        >
+            <Animated.View style={[buttonStyles, extraStylesBtn]}>
+                {CustomIcon && <CustomIcon/>}
+
+                {icon &&
+                    <IconSymbol size={iconSize} color={textStyles.color || 'black'} name={icon}/>
+                }
+
+                <Text style={[textStyles, extraStylesTxt]}>
+                    {children}
+                </Text>
+            </Animated.View>
         </Pressable>
     );
 }

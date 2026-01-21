@@ -9,7 +9,8 @@ const GeneralButtonStyles = StyleSheet.create({
         alignItems: "center",
         alignSelf: 'flex-start',
         gap: 8
-    }
+    },
+
 })
 
 export const ButtonStyles = StyleSheet.create({
@@ -41,23 +42,6 @@ export const ButtonStyles = StyleSheet.create({
         fontWeight: 'bold',
     },
 
-// ===========================
-
-    // inactiveBtn: {
-    //     ...GeneralButtonStyles.general,
-    //     backgroundColor: Theme.colors.primaryInactive,
-    //     color: 'white',
-    //     fontWeight: 'normal',
-    //     textAlign: 'center',
-    //     pointerEvents: "none",
-    // },
-    // inactiveTxt: {
-    //     color: Theme.colors.primaryTextInactive,
-    //     textAlign: 'center',
-    //     pointerEvents: "none",
-    // },
-
-// ===========================
 
     plainBtn: {
         ...GeneralButtonStyles.general,
@@ -103,9 +87,8 @@ export const ButtonStyles = StyleSheet.create({
     },
     destructiveTxt: {
         color: Theme.colors.red.S500,
-    }
-
-
+    },
+    
 })
 
 export enum ButtonType {

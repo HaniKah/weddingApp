@@ -1,10 +1,11 @@
 import {StyleSheet, Text, View} from "react-native";
+import {ErrorMsg} from "@/types/general";
 
-export default function LocationAccessDenied({errorMsg}: { errorMsg: string | null }) {
+export default function LocationAccessDenied({errorMsg}: { errorMsg: ErrorMsg | null }) {
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Location access denied</Text>
-            <Text style={styles.msg}>{errorMsg}</Text>
+            <Text style={styles.title}>{errorMsg?.title}</Text>
+            <Text style={styles.msg}>{errorMsg?.msg}</Text>
         </View>
     )
 }

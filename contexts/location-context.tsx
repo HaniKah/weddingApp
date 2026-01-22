@@ -68,7 +68,7 @@ export function LocationProvider({children}: { children: React.ReactNode }) {
         }
 
         getCurrentLocation();
-    }, [location]);
+    }, []);
 
     return (
         <LocationContext.Provider

@@ -31,7 +31,6 @@ export function LocationProvider({children}: { children: React.ReactNode }) {
         const getCurrentLocation = async () => {
 
             let {status} = await Location.requestForegroundPermissionsAsync();
-            console.log("status", status)
             if (status !== 'granted') {
                 setErrorMsg({
                     msg: 'Permission to access location was denied , please change location accessibility in your phone settings to be able to use this app properly',
@@ -42,7 +41,6 @@ export function LocationProvider({children}: { children: React.ReactNode }) {
 
             try {
                 let location = await Location.getCurrentPositionAsync({});
-                console.log("location", location)
                 if (!location) {
                     setErrorMsg({
                         title: "Location not found",

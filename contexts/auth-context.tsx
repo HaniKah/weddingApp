@@ -36,6 +36,16 @@ const AuthContext = React.createContext({
 
 
 export const AuthProvider = ({children}: { children: React.ReactNode }) => {
+
+    // this is just for performance
+    useEffect(() => {
+        WebBrowser.warmUpAsync();
+
+        return () => {
+            WebBrowser.coolDownAsync();
+        };
+    }, []);
+
     const API = useApi()
 
     const discovery: DiscoveryDocument = {
@@ -60,7 +70,7 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
     const {logIn, logOut} = useAuthStore()
 
 
-    WebBrowser.maybeCompleteAuthSession(); // still not sure what this does
+    WebBrowser.maybeCompleteAuthSession();
 
 
     const signInWithGoogle = async () => {

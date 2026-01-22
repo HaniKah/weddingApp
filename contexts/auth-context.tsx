@@ -34,37 +34,36 @@ const AuthContext = React.createContext({
     error: null as AuthError | null,
 })
 
-const config: AuthRequestConfig = {
-    clientId: "google",
-    redirectUri: makeRedirectUri(),
-    // scopes: ["openid", "profile", "email"], //defined in the backend
-};
-
-
-const discovery: DiscoveryDocument = {
-    authorizationEndpoint: `${process.env.EXPO_PUBLIC_API_URL}/api/auth/google/login`,
-    // tokenEndpoint: `${process.env.EXPO_PUBLIC_API_URL}/api/auth/google/token`,
-
-};
-
 
 export const AuthProvider = ({children}: { children: React.ReactNode }) => {
+    const API = useApi()
+
+    const discovery: DiscoveryDocument = {
+        authorizationEndpoint: `${API.instance.getUri()}/api/auth/google/login`,
+        // tokenEndpoint: `${process.env.EXPO_PUBLIC_API_URL}/api/auth/google/token`,
+
+    };
+    const config: AuthRequestConfig = {
+        clientId: "google",
+        redirectUri: makeRedirectUri(),
+        // scopes: ["openid", "profile", "email"], //defined in the backend
+    };
+
     // const [user, setUser] = React.useState<AuthUser | null>(null);
     const [isLoading, setIsLoading] = React.useState(false);
     const [error, setError] = React.useState<AuthError | null>(null);
     const [request, response, promptAsync] = useAuthRequest(config, discovery);
 
-    const API = useApi()
     // we are not using useAuthRequest because we are implementing oAuth2.0 with passport in the backend
     // const [request, response, promptAsync] = useAuthRequest(config, discovery)
 
     const {logIn, logOut} = useAuthStore()
 
+
     WebBrowser.maybeCompleteAuthSession(); // still not sure what this does
 
 
     const signInWithGoogle = async () => {
-        console.log("sign in with google");
         try {
             if (!request) {
                 console.log("No request fon google sign in");
@@ -75,6 +74,10 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
             console.error(e);
         }
     };
+
+    // useEffect(() => {
+    //     console.log("request: ", request)
+    // }, [request]);
 
     useEffect(() => {
         const exchangeToken = async () => {

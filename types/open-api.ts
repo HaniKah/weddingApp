@@ -158,6 +158,11 @@ export interface ChecklistViewModel {
 
 export interface PhotosDto {
   uri: string;
+  ratio: number;
+}
+
+export interface PhotosViewModel {
+  result: PhotosDto[];
 }
 
 export interface GuestsDto {
@@ -710,7 +715,7 @@ export class Api<
      * @request GET:/api/photos/{id}
      */
     photosControllerGetPhotos: (id: number, params: RequestParams = {}) =>
-      this.request<PhotosDto[], any>({
+      this.request<PhotosViewModel, any>({
         path: `/api/photos/${id}`,
         method: "GET",
         format: "json",

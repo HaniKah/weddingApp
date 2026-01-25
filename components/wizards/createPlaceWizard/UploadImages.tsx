@@ -31,7 +31,7 @@ export default function UploadImages({onFinish, placeId}: {
             try {
                 setIsLoading(true)
                 const res = await api.photosControllerGetPhotos(placeId)
-                setImages(res.data)
+                setImages(res.data.result)
             } catch (err) {
                 console.error(err)
             } finally {
@@ -150,7 +150,7 @@ export default function UploadImages({onFinish, placeId}: {
                 <FlatList
                     numColumns={3}
                     columnWrapperStyle={{gap: IMAGE_GAP}}
-                    data={[{uri: "add"}, ...images]}
+                    data={[{uri: "add", ratio: 0}, ...images]}
                     renderItem={renderItem}
                     contentContainerStyle={{gap: 10}}
                 />

@@ -1,14 +1,15 @@
 import Animated, {useAnimatedStyle, useDerivedValue, useSharedValue, withSpring} from "react-native-reanimated";
 import {Dimensions, StyleSheet, View} from "react-native";
 import {Gesture, GestureDetector} from "react-native-gesture-handler";
+import {PhotosDto} from "@/types/open-api";
 
-export interface ImageView {
-    uri: string,
-    ratio: number
-}
+// export interface ImageItemType {
+//     uri: string,
+//     ratio: number
+// }
 
 
-export default function ImageItem({image}: { image: ImageView }) {
+export default function ImageItem({image}: { image: PhotosDto }) {
 
     const {width, height} = Dimensions.get("window");
 

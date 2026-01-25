@@ -1,41 +1,42 @@
-import {Dimensions, FlatList, Image, Modal, Pressable, StyleSheet, View} from "react-native";
-import {useEffect, useRef, useState} from "react";
+import {Dimensions, FlatList, Modal, Pressable, StyleSheet, View} from "react-native";
+import {useRef} from "react";
 import {useSafeAreaInsets} from "react-native-safe-area-context";
 import {IconSymbol} from "@/components/symbols/IconSymbol";
-import ImageItem, {ImageView} from "@/components/items/ImageItem";
+import ImageItem from "@/components/items/ImageItem";
+import {PhotosDto} from "@/types/open-api";
 
 
 export default function AppImageViewer({isVisible, onClose, images, activeIndex}: {
     isVisible: boolean,
     onClose: () => void,
-    images: string[],
+    images: PhotosDto[],
     activeIndex: number
 
 }) {
     const {width, height} = Dimensions.get('window')
-    const [imageView, setImageView] = useState<ImageView[]>([]);
+    // const [imageView, setImageView] = useState<ImageItemType[]>([]);
     const insets = useSafeAreaInsets();
     const flatListRef = useRef<FlatList>(null);
 
-
-    useEffect(() => {
-        if (!images.length) return;
-
-        Promise.all(
-            images.map(
-                uri =>
-                    new Promise<ImageView>((resolve) => {
-                        Image.getSize(uri, (width, height) => {
-                            resolve({uri, ratio: height / width});
-                        });
-                    })
-            )
-        ).then(list => {
-            setImageView(list);
-        });
-
-        flatListRef.current?.scrollToIndex({index: activeIndex, animated: false});
-    }, [images]);
+    //
+    // useEffect(() => {
+    //     if (!images.length) return;
+    //
+    //     Promise.all(
+    //         images.map(
+    //             uri =>
+    //                 new Promise<ImageItemType>((resolve) => {
+    //                     Image.getSize(uri, (width, height) => {
+    //                         resolve({uri, ratio: height / width});
+    //                     });
+    //                 })
+    //         )
+    //     ).then(list => {
+    //         setImageView(list);
+    //     });
+    //
+    //     flatListRef.current?.scrollToIndex({index: activeIndex, animated: false});
+    // }, [images]);
 
 
     function ImageHeader() {
@@ -79,7 +80,7 @@ export default function AppImageViewer({isVisible, onClose, images, activeIndex}
                                 showsHorizontalScrollIndicator={false}
                                 contentContainerStyle={styles.flatlistContainer}
                                 renderItem={({item}) => <ImageItem image={item}/>}
-                                data={imageView}
+                                data={images}
 
                             />
                         </View>

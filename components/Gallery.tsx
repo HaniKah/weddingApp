@@ -16,7 +16,7 @@ export default function Gallery({placeId}: { placeId: number }) {
         const getPhotos = async () => {
             try {
                 const res = await API.photosControllerGetPhotos(placeId)
-                setImages(res.data)
+                setImages(res.data.result)
             } catch (err) {
                 console.error(err)
             }
@@ -51,7 +51,7 @@ export default function Gallery({placeId}: { placeId: number }) {
                       renderItem={({item, index}) => (<ImageItem item={item} index={index}/>)}/>
 
             <AppImageViewer activeIndex={selectedImage}
-                            images={images.map((i) => i.uri)}
+                            images={images}
                             isVisible={imageView}
                             onClose={() => setImageView(false)}/>
         </>

@@ -9,10 +9,11 @@ import AppPicker from "@/components/appComponents/AppPicker";
 import {AppForm, FormRef} from "@/contexts/form-context";
 import AppFieldSet from "@/components/appComponents/AppFieldSet";
 import AppButton from "@/components/appComponents/AppButton";
-import Purchases, {MakePurchaseResult, PurchasesOfferings, PurchasesPackage} from "react-native-purchases";
+import Purchases, {PurchasesOfferings, PurchasesPackage} from "react-native-purchases";
 import PromotionItem from "@/components/items/PromotionItem";
 import {IconSymbol} from "@/components/symbols/IconSymbol";
 import {useApi} from "@/utils/api";
+import {tryCatch} from "@/utils/tryCatch";
 
 
 export enum SaleType {
@@ -46,13 +47,19 @@ export function PromotionInfo({placeId}: { placeId: number | undefined }) {
 
     async function submitAndCheckout() {
         if (!selectedPackage) return
-        let result: MakePurchaseResult// this is handled automatically in the form but is here for extra check
-        try {
-            result = await Purchases.purchasePackage(selectedPackage)
-
-        } catch (e) {
-            console.error("📢 error white purchasing a package", e);
+        const [error, result] = await tryCatch(Purchases.purchasePackage(selectedPackage))
+        if (error) {
+            console.error(error.message)
+            return
+        } else {
+            console.log(result)
         }
+        // try {
+        //     result = await Purchases.purchasePackage(selectedPackage)
+        //
+        // } catch (e) {
+        //     console.error("📢 error white purchasing a package", e);
+        // }
     }
 
     useEffect(() => {

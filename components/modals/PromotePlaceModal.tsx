@@ -15,7 +15,7 @@ export default function PromotePlaceModal({isVisible, setIsVisible, placeId}: {
                       presentationStyle="fullScreen"
                       isVisible={isVisible}
                       setIsVisible={setIsVisible}>
-                <AppView>
+                <AppView withPadding>
                     <PromotePlaceWizard placeId={placeId}/>
                 </AppView>
             </AppModal>

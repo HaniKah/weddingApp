@@ -9,6 +9,8 @@ import {AuthProvider} from "@/contexts/auth-context";
 import {UserType} from "@/types/user-type";
 import {GestureHandlerRootView} from "react-native-gesture-handler";
 import {LocationProvider} from "@/contexts/location-context";
+import Purchases, {LOG_LEVEL} from 'react-native-purchases';
+import {Platform} from "react-native";
 
 
 export default function RootLayout() {
@@ -21,11 +23,31 @@ export default function RootLayout() {
         'Aboreto-Regular': require('../assets/fonts/Aboreto-Regular.ttf'),
     });
 
+
+    useEffect(() => {
+        Purchases.setLogLevel(LOG_LEVEL.INFO);
+
+        if (Platform.OS === 'ios') {
+            Purchases.configure({apiKey: process.env.EXPO_PUBLIC_REVENUE_CAT_PUBLIC_KEY_IOS as string})
+        } else if (Platform.OS === 'android') {
+            Purchases.configure({apiKey: "we dont have it yet !"})
+        }
+        getCustomerInfo();
+
+    }, []);
+
+    async function getCustomerInfo() {
+        const customerInfo = await Purchases.getCustomerInfo();
+        console.log("############################################## customer info", customerInfo);
+    }
+
+
     useEffect(() => {
         if (loaded || error) {
             SplashScreen.hideAsync();
         }
     }, [loaded, error]);
+
 
     if (!loaded) {
         // Async font loading only occurs in development.
@@ -55,7 +77,6 @@ export default function RootLayout() {
                             <Stack.Screen name="+not-found"/>
                         </Stack>
                     </LocationProvider>
-
                     <StatusBar style="auto"/>
                 </GestureHandlerRootView>
             </SafeAreaProvider>

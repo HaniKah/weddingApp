@@ -1,23 +1,18 @@
 import {ScrollView, StyleSheet, Text, View} from "react-native";
-import {Dispatch, SetStateAction, useRef} from "react";
-import {PromotionInfoDto} from "@/components/wizards/promotePlaceWizard/PromotePlaceWizard";
+import React, {useEffect, useRef, useState} from "react";
 import {Theme} from "@/styles/Theme";
 import Horn from "@/assets/icons/horn.svg"
-import PromotionItem from "@/components/items/PromotionItem";
-import WizardController from "@/components/wizards/WizardController";
 import AppView from "@/components/appComponents/AppView";
-import {useWizardContext} from "@/components/wizards/Wizard";
 import AppDropDown from "@/components/appComponents/AppDropDown";
 import {PickerItem} from "@/components/appComponents/AppPickerDepr";
 import AppPicker from "@/components/appComponents/AppPicker";
 import {AppForm, FormRef} from "@/contexts/form-context";
 import AppFieldSet from "@/components/appComponents/AppFieldSet";
+import AppButton from "@/components/appComponents/AppButton";
+import Purchases, {PurchasesOfferings, PurchasesPackage} from "react-native-purchases";
+import PromotionItem from "@/components/items/PromotionItem";
+import {IconSymbol} from "@/components/symbols/IconSymbol";
 
-export enum PromotionDuration {
-    OneMonth = "OneMonth",
-    ThreeMonths = "ThreeMonths",
-    SixMonths = "SixMonths"
-}
 
 export enum SaleType {
     Percentage = "Percentage",
@@ -25,14 +20,15 @@ export enum SaleType {
     None = "None"
 }
 
-export default function PromotionInfo({promotionInfo, setPromotionInfo}: {
-    promotionInfo: PromotionInfoDto
-    setPromotionInfo: Dispatch<SetStateAction<PromotionInfoDto>>
-}) {
+export function PromotionInfo({placeId}: { placeId: number | undefined }) {
 
+
+    const [selectedPackage, setSelectedPackage] = useState<PurchasesPackage>()
+    const [saleType, setSaleType] = useState<SaleType>()
+    const [salePercentage, setSalePercentage] = useState<number>()
+    const [offerings, setOfferings] = useState<PurchasesOfferings | null>(null);
     const formRef = useRef<FormRef>(null)
 
-    const wizard = useWizardContext()
 
     const saleLabels: PickerItem<SaleType>[] = Object.entries(SaleType).map(([key, value]) => ({
         name: key,
@@ -45,91 +41,127 @@ export default function PromotionInfo({promotionInfo, setPromotionInfo}: {
         saleList.push({name: i + "%", value: i})
     }
 
-    function onSaleTypeChange(newValue: SaleType) {
-        setPromotionInfo((prev) => ({...prev, salePercentage: undefined, saleType: newValue}))
+
+    function submitAndCheckout() {
+        handleCheckout(selectedPackage!)
+        // store something in the db maybe ?
     }
 
-    function onPromotionDurationChange(newValue: PromotionDuration) {
-        setPromotionInfo((prev) => ({...prev, promotionDuration: newValue}))
+    useEffect(() => {
+        async function getOfferings() {
+            const offerings = await Purchases.getOfferings();
+            if (
+                offerings.current !== null &&
+                offerings.current.availablePackages.length !== 0
+            ) {
+                setOfferings(offerings);
+            }
+            // console.log("📢 offerings", JSON.stringify(offerings, null, 2));
+            console.log("📢 offerings", JSON.stringify(offerings.current?.availablePackages, null, 2));
 
-    }
+        }
 
-    function onSalePercentageChange(newValue: number) {
-        setPromotionInfo((prev) => ({...prev, salePercentage: newValue}))
-    }
+        getOfferings();
+    }, []);
 
+    const handleCheckout = async (pkg: PurchasesPackage) => {
+        try {
+            const {customerInfo} = await Purchases.purchasePackage(pkg);
+            // if (
+            //     typeof customerInfo.entitlements.active["Premium Cats"] !== "undefined"
+            // ) {
+            //     router.push("/");
+            // }
+        } catch (e) {
+            console.log("📢 error", e);
+        }
+    };
 
-    function handleNextStep() {
-        wizard.nextStep()
-    }
 
     return (
         <>
             <ScrollView style={styles.scrollContainer}>
+                <Horn width={100} height={100} style={styles.image}/>
                 <Text style={styles.title}>Promotions</Text>
-                <AppForm onSubmit={handleNextStep} ref={formRef}>
-                    <AppView extraStyles={styles.AppViewContainer} withPadding>
-                        <View>
-                            <Horn width={100} height={100} style={styles.image}/>
+                <AppView extraStyles={styles.AppViewContainer} withPadding>
+                    <View>
+                        <View style={styles.bulletPoints}>
+                            <IconSymbol name="checkmark.circle" color={Theme.colors.gray.S300}/>
                             <Text style={styles.headerText}>
-                                With place promotion , you will get x2 more visitors on your place , and it will be on
-                                the
-                                top search
+                                Add your place to the top-search result
                             </Text>
                         </View>
+                        <View style={styles.bulletPoints}>
+                            <IconSymbol name="checkmark.circle" color={Theme.colors.gray.S300}/>
+                            <Text style={styles.headerText}>
+                                Get x2 more viewers on your page
+                            </Text>
+                        </View>
+                        <View style={styles.bulletPoints}>
+                            <IconSymbol name="checkmark.circle" color={Theme.colors.gray.S300}/>
+                            <Text style={styles.headerText}>
+                                Add sale label
+                            </Text>
+                        </View>
+
+                    </View>
+                    <AppForm ref={formRef} onSubmit={submitAndCheckout}>
                         <View>
                             <Text style={styles.subtitle}>Select promotion duration</Text>
-                            <View style={styles.itemsList}>
-                                <AppFieldSet value={promotionInfo.promotionDuration} name="promotionDuration" required>
-                                    <PromotionItem onPress={() => onPromotionDurationChange(PromotionDuration.OneMonth)}
-                                                   isSelected={promotionInfo.promotionDuration === PromotionDuration.OneMonth}
-                                                   title="1 month"
-                                                   price="3.99"
-                                                   currency="JOD"/>
-                                    <PromotionItem
-                                        onPress={() => onPromotionDurationChange(PromotionDuration.ThreeMonths)}
-                                        isSelected={promotionInfo.promotionDuration === PromotionDuration.ThreeMonths}
-                                        title="3 months"
-                                        price="7.99"
-                                        currency="JOD"/>
-                                    <PromotionItem
-                                        onPress={() => onPromotionDurationChange(PromotionDuration.SixMonths)}
-                                        isSelected={promotionInfo.promotionDuration === PromotionDuration.SixMonths}
-                                        title="6 months"
-                                        price="14.99"
-                                        currency="JOD"/>
-                                </AppFieldSet>
+                            <AppFieldSet value={selectedPackage} name="selectedProduct" required>
+                                <View style={styles.offeringsContainer}>
+                                    {offerings?.current?.availablePackages.map((pkg) => (
+                                        <PromotionItem
+                                            isSelected={selectedPackage?.identifier === pkg.identifier}
+                                            key={pkg.identifier}
+                                            title={pkg.product.title}
+                                            price={pkg.product.priceString}
+                                            onPress={() => setSelectedPackage(pkg)}
+                                        />
+                                    ))}
+                                </View>
+                            </AppFieldSet>
 
-                            </View>
                         </View>
                         <View>
                             <Text style={styles.subtitle}>Add sale label</Text>
                             <AppDropDown name="sale"
                                          required={true}
-                                         onChange={onSaleTypeChange}
-                                         value={promotionInfo.saleType}
+                                         onChange={(v) => setSaleType(v)}
+                                         value={saleType}
                                          itemList={saleLabels}/>
                         </View>
-                        {promotionInfo.saleType === SaleType.Percentage &&
+                        {saleType === SaleType.Percentage &&
                             <View>
                                 <Text style={styles.subtitle}>Choose a percentage</Text>
                                 <AppPicker name="percentage"
                                            required
-                                           onChange={(v) => onSalePercentageChange(v)}
-                                           value={promotionInfo.salePercentage}
+                                           onChange={(v) => setSalePercentage(v)}
+                                           value={salePercentage}
                                            itemList={saleList}/>
                             </View>
                         }
-                    </AppView>
-                </AppForm>
+                        <AppButton fullWidth isSubmit>
+                            Checkout
+                        </AppButton>
+                    </AppForm>
+                    <View style={styles.footer}>
+                        <Text style={styles.footerText}>
+                            Cancel anytime • Secure payment • Instant access
+                        </Text>
+                    </View>
+                </AppView>
             </ScrollView>
-            <WizardController isFirstStep={true} onNext={formRef.current?.submit}/>
+
+
         </>
     )
 }
+
 const styles = StyleSheet.create({
     scrollContainer: {
-        marginBottom: Theme.global.wizardControllerBottomMargin,
+        flex: 1,
+
     },
     title: {
         fontSize: Theme.sizes.xl,
@@ -147,17 +179,35 @@ const styles = StyleSheet.create({
     },
     headerText: {
         textAlign: "center",
-        marginTop: 30,
         color: Theme.colors.gray.S700
     },
     subtitle: {
         fontWeight: "bold"
     },
-
-    itemsList: {
+    bulletPoints: {
         display: "flex",
-        flexDirection: "column",
-        gap: 5,
+        alignItems: "center",
+        flexDirection: "row",
+        gap: 10,
+        marginVertical: 3
+    },
+    form: {
+        flex: 1
+    },
+
+    offeringsContainer: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
         marginTop: 10,
+        gap: 8
+    },
+    footer: {
+        paddingVertical: 10,
+        alignItems: "center",
+    },
+    footerText: {
+        fontSize: Theme.sizes.sm,
+        color: Theme.colors.gray.S500,
     },
 })

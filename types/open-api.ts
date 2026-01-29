@@ -327,6 +327,31 @@ export interface CountryInfoViewModel {
   result: CountryInfo[];
 }
 
+export interface CreatePromotionRequest {
+  placeId: number;
+  packageId: string;
+  productId: string;
+  transactionId: string;
+  purchaseId: string;
+  /** @format date-time */
+  createdAt: string;
+  /** @format date-time */
+  expiredAt: string;
+  promotionType: string;
+  saleLabel: string;
+  percentage: number;
+  managementUrl: string;
+}
+
+export interface RevenueCatEvent {
+  type: string;
+}
+
+export interface RevenueCatRequest {
+  api_version: string;
+  event: RevenueCatEvent;
+}
+
 import type {
   AxiosInstance,
   AxiosRequestConfig,
@@ -1037,6 +1062,44 @@ export class Api<
         path: `/api/packages/generatePackage`,
         method: "GET",
         query: query,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Promotions
+     * @name PromotionsControllerCreate
+     * @request POST:/api/promotions/create
+     */
+    promotionsControllerCreate: (
+      data: CreatePromotionRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/promotions/create`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Webhooks
+     * @name WebhooksControllerRevenueCatWebhook
+     * @request POST:/api/webhooks/revenue-cat
+     */
+    webhooksControllerRevenueCatWebhook: (
+      data: RevenueCatRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/webhooks/revenue-cat`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
         ...params,
       }),
   };

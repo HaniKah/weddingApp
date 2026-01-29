@@ -9,9 +9,10 @@ import AppPicker from "@/components/appComponents/AppPicker";
 import {AppForm, FormRef} from "@/contexts/form-context";
 import AppFieldSet from "@/components/appComponents/AppFieldSet";
 import AppButton from "@/components/appComponents/AppButton";
-import Purchases, {PurchasesOfferings, PurchasesPackage} from "react-native-purchases";
+import Purchases, {MakePurchaseResult, PurchasesOfferings, PurchasesPackage} from "react-native-purchases";
 import PromotionItem from "@/components/items/PromotionItem";
 import {IconSymbol} from "@/components/symbols/IconSymbol";
+import {useApi} from "@/utils/api";
 
 
 export enum SaleType {
@@ -22,6 +23,7 @@ export enum SaleType {
 
 export function PromotionInfo({placeId}: { placeId: number | undefined }) {
 
+    const {api} = useApi()
 
     const [selectedPackage, setSelectedPackage] = useState<PurchasesPackage>()
     const [saleType, setSaleType] = useState<SaleType>()
@@ -42,9 +44,15 @@ export function PromotionInfo({placeId}: { placeId: number | undefined }) {
     }
 
 
-    function submitAndCheckout() {
-        handleCheckout(selectedPackage!)
-        // store something in the db maybe ?
+    async function submitAndCheckout() {
+        if (!selectedPackage) return
+        let result: MakePurchaseResult// this is handled automatically in the form but is here for extra check
+        try {
+            result = await Purchases.purchasePackage(selectedPackage)
+
+        } catch (e) {
+            console.error("📢 error white purchasing a package", e);
+        }
     }
 
     useEffect(() => {
@@ -63,19 +71,6 @@ export function PromotionInfo({placeId}: { placeId: number | undefined }) {
 
         getOfferings();
     }, []);
-
-    const handleCheckout = async (pkg: PurchasesPackage) => {
-        try {
-            const {customerInfo} = await Purchases.purchasePackage(pkg);
-            // if (
-            //     typeof customerInfo.entitlements.active["Premium Cats"] !== "undefined"
-            // ) {
-            //     router.push("/");
-            // }
-        } catch (e) {
-            console.log("📢 error", e);
-        }
-    };
 
 
     return (

@@ -2,16 +2,16 @@ import {FlatList, StyleSheet, View} from "react-native";
 import GuestSide from "@/components/GuestSide";
 import {CoupleSide, GuestsDto, GuestsViewModel} from "@/types/open-api";
 import AddGuestModal from "@/components/modals/AddGuestModal";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 
 import AppView from "@/components/appComponents/AppView";
 import GuestItem from "@/components/items/GuestItem";
 import GuestsToolbar from "@/components/toolbars/GuestsToolbar";
 import {useApi} from "@/utils/api";
+import {AppModalRef} from "@/components/appComponents/AppModal";
 
 export default function Guests() {
 
-    const [modalVisible, setModalVisible] = useState(false)
     const [guestSide, setGuestSide] = useState<CoupleSide>()
     const [isLoading, setIsLoading] = useState(true)
     const [guests, setGuests] = useState<GuestsViewModel>()
@@ -19,12 +19,13 @@ export default function Guests() {
     const [selectedGuest, setSelectedGuest] = useState<GuestsDto>()
 
     const API = useApi().api
+    const addGuestModalRef = useRef<AppModalRef>(null)
 
 
     const handleAddGuest = (side: CoupleSide) => {
         setGuestSide(side)
         setSelectedGuest(undefined)
-        setModalVisible(true)
+        addGuestModalRef.current?.open()
     }
 
     useEffect(() => {
@@ -47,7 +48,8 @@ export default function Guests() {
 
     function handleSelectGuest(guest: GuestsDto) {
         setSelectedGuest(guest)
-        setModalVisible(true)
+        addGuestModalRef.current?.open()
+
 
     }
 
@@ -55,7 +57,7 @@ export default function Guests() {
     return (
         <>
             <AppView isLoading={isLoading}>
-                <GuestsToolbar onCreateGuest={() => setModalVisible(true)}/>
+                <GuestsToolbar onCreateGuest={() => addGuestModalRef.current?.open()}/>
                 <View style={styles.container}>
                     <GuestSide side={CoupleSide.Bride}/>
                     <GuestSide side={CoupleSide.Groom}/>
@@ -67,9 +69,10 @@ export default function Guests() {
             </AppView>
 
 
-            <AddGuestModal guestInfo={selectedGuest} setRefetchTrigger={setTrigger}
-                           isVisible={modalVisible}
-                           setIsVisible={setModalVisible}/>
+            <AddGuestModal ref={addGuestModalRef}
+                           guestInfo={selectedGuest}
+                           setRefetchTrigger={setTrigger}
+            />
         </>
 
     )

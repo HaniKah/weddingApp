@@ -1,7 +1,7 @@
 import {Alert, StyleSheet, Text, View} from "react-native";
 import {Theme} from "@/styles/Theme";
 import {AddGuestRequest, CoupleSide, GuestsDto, UpdateGuestRequest} from "@/types/open-api";
-import React, {Dispatch, useEffect, useRef, useState} from "react";
+import React, {Dispatch, RefObject, useEffect, useRef, useState} from "react";
 import AppTextInput from "@/components/appComponents/AppTextInput";
 import AppButton from "@/components/appComponents/AppButton";
 import {ButtonType} from "@/styles/Button";
@@ -15,11 +15,10 @@ interface checkedGuestInfo {
     phone: string;
 }
 
-export default function AddGuestModal({guestInfo, isVisible, setIsVisible, setRefetchTrigger}: {
+export default function AddGuestModal({ref, guestInfo, setRefetchTrigger}: {
+    ref: RefObject<AppModalRef | null>
     guestInfo?: GuestsDto
     setRefetchTrigger?: Dispatch<React.SetStateAction<boolean>>
-    isVisible: boolean,
-    setIsVisible: Dispatch<React.SetStateAction<boolean>>
 }) {
     const [guestName, setGuestName] = useState<string | undefined>(guestInfo?.name)
     const [phone, setPhone] = useState<string | undefined>(guestInfo?.phoneNumber)
@@ -28,7 +27,6 @@ export default function AddGuestModal({guestInfo, isVisible, setIsVisible, setRe
 
     const API = useApi().api
     const formRef = useRef<FormRef>(null)
-    const addGuestModalRef = useRef<AppModalRef>(null)
 
 
     useEffect(() => {
@@ -73,7 +71,7 @@ export default function AddGuestModal({guestInfo, isVisible, setIsVisible, setRe
     }
 
     function finishAndClear() {
-        setIsVisible(false)
+        ref.current?.close()
         setGuestName(undefined)
         setPhone(undefined)
         setRefetchTrigger && setRefetchTrigger((prev: boolean) => !prev)
@@ -111,7 +109,7 @@ export default function AddGuestModal({guestInfo, isVisible, setIsVisible, setRe
 //todo : wrapper the modals with AppModal
     return (
         <>
-            <AppModal ref={addGuestModalRef}>
+            <AppModal ref={ref}>
                 <View style={styles.container}>
                     <Text style={styles.text}> {guestSide}&#39;s guests </Text>
                     <View style={styles.symbol}></View>

@@ -19,8 +19,6 @@ import {AppBottomSheetRef} from "@/components/appComponents/AppBottomSheet";
 export default function Index() {
 
     const {api} = useApi()
-
-
     const [places, setPlaces] = useState<VendorPlaceViewModel>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
@@ -33,7 +31,6 @@ export default function Index() {
 
     const getPlaces = useCallback(async () => {
         try {
-
             const res = await api.placesControllerGetPlaces();
             setPlaces(res.data);
         } catch (err) {
@@ -41,6 +38,7 @@ export default function Index() {
         } finally {
         }
     }, [])
+
 
     const refreshPlaces = useCallback(() => {
         setIsRefreshing(true);
@@ -50,6 +48,7 @@ export default function Index() {
         }, REFRESH_DELAY)
     }, [getPlaces])
 
+
     const reloadPlaces = useCallback(() => {
         setIsLoading(true)
         setTimeout(async () => {
@@ -58,9 +57,11 @@ export default function Index() {
         }, REFRESH_DELAY)
     }, [getPlaces])
 
+
     useEffect(() => {
         reloadPlaces()
     }, []);
+
 
     function handlePlacePress(place: VendorPlaceDto) {
         setSelectedPlace(place);

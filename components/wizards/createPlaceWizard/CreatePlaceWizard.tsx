@@ -37,7 +37,7 @@ export default function CreatePlaceWizard({placeId, setIsModalVisible, onFinish}
             }
         }
         getPlaceDetails()
-    }, []);
+    }, [placeId]);
 
 
     const handleFinish = () => {

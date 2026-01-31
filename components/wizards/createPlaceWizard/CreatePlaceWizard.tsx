@@ -15,9 +15,8 @@ export type ImageUploadModel = {
     name?: string | null
 }
 
-export default function CreatePlaceWizard({placeId, setIsModalVisible, onFinish}: {
+export default function CreatePlaceWizard({placeId, onFinish}: {
     placeId: number | undefined,
-    setIsModalVisible: (value: boolean) => void
     onFinish: () => void
 
 }) {
@@ -38,12 +37,6 @@ export default function CreatePlaceWizard({placeId, setIsModalVisible, onFinish}
         }
         getPlaceDetails()
     }, [placeId]);
-
-
-    const handleFinish = () => {
-        setIsModalVisible(false)
-        onFinish()
-    }
 
 
     return (
@@ -69,7 +62,7 @@ export default function CreatePlaceWizard({placeId, setIsModalVisible, onFinish}
                 </WizardStep>
 
                 <WizardStep step={UpdateStep.UploadImages}>
-                    <UploadImages onFinish={handleFinish} placeId={data?.id}/>
+                    <UploadImages onFinish={onFinish} placeId={data?.id}/>
                 </WizardStep>
             </Wizard>
         </>

@@ -1,26 +1,31 @@
-import AppModal from "@/components/appComponents/AppModal";
+import AppModal, {AppModalRef} from "@/components/appComponents/AppModal";
 import AppView from "@/components/appComponents/AppView";
 import CreatePlaceWizard from "@/components/wizards/createPlaceWizard/CreatePlaceWizard";
+import {RefObject} from "react";
 
-export default function CreatePlaceModal({isVisible, setIsVisible, placeId, onFinish}: {
-    isVisible: boolean,
-    setIsVisible: (value: boolean) => void,
+export default function CreatePlaceModal({placeId, ref, reloadPlaces}: {
+
     placeId: number | undefined
-    onFinish: () => void
+    ref: RefObject<AppModalRef | null>
+    reloadPlaces: () => void
 
 }) {
-    console.log("placeId inside create modal", placeId)
+
+    function closeAndReload() {
+        reloadPlaces()
+        ref?.current?.close()
+    }
 
     return (
         <>
-            <AppModal allowSwipeDismissal={true}
-                      presentationStyle="fullScreen"
-                      isVisible={isVisible}
-                      setIsVisible={setIsVisible}
-                      onCancel={onFinish}
+            <AppModal
+                ref={ref}
+                allowSwipeDismissal={true}
+                presentationStyle="fullScreen"
+                beforeCancel={() => reloadPlaces()}
             >
                 <AppView>
-                    <CreatePlaceWizard onFinish={onFinish} placeId={placeId} setIsModalVisible={setIsVisible}/>
+                    <CreatePlaceWizard onFinish={closeAndReload} placeId={placeId}/>
                 </AppView>
             </AppModal>
         </>

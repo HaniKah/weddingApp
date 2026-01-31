@@ -1,1 +1,1 @@
-export const REFRESH_DELAY = 1000;
+export const REFRESH_DELAY = 0;

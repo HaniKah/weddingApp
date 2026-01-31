@@ -2,30 +2,47 @@ import {Modal, StyleSheet, View} from "react-native";
 import AppButton from "@/components/appComponents/AppButton";
 import {ButtonType} from "@/styles/Button";
 import {Theme} from "@/styles/Theme";
+import {useImperativeHandle, useState} from "react";
+
+export interface AppModalRef {
+    open: () => void
+    close: () => void
+    isOpen: boolean
+}
 
 export default function AppModal({
-                                     isVisible,
-                                     setIsVisible,
+
                                      children,
                                      presentationStyle = "pageSheet",
                                      allowSwipeDismissal = true,
                                      animationType = "slide",
-                                     onCancel
+                                     beforeCancel,
+                                     ref
                                  }: {
     presentationStyle?: | 'fullScreen' | 'pageSheet' | 'formSheet' | 'overFullScreen' | undefined;
-    isVisible: boolean,
-    setIsVisible: (s: boolean) => void,
     children: React.ReactNode
     allowSwipeDismissal?: boolean
     animationType?: "slide" | "fade" | "none"
-    onCancel?: () => void
+    beforeCancel?: () => void
+    ref: any
 }) {
     const isFullScreen = presentationStyle === 'fullScreen' || presentationStyle === 'overFullScreen'
 
+    const [isVisible, setIsVisible] = useState<boolean>(false)
+
     function handleCancel() {
-        onCancel?.()
+        beforeCancel?.()
         setIsVisible(false)
     }
+
+    useImperativeHandle(ref, () => {
+        return {
+            open: () => setIsVisible(true),
+            close: () => setIsVisible(false),
+            isOpen: isVisible
+        }
+    })
+
 
     return (
         <Modal

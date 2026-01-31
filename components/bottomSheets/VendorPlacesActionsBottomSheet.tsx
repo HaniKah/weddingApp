@@ -1,27 +1,25 @@
-import AppBottomSheet from "@/components/appComponents/AppBottomSheet";
+import AppBottomSheet, {AppBottomSheetRef} from "@/components/appComponents/AppBottomSheet";
 import {Alert, StyleSheet, View} from "react-native";
 import {VendorPlaceDto} from "@/types/open-api";
 import AppButton from "@/components/appComponents/AppButton";
 import {Theme} from "@/styles/Theme";
 import {Link} from "expo-router";
 import {ButtonType} from "@/styles/Button";
-import {Dispatch, SetStateAction, useRef, useState} from "react";
+import {RefObject, useRef, useState} from "react";
 import CreatePlaceModal from "@/components/modals/CreatePlaceModal";
 import PromotePlaceModal from "@/components/modals/PromotePlaceModal";
 import {AppModalRef} from "@/components/appComponents/AppModal";
 import {useApi} from "@/utils/api";
 
 export default function VendorPlacesActionsBottomSheet({
+                                                           ref,
                                                            selectedPlace,
-                                                           isBottomSheetVisible,
-                                                           setIsBottomSheetVisible,
                                                            reloadPlaces
 
 
                                                        }: {
+    ref: RefObject<AppBottomSheetRef | null>
     selectedPlace: VendorPlaceDto | undefined
-    isBottomSheetVisible: boolean,
-    setIsBottomSheetVisible: Dispatch<SetStateAction<boolean>>
     reloadPlaces: () => void
 
 }) {
@@ -34,18 +32,18 @@ export default function VendorPlacesActionsBottomSheet({
     const editPlaceModal = useRef<AppModalRef>(null)
 
     function handleViewPlace() {
-        setIsBottomSheetVisible(false);
+        ref?.current?.close()
     }
 
     function handleEditPlace() {
         editPlaceModal.current?.open()
-        setIsBottomSheetVisible(false);
+        ref?.current?.close()
     }
 
 
     function handlePromotePlace() {
         promotePlaceModal.current?.open()
-        setIsBottomSheetVisible(false);
+        ref?.current?.close()
     }
 
     function handleUnpublishPlace() {
@@ -79,7 +77,7 @@ export default function VendorPlacesActionsBottomSheet({
             console.error(err)
         } finally {
             setIsLoading(false)
-            setIsBottomSheetVisible(false)
+            ref?.current?.close()
         }
     }
 
@@ -93,14 +91,14 @@ export default function VendorPlacesActionsBottomSheet({
             console.error(err)
         } finally {
             setIsLoading(false)
-            setIsBottomSheetVisible(false)
+            ref?.current?.close()
         }
     }
 
 
     return (
         <>
-            <AppBottomSheet setIsVisible={setIsBottomSheetVisible} isVisible={isBottomSheetVisible}>
+            <AppBottomSheet ref={ref}>
                 {selectedPlace &&
                     <View>
                         {selectedPlace.isPublished &&

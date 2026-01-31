@@ -14,12 +14,12 @@ import {CommonStyles} from "@/styles/Common";
 import {REFRESH_DELAY} from "@/constants/general";
 import VendorPlacesActionsBottomSheet from "@/components/bottomSheets/VendorPlacesActionsBottomSheet";
 import {AppModalRef} from "@/components/appComponents/AppModal";
+import {AppBottomSheetRef} from "@/components/appComponents/AppBottomSheet";
 
 export default function Index() {
 
     const {api} = useApi()
 
-    const [isBottomSheetVisible, setIsBottomSheetVisible] = useState<boolean>(false)
 
     const [places, setPlaces] = useState<VendorPlaceViewModel>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -28,6 +28,7 @@ export default function Index() {
     const [selectedPlace, setSelectedPlace] = useState<VendorPlaceDto>();
 
     const createPlaceModalRef = useRef<AppModalRef>(null)
+    const actionsBottomSheetRef = useRef<AppBottomSheetRef>(null)
 
 
     const getPlaces = useCallback(async () => {
@@ -63,7 +64,7 @@ export default function Index() {
 
     function handlePlacePress(place: VendorPlaceDto) {
         setSelectedPlace(place);
-        setIsBottomSheetVisible(true);
+        actionsBottomSheetRef.current?.open()
 
     }
 
@@ -88,7 +89,7 @@ export default function Index() {
             <PlacesToolbar onCreatePlace={() => createPlaceModalRef.current?.open()}/>
 
             <AppView withPadding>
-                
+
                 {
                     places && Object.values(places).flatMap(s => s.data).length > 0 ?
                         <SectionList
@@ -119,10 +120,10 @@ export default function Index() {
                 placeId={undefined}/>
 
 
-            <VendorPlacesActionsBottomSheet selectedPlace={selectedPlace}
-                                            isBottomSheetVisible={isBottomSheetVisible}
-                                            setIsBottomSheetVisible={setIsBottomSheetVisible}
-                                            reloadPlaces={reloadPlaces}
+            <VendorPlacesActionsBottomSheet
+                ref={actionsBottomSheetRef}
+                selectedPlace={selectedPlace}
+                reloadPlaces={reloadPlaces}
 
             />
         </>

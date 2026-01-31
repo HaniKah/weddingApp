@@ -2,14 +2,29 @@ import {Dimensions, DimensionValue, Modal, StyleSheet, TouchableOpacity, View} f
 import Animated, {useAnimatedStyle, useSharedValue, withSpring} from 'react-native-reanimated';
 import {Theme} from "@/styles/Theme";
 import {Gesture, GestureDetector} from "react-native-gesture-handler";
-import {useEffect} from "react";
+import {RefObject, useEffect, useImperativeHandle, useState} from "react";
 
+export interface AppBottomSheetRef {
+    open: () => void;
+    close: () => void;
+    isOpened: boolean;
+}
 
-export default function AppBottomSheet({isVisible, setIsVisible, children}: {
-    isVisible: boolean,
-    setIsVisible: (value: boolean) => void
+export default function AppBottomSheet({ref, children}: {
+    ref: RefObject<AppBottomSheetRef | null>,
     children: React.ReactNode
 }) {
+
+    const [isVisible, setIsVisible] = useState(false);
+    
+    useImperativeHandle(ref, () => {
+        return {
+            open: () => setIsVisible(true),
+            close: () => setIsVisible(false),
+            isOpened: isVisible
+        }
+    })
+
     const height = Dimensions.get('window').height;
     const HALF_SCREEN = height * 0.5;
     const FULL_SCREEN = height * 0.1;

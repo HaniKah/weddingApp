@@ -1,6 +1,7 @@
 import {Picker} from "@react-native-picker/picker";
 import {Text} from "react-native";
-import AppBottomSheet from "@/components/appComponents/AppBottomSheet";
+import AppBottomSheet, {AppBottomSheetRef} from "@/components/appComponents/AppBottomSheet";
+import {useRef} from "react";
 
 export type PickerItem<P> = {
     name: string;
@@ -13,10 +14,10 @@ export default function AppPickerDepr<T>({itemList, label, value, setValue}: {
     itemList: PickerItem<T>[],
     label?: string
 }) {
+    const ref = useRef<AppBottomSheetRef>(null)
 
     return (
-        <AppBottomSheet isVisible={true} setIsVisible={() => {
-        }}>
+        <AppBottomSheet ref={ref}>
             <Text>
                 {label}
             </Text>

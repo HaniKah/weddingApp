@@ -1,9 +1,9 @@
 import {PickerItem} from "@/components/appComponents/AppPickerDepr";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {FlatList, Pressable, StyleProp, StyleSheet, Text, View, ViewStyle} from "react-native";
 import {Theme} from "@/styles/Theme";
 import {IconSymbol} from "@/components/symbols/IconSymbol";
-import AppBottomSheet from "@/components/appComponents/AppBottomSheet";
+import AppBottomSheet, {AppBottomSheetRef} from "@/components/appComponents/AppBottomSheet";
 import {useFormContext} from "@/contexts/form-context";
 
 export default function AppDropDown<T>({itemList, label, value, onChange, style, title, required, name}: {
@@ -18,12 +18,13 @@ export default function AppDropDown<T>({itemList, label, value, onChange, style,
 }) {
 
     const form = useFormContext()
-    const [isVisible, setIsVisible] = useState(false)
     const [error, setError] = useState<string | undefined>()
+
+    const bottomSheetRef = useRef<AppBottomSheetRef>(null)
 
     const onSelect = (selectedValue: T) => {
         onChange(selectedValue)
-        setIsVisible(false)
+        bottomSheetRef.current?.close()
     }
 
     function renderItem({item}: { item: PickerItem<T> }) {
@@ -64,7 +65,7 @@ export default function AppDropDown<T>({itemList, label, value, onChange, style,
     return (
         <View style={style}>
             {label && <Text>{label}</Text>}
-            <Pressable style={styles.pressable} onPress={() => setIsVisible(true)}>
+            <Pressable style={styles.pressable} onPress={() => bottomSheetRef.current?.open()}>
                 <Text>
                     {itemList?.find(item => item.value === value)?.name ?? "Select an option"}
                 </Text>
@@ -72,9 +73,7 @@ export default function AppDropDown<T>({itemList, label, value, onChange, style,
             </Pressable>
             {error && <Text style={styles.error}>{error}</Text>}
 
-            <AppBottomSheet
-                isVisible={isVisible}
-                setIsVisible={setIsVisible}>
+            <AppBottomSheet ref={bottomSheetRef}>
                 <View style={styles.viewContainer}>
                     {title && <Text style={styles.title}>{title}</Text>}
                     <FlatList contentContainerStyle={styles.flatListContainer} data={itemList} renderItem={renderItem}/>

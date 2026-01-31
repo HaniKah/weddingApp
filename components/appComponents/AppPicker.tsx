@@ -1,9 +1,9 @@
 import {PickerItem} from "@/components/appComponents/AppPickerDepr";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {Pressable, StyleProp, StyleSheet, Text, View, ViewStyle} from "react-native";
 import {Theme} from "@/styles/Theme";
 import {IconSymbol} from "@/components/symbols/IconSymbol";
-import AppBottomSheet from "@/components/appComponents/AppBottomSheet";
+import AppBottomSheet, {AppBottomSheetRef} from "@/components/appComponents/AppBottomSheet";
 import {useFormContext} from "@/contexts/form-context";
 import {Picker} from "@react-native-picker/picker";
 
@@ -19,8 +19,9 @@ export default function AppPicker<T>({itemList, label, value, onChange, style, t
 }) {
 
     const form = useFormContext()
-    const [isVisible, setIsVisible] = useState(false)
     const [error, setError] = useState<string | undefined>()
+
+    const bottomSheetRef = useRef<AppBottomSheetRef>(null)
 
 
     useEffect(() => {
@@ -52,7 +53,7 @@ export default function AppPicker<T>({itemList, label, value, onChange, style, t
     return (
         <View style={style}>
             {label && <Text>{label}</Text>}
-            <Pressable style={styles.pressable} onPress={() => setIsVisible(true)}>
+            <Pressable style={styles.pressable} onPress={() => bottomSheetRef.current?.open()}>
                 <Text>
                     {itemList?.find(item => item.value === value)?.name ?? "Select an option"}
                 </Text>
@@ -60,9 +61,7 @@ export default function AppPicker<T>({itemList, label, value, onChange, style, t
             </Pressable>
             {error && <Text style={styles.error}>{error}</Text>}
 
-            <AppBottomSheet
-                isVisible={isVisible}
-                setIsVisible={setIsVisible}>
+            <AppBottomSheet ref={bottomSheetRef}>
                 <Picker
                     selectedValue={value}
                     onValueChange={(itemValue, itemIndex) =>

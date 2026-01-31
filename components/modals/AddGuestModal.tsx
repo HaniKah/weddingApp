@@ -7,7 +7,7 @@ import AppButton from "@/components/appComponents/AppButton";
 import {ButtonType} from "@/styles/Button";
 import {AppForm, FormRef} from "@/contexts/form-context";
 
-import AppModal from "@/components/appComponents/AppModal";
+import AppModal, {AppModalRef} from "@/components/appComponents/AppModal";
 import {useApi} from "@/utils/api";
 
 interface checkedGuestInfo {
@@ -28,6 +28,7 @@ export default function AddGuestModal({guestInfo, isVisible, setIsVisible, setRe
 
     const API = useApi().api
     const formRef = useRef<FormRef>(null)
+    const addGuestModalRef = useRef<AppModalRef>(null)
 
 
     useEffect(() => {
@@ -110,7 +111,7 @@ export default function AddGuestModal({guestInfo, isVisible, setIsVisible, setRe
 //todo : wrapper the modals with AppModal
     return (
         <>
-            <AppModal isVisible={isVisible} setIsVisible={setIsVisible}>
+            <AppModal ref={addGuestModalRef}>
                 <View style={styles.container}>
                     <Text style={styles.text}> {guestSide}&#39;s guests </Text>
                     <View style={styles.symbol}></View>

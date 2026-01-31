@@ -46,23 +46,29 @@ export function PromotionInfo({placeId}: { placeId: number | undefined }) {
 
 
     async function submitAndCheckout() {
-        if (!selectedPackage) return
-        const [error, result] = await tryCatch(Purchases.purchasePackage(selectedPackage))
-        if (error) {
-            console.error(error.message)
+        console.log("submitting form")
+        console.log("selectedPackage: ", selectedPackage?.packageType)
+        console.log("placeId: ", placeId)
+        if (!selectedPackage || !placeId) return
+        console.log("setting attributes")
+
+        const [attributesError, attributesResult] = await tryCatch(Purchases.setAttributes({"placeId": placeId + ""}))
+        if (attributesError) console.error(attributesError.message)
+
+        const [purchaseError, purchaseResult] = await tryCatch(Purchases.purchasePackage(selectedPackage))
+        if (purchaseError) {
+            console.error(purchaseError.message)
             return
         } else {
-            console.log(result)
+            console.log("purchase result received")
         }
-        // try {
-        //     result = await Purchases.purchasePackage(selectedPackage)
-        //
-        // } catch (e) {
-        //     console.error("📢 error white purchasing a package", e);
-        // }
+
     }
 
     useEffect(() => {
+        if (!placeId) return
+        console.log("placeId from Promotion info", placeId)
+
         async function getOfferings() {
             const offerings = await Purchases.getOfferings();
             if (
@@ -77,7 +83,7 @@ export function PromotionInfo({placeId}: { placeId: number | undefined }) {
         }
 
         getOfferings();
-    }, []);
+    }, [placeId]);
 
 
     return (

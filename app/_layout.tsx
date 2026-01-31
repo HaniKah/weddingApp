@@ -9,7 +9,7 @@ import {AuthProvider} from "@/contexts/auth-context";
 import {UserType} from "@/types/user-type";
 import {GestureHandlerRootView} from "react-native-gesture-handler";
 import {LocationProvider} from "@/contexts/location-context";
-import Purchases, {LOG_LEVEL} from 'react-native-purchases';
+import Purchases from 'react-native-purchases';
 import {Platform} from "react-native";
 
 
@@ -25,14 +25,14 @@ export default function RootLayout() {
 
 
     useEffect(() => {
-        Purchases.setLogLevel(LOG_LEVEL.INFO);
+        // Purchases.setLogLevel(LOG_LEVEL.INFO);
 
         if (Platform.OS === 'ios') {
             Purchases.configure({apiKey: process.env.EXPO_PUBLIC_REVENUE_CAT_PUBLIC_KEY_IOS as string})
         } else if (Platform.OS === 'android') {
             Purchases.configure({apiKey: "we dont have it yet !"})
         }
-        getCustomerInfo();
+        // getCustomerInfo();
 
     }, []);
 

@@ -8,17 +8,17 @@ import CreatePlaceModal from '@/components/modals/CreatePlaceModal';
 import {VendorPlaceDto, VendorPlaceViewModel} from '@/types/open-api';
 import VendorPlaceItem from '@/components/items/VendorPlaceItem';
 import {Link, Stack} from "expo-router";
-import AppBottomSheet from "@/components/appComponents/AppBottomSheet";
-import AppButton from "@/components/appComponents/AppButton";
-import {ButtonType} from "@/styles/Button";
 import {IconSymbol} from "@/components/symbols/IconSymbol";
 import AppIf from "@/components/appComponents/AppIf";
 import {CommonStyles} from "@/styles/Common";
 import PromotePlaceModal from "@/components/modals/PromotePlaceModal";
 import {REFRESH_DELAY} from "@/constants/general";
+import AppBottomSheet from "@/components/appComponents/AppBottomSheet";
+import AppButton from "@/components/appComponents/AppButton";
+import {ButtonType} from "@/styles/Button";
 
 export default function Index() {
-    const API = useApi().api;
+    const {api} = useApi()
     const [showCreateModal, setShowCreateModal] = useState<boolean>(false);
     const [showPromoteModal, setShowPromoteModal] = useState<boolean>(false);
 
@@ -32,7 +32,7 @@ export default function Index() {
 
     const getPlaces = useCallback(async () => {
         try {
-            const res = await API.placesControllerGetPlaces();
+            const res = await api.placesControllerGetPlaces();
             setPlaces(res.data);
         } catch (err) {
             console.error(err);
@@ -60,10 +60,6 @@ export default function Index() {
         }, REFRESH_DELAY)
     }, [getPlaces])
 
-
-    useEffect(() => {
-        !isBottomSheetVisible && setSelectedPlace(undefined)
-    }, [isBottomSheetVisible]);
 
     function handlePlacePress(place: VendorPlaceDto) {
         setSelectedPlace(place);
@@ -110,7 +106,7 @@ export default function Index() {
         if (!selectedPlace) return
         try {
             setIsLoading(true)
-            await API.placesControllerDeletePlace({id: selectedPlace.id})
+            await api.placesControllerDeletePlace({id: selectedPlace.id})
         } catch (err) {
             console.error(err)
         } finally {
@@ -123,7 +119,7 @@ export default function Index() {
         if (!selectedPlace) return
         try {
             setIsLoading(true)
-            await API.placesControllerToggleStatus({placeId: selectedPlace.id, isPublished: ispublished})
+            await api.placesControllerToggleStatus({placeId: selectedPlace.id, isPublished: ispublished})
         } catch (err) {
             console.error(err)
         } finally {
@@ -176,6 +172,7 @@ export default function Index() {
 
 
             </AppView>
+
 
             <CreatePlaceModal onFinish={reloadPlaces}
                               placeId={selectedPlace?.id}

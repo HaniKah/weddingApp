@@ -8,6 +8,7 @@ export default function PromotePlaceModal({isVisible, setIsVisible, placeId}: {
     setIsVisible: Dispatch<SetStateAction<boolean>>,
     placeId: number | undefined
 }) {
+    // console.log("placeId inside promote modal", placeId)
 
     return (
         <>

@@ -9,6 +9,7 @@ export default function CreatePlaceModal({isVisible, setIsVisible, placeId, onFi
     onFinish: () => void
 
 }) {
+    console.log("placeId inside create modal", placeId)
 
     return (
         <>

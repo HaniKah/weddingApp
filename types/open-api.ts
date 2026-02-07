@@ -327,24 +327,90 @@ export interface CountryInfoViewModel {
   result: CountryInfo[];
 }
 
-export interface CreatePromotionRequest {
+export interface PlaceRequest {
   placeId: number;
-  packageId: string;
-  productId: string;
-  transactionId: string;
-  purchaseId: string;
   /** @format date-time */
-  createdAt: string;
+  promotionBeginsAt: string;
   /** @format date-time */
-  expiredAt: string;
-  promotionType: string;
+  promotionEndsAt: string;
   saleLabel: string;
-  percentage: number;
-  managementUrl: string;
+  salePercentage: string;
+}
+
+export interface PromoteRequest {
+  placeId: number;
+  price: number;
+  priceInPurchaseCurrency: number;
+  productId: string;
+  /** @format date-time */
+  purchasedAt: string;
+}
+
+export interface CreatePromotionRequest {
+  place: PlaceRequest;
+  promotion: PromoteRequest;
+}
+
+export interface SubscriberAttributesDto {
+  value: string;
+  updated_at_ms: number;
+}
+
+export interface SubscriberAttributes {
+  placeId: SubscriberAttributesDto;
+  saleLabel: SubscriberAttributesDto;
+  salePercentage: SubscriberAttributesDto;
+  promotionBeginsAt: SubscriberAttributesDto;
+  promotionEndsAt: SubscriberAttributesDto;
 }
 
 export interface RevenueCatEvent {
-  type: string;
+  event_timestamp_ms: number;
+  product_id: string;
+  purchased_at_ms: number;
+  expiration_at_ms: number;
+  environment: string;
+  entitlement_id: string;
+  entitlement_ids: string[];
+  presented_offering_id: string;
+  transaction_id: string;
+  original_transaction_id: string;
+  is_family_share: boolean;
+  country_code: string;
+  app_user_id: string;
+  aliases: string[];
+  original_app_user_id: string;
+  is_trial_conversion: boolean;
+  price: number;
+  price_in_purchased_currency: number;
+  subscriber_attributes: SubscriberAttributes;
+  store: string;
+  takehome_percentage: number;
+  offer_code: string;
+  tax_percentage: number;
+  commission_percentage: number;
+  metadata: object;
+  renewal_number: number;
+  type:
+    | "TEST"
+    | "INITIAL_PURCHASE"
+    | "RENEWAL"
+    | "CANCELLATION"
+    | "UNCANCELLATION"
+    | "NON_RENEWING_PURCHASE"
+    | "SUBSCRIPTION_PAUSED"
+    | "EXPIRATION"
+    | "BILLING_ISSUE"
+    | "PRODUCT_CHANGE"
+    | "TRANSFER"
+    | "SUBSCRIPTION_EXTENDED"
+    | "TEMPORARY_ENTITLEMENT_GRANT"
+    | "REFUND_REVERSED"
+    | "INVOICE_ISSUANCE"
+    | "VIRTUAL_CURRENCY_TRANSACTION"
+    | "EXPERIMENT_ENROLLMENT";
+  id: string;
+  app_id: string;
 }
 
 export interface RevenueCatRequest {

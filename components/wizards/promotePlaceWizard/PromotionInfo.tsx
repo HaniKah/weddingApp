@@ -55,13 +55,13 @@ export function PromotionInfo({placeId}: { placeId: number | undefined }) {
         const [attributesError, attributesResult] = await tryCatch(Purchases.setAttributes({"placeId": placeId + ""}))
         if (attributesError) console.error(attributesError.message)
 
+
         const [purchaseError, purchaseResult] = await tryCatch(Purchases.purchasePackage(selectedPackage))
         if (purchaseError) {
             console.error(purchaseError.message)
             return
-        } else {
-            console.log("purchase result received")
         }
+      
 
     }
 

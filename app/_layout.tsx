@@ -14,7 +14,7 @@ import {Platform} from "react-native";
 
 
 export default function RootLayout() {
-    const {isLoggedIn, shouldCreateAccount, hasCompletedOnboarding, userType} = useAuthStore()
+    const {isLoggedIn, shouldCreateAccount, hasCompletedOnboarding, userType, user} = useAuthStore()
 
     SplashScreen.preventAutoHideAsync();
 
@@ -26,15 +26,18 @@ export default function RootLayout() {
 
     useEffect(() => {
         // Purchases.setLogLevel(LOG_LEVEL.INFO);
-
+        if (!isLoggedIn) return
         if (Platform.OS === 'ios') {
-            Purchases.configure({apiKey: process.env.EXPO_PUBLIC_REVENUE_CAT_PUBLIC_KEY_IOS as string})
+            Purchases.configure({
+                apiKey: process.env.EXPO_PUBLIC_REVENUE_CAT_PUBLIC_KEY_IOS as string,
+                appUserID: user.rcAppUserId
+            })
         } else if (Platform.OS === 'android') {
-            Purchases.configure({apiKey: "we dont have it yet !"})
+            Purchases.configure({apiKey: "we dont have it yet !", appUserID: user.rcAppUserId})
         }
         // getCustomerInfo();
 
-    }, []);
+    }, [isLoggedIn]);
 
     async function getCustomerInfo() {
         const customerInfo = await Purchases.getCustomerInfo();

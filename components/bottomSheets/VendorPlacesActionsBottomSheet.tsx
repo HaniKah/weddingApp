@@ -101,7 +101,7 @@ export default function VendorPlacesActionsBottomSheet({
             <AppBottomSheet ref={ref}>
                 {selectedPlace &&
                     <View>
-                        {selectedPlace.isPublished &&
+                        {selectedPlace.isPublished && !selectedPlace.isPromoted &&
                             <AppButton extraStylesBtn={styles.actionBtn}
                                        informative
                                        fullWidth

@@ -18,6 +18,10 @@ export default function VendorPlaceItem({data, setTrigger, onPress}: VendorPlace
         <>
             <AppPressable onPress={() => onPress(data)}>
                 <View style={[styles.container, !data.isCompleted && styles.containerUncompleted]}>
+                    {
+                        data.isPromoted &&
+                        <View style={styles.promotionDot}></View>
+                    }
 
                     <View style={[styles.imageContainer, !data.isCompleted && styles.imagesContainerUncompleted]}>
                         <AppIf value={data.isCompleted}>
@@ -61,6 +65,7 @@ const styles = StyleSheet.create({
         backgroundColor: Theme.colors.white,
         overflow: 'hidden',
         padding: 10,
+        position: "relative",
 
     },
     containerUncompleted: {
@@ -105,6 +110,15 @@ const styles = StyleSheet.create({
     },
     priceUncompleted: {
         color: Theme.colors.gray.S400,
+    },
+    promotionDot: {
+        backgroundColor: Theme.colors.blue.S500,
+        height: 10,
+        width: 10,
+        position: "absolute",
+        top: 10,
+        right: 10,
+        borderRadius: Theme.radius.full
     }
 
 });

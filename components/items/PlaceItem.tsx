@@ -12,7 +12,16 @@ export default function PlaceItem({item}: { item: PlacesDto }) {
             params: {id: item.id!, step: item.step}
         }}>
             <View style={styles.container}>
+
                 <View style={styles.imageContainer}>
+                    {
+                        item.isPromoted &&
+                        <View style={styles.label}>
+                            <Text style={styles.labelText}>
+                                {item.label}
+                            </Text>
+                        </View>
+                    }
                     <Image style={styles.image}
                            source={{uri: item.mainPhoto}}/>
                 </View>
@@ -57,6 +66,31 @@ const styles = StyleSheet.create({
         height: 220,
         borderRadius: 10,
         overflow: "hidden",
+        position: "relative"
+    },
+    label: {
+        position: "absolute",
+        top: 10,
+        left: 10,
+        backgroundColor: Theme.colors.red.S500,
+        color: Theme.colors.white,
+        paddingHorizontal: 15,
+        paddingVertical: 7,
+        borderRadius: Theme.radius.full,
+        zIndex: 1,
+        // iOS shadow
+        shadowColor: 'white',
+        shadowOffset: {width: 0, height: 0},
+        shadowOpacity: 0.7,
+        shadowRadius: 8,
+
+        // Android shadow
+        elevation: 8,
+
+    },
+    labelText: {
+        color: Theme.colors.white,
+        fontWeight: "bold"
     },
     container: {
         width: "100%",
@@ -90,5 +124,6 @@ const styles = StyleSheet.create({
     price: {
         fontWeight: "bold",
         fontSize: Theme.sizes.sm,
-    }
+    },
+
 })

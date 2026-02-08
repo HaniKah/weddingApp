@@ -1,5 +1,5 @@
 import {ScrollView, StyleSheet, Text, View} from "react-native";
-import React, {useEffect, useRef, useState} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import {Theme} from "@/styles/Theme";
 import Horn from "@/assets/icons/horn.svg"
 import AppView from "@/components/appComponents/AppView";
@@ -15,9 +15,9 @@ import {IconSymbol} from "@/components/symbols/IconSymbol";
 import {useApi} from "@/utils/api";
 import {tryCatch} from "@/utils/tryCatch";
 
-
-export enum SaleType {
-    Percentage = "Percentage",
+//todo : this is duplicated in backend , use only backend
+export enum SaleLabelType {
+    Sale = "Sale",
     Buy1Get1Free = "Buy1Get1Free",
     None = "None"
 }
@@ -27,22 +27,43 @@ export function PromotionInfo({placeId}: { placeId: number | undefined }) {
     const {api} = useApi()
 
     const [selectedPackage, setSelectedPackage] = useState<PurchasesPackage>()
-    const [saleType, setSaleType] = useState<SaleType>()
-    const [salePercentage, setSalePercentage] = useState<number>()
+    const [saleLabel, setSaleLabel] = useState<SaleLabelType>(SaleLabelType.None)
+    const [salePercentage, setSalePercentage] = useState<string | null>(null)
     const [offerings, setOfferings] = useState<PurchasesOfferings | null>(null);
     const formRef = useRef<FormRef>(null)
 
 
-    const saleLabels: PickerItem<SaleType>[] = Object.entries(SaleType).map(([key, value]) => ({
+    const saleLabels: PickerItem<SaleLabelType>[] = Object.entries(SaleLabelType).map(([key, value]) => ({
         name: key,
         value: value
     }))
 
-    let saleList: PickerItem<number>[] = []
+    let saleList: PickerItem<string>[] = []
 
     for (let i = 5; i < 100; i = i + 5) {
-        saleList.push({name: i + "%", value: i})
+        saleList.push({name: i + "%", value: i / 100 + ""})
     }
+
+    useEffect(() => {
+        console.log("selectedPackage: ", selectedPackage)
+        const beginsAt = new Date()
+        console.log(beginsAt.toISOString())
+        const endsAt = new Date(beginsAt).setMonth(beginsAt.getMonth() + 3)
+        console.log(endsAt)
+        console.log(beginsAt.toISOString())
+    }, [selectedPackage]);
+
+    const getPromotionExpiration = useCallback((beginAt: Date) => {
+        if (!selectedPackage) return
+        switch (selectedPackage.packageType) {
+            case "MONTHLY":
+                return new Date(beginAt.setMonth(beginAt.getMonth() + 1)).toISOString()
+            case "THREE_MONTH":
+                return new Date(beginAt.setMonth(beginAt.getMonth() + 3)).toISOString()
+            case "SIX_MONTH":
+                return new Date(beginAt.setMonth(beginAt.getMonth() + 6)).toISOString()
+        }
+    }, [selectedPackage])
 
 
     async function submitAndCheckout() {
@@ -52,22 +73,28 @@ export function PromotionInfo({placeId}: { placeId: number | undefined }) {
         if (!selectedPackage || !placeId) return
         console.log("setting attributes")
 
-        const [attributesError, attributesResult] = await tryCatch(Purchases.setAttributes({"placeId": placeId + ""}))
-        if (attributesError) console.error(attributesError.message)
+        const beginsAt = new Date()
+        const [attributesError, attributesResult] = await tryCatch(Purchases.setAttributes({
+            "placeId": placeId + "",
+            "promotionBeginsAt": beginsAt.toISOString(),
+            "promotionEndsAt": getPromotionExpiration(beginsAt) as string,
+            "saleLabel": saleLabel,
+            "salePercentage": salePercentage
 
-
+        }))
+        if (attributesError) {
+            console.error(attributesError.message)
+            return
+        }
         const [purchaseError, purchaseResult] = await tryCatch(Purchases.purchasePackage(selectedPackage))
         if (purchaseError) {
             console.error(purchaseError.message)
             return
         }
-      
-
     }
 
     useEffect(() => {
         if (!placeId) return
-        console.log("placeId from Promotion info", placeId)
 
         async function getOfferings() {
             const offerings = await Purchases.getOfferings();
@@ -77,8 +104,6 @@ export function PromotionInfo({placeId}: { placeId: number | undefined }) {
             ) {
                 setOfferings(offerings);
             }
-            // console.log("📢 offerings", JSON.stringify(offerings, null, 2));
-            console.log("📢 offerings", JSON.stringify(offerings.current?.availablePackages, null, 2));
 
         }
 
@@ -135,11 +160,11 @@ export function PromotionInfo({placeId}: { placeId: number | undefined }) {
                             <Text style={styles.subtitle}>Add sale label</Text>
                             <AppDropDown name="sale"
                                          required={true}
-                                         onChange={(v) => setSaleType(v)}
-                                         value={saleType}
+                                         onChange={(v) => setSaleLabel(v)}
+                                         value={saleLabel}
                                          itemList={saleLabels}/>
                         </View>
-                        {saleType === SaleType.Percentage &&
+                        {saleLabel === SaleLabelType.Sale &&
                             <View>
                                 <Text style={styles.subtitle}>Choose a percentage</Text>
                                 <AppPicker name="percentage"

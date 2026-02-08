@@ -4,16 +4,17 @@ import {create} from "zustand";
 import {UserType} from "@/types/user-type";
 
 type UserInfo = {
-    firstName: string
-    lastName: string
-    email: string
+    firstName: string | null
+    lastName: string | null
+    email: string | null
+    rcAppUserId: string | null
 }
 
 type userState = {
     isLoggedIn: boolean;
     shouldCreateAccount: boolean;
     hasCompletedOnboarding: boolean;
-    logIn: (accessToken: string, refreshToken: string, firstName: string, lastName: string, email: string) => void;
+    logIn: (accessToken: string, refreshToken: string, firstName: string, lastName: string, email: string, rcAppUserId: string) => void;
     logOut: () => void;
     completeOnboarding: () => void;
     resetOnboarding: () => void;
@@ -28,22 +29,24 @@ export const useAuthStore = create(persist<userState>((set) => ({
     hasCompletedOnboarding: false,
     userType: UserType.User,
     user: {
-        firstName: "initial name",
-        lastName: "inital last",
-        email: "inital email"
+        firstName: null,
+        lastName: null,
+        email: null,
+        rcAppUserId: null,
     },
 
-    logIn: (accessToken: string, refreshToken: string, firstName: string, lastName: string, email: string) => set((state) => {
+    logIn: (accessToken: string, refreshToken: string, firstName: string, lastName: string, email: string, rcAppUserId: string) => set((state) => {
         setItem("accessToken", accessToken)
         setItem("refreshToken", refreshToken)
         setItem("firstName", firstName);
         setItem("lastName", lastName);
         setItem("email", email)
+        setItem("rcAppUserId", rcAppUserId)
         return {
             ...state,
             isLoggedIn: true,
             user: {
-                firstName, lastName, email
+                firstName, lastName, email, rcAppUserId
             }
         }
     }),
@@ -53,6 +56,7 @@ export const useAuthStore = create(persist<userState>((set) => ({
         deleteItemAsync("firstName")
         deleteItemAsync("lastName")
         deleteItemAsync("email")
+        deleteItemAsync("rcAppUserId")
         return {
             ...state,
             isLoggedIn: false,

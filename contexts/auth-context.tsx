@@ -17,7 +17,6 @@ import {useAuthStore} from "@/utils/authStore";
 //     exp?: number;
 //     cookieExpiration?: number; // Added for web cookie expiration tracking
 // };
-
 // export type AuthUser = {
 //     firstName: string,
 //     lastName: string,
@@ -114,7 +113,7 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
                 Authorization: `Bearer ${code}`,
             }
         })
-        logIn(response.data.accessToken, response.data.refreshToken, response.data.user.firstName, response.data.user.lastName, response.data.user.email)
+        logIn(response.data.accessToken, response.data.refreshToken, response.data.user.firstName, response.data.user.lastName, response.data.user.email, response.data.rcAppUserId)
 
     }
 

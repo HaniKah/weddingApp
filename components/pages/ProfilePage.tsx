@@ -20,6 +20,7 @@ export default function ProfilePage() {
                     <View style={styles.info}>
                         <Text style={styles.name}>{user?.firstName} {user.lastName}</Text>
                         <Text style={styles.address}>{address?.city}, {address?.country}</Text>
+                        <Text style={styles.address}>{user.rcAppUserId}</Text>
                     </View>
 
 

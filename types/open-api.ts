@@ -88,6 +88,8 @@ export interface PlacesDto {
   minPrice: string;
   maxPrice: string;
   currency: string;
+  isPromoted: boolean;
+  label: string | null;
 }
 
 export interface PlacesViewModel {
@@ -202,6 +204,7 @@ export interface UserInfo {
 
 export interface ExchangeTokenDto {
   id: number;
+  rcAppUserId: string;
   accessToken: string;
   refreshToken: string;
   user: UserInfo;
@@ -292,6 +295,7 @@ export interface VendorPlaceDto {
   thumbnail: string;
   isPublished: boolean;
   isCompleted: boolean;
+  isPromoted: object;
   minPrice: string;
   maxPrice: string;
 }
@@ -325,30 +329,6 @@ export interface CountryInfo {
 
 export interface CountryInfoViewModel {
   result: CountryInfo[];
-}
-
-export interface PlaceRequest {
-  placeId: number;
-  /** @format date-time */
-  promotionBeginsAt: string;
-  /** @format date-time */
-  promotionEndsAt: string;
-  saleLabel: string;
-  salePercentage: string;
-}
-
-export interface PromoteRequest {
-  placeId: number;
-  price: number;
-  priceInPurchaseCurrency: number;
-  productId: string;
-  /** @format date-time */
-  purchasedAt: string;
-}
-
-export interface CreatePromotionRequest {
-  place: PlaceRequest;
-  promotion: PromoteRequest;
 }
 
 export interface SubscriberAttributesDto {
@@ -1128,25 +1108,6 @@ export class Api<
         path: `/api/packages/generatePackage`,
         method: "GET",
         query: query,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Promotions
-     * @name PromotionsControllerCreate
-     * @request POST:/api/promotions/create
-     */
-    promotionsControllerCreate: (
-      data: CreatePromotionRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<void, any>({
-        path: `/api/promotions/create`,
-        method: "POST",
-        body: data,
-        type: ContentType.Json,
         ...params,
       }),
 

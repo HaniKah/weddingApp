@@ -25,7 +25,6 @@ export default function RootLayout() {
 
 
     useEffect(() => {
-        // Purchases.setLogLevel(LOG_LEVEL.INFO);
         if (!isLoggedIn) return
         if (Platform.OS === 'ios') {
             Purchases.configure({
@@ -35,14 +34,8 @@ export default function RootLayout() {
         } else if (Platform.OS === 'android') {
             Purchases.configure({apiKey: "we dont have it yet !", appUserID: user.rcAppUserId})
         }
-        // getCustomerInfo();
 
     }, [isLoggedIn]);
-
-    async function getCustomerInfo() {
-        const customerInfo = await Purchases.getCustomerInfo();
-        console.log("############################################## customer info", customerInfo);
-    }
 
 
     useEffect(() => {

@@ -12,7 +12,6 @@ import AppButton from "@/components/appComponents/AppButton";
 import Purchases, {PurchasesOfferings, PurchasesPackage} from "react-native-purchases";
 import PromotionItem from "@/components/items/PromotionItem";
 import {IconSymbol} from "@/components/symbols/IconSymbol";
-import {useApi} from "@/utils/api";
 import {tryCatch} from "@/utils/tryCatch";
 
 //todo : this is duplicated in backend , use only backend
@@ -23,8 +22,6 @@ export enum SaleLabelType {
 }
 
 export function PromotionInfo({placeId}: { placeId: number | undefined }) {
-
-    const {api} = useApi()
 
     const [selectedPackage, setSelectedPackage] = useState<PurchasesPackage>()
     const [saleLabel, setSaleLabel] = useState<SaleLabelType>(SaleLabelType.None)
@@ -44,15 +41,6 @@ export function PromotionInfo({placeId}: { placeId: number | undefined }) {
         saleList.push({name: i + "%", value: i / 100 + ""})
     }
 
-    useEffect(() => {
-        console.log("selectedPackage: ", selectedPackage)
-        const beginsAt = new Date()
-        console.log(beginsAt.toISOString())
-        const endsAt = new Date(beginsAt).setMonth(beginsAt.getMonth() + 3)
-        console.log(endsAt)
-        console.log(beginsAt.toISOString())
-    }, [selectedPackage]);
-
     const getPromotionExpiration = useCallback((beginAt: Date) => {
         if (!selectedPackage) return
         switch (selectedPackage.packageType) {
@@ -67,13 +55,10 @@ export function PromotionInfo({placeId}: { placeId: number | undefined }) {
 
 
     async function submitAndCheckout() {
-        console.log("submitting form")
-        console.log("selectedPackage: ", selectedPackage?.packageType)
-        console.log("placeId: ", placeId)
         if (!selectedPackage || !placeId) return
-        console.log("setting attributes")
 
         const beginsAt = new Date()
+        // for now RC only supports attaching custom data to the user attributes , the name itsel doesnt make sense but it works for catching these data in the webhook
         const [attributesError, attributesResult] = await tryCatch(Purchases.setAttributes({
             "placeId": placeId + "",
             "promotionBeginsAt": beginsAt.toISOString(),

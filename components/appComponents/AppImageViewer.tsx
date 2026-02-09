@@ -65,7 +65,7 @@ export default function AppImageViewer({isVisible, onClose, images, activeIndex}
                     <View style={styles.container}>
                         <View style={styles.listContainer}>
                             <FlatList
-
+                                initialScrollIndex={activeIndex}
                                 pagingEnabled
                                 snapToInterval={width}
                                 snapToAlignment="start"

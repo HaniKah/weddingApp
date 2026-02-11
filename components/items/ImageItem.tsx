@@ -1,7 +1,7 @@
-import Animated, {useAnimatedStyle, useDerivedValue, useSharedValue, withSpring} from "react-native-reanimated";
-import {Dimensions, StyleSheet, View} from "react-native";
-import {Gesture, GestureDetector} from "react-native-gesture-handler";
+import {Dimensions, StyleSheet} from "react-native";
 import {PhotosDto} from "@/types/open-api";
+import Animated, {useAnimatedStyle, useDerivedValue, useSharedValue, withSpring} from "react-native-reanimated";
+import {Gesture, GestureDetector} from "react-native-gesture-handler";
 
 // export interface ImageItemType {
 //     uri: string,
@@ -9,7 +9,9 @@ import {PhotosDto} from "@/types/open-api";
 // }
 
 
-export default function ImageItem({image}: { image: PhotosDto }) {
+export default function ImageItem({image}: {
+    image: PhotosDto,
+}) {
 
     const {width, height} = Dimensions.get("window");
 
@@ -19,8 +21,9 @@ export default function ImageItem({image}: { image: PhotosDto }) {
     const offset = useSharedValue(DEFAULT_POSITION);
     const start = useSharedValue(DEFAULT_POSITION);
     const scale = useSharedValue(DEFAULT_ZOOM);
-    const savedScale = useSharedValue(DEFAULT_ZOOM);
-    const scaledWidth = useSharedValue(width);
+
+    // const savedScale = useSharedValue(DEFAULT_ZOOM);
+    // const scaledWidth = useSharedValue(width);
 
 
     const edges = useDerivedValue(() => {
@@ -35,15 +38,23 @@ export default function ImageItem({image}: { image: PhotosDto }) {
     });
 
 
+    // function toggleScrollEnabled(value: boolean) {
+    //     setScrollEnabled(value)
+    // }
+
     const doubleTapGesture = Gesture.Tap()
         .numberOfTaps(2)
         .onStart(() => {
             if (scale.value === DEFAULT_ZOOM) {
                 scale.value = withSpring(DOUBLE_TAP_ZOOM)
+                // scheduleOnRN(toggleScrollEnabled, false)
+
             } else {
                 scale.value = withSpring(DEFAULT_ZOOM)
                 offset.value = withSpring(DEFAULT_POSITION);
                 start.value = withSpring(DEFAULT_POSITION);
+                // scheduleOnRN(toggleScrollEnabled, true)
+
             }
         })
 
@@ -57,49 +68,69 @@ export default function ImageItem({image}: { image: PhotosDto }) {
                 y: e.translationY + start.value.y,
             };
         })
-
         .onEnd(() => {
-            offset.value = DEFAULT_POSITION
+            if (edges.value.right < width) {
+                // offset.value.x = withSpring(offset.value.x + (width - edges.value.right));
+            }
+            start.value.x = offset.value.x
+
         })
-
-
-    const pinchGesture = Gesture.Pinch()
-        .onUpdate((event) => {
-            scale.value = savedScale.value * event.scale;
-            scaledWidth.value = scale.value * width
-        })
-        .onEnd(() => {
-            savedScale.value = scale.value;
-        });
-
-
+    //
+    //
+    // const pinchGesture = Gesture.Pinch()
+    //     .onUpdate((event) => {
+    //         scale.value = savedScale.value * event.scale;
+    //         scaledWidth.value = scale.value * width
+    //     })
+    //     .onEnd(() => {
+    //         savedScale.value = scale.value;
+    //     });
+    //
+    //
     const composed = Gesture.Race(
         doubleTapGesture,
-        Gesture.Simultaneous(panGesture, pinchGesture)
+        Gesture.Simultaneous(panGesture)
     );
 
-    const animatedStyles = useAnimatedStyle(() => {
+    const animatedStylesImage = useAnimatedStyle(() => {
         return {
-            width: width,
-            height: width * image.ratio,
-
+            width: width * scale.value,
+            height: width * image.ratio * scale.value,
+            transformOrigin: "center",
             transform: [
                 {translateX: offset.value.x},
                 {translateY: offset.value.y},
-                {scale: scale.value},
+
             ],
         };
     });
+    // const animatedStylesView = useAnimatedStyle(() => {
+    //     return {
+    //         width: width * scale.value,
+    //         height: width * image.ratio * scale.value,
+    //     }
+    // })
 
+
+    // const tapGesture = Gesture.Tap().onEnd(() => {
+    //     scheduleOnRN(scrollForward);
+    // })
+
+    // function scrollForward() {
+    //     setActiveIndex(prev => prev + 1)
+    // }
+    //
+    // function scrollBackward() {
+    //     setActiveIndex(prev => prev - 1)
+    // }
 
     return (
         <>
             <GestureDetector gesture={composed}>
-                <View style={[styles.imageContainer, {height, width}]}>
+                <Animated.View style={[styles.imageContainer,]}>
                     <Animated.Image
-                        source={{uri: image.uri}} style={animatedStyles}/>
-                </View>
-
+                        source={{uri: image.uri}} style={animatedStylesImage}/>
+                </Animated.View>
             </GestureDetector>
         </>
     );
@@ -109,6 +140,9 @@ const styles = StyleSheet.create({
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        overflow: "hidden",
+        backgroundColor: "red",
+        overflow: "scroll",
+        borderWidth: 1
+
     }
 })

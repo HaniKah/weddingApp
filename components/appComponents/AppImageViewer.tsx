@@ -1,22 +1,24 @@
 import {Dimensions, FlatList, Modal, Pressable, StyleSheet, View} from "react-native";
-import {useRef} from "react";
+import {Dispatch, SetStateAction, useEffect, useRef, useState} from "react";
 import {useSafeAreaInsets} from "react-native-safe-area-context";
 import {IconSymbol} from "@/components/symbols/IconSymbol";
 import ImageItem from "@/components/items/ImageItem";
 import {PhotosDto} from "@/types/open-api";
 
 
-export default function AppImageViewer({isVisible, onClose, images, activeIndex}: {
+export default function AppImageViewer({isVisible, onClose, images, activeIndex, setActiveIndex}: {
     isVisible: boolean,
     onClose: () => void,
     images: PhotosDto[],
     activeIndex: number
+    setActiveIndex: Dispatch<SetStateAction<number>>
 
 }) {
     const {width, height} = Dimensions.get('window')
     // const [imageView, setImageView] = useState<ImageItemType[]>([]);
     const insets = useSafeAreaInsets();
     const flatListRef = useRef<FlatList>(null);
+    const [scrollEnabled, setScrollEnabled] = useState<boolean>(true);
 
     //
     // useEffect(() => {
@@ -52,6 +54,17 @@ export default function AppImageViewer({isVisible, onClose, images, activeIndex}
     }
 
 
+    useEffect(() => {
+        flatListRef.current?.scrollToIndex({index: activeIndex, animated: true});
+    }, [activeIndex]);
+
+    // function scrollNext() {
+    //     // flatListRef.current?.scrollToIndex({index: activeIndex + 1, animated: true});
+    //     console.log("nothing")
+    //
+    // }
+
+    // const scrollEnabledUI = useSharedValue(true)
     return (
         <>
             <Modal
@@ -70,6 +83,7 @@ export default function AppImageViewer({isVisible, onClose, images, activeIndex}
                                 snapToInterval={width}
                                 snapToAlignment="start"
                                 decelerationRate="fast"
+                                scrollEventThrottle={16}
                                 getItemLayout={(data, index) => ({
                                     length: width,
                                     offset: width * index,
@@ -79,7 +93,9 @@ export default function AppImageViewer({isVisible, onClose, images, activeIndex}
                                 horizontal
                                 showsHorizontalScrollIndicator={false}
                                 contentContainerStyle={styles.flatlistContainer}
-                                renderItem={({item}) => <ImageItem image={item}/>}
+                                renderItem={({item}) => <ImageItem
+                                    image={item}/>
+                                }
                                 data={images}
 
                             />
@@ -115,6 +131,7 @@ const styles = StyleSheet.create({
     flatlistContainer: {
         display: "flex",
         alignItems: "center",
+        // backgroundColor: "blue"
     },
 
 })

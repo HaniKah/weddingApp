@@ -29,7 +29,7 @@ export default function Gallery({placeId}: { placeId: number }) {
         setSelectedImage(index)
     }
 
-    function ImageItem({item, index}: { item: PhotosDto, index: number }) {
+    function ImageThumbnail({item, index}: { item: PhotosDto, index: number }) {
         return (
             <>
 
@@ -40,6 +40,7 @@ export default function Gallery({placeId}: { placeId: number }) {
         )
     }
 
+
     return (
         <>
             <FlatList numColumns={3}
@@ -48,9 +49,10 @@ export default function Gallery({placeId}: { placeId: number }) {
                       getItemLayout={(data, index) => (
                           {length: IMAGE_WIDTH, offset: IMAGE_WIDTH * index, index}
                       )}
-                      renderItem={({item, index}) => (<ImageItem item={item} index={index}/>)}/>
+                      renderItem={({item, index}) => (<ImageThumbnail item={item} index={index}/>)}/>
 
             <AppImageViewer activeIndex={selectedImage}
+                            setActiveIndex={setSelectedImage}
                             images={images}
                             isVisible={imageView}
                             onClose={() => setImageView(false)}/>

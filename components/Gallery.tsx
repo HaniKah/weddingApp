@@ -52,7 +52,6 @@ export default function Gallery({placeId}: { placeId: number }) {
                       renderItem={({item, index}) => (<ImageThumbnail item={item} index={index}/>)}/>
 
             <AppImageViewer activeIndex={selectedImage}
-                            setActiveIndex={setSelectedImage}
                             images={images}
                             isVisible={imageView}
                             onClose={() => setImageView(false)}/>

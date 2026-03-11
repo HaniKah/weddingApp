@@ -295,7 +295,7 @@ export interface VendorPlaceDto {
   thumbnail: string;
   isPublished: boolean;
   isCompleted: boolean;
-  isPromoted: object;
+  isPromoted: boolean;
   minPrice: string;
   maxPrice: string;
 }
@@ -1108,6 +1108,20 @@ export class Api<
         path: `/api/packages/generatePackage`,
         method: "GET",
         query: query,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Promotions
+     * @name PromotionsControllerGetPromotionsHistory
+     * @request GET:/api/promotions/getAll
+     */
+    promotionsControllerGetPromotionsHistory: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/promotions/getAll`,
+        method: "GET",
         ...params,
       }),
 

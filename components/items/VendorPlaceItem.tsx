@@ -1,9 +1,9 @@
-import {Image, StyleSheet, Text, View} from 'react-native';
-import {VendorPlaceDto} from '@/types/open-api';
-import {Theme} from '@/styles/Theme';
-import {Dispatch, SetStateAction} from "react";
+import { Image, StyleSheet, Text, View } from 'react-native';
+import { VendorPlaceDto } from '@/types/open-api';
+import { Theme } from '@/styles/Theme';
+import { Dispatch, SetStateAction } from "react";
 import AppIf from "@/components/appComponents/AppIf";
-import {IconSymbol} from "@/components/symbols/IconSymbol";
+import { IconSymbol } from "@/components/symbols/IconSymbol";
 import AppPressable from "@/components/appComponents/AppPressable";
 
 type VendorPlaceItemProps = {
@@ -12,7 +12,7 @@ type VendorPlaceItemProps = {
     onPress: (place: VendorPlaceDto) => void;
 }
 
-export default function VendorPlaceItem({data, setTrigger, onPress}: VendorPlaceItemProps) {
+export default function VendorPlaceItem({ data, setTrigger, onPress }: VendorPlaceItemProps) {
 
     return (
         <>
@@ -20,15 +20,15 @@ export default function VendorPlaceItem({data, setTrigger, onPress}: VendorPlace
                 <View style={[styles.container, !data.isCompleted && styles.containerUncompleted]}>
                     {
                         data.isPromoted &&
-                        <View style={styles.promotionDot}></View>
+                        <View testID="promotionDot" style={styles.promotionDot}></View>
                     }
 
                     <View style={[styles.imageContainer, !data.isCompleted && styles.imagesContainerUncompleted]}>
                         <AppIf value={data.isCompleted}>
-                            <Image style={styles.image} source={{uri: data.thumbnail}}/>
+                            <Image style={styles.image} source={{ uri: data.thumbnail }} />
                         </AppIf>
                         <AppIf value={!data.isCompleted}>
-                            <IconSymbol color={Theme.colors.gray.S400} size={40} weight="thin" name="plus"/>
+                            <IconSymbol color={Theme.colors.gray.S400} size={40} weight="thin" name="plus" />
                         </AppIf>
                     </View>
 

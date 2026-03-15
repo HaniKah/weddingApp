@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     image: {
-        backgroundSize: 'cover',
+        resizeMode: 'cover',
         height: '100%',
     },
     infoContainer: {

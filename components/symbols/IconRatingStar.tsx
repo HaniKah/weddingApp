@@ -1,13 +1,13 @@
-import {StyleSheet, Text, View} from "react-native";
-import {Theme} from "@/styles/Theme";
-import {IconSymbol} from "@/components/symbols/IconSymbol";
+import { StyleSheet, Text, View } from "react-native";
+import { Theme } from "@/styles/Theme";
+import { IconSymbol } from "@/components/symbols/IconSymbol";
 
-export default function IconRatingStar({rating}: { rating: number | null | undefined }) {
+export default function IconRatingStar({ rating }: { rating: number | null | undefined }) {
 
     return (
         <>
             <View style={styles.container}>
-                <IconSymbol name="star.fill" color={Theme.colors.gold1} size={20} weight={'bold'}/>
+                <IconSymbol name="star.fill" color={"gold"} size={20} weight={'bold'} />
                 {rating ? <Text>{rating}</Text> : <Text>-</Text>}
             </View>
 

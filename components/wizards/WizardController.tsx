@@ -56,7 +56,6 @@ const styles = StyleSheet.create({
     progressBar: {
         backgroundColor: Theme.colors.primary,
         height: 2,
-        transitionDuration: "200ms",
         animationDuration: "200ms",
         animationTimingFunction: 'ease-in-out',
     },

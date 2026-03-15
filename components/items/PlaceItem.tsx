@@ -1,15 +1,15 @@
-import {Image, StyleSheet, Text, View} from "react-native";
-import {PlacesDto} from "@/types/open-api";
-import {Link} from "expo-router";
-import {Theme} from "@/styles/Theme";
+import { Image, StyleSheet, Text, View } from "react-native";
+import { PlacesDto } from "@/types/open-api";
+import { Link } from "expo-router";
+import { Theme } from "@/styles/Theme";
 
 
-export default function PlaceItem({item}: { item: PlacesDto }) {
+export default function PlaceItem({ item }: { item: PlacesDto }) {
 
     return (
         <Link push style={styles.link} href={{
             pathname: '/[step]/[id]',
-            params: {id: item.id!, step: item.step}
+            params: { id: item.id!, step: item.step }
         }}>
             <View style={styles.container}>
 
@@ -23,7 +23,7 @@ export default function PlaceItem({item}: { item: PlacesDto }) {
                         </View>
                     }
                     <Image style={styles.image}
-                           source={{uri: item.mainPhoto}}/>
+                        source={{ uri: item.mainPhoto }} />
                 </View>
                 <View style={styles.infoContainer}>
                     <View>
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
         zIndex: 1,
         // iOS shadow
         shadowColor: 'white',
-        shadowOffset: {width: 0, height: 0},
+        shadowOffset: { width: 0, height: 0 },
         shadowOpacity: 0.7,
         shadowRadius: 8,
 
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
     image: {
-        backgroundSize: "cover",
+        resizeMode: "cover",
         height: "100%",
 
     },

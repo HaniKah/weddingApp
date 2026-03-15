@@ -1,14 +1,14 @@
 import WizardController from "@/components/wizards/WizardController";
-import {useWizardContext} from "@/components/wizards/Wizard";
-import MapView, {Marker, PROVIDER_GOOGLE} from "react-native-maps";
-import {StyleSheet, Text, View} from "react-native";
+import { useWizardContext } from "@/components/wizards/Wizard";
+import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
+import { StyleSheet, Text, View } from "react-native";
 import AppView from "@/components/appComponents/AppView";
-import {Theme} from "@/styles/Theme";
+import { Theme } from "@/styles/Theme";
 import GooglePlacesAutoComplete from "@/components/GooglePlacesAutoComplete";
 import AppButton from "@/components/appComponents/AppButton";
-import {Dispatch, SetStateAction, useEffect, useState} from "react";
-import {useApi} from "@/utils/api";
-import {VendorPlaceDetailsDto} from "@/types/open-api";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useApi } from "@/utils/api";
+import { VendorPlaceDetailsDto } from "@/types/open-api";
 
 export type Location = {
     lat: number,
@@ -16,7 +16,7 @@ export type Location = {
 }
 
 
-export default function PickPlaceLocation({data, setData}: {
+export default function PickPlaceLocation({ data, setData }: {
     data: VendorPlaceDetailsDto,
     setData: Dispatch<SetStateAction<VendorPlaceDetailsDto>>
 }) {
@@ -33,7 +33,7 @@ export default function PickPlaceLocation({data, setData}: {
 
     async function updateGooglePlaceId(placeId: string) {
         try {
-            const res = await API.placesControllerUpdatePlace({location: {googleId: placeId}})
+            const res = await API.placesControllerUpdatePlace({ location: { googleId: placeId } })
             setData(res.data)
         } catch (err) {
             console.log(err)
@@ -47,9 +47,9 @@ export default function PickPlaceLocation({data, setData}: {
             try {
                 fetch(`https://maps.googleapis.com/maps/api/place/details/json?fields=geometry&place_id=${selectedPlaceId}&key=AIzaSyDA4psVuPD849WqrT1PZEPC_F9Du3HPfKw`)
                     .then(res => res.json()).then(res => setCoordinates({
-                    lat: res.result.geometry.location.lat,
-                    lng: res.result.geometry.location.lng
-                }))
+                        lat: res.result.geometry.location.lat,
+                        lng: res.result.geometry.location.lng
+                    }))
             } catch (err) {
                 console.log(err)
             }
@@ -64,7 +64,7 @@ export default function PickPlaceLocation({data, setData}: {
             <AppView withPadding>
                 <View style={styles.container}>
                     <Text style={styles.title}>Add location info</Text>
-                    <GooglePlacesAutoComplete setSelectedPlace={setSelectedPlaceId}/>
+                    <GooglePlacesAutoComplete setSelectedPlace={setSelectedPlaceId} />
                     <MapView
                         cacheEnabled={true}
                         camera={{
@@ -92,7 +92,7 @@ export default function PickPlaceLocation({data, setData}: {
                             <Marker coordinate={{
                                 latitude: coordinates.lat,
                                 longitude: coordinates.lng,
-                            }}/>
+                            }} />
                         }
                     </MapView>
 
@@ -105,7 +105,7 @@ export default function PickPlaceLocation({data, setData}: {
             <WizardController
                 onNext={onNext}
                 isFirstStep={false}
-                isLastStep={false}/>
+                isLastStep={false} />
         </>
     )
 }

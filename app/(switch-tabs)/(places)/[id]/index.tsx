@@ -1,19 +1,19 @@
-import {Link, Stack, useLocalSearchParams} from "expo-router";
-import {Theme} from "@/styles/Theme";
-import {Image, Linking, Pressable, ScrollView, StyleSheet, Text, View} from "react-native";
+import { Link, Stack, useLocalSearchParams } from "expo-router";
+import { Theme } from "@/styles/Theme";
+import { Image, Linking, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import AppIf from "@/components/appComponents/AppIf";
 import PlaceInfo from "@/components/PlaceInfo";
-import {useApi} from "@/utils/api";
-import {useEffect, useState} from "react";
-import {VendorPlaceDetailsDto} from "@/types/open-api";
+import { useApi } from "@/utils/api";
+import { useEffect, useState } from "react";
+import { VendorPlaceDetailsDto } from "@/types/open-api";
 import Website from "@/assets/icons/social-media/website.svg"
 import Facebook from "@/assets/icons/social-media/facebook.svg"
 import Instagram from "@/assets/icons/social-media/instagram.svg"
 import Tiktok from "@/assets/icons/social-media/tiktok.svg"
 
 export default function Place() {
-    const {api} = useApi()
-    const {id} = useLocalSearchParams<{ id: string }>()
+    const { api } = useApi()
+    const { id } = useLocalSearchParams<{ id: string }>()
     const [placeDetails, setPlaceDetails] = useState<VendorPlaceDetailsDto>()
     const [isLoading, setIsLoading] = useState<boolean>(true)
 
@@ -21,7 +21,7 @@ export default function Place() {
         const getPlaceDetails = async () => {
             try {
 
-                const data = await api.placesControllerGetPlaceDetails({id: Number(id)})
+                const data = await api.placesControllerGetPlaceDetails({ id: Number(id) })
                 setPlaceDetails(data.data)
 
             } catch (err) {
@@ -44,13 +44,13 @@ export default function Place() {
                         title: "details",
                         headerShown: true,
                         headerTintColor: Theme.colors.primary,
-                    }}/>
+                    }} />
 
                 <Link asChild href={{
-                    pathname: "/(switch-tabs)/(places)/[id]/images", params: {id: id}
+                    pathname: "/(switch-tabs)/(places)/[id]/images", params: { id: id }
                 }}>
                     <Pressable style={styles.imageContainer}>
-                        <Image height={300} style={styles.image} source={{uri: placeDetails?.mainPhoto}}/>
+                        <Image height={300} style={styles.image} source={{ uri: placeDetails?.mainPhoto }} />
                     </Pressable>
                 </Link>
 
@@ -63,15 +63,15 @@ export default function Place() {
 
                     <View>
                         <AppIf value={placeDetails?.streetName}>
-                            <PlaceInfo iconName="location.circle" info={placeDetails?.streetName}/>
+                            <PlaceInfo iconName="location.circle" info={placeDetails?.streetName} />
                         </AppIf>
 
                         <AppIf value={placeDetails?.phoneNumber}>
-                            <PlaceInfo iconName='phone.circle' info={placeDetails?.phoneNumber}/>
+                            <PlaceInfo iconName='phone.circle' info={placeDetails?.phoneNumber} />
                         </AppIf>
                     </View>
 
-                    <View style={{flex: 1}}>
+                    <View style={{ flex: 1 }}>
                         <Text>
                             {placeDetails?.description}
                         </Text>
@@ -81,25 +81,25 @@ export default function Place() {
                     <View style={styles.socialMediaContainer}>
                         <AppIf value={placeDetails?.website}>
                             <Pressable onPress={() => Linking.openURL(placeDetails?.website as string)}>
-                                <Website width={40} height={40} color={Theme.colors.gray.S300}/>
+                                <Website width={40} height={40} color={Theme.colors.gray.S300} />
                             </Pressable>
                         </AppIf>
 
                         <AppIf value={placeDetails?.facebook}>
                             <Pressable onPress={() => Linking.openURL(placeDetails?.facebook as string)}>
-                                <Facebook width={40} height={40} color={Theme.colors.gray.S300}/>
+                                <Facebook width={40} height={40} color={Theme.colors.gray.S300} />
                             </Pressable>
                         </AppIf>
 
                         <AppIf value={placeDetails?.instagram}>
                             <Pressable onPress={() => Linking.openURL(placeDetails?.instagram as string)}>
-                                <Instagram width={40} height={40} color={Theme.colors.gray.S300}/>
+                                <Instagram width={40} height={40} color={Theme.colors.gray.S300} />
                             </Pressable>
                         </AppIf>
 
                         <AppIf value={placeDetails?.tiktok}>
                             <Pressable onPress={() => Linking.openURL(placeDetails?.tiktok as string)}>
-                                <Tiktok width={40} height={40} color={Theme.colors.gray.S300}/>
+                                <Tiktok width={40} height={40} color={Theme.colors.gray.S300} />
                             </Pressable>
                         </AppIf>
 
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     },
 
     image: {
-        backgroundSize: "cover",
+        resizeMode: "cover",
         height: "100%"
     },
 

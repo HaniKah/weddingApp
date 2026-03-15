@@ -21,7 +21,7 @@ export enum SaleLabelType {
     None = "None"
 }
 
-export function PromotionInfo({placeId}: { placeId: number | undefined }) {
+export function PromotionInfo({placeId, onFinish}: { placeId: number | undefined, onFinish: () => void }) {
 
     const [selectedPackage, setSelectedPackage] = useState<PurchasesPackage>()
     const [saleLabel, setSaleLabel] = useState<SaleLabelType>(SaleLabelType.None)
@@ -75,6 +75,8 @@ export function PromotionInfo({placeId}: { placeId: number | undefined }) {
         if (purchaseError) {
             console.error(purchaseError.message)
             return
+        } else {
+            onFinish()
         }
     }
 

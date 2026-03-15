@@ -6,13 +6,13 @@ enum PromotionSteps {
     PromotionInfo = "PromotionInfo",
 }
 
-export default function PromotePlaceWizard({placeId}: { placeId: number | undefined }) {
+export default function PromotePlaceWizard({placeId, onFinish}: { placeId: number | undefined, onFinish: () => void }) {
 
 
     return (
         <Wizard>
             <WizardStep step={PromotionSteps.PromotionInfo}>
-                <PromotionInfo placeId={placeId}/>
+                <PromotionInfo onFinish={onFinish} placeId={placeId}/>
             </WizardStep>
         </Wizard>
     )

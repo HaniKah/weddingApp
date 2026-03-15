@@ -197,6 +197,7 @@ export default function VendorPlacesActionsBottomSheet({
             <PromotePlaceModal
                 ref={promotePlaceModal}
                 placeId={selectedPlace?.id}
+                reloadPlaces={reloadPlaces}
             />
         </>
     )

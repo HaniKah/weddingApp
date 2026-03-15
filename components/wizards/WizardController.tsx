@@ -5,6 +5,7 @@ import { ButtonType } from "@/styles/Button";
 import { useWizardContext } from "@/components/wizards/Wizard";
 import Animated, { useAnimatedStyle } from "react-native-reanimated";
 
+
 export default function WizardController({ isFirstStep, isLastStep, onNext }: {
     isFirstStep?: boolean,
     isLastStep?: boolean,
@@ -16,7 +17,7 @@ export default function WizardController({ isFirstStep, isLastStep, onNext }: {
         <><View style={styles.container}>
             <View style={styles.progressContainer}>
                 <Animated.View
-                    style={[styles.progressBar, { width: wizard.progress * 100 + "%" as DimensionValue }]}></Animated.View>
+                    style={[styles.progressBar, { width: wizard.progress * 100 + "%" as DimensionValue, animationDuration: 200 }]}></Animated.View>
             </View>
             <View style={styles.navigatorContainer}>
                 <View>
@@ -56,7 +57,6 @@ const styles = StyleSheet.create({
     progressBar: {
         backgroundColor: Theme.colors.primary,
         height: 2,
-        animationDuration: 200,
         animationTimingFunction: 'ease-in-out',
     },
 

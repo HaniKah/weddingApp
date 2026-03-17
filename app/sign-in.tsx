@@ -1,11 +1,11 @@
-import {useAuth} from "@/contexts/auth-context";
+import { useAuth } from "@/contexts/auth-context";
 import AppButton from "@/components/appComponents/AppButton";
-import {ButtonType} from "@/styles/Button";
-import {useVideoPlayer} from "expo-video";
-import {StyleSheet, Text, View} from "react-native";
+import { ButtonType } from "@/styles/Button";
+import { useVideoPlayer } from "expo-video";
+import { StyleSheet, Text, View } from "react-native";
 import Google from "@/assets/icons/social-media/google.svg"
-import {useApi} from "@/utils/api";
-import {useState} from "react";
+import { useApi } from "@/utils/api";
+import { useState } from "react";
 // const videoSource =
 //     'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
 
@@ -14,21 +14,12 @@ const videoSource = process.env.EXPO_PUBLIC_VIDEO_URL as string
 
 
 export default function SignIn() {
-    const {signInWithGoogle} = useAuth()
+    const { signInWithGoogle } = useAuth()
 
     const player = useVideoPlayer(videoSource, player => {
         player.loop = true;
         player.play();
     });
-
-    const API = useApi().api
-    const [hello, setHello] = useState<string>()
-
-    async function getHello() {
-        const resp = await API.appControllerGetHello()
-        setHello(resp.data)
-    }
-
 
     return (
 
@@ -53,10 +44,7 @@ export default function SignIn() {
             <View
                 style={styles.signInContainer}
             >
-                <Text style={{color: "white"}}>{hello}</Text>
-                <AppButton onPress={getHello}>
-                    get hello
-                </AppButton>
+
                 <AppButton
                     fullWidth
                     buttonType={ButtonType.PRIMARY}

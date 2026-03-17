@@ -23,7 +23,7 @@ export const getDynamicAppConfig = (environment: Environments): Configurations =
     switch (environment) {
         case "development":
             return {
-                name: "App dev",
+                name: "Ghamrah dev",
                 bundleIdentifier: "com.hanikah.ghamrah.dev",
                 packageName: "com.hanikah.ghamrah.dev",
                 icon: "./assets/images/icons/icon-dev.png",
@@ -32,7 +32,7 @@ export const getDynamicAppConfig = (environment: Environments): Configurations =
             }
         case "preview":
             return {
-                name: "App preview",
+                name: "Ghamrah preview",
                 bundleIdentifier: "com.hanikah.ghamrah.preview",
                 packageName: "com.hanikah.ghamrah.preview",
                 icon: "./assets/images/icons/icon-preview.png",
@@ -41,7 +41,7 @@ export const getDynamicAppConfig = (environment: Environments): Configurations =
             }
         case "production":
             return {
-                name: "App prod",
+                name: "Ghamrah",
                 bundleIdentifier: "com.hanikah.ghamrah",
                 packageName: "com.hanikah.ghamrah",
                 icon: "./assets/images/icons/icon-prod.png",

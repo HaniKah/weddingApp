@@ -3,7 +3,7 @@ import {ConfigContext} from "@expo/config";
 
 //These are coming from the project in EAS
 const PROJECT_ID = "c2369dbe-f3a7-4a6f-a31d-0ed435547fd0"
-const PROJECT_SLUG = "weddingApp"
+const PROJECT_SLUG = "ghamrah"
 const PROJECT_OWNER = "hanikah"
 
 
@@ -24,8 +24,8 @@ export const getDynamicAppConfig = (environment: Environments): Configurations =
         case "development":
             return {
                 name: "App dev",
-                bundleIdentifier: "com.hanikah.weddingApp.dev",
-                packageName: "com.hanikah.weddingApp.dev",
+                bundleIdentifier: "com.hanikah.ghamrah.dev",
+                packageName: "com.hanikah.ghamrah.dev",
                 icon: "./assets/images/icons/icon-dev.png",
                 adaptiveIcon: "./assets/images/icons/icon-dev.png",
                 scheme: "app-scheme-dev"
@@ -33,8 +33,8 @@ export const getDynamicAppConfig = (environment: Environments): Configurations =
         case "preview":
             return {
                 name: "App preview",
-                bundleIdentifier: "com.hanikah.weddingApp.preview",
-                packageName: "com.hanikah.weddingApp.preview",
+                bundleIdentifier: "com.hanikah.ghamrah.preview",
+                packageName: "com.hanikah.ghamrah.preview",
                 icon: "./assets/images/icons/icon-preview.png",
                 adaptiveIcon: "./assets/images/icons/icon-preview.png",
                 scheme: "app-scheme-preview"
@@ -42,8 +42,8 @@ export const getDynamicAppConfig = (environment: Environments): Configurations =
         case "production":
             return {
                 name: "App prod",
-                bundleIdentifier: "com.hanikah.weddingApp",
-                packageName: "com.hanikah.weddingApp",
+                bundleIdentifier: "com.hanikah.ghamrah",
+                packageName: "com.hanikah.ghamrah",
                 icon: "./assets/images/icons/icon-prod.png",
                 adaptiveIcon: "./assets/images/icons/icon-prod.png",
                 scheme: "app-scheme"
@@ -68,7 +68,7 @@ export default ({config}: ConfigContext): ExpoConfig => {
     return {
         ...config,
         "name": name,
-        "slug": "weddingApp",
+        "slug": "ghamrah",
         "version": "1.0.0",
         "orientation": "portrait",
         "icon": icon,

@@ -68,7 +68,7 @@ export default ({config}: ConfigContext): ExpoConfig => {
     return {
         ...config,
         "name": name,
-        "slug": "ghamrah",
+        "slug": "weddingApp",
         "version": "1.0.0",
         "orientation": "portrait",
         "icon": icon,

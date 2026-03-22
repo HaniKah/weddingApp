@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     },
     info: {
         paddingHorizontal: 10,
-        fontSize: 18,
+        fontSize: Theme.sizes.md,
         flexShrink: 1
     },
 })

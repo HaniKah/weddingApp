@@ -1,19 +1,19 @@
-import { ActivityIndicator, Animated, Image, Pressable, StyleSheet, Text, View } from "react-native";
-import { useEffect, useState } from "react";
-import { Link, Stack, useLocalSearchParams, usePathname, useRouter } from "expo-router";
-import { PlaceDetailsDto, WeddingSteps } from "@/types/open-api";
+import {ActivityIndicator, Animated, Image, Pressable, StyleSheet, Text, View} from "react-native";
+import {useEffect, useState} from "react";
+import {Link, Stack, useLocalSearchParams, usePathname, useRouter} from "expo-router";
+import {PlaceDetailsDto, WeddingSteps} from "@/types/open-api";
 import AppButton from "@/components/appComponents/AppButton";
-import { ButtonType } from "@/styles/Button";
+import {ButtonType} from "@/styles/Button";
 import AppIf from "@/components/appComponents/AppIf";
 import PlaceInfo from "@/components/PlaceInfo";
-import { Theme } from "@/styles/Theme";
-import { useApi } from "@/utils/api";
+import {Theme} from "@/styles/Theme";
+import {useApi} from "@/utils/api";
 import ScrollView = Animated.ScrollView;
 
 
 export default function PlaceId() {
     const API = useApi().api
-    const { id } = useLocalSearchParams<{ id: string }>();
+    const {id} = useLocalSearchParams<{ id: string }>();
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const [placeDetails, setPlaceDetails] = useState<PlaceDetailsDto>()
     const [notes, setNotes] = useState<string>()
@@ -29,7 +29,7 @@ export default function PlaceId() {
     useEffect(() => {
         const getPlaceDetails = async () => {
             try {
-                const response = await API.plannerControllerGetPlaceById({ placeId: Number(id) })
+                const response = await API.plannerControllerGetPlaceById({placeId: Number(id)})
                 setPlaceDetails(response.data)
                 // setPhotosOrder(response.data?.photos?.map((p) => p.photoRef))
             } catch (err) {
@@ -79,15 +79,15 @@ export default function PlaceId() {
                         title: placeDetails.name,
                         headerShown: true,
                         headerTintColor: Theme.colors.primary,
-                    }} />
+                    }}/>
 
                 <Link asChild href={{
                     pathname: "/(tabs)/(planner)/[step]/[id]/images",
-                    params: { id: params.id, step: params.step }
+                    params: {id: params.id, step: params.step}
                 }}>
                     <Pressable style={styles.imageContainer}>
 
-                        <Image style={styles.image} source={{ uri: placeDetails.mainPhoto }} />
+                        <Image style={styles.image} source={{uri: placeDetails.mainPhoto}}/>
                     </Pressable>
                 </Link>
 
@@ -96,7 +96,8 @@ export default function PlaceId() {
                     <View style={styles.titleContainer}>
                         <Text style={styles.title}>{placeDetails?.name}</Text>
                         <View style={styles.priceContainer}>
-                            <Text>{placeDetails.minPrice === placeDetails.maxPrice ? placeDetails.minPrice : placeDetails.minPrice + " - " + placeDetails.maxPrice}</Text>
+                            <Text
+                                style={styles.price}>{placeDetails.minPrice === placeDetails.maxPrice ? placeDetails.minPrice : placeDetails.minPrice + " - " + placeDetails.maxPrice}</Text>
                             <Text style={styles.currency}>{placeDetails?.currency}</Text>
                         </View>
                     </View>
@@ -107,26 +108,35 @@ export default function PlaceId() {
                     {/*</AppIf>*/}
 
 
-                    <AppIf value={placeDetails.phoneNumber}>
-                        <PlaceInfo iconName='phone.circle' info={placeDetails?.phoneNumber} />
-                    </AppIf>
-
-                    <AppIf value={placeDetails.website}>
-                        <PlaceInfo iconName='globe' info={placeDetails?.website} />
+                    <AppIf value={placeDetails.description}>
+                        <View style={styles.descriptionContainer}>
+                            <Text style={styles.description}>{placeDetails.description}</Text>
+                        </View>
                     </AppIf>
 
 
-                    <AppIf value={placeDetails?.facebook}>
-                        <PlaceInfo iconName='globe' info={placeDetails?.facebook} />
-                    </AppIf>
+                    <View style={styles.contactInfoContainer}>
+                        <AppIf value={placeDetails.phoneNumber}>
+                            <PlaceInfo iconName='phone.circle' info={placeDetails?.phoneNumber}/>
+                        </AppIf>
 
-                    <AppIf value={placeDetails?.instagram}>
-                        <PlaceInfo iconName='globe' info={placeDetails?.instagram} />
-                    </AppIf>
+                        <AppIf value={placeDetails.website}>
+                            <PlaceInfo iconName='globe' info={placeDetails?.website}/>
+                        </AppIf>
 
-                    <AppIf value={placeDetails?.instagram}>
-                        <PlaceInfo iconName='globe' info={placeDetails?.tiktok} />
-                    </AppIf>
+
+                        <AppIf value={placeDetails?.facebook}>
+                            <PlaceInfo iconName='globe' info={placeDetails?.facebook}/>
+                        </AppIf>
+
+                        <AppIf value={placeDetails?.instagram}>
+                            <PlaceInfo iconName='globe' info={placeDetails?.instagram}/>
+                        </AppIf>
+
+                        <AppIf value={placeDetails?.instagram}>
+                            <PlaceInfo iconName='globe' info={placeDetails?.tiktok}/>
+                        </AppIf>
+                    </View>
 
 
                     <View style={styles.saveForLaterContainer}>
@@ -136,7 +146,7 @@ export default function PlaceId() {
                     </View>
 
                     <AppButton inactive={placeDetails.picked} fullWidth buttonType={ButtonType.PRIMARY}
-                        onPress={pickPlace}>
+                               onPress={pickPlace}>
                         pick this place
                     </AppButton>
 
@@ -148,42 +158,53 @@ export default function PlaceId() {
     } else {
         return (
             <View>
-                <ActivityIndicator size="large" />
+                <ActivityIndicator size="large"/>
             </View>
         )
     }
 }
 const styles = StyleSheet.create({
     infosContainer: {
-        padding: 20
-    },
-    titleContainer: {
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
-        marginBottom: 20,
-    },
-    title: {
-        fontSize: 24,
-        fontWeight: "bold",
-        flexShrink: 1
-    },
-    priceContainer: {
-        display: "flex",
-        flexDirection: "row",
-        gap: 10
-    },
-    currency: {
-        color: Theme.colors.gray.S500
+        padding: 20,
     },
     imageContainer: {
-        height: 400,
+        height: 300,
     },
     image: {
         resizeMode: "cover",
         height: "100%"
     },
+    titleContainer: {
+        display: "flex",
+        gap: 10,
+    },
+    title: {
+        fontSize: Theme.sizes.lg,
+        flexShrink: 1
+    },
+    priceContainer: {
+        display: "flex",
+        alignItems: "center",
+        flexDirection: "row",
+        gap: 10
+    },
+    price: {
+        fontSize: Theme.sizes.lg,
+        fontWeight: "bold",
+    },
+    currency: {
+        color: Theme.colors.gray.S500
+    },
+    descriptionContainer: {
+        marginTop: 20,
+    },
+    description: {
+        fontSize: Theme.sizes.md,
+    },
+    contactInfoContainer: {
+        marginTop: 20
+    },
+
     saveForLaterContainer: {
         width: "100%",
         display: "flex",

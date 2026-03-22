@@ -115,6 +115,7 @@ export interface PlaceDetailsDto {
   minPrice: string;
   countryName: string;
   currency: string;
+  description: string;
 }
 
 export interface StepsDto {
@@ -1068,46 +1069,6 @@ export class Api<
         path: `/api/places/getCountries`,
         method: "GET",
         format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Packages
-     * @name PackagesControllerGeneratePackages
-     * @request GET:/api/packages/generatePackage
-     */
-    packagesControllerGeneratePackages: (
-      query: {
-        budget: number;
-        includedSteps: (
-          | "Host"
-          | "Dress"
-          | "Photographer"
-          | "Decorator"
-          | "Catering"
-          | "DancingCourse"
-          | "Dj"
-          | "MakeUpArtist"
-          | "Car"
-          | "Giveaways"
-          | "Aarada"
-          | "MusiciansAndPerformers"
-          | "Jewelry"
-          | "Perfumes"
-          | "Hammam"
-          | "CosmeticClinics"
-          | "Fireworks"
-          | "Extra"
-        )[];
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<void, any>({
-        path: `/api/packages/generatePackage`,
-        method: "GET",
-        query: query,
         ...params,
       }),
 

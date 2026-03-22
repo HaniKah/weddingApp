@@ -88,7 +88,7 @@ export const ButtonStyles = StyleSheet.create({
     destructiveTxt: {
         color: Theme.colors.red.S500,
     },
-    
+
 })
 
 export enum ButtonType {

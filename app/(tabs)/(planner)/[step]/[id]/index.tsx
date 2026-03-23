@@ -1,20 +1,21 @@
-import {ActivityIndicator, Animated, Image, Pressable, StyleSheet, Text, View} from "react-native";
-import {useEffect, useState} from "react";
-import {Link, Stack, useLocalSearchParams, usePathname, useRouter} from "expo-router";
-import {PlaceDetailsDto, WeddingSteps} from "@/types/open-api";
+import { ActivityIndicator, Animated, Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { useCallback, useEffect, useState } from "react";
+import { Link, Stack, useLocalSearchParams, usePathname, useRouter } from "expo-router";
+import { PlaceDetailsDto, WeddingSteps } from "@/types/open-api";
 import AppButton from "@/components/appComponents/AppButton";
-import {ButtonType} from "@/styles/Button";
+import { ButtonType } from "@/styles/Button";
 import AppIf from "@/components/appComponents/AppIf";
 import PlaceInfo from "@/components/PlaceInfo";
-import {Theme} from "@/styles/Theme";
-import {useApi} from "@/utils/api";
-import {IconButton} from "@/components/symbols/IconButton";
+import { Theme } from "@/styles/Theme";
+import { useApi } from "@/utils/api";
+import { IconButton } from "@/components/symbols/IconButton";
 import ScrollView = Animated.ScrollView;
+import { tryCatch } from "@/utils/tryCatch";
 
 
 export default function PlaceId() {
     const API = useApi().api
-    const {id} = useLocalSearchParams<{ id: string }>();
+    const { id } = useLocalSearchParams<{ id: string }>();
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const [placeDetails, setPlaceDetails] = useState<PlaceDetailsDto>()
     const [notes, setNotes] = useState<string>()
@@ -27,48 +28,50 @@ export default function PlaceId() {
     const path = usePathname()
     const params = useLocalSearchParams<{ id: string, step: WeddingSteps }>()
 
-    useEffect(() => {
-        const getPlaceDetails = async () => {
-            try {
-                const response = await API.plannerControllerGetPlaceById({placeId: Number(id)})
-                setPlaceDetails(response.data)
-                // setPhotosOrder(response.data?.photos?.map((p) => p.photoRef))
-            } catch (err) {
-                console.error(err)
-            } finally {
-                setIsLoading(false)
-            }
+    const getPlaceDetails = useCallback(async () => {
+        try {
+            const response = await API.plannerControllerGetPlaceById({ placeId: Number(id) })
+            setPlaceDetails(response.data)
+            // setPhotosOrder(response.data?.photos?.map((p) => p.photoRef))
+        } catch (err) {
+            console.error(err)
+        } finally {
+            setIsLoading(false)
         }
+    }, [id])
+
+    useEffect(() => {
         getPlaceDetails()
-    }, [id]);
+    }, [getPlaceDetails]);
 
-    async function saveAsPicked() {
-        await updatePlaceDetails(placeDetails?.favourite, true)
 
-        router.replace("/")
-    }
-
-    async function toggleFaviourtes() {
-        await updatePlaceDetails(true, placeDetails?.picked)
-
-        router.replace("/")
-    }
-
-    async function updatePlaceDetails(favourite?: boolean, picked?: boolean) {
+    async function togglePicked() {
         if (!placeDetails) return
         try {
             setIsLoading(true)
-            await API.plannerControllerUpdateOrCreatePlaceFilter({
-                placeId: Number(id),
-                picked: picked || placeDetails.picked,
-                favorite: favourite || placeDetails.favourite,
-            })
+            await API.plannerControllerTogglePickedPlaceFilter({ placeId: placeDetails?.id, picked: !placeDetails.picked })
+            await getPlaceDetails()
         } catch (err) {
             console.error(err)
         } finally {
             setIsLoading(false)
         }
     }
+
+
+    async function toggleFavorites() {
+        if (!placeDetails) return
+        try {
+            setIsLoading(false)
+            await API.plannerControllerToggleFavoritePlaceFilter({ placeId: placeDetails?.id, favorite: !placeDetails?.favourite })
+            await getPlaceDetails()
+        } catch (err) {
+            console.error(err)
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
 
     if (!isLoading && placeDetails) {
         return (
@@ -78,15 +81,15 @@ export default function PlaceId() {
                         title: placeDetails.name,
                         headerShown: true,
                         headerTintColor: Theme.colors.primary,
-                    }}/>
+                    }} />
 
                 <Link asChild href={{
                     pathname: "/(tabs)/(planner)/[step]/[id]/images",
-                    params: {id: params.id, step: params.step}
+                    params: { id: params.id, step: params.step }
                 }}>
                     <Pressable style={styles.imageContainer}>
 
-                        <Image style={styles.image} source={{uri: placeDetails.mainPhoto}}/>
+                        <Image style={styles.image} source={{ uri: placeDetails.mainPhoto }} />
                     </Pressable>
                 </Link>
 
@@ -96,8 +99,8 @@ export default function PlaceId() {
                         <View style={styles.titleContainer}>
                             <Text style={styles.title}>{placeDetails?.name}</Text>
                             {placeDetails.favourite ?
-                                <IconButton removeBackground name="heart.fill"/> :
-                                <IconButton removeBackground name="heart"/>}
+                                <IconButton onPress={toggleFavorites} removeBackground name="heart.fill" /> :
+                                <IconButton onPress={toggleFavorites} removeBackground name="heart" />}
                         </View>
                         <View style={styles.priceContainer}>
                             <Text
@@ -121,36 +124,36 @@ export default function PlaceId() {
 
                     <View style={styles.contactInfoContainer}>
                         <AppIf value={placeDetails.phoneNumber}>
-                            <PlaceInfo iconName='phone.circle' info={placeDetails?.phoneNumber}/>
+                            <PlaceInfo iconName='phone.circle' info={placeDetails?.phoneNumber} />
                         </AppIf>
 
                         <AppIf value={placeDetails.website}>
-                            <PlaceInfo iconName='globe' info={placeDetails?.website}/>
+                            <PlaceInfo iconName='globe' info={placeDetails?.website} />
                         </AppIf>
 
 
                         <AppIf value={placeDetails?.facebook}>
-                            <PlaceInfo iconName='globe' info={placeDetails?.facebook}/>
+                            <PlaceInfo iconName='globe' info={placeDetails?.facebook} />
                         </AppIf>
 
                         <AppIf value={placeDetails?.instagram}>
-                            <PlaceInfo iconName='globe' info={placeDetails?.instagram}/>
+                            <PlaceInfo iconName='globe' info={placeDetails?.instagram} />
                         </AppIf>
 
                         <AppIf value={placeDetails?.instagram}>
-                            <PlaceInfo iconName='globe' info={placeDetails?.tiktok}/>
+                            <PlaceInfo iconName='globe' info={placeDetails?.tiktok} />
                         </AppIf>
                     </View>
 
-
+                    {/* 
                     <View style={styles.saveForLaterContainer}>
                         <AppButton fullWidth onPress={toggleFaviourtes} buttonType={ButtonType.PLAIN}>
                             save for later
                         </AppButton>
-                    </View>
+                    </View> */}
 
                     <AppButton inactive={placeDetails.picked} fullWidth buttonType={ButtonType.PRIMARY}
-                               onPress={saveAsPicked}>
+                        onPress={togglePicked}>
                         pick this place
                     </AppButton>
 
@@ -162,7 +165,7 @@ export default function PlaceId() {
     } else {
         return (
             <View>
-                <ActivityIndicator size="large"/>
+                <ActivityIndicator size="large" />
             </View>
         )
     }

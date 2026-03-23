@@ -130,11 +130,14 @@ export interface StepsViewModel {
   steps: StepsDto[];
 }
 
-export interface PlaceFilterRequest {
+export interface ToggleFavoritePlaceFilterRequest {
   placeId: number;
-  notes?: string | null;
-  favorite?: boolean;
-  picked?: boolean;
+  favorite: boolean;
+}
+
+export interface TogglePickedPlaceFilterRequest {
+  placeId: number;
+  picked: boolean;
 }
 
 export interface WeddingDateDto {
@@ -696,15 +699,34 @@ export class Api<
      * No description
      *
      * @tags Planner
-     * @name PlannerControllerUpdateOrCreatePlaceFilter
-     * @request POST:/api/planner/updateOrCreatePlaceFilter
+     * @name PlannerControllerToggleFavoritePlaceFilter
+     * @request POST:/api/planner/toggleFavoritePlaceFilter
      */
-    plannerControllerUpdateOrCreatePlaceFilter: (
-      data: PlaceFilterRequest,
+    plannerControllerToggleFavoritePlaceFilter: (
+      data: ToggleFavoritePlaceFilterRequest,
       params: RequestParams = {},
     ) =>
       this.request<void, any>({
-        path: `/api/planner/updateOrCreatePlaceFilter`,
+        path: `/api/planner/toggleFavoritePlaceFilter`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Planner
+     * @name PlannerControllerTogglePickedPlaceFilter
+     * @request POST:/api/planner/togglePickedPlaceFilter
+     */
+    plannerControllerTogglePickedPlaceFilter: (
+      data: TogglePickedPlaceFilterRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/planner/togglePickedPlaceFilter`,
         method: "POST",
         body: data,
         type: ContentType.Json,

@@ -109,7 +109,6 @@ export interface PlaceDetailsDto {
   phoneNumber: string;
   picked: boolean;
   favourite: boolean;
-  notes: string | null;
   mainPhoto: string;
   maxPrice: string;
   minPrice: string;
@@ -131,12 +130,11 @@ export interface StepsViewModel {
   steps: StepsDto[];
 }
 
-export interface PlaceDetailsRequest {
-  step: WeddingSteps;
+export interface PlaceFilterRequest {
   placeId: number;
-  notes: string | null;
-  favorite: boolean;
-  picked: boolean;
+  notes?: string | null;
+  favorite?: boolean;
+  picked?: boolean;
 }
 
 export interface WeddingDateDto {
@@ -152,7 +150,6 @@ export interface ChecklistDto {
   isCompleted: boolean;
   placeName: string | null;
   placeId: number | null;
-  cost: number | null;
 }
 
 export interface ChecklistViewModel {
@@ -699,15 +696,15 @@ export class Api<
      * No description
      *
      * @tags Planner
-     * @name PlannerControllerUpdatePlaceDetails
-     * @request POST:/api/planner/updatePlaceDetails
+     * @name PlannerControllerUpdateOrCreatePlaceFilter
+     * @request POST:/api/planner/updateOrCreatePlaceFilter
      */
-    plannerControllerUpdatePlaceDetails: (
-      data: PlaceDetailsRequest,
+    plannerControllerUpdateOrCreatePlaceFilter: (
+      data: PlaceFilterRequest,
       params: RequestParams = {},
     ) =>
       this.request<void, any>({
-        path: `/api/planner/updatePlaceDetails`,
+        path: `/api/planner/updateOrCreatePlaceFilter`,
         method: "POST",
         body: data,
         type: ContentType.Json,

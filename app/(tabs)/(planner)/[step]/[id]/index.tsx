@@ -8,6 +8,7 @@ import AppIf from "@/components/appComponents/AppIf";
 import PlaceInfo from "@/components/PlaceInfo";
 import {Theme} from "@/styles/Theme";
 import {useApi} from "@/utils/api";
+import {IconButton} from "@/components/symbols/IconButton";
 import ScrollView = Animated.ScrollView;
 
 
@@ -41,13 +42,13 @@ export default function PlaceId() {
         getPlaceDetails()
     }, [id]);
 
-    async function pickPlace() {
+    async function saveAsPicked() {
         await updatePlaceDetails(placeDetails?.favourite, true)
 
         router.replace("/")
     }
 
-    async function saveForLater() {
+    async function toggleFaviourtes() {
         await updatePlaceDetails(true, placeDetails?.picked)
 
         router.replace("/")
@@ -57,12 +58,10 @@ export default function PlaceId() {
         if (!placeDetails) return
         try {
             setIsLoading(true)
-            await API.plannerControllerUpdatePlaceDetails({
+            await API.plannerControllerUpdateOrCreatePlaceFilter({
                 placeId: Number(id),
                 picked: picked || placeDetails.picked,
-                step: placeDetails.step,
                 favorite: favourite || placeDetails.favourite,
-                notes: notes || placeDetails.notes,
             })
         } catch (err) {
             console.error(err)
@@ -93,8 +92,13 @@ export default function PlaceId() {
 
                 <View style={styles.infosContainer}>
 
-                    <View style={styles.titleContainer}>
-                        <Text style={styles.title}>{placeDetails?.name}</Text>
+                    <View style={styles.infoHeaderContainer}>
+                        <View style={styles.titleContainer}>
+                            <Text style={styles.title}>{placeDetails?.name}</Text>
+                            {placeDetails.favourite ?
+                                <IconButton removeBackground name="heart.fill"/> :
+                                <IconButton removeBackground name="heart"/>}
+                        </View>
                         <View style={styles.priceContainer}>
                             <Text
                                 style={styles.price}>{placeDetails.minPrice === placeDetails.maxPrice ? placeDetails.minPrice : placeDetails.minPrice + " - " + placeDetails.maxPrice}</Text>
@@ -140,13 +144,13 @@ export default function PlaceId() {
 
 
                     <View style={styles.saveForLaterContainer}>
-                        <AppButton fullWidth onPress={saveForLater} buttonType={ButtonType.PLAIN}>
+                        <AppButton fullWidth onPress={toggleFaviourtes} buttonType={ButtonType.PLAIN}>
                             save for later
                         </AppButton>
                     </View>
 
                     <AppButton inactive={placeDetails.picked} fullWidth buttonType={ButtonType.PRIMARY}
-                               onPress={pickPlace}>
+                               onPress={saveAsPicked}>
                         pick this place
                     </AppButton>
 
@@ -174,9 +178,15 @@ const styles = StyleSheet.create({
         resizeMode: "cover",
         height: "100%"
     },
-    titleContainer: {
+    infoHeaderContainer: {
         display: "flex",
         gap: 10,
+    },
+    titleContainer: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
     },
     title: {
         fontSize: Theme.sizes.lg,

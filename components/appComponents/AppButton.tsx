@@ -8,6 +8,7 @@ import {SvgProps} from "react-native-svg";
 import {FC} from "react";
 import Animated from "react-native-reanimated";
 import AppPressable from "@/components/appComponents/AppPressable";
+import {Href, Link} from "expo-router";
 
 export default function AppButton({
                                       buttonType,
@@ -27,6 +28,7 @@ export default function AppButton({
                                       inactive,
                                       textPosition,
                                       fullRound,
+                                      href
 
 
                                   }: {
@@ -47,6 +49,7 @@ export default function AppButton({
     inactive?: boolean,
     textPosition?: 'LEFT' | 'RIGHT'
     fullRound?: boolean,
+    href?: Href
 
 
 }) {
@@ -160,25 +163,32 @@ export default function AppButton({
         formContext.setSubmitting(true)
     }
 
-
 //if Padding is not working , then probably you want to change the padding-Horizontal/Vertical and not the general padding
 
     return (
-        <AppPressable disabled={inactive}
-                      onPress={isSubmit ? handleSubmit : onPress}
+        <>
+            {href ?
+                <Link href={href}>
+                    <Text>{children}</Text>
+                </Link> :
+                <AppPressable disabled={inactive}
+                              onPress={isSubmit ? handleSubmit : onPress}
 
-        >
-            <Animated.View style={[buttonStyles, extraStylesBtn]}>
-                {CustomIcon && <CustomIcon/>}
+                >
+                    <Animated.View style={[buttonStyles, extraStylesBtn]}>
+                        {CustomIcon && <CustomIcon/>}
 
-                {icon &&
-                    <IconSymbol size={iconSize} color={textStyles.color || 'black'} name={icon}/>
-                }
+                        {icon &&
+                            <IconSymbol size={iconSize} color={textStyles.color || 'black'} name={icon}/>
+                        }
 
-                <Text style={[textStyles, extraStylesTxt]}>
-                    {children}
-                </Text>
-            </Animated.View>
-        </AppPressable>
+                        <Text style={[textStyles, extraStylesTxt]}>
+                            {children}
+                        </Text>
+                    </Animated.View>
+                </AppPressable>
+            }
+        </>
+
     );
 }

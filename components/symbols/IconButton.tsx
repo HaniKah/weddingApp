@@ -12,7 +12,8 @@ export function IconButton(
         weight = "bold",
         size = Theme.sizes.lg,
         onPress,
-        href
+        href,
+        removeBackground = false
 
     }: {
         name: SFSymbols6_0,
@@ -21,11 +22,15 @@ export function IconButton(
         size?: number
         onPress?: () => void,
         href?: Href
+        removeBackground?: boolean
     }) {
 
     const MyIcon = () => {
         return (
-            <View style={styles.container}>
+            <View style={[styles.container, !removeBackground && {
+                backgroundColor: Theme.colors.iconBackground,
+                padding: 8
+            }]}>
                 <IconSymbol weight={weight} color={color || Theme.colors.primary} name={name} size={size}/>
             </View>
         )
@@ -47,8 +52,6 @@ export function IconButton(
 
 const styles = StyleSheet.create({
     container: {
-        padding: 8,
-        backgroundColor: Theme.colors.iconBackground,
         color: Theme.colors.primary,
         borderRadius: Theme.radius.full,
         display: "flex",

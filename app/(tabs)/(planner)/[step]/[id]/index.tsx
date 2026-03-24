@@ -150,10 +150,12 @@ export default function PlaceId() {
                             {!placeDetails.picked ? "save in my checklist" : "remove place from my checklist"}
                         </AppButton>
 
+                        <Link asChild href={`tel:${placeDetails.phoneNumber}`}>
+                            <AppButton fullWidth buttonType={ButtonType.PRIMARY}>
+                                call now
+                            </AppButton>
+                        </Link>
 
-                        <AppButton href={`tel:${placeDetails.phoneNumber}`} fullWidth buttonType={ButtonType.PRIMARY}>
-                            call now
-                        </AppButton>
                     </View>
 
 

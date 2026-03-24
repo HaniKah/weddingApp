@@ -28,7 +28,6 @@ export default function AppButton({
     inactive,
     textPosition,
     fullRound,
-    href
 
 
 }: {
@@ -49,7 +48,7 @@ export default function AppButton({
     inactive?: boolean,
     textPosition?: 'LEFT' | 'RIGHT'
     fullRound?: boolean,
-    href?: Href
+
 
 
 }) {
@@ -158,16 +157,13 @@ export default function AppButton({
     }
 
     const formContext = useFormContext();
-    const router = useRouter()
+
 
 
 
     const handleOnPress = () => {
-        if (href) {
-            router.dismissTo(href)
-            return
-        }
-        else if (isSubmit) {
+
+        if (isSubmit) {
             formContext.setSubmitting(true)
             return
         } else {

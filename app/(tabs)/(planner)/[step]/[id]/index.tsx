@@ -81,6 +81,7 @@ export default function PlaceId() {
                         title: placeDetails.name,
                         headerShown: true,
                         headerTintColor: Theme.colors.primary,
+                        headerBackButtonDisplayMode: "minimal"
                     }} />
 
                 <Link asChild href={{

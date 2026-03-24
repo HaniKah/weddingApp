@@ -44,6 +44,7 @@ export default function Place() {
                         title: "details",
                         headerShown: true,
                         headerTintColor: Theme.colors.primary,
+                        headerBackButtonDisplayMode: "minimal"
                     }} />
 
                 <Link asChild href={{

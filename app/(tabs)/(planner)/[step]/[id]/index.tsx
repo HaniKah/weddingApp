@@ -49,7 +49,7 @@ export default function PlaceId() {
         if (!placeDetails) return
         try {
             setIsLoading(true)
-            await API.plannerControllerTogglePickedPlaceFilter({ placeId: placeDetails?.id, picked: !placeDetails.picked })
+            await API.plannerControllerTogglePickedPlaceFilter({ placeId: placeDetails?.id, picked: !placeDetails.picked, step: placeDetails.step })
             await getPlaceDetails()
         } catch (err) {
             console.error(err)
@@ -145,17 +145,20 @@ export default function PlaceId() {
                         </AppIf>
                     </View>
 
-                    {/* 
-                    <View style={styles.saveForLaterContainer}>
-                        <AppButton fullWidth onPress={toggleFaviourtes} buttonType={ButtonType.PLAIN}>
-                            save for later
+                    <View style={styles.callForActionContainer}>
+                        <AppButton extraStylesTxt={[styles.pickedText, { color: !placeDetails.picked ? Theme.colors.primary : Theme.colors.red.S500 }]} fullWidth onPress={togglePicked} buttonType={ButtonType.PLAIN}>
+                            {!placeDetails.picked ? "save in my checklist" : "remove place from my checklist"}
                         </AppButton>
-                    </View> */}
 
-                    <AppButton inactive={placeDetails.picked} fullWidth buttonType={ButtonType.PRIMARY}
-                        onPress={togglePicked}>
-                        pick this place
-                    </AppButton>
+
+                        <AppButton fullWidth buttonType={ButtonType.PRIMARY}>
+                            call now
+                        </AppButton>
+                    </View>
+
+
+
+
 
                 </View>
 
@@ -217,14 +220,12 @@ const styles = StyleSheet.create({
     contactInfoContainer: {
         marginTop: 20
     },
-
-    saveForLaterContainer: {
-        width: "100%",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        marginBottom: 10,
-        marginTop: 30
-
+    callForActionContainer: {
+        marginTop: 20
     },
+
+    pickedText: {
+        textDecorationLine: "underline",
+        marginBottom: 20
+    }
 })

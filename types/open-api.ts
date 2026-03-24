@@ -136,6 +136,7 @@ export interface ToggleFavoritePlaceFilterRequest {
 }
 
 export interface TogglePickedPlaceFilterRequest {
+  step: WeddingSteps;
   placeId: number;
   picked: boolean;
 }

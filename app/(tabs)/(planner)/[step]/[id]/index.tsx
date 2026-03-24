@@ -151,7 +151,7 @@ export default function PlaceId() {
                         </AppButton>
 
 
-                        <AppButton fullWidth buttonType={ButtonType.PRIMARY}>
+                        <AppButton href={`tel:${placeDetails.phoneNumber}`} fullWidth buttonType={ButtonType.PRIMARY}>
                             call now
                         </AppButton>
                     </View>
@@ -162,7 +162,7 @@ export default function PlaceId() {
 
                 </View>
 
-            </ScrollView>
+            </ScrollView >
 
         )
     } else {

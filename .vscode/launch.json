@@ -18,5 +18,12 @@
             "command": "npm run swagger-axios",
             "cwd": "${workspaceFolder}"
         },
+        {
+            "type": "node-terminal",
+            "name": "ios",
+            "request": "launch",
+            "command": "expo run:ios",
+            "cwd": "${workspaceFolder}"
+        },
     ]
 }

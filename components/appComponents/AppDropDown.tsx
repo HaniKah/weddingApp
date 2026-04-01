@@ -6,7 +6,7 @@ import {IconSymbol} from "@/components/symbols/IconSymbol";
 import AppBottomSheet, {AppBottomSheetRef} from "@/components/appComponents/AppBottomSheet";
 import {useFormContext} from "@/contexts/form-context";
 
-export default function AppDropDown<T>({itemList, label, value, onChange, style, title, required, name}: {
+export default function AppDropDown<T>({itemList, label, value, onChange, style, title, required, name, disabled}: {
     style?: StyleProp<ViewStyle>,
     value: T | undefined,
     onChange: (value: T) => void,
@@ -15,6 +15,7 @@ export default function AppDropDown<T>({itemList, label, value, onChange, style,
     title?: string
     required?: boolean,
     name: string
+    disabled?: boolean
 }) {
 
     const form = useFormContext()
@@ -65,8 +66,9 @@ export default function AppDropDown<T>({itemList, label, value, onChange, style,
     return (
         <View style={style}>
             {label && <Text>{label}</Text>}
-            <Pressable style={styles.pressable} onPress={() => bottomSheetRef.current?.open()}>
-                <Text>
+            <Pressable disabled={disabled} style={[styles.pressable, disabled && styles.disabledPressable]}
+                       onPress={() => bottomSheetRef.current?.open()}>
+                <Text style={disabled && styles.disabledText}>
                     {itemList?.find(item => item.value === value)?.name ?? "Select an option"}
                 </Text>
                 <IconSymbol name="chevron.down" size={20} color={Theme.colors.gray.S400}/>
@@ -106,6 +108,12 @@ const styles = StyleSheet.create({
         borderColor: Theme.colors.gray.S300,
         backgroundColor: Theme.colors.gray.S200,
         marginVertical: 10
+    },
+    disabledPressable: {
+        backgroundColor: Theme.colors.gray.S200,
+    },
+    disabledText: {
+        color: Theme.colors.gray.S400,
     },
     renderItem: {
         display: "flex",

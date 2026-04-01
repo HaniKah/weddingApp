@@ -141,8 +141,11 @@ export default function FillPlaceInfo({data, setData}: {
                                      required
                                      label="Country"
                                      onChange={setSelectedCountryCode}
-                                     value={selectedCountryCode}
-                                     itemList={countriesDropDownOptions}/>
+                            // value={selectedCountryCode}
+                                     value={CountryCode.JO}
+                                     itemList={countriesDropDownOptions}
+                                     disabled
+                        />
 
 
                         <Text style={styles.subtitle}>

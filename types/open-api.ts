@@ -18,6 +18,11 @@ export enum UpdateStep {
   UploadImages = "UploadImages",
 }
 
+export enum CoupleSide {
+  Groom = "Groom",
+  Bride = "Bride",
+}
+
 export enum CountryCode {
   BH = "BH",
   EG = "EG",
@@ -43,11 +48,6 @@ export enum PriceType {
   PerHour = "PerHour",
   PerItem = "PerItem",
   PerEvent = "PerEvent",
-}
-
-export enum CoupleSide {
-  Groom = "Groom",
-  Bride = "Bride",
 }
 
 export enum SearchFilter {
@@ -80,6 +80,8 @@ export enum WeddingSteps {
 export interface PlacesDto {
   step: WeddingSteps;
   mainPhoto: SearchFilter;
+  priceType: PriceType;
+  country: CountryCode;
   id: number;
   name?: string | null;
   formattedAddress?: string | null;
@@ -90,6 +92,8 @@ export interface PlacesDto {
   currency: string;
   isPromoted: boolean;
   label: string | null;
+  phoneNumber: string;
+  city: string;
 }
 
 export interface PlacesViewModel {
@@ -325,7 +329,7 @@ export interface PublishPlaceRequest {
 export interface CountryInfo {
   countryCode: CountryCode;
   countryName: string;
-  states: string[];
+  cities: string[];
   currency: string;
 }
 

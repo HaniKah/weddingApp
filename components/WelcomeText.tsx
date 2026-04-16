@@ -1,18 +1,15 @@
-import Toolbar from '@/components/toolbars/Toolbar';
-
 import { StyleSheet, Text, View } from 'react-native';
 import { Theme } from '@/styles/Theme';
 import { useLocationContext } from '@/contexts/location-context';
 import { IconSymbol } from '@/components/symbols/IconSymbol';
 
 
-export default function PlannerToolbar() {
+export default function WelcomeText() {
 
   const { address } = useLocationContext();
   return (
     <>
-      <Toolbar>
-
+      <View style={styles.container}>
         <View style={styles.title}>
           <Text style={styles.discoverTitle}>
             DISCOVER YOUR PERFECT
@@ -25,17 +22,15 @@ export default function PlannerToolbar() {
             <IconSymbol name="mappin.circle" color={Theme.colors.primary} size={18} />
             <Text style={styles.locationText}>{address?.country}</Text>
           </View>
-
         </View>
-        {/*<View style={styles.checklistBtn}>*/}
-        {/*  <IconButton name="checklist" href="/(tabs)/(planner)/checklist" />*/}
-        {/*</View>*/}
-      </Toolbar>
-
+      </View>
     </>
   );
 }
 const styles = StyleSheet.create({
+  container: {
+    marginBottom: 10,
+  },
   title: {
     display: 'flex',
     flexDirection: 'column',
@@ -52,6 +47,7 @@ const styles = StyleSheet.create({
     backgroundColor: Theme.colors.iconBackground,
     paddingVertical: 2,
     paddingHorizontal: 5,
+    marginTop: 5,
     borderRadius: Theme.radius.full,
   },
   locationText: {

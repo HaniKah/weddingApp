@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { CountryCode, PlacesDto, SearchFilter, StepsDto } from '@/types/open-api';
-import PlannerToolbar from '@/components/toolbars/PlannerToolbar';
 import { Stack, useLocalSearchParams } from 'expo-router';
 import AppView from '@/components/appComponents/AppView';
 import { useApi } from '@/utils/api';
@@ -143,7 +142,6 @@ export default function Index() {
       <Stack.Screen options={{ title: activeStep?.step, headerShown: false }} />
       {steps && activeStep &&
         <AppView withPadding isLoading={isLoading}>
-          <PlannerToolbar />
           {isLocationGranted ? <FlatList
               ListHeaderComponent={
                 <PickPlaceHeader stepsList={steps}

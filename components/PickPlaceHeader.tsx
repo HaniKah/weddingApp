@@ -4,6 +4,7 @@ import { PlacesDto, SearchFilter, StepsDto } from '@/types/open-api';
 import { Dispatch, SetStateAction } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { Theme } from '@/styles/Theme';
+import WelcomeText from '@/components/WelcomeText';
 
 export default function PickPlaceHeader({
                                           stepsList,
@@ -27,6 +28,7 @@ export default function PickPlaceHeader({
 
   return (
     <>
+      <WelcomeText />
       <AppSearchBar searchText={searchText} setSearchText={setSearchText} />
       <StepsHeader
         stepsList={stepsList}

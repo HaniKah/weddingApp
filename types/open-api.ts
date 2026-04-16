@@ -18,11 +18,6 @@ export enum UpdateStep {
   UploadImages = "UploadImages",
 }
 
-export enum CoupleSide {
-  Groom = "Groom",
-  Bride = "Bride",
-}
-
 export enum CountryCode {
   BH = "BH",
   EG = "EG",
@@ -40,6 +35,11 @@ export enum CountryCode {
   AE = "AE",
   YE = "YE",
   SD = "SD",
+}
+
+export enum CoupleSide {
+  Groom = "Groom",
+  Bride = "Bride",
 }
 
 export enum PriceType {
@@ -77,11 +77,20 @@ export enum WeddingSteps {
   Extra = "Extra",
 }
 
+export interface FavouritePlacesDto {
+  id: number;
+  name: string;
+  city: string;
+}
+
+export interface FavouritePlacesViewModel {
+  result: FavouritePlacesDto[];
+}
+
 export interface PlacesDto {
   step: WeddingSteps;
   mainPhoto: SearchFilter;
   priceType: PriceType;
-  country: CountryCode;
   id: number;
   name?: string | null;
   formattedAddress?: string | null;
@@ -600,6 +609,21 @@ export class Api<
     appControllerGetHello: (params: RequestParams = {}) =>
       this.request<string, any>({
         path: `/api`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Planner
+     * @name PlannerControllerGetFavorites
+     * @request GET:/api/planner/getFavorites
+     */
+    plannerControllerGetFavorites: (params: RequestParams = {}) =>
+      this.request<FavouritePlacesViewModel, any>({
+        path: `/api/planner/getFavorites`,
         method: "GET",
         format: "json",
         ...params,

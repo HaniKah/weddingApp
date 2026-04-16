@@ -90,7 +90,6 @@ export default function Index() {
         headerStyle: { backgroundColor: Theme.colors.background },
         headerShown: true,
         title: 'Listings',
-        headerBackButtonDisplayMode: 'minimal',
         headerRight: () => <IconButton removeBackground onPress={() => createPlaceModalRef.current?.open()}
                                        name="plus" />,
       }} />

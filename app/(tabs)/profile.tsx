@@ -32,7 +32,7 @@ export default function Profile() {
                 <MenuItem
                   icon="heart"
                   label="My Favorites"
-                  onPress={() => router.push('/favorites' as any)}
+                  onPress={() => router.push('/vendor/favorites' as any)}
                 />
               </View>
             </View>

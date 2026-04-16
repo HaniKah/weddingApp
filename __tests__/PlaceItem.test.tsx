@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react-native';
 import PlaceItem from '../components/items/PlaceItem';
-import { PlacesDto, SearchFilter, WeddingSteps } from '@/types/open-api';
+import { Categories, PlacesDto, SearchFilter } from '@/types/open-api';
 
 // Mock expo-router Link to avoid requiring full navigation context
 jest.mock('expo-router', () => {
@@ -18,7 +18,7 @@ jest.mock('expo-router', () => {
 describe('PlaceItem', () => {
   const baseMockItem: PlacesDto = {
     id: 1,
-    step: WeddingSteps.Catering,
+    step: Categories.Catering,
     mainPhoto: 'https://example.com/photo.jpg' as unknown as SearchFilter,
     name: 'Beautiful Catering',
     formattedAddress: '123 Test St',

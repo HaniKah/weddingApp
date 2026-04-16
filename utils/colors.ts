@@ -1,47 +1,47 @@
-import {WeddingSteps} from "@/types/open-api";
-import {Theme} from "@/styles/Theme";
+import { Categories } from '@/types/open-api';
+import { Theme } from '@/styles/Theme';
 
 export const useColors = () => {
-    return getColorByStep
-}
+  return getColorByStep;
+};
 
-const getColorByStep = (step?: WeddingSteps) => {
-    switch (step) {
-        case WeddingSteps.MakeUpArtist:
-        case WeddingSteps.Perfumes:
-        case WeddingSteps.Fireworks:
-            return Theme.colors.complementary.red
+const getColorByStep = (step?: Categories) => {
+  switch (step) {
+    case Categories.MakeUpArtist:
+    case Categories.Perfumes:
+    case Categories.Fireworks:
+      return Theme.colors.complementary.red;
 
-        case WeddingSteps.Giveaways:
-        case WeddingSteps.Catering:
-        case WeddingSteps.Photographer:
-            return Theme.colors.complementary.orange
+    case Categories.Giveaways:
+    case Categories.Catering:
+    case Categories.Photographer:
+      return Theme.colors.complementary.orange;
 
-        case WeddingSteps.Dj:
-        case WeddingSteps.Jewelry:
-        case WeddingSteps.Dress:
-            return Theme.colors.complementary.yellow
+    case Categories.Dj:
+    case Categories.Jewelry:
+    case Categories.Dress:
+      return Theme.colors.complementary.yellow;
 
-        case WeddingSteps.MusiciansAndPerformers:
-        case WeddingSteps.CosmeticClinics:
-        case  WeddingSteps.Extra:
-            return Theme.colors.complementary.green
+    case Categories.MusiciansAndPerformers:
+    case Categories.CosmeticClinics:
+    case  Categories.Extra:
+      return Theme.colors.complementary.green;
 
-        case WeddingSteps.Decorator :
-        case WeddingSteps.Car:
-            return Theme.colors.complementary.peacock
+    case Categories.Decorator :
+    case Categories.Car:
+      return Theme.colors.complementary.peacock;
 
-        case WeddingSteps.DancingCourse:
-        case  WeddingSteps.Aarada:
-        case WeddingSteps.Host:
-            return Theme.colors.complementary.purple
+    case Categories.DancingCourse:
+    case  Categories.Aarada:
+    case Categories.Host:
+      return Theme.colors.complementary.purple;
 
-        case WeddingSteps.Hammam :
-            return Theme.colors.complementary.blue
+    case Categories.Hammam :
+      return Theme.colors.complementary.blue;
 
-        default:
-            return Theme.colors.primary
-    }
-}
+    default:
+      return Theme.colors.primary;
+  }
+};
 
 

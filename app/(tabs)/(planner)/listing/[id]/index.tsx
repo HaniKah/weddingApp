@@ -1,7 +1,7 @@
 import { ActivityIndicator, Animated, Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { useCallback, useEffect, useState } from "react";
 import { Link, Stack, useLocalSearchParams, usePathname, useRouter } from "expo-router";
-import { PlaceDetailsDto, WeddingSteps } from "@/types/open-api";
+import { PlaceDetailsDto, Categories } from "@/types/open-api";
 import AppButton from "@/components/appComponents/AppButton";
 import { ButtonType } from "@/styles/Button";
 import AppIf from "@/components/appComponents/AppIf";
@@ -26,7 +26,7 @@ export default function PlaceId() {
 
     const router = useRouter()
     const path = usePathname()
-    const params = useLocalSearchParams<{ id: string, step: WeddingSteps }>()
+    const params = useLocalSearchParams<{ id: string, step: Categories }>()
 
     const getPlaceDetails = useCallback(async () => {
         try {

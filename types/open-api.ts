@@ -42,6 +42,27 @@ export enum CoupleSide {
   Bride = "Bride",
 }
 
+export enum WeddingSteps {
+  Host = "Host",
+  Dress = "Dress",
+  Photographer = "Photographer",
+  Decorator = "Decorator",
+  Catering = "Catering",
+  DancingCourse = "DancingCourse",
+  Dj = "Dj",
+  MakeUpArtist = "MakeUpArtist",
+  Car = "Car",
+  Giveaways = "Giveaways",
+  Aarada = "Aarada",
+  MusiciansAndPerformers = "MusiciansAndPerformers",
+  Jewelry = "Jewelry",
+  Perfumes = "Perfumes",
+  Hammam = "Hammam",
+  CosmeticClinics = "CosmeticClinics",
+  Fireworks = "Fireworks",
+  Extra = "Extra",
+}
+
 export enum PriceType {
   None = "None",
   PerPerson = "PerPerson",
@@ -50,13 +71,7 @@ export enum PriceType {
   PerEvent = "PerEvent",
 }
 
-export enum SearchFilter {
-  MyPick = "MyPick",
-  MyFavourite = "MyFavourite",
-  OnSale = "onSale",
-}
-
-export enum WeddingSteps {
+export enum Categories {
   Host = "Host",
   Dress = "Dress",
   Photographer = "Photographer",
@@ -88,14 +103,12 @@ export interface FavouritePlacesViewModel {
 }
 
 export interface PlacesDto {
-  step: WeddingSteps;
-  mainPhoto: SearchFilter;
+  category: Categories;
   priceType: PriceType;
   id: number;
   name?: string | null;
   formattedAddress?: string | null;
-  picked: boolean;
-  favourite: boolean;
+  mainPhoto: string;
   minPrice: string;
   maxPrice: string;
   currency: string;
@@ -107,11 +120,10 @@ export interface PlacesDto {
 
 export interface PlacesViewModel {
   places: PlacesDto[];
-  filter?: "MyPick" | "MyFavourite" | "onSale";
 }
 
 export interface PlaceDetailsDto {
-  step: WeddingSteps;
+  category: Categories;
   id: number;
   name: string;
   address?: string;
@@ -130,19 +142,6 @@ export interface PlaceDetailsDto {
   description: string;
 }
 
-export interface StepsDto {
-  step: WeddingSteps;
-  isCompleted: boolean;
-  note: string;
-  title: string;
-  description: string;
-}
-
-export interface StepsViewModel {
-  progress: number;
-  steps: StepsDto[];
-}
-
 export interface ToggleFavoritePlaceFilterRequest {
   placeId: number;
   favorite: boolean;
@@ -152,25 +151,6 @@ export interface TogglePickedPlaceFilterRequest {
   step: WeddingSteps;
   placeId: number;
   picked: boolean;
-}
-
-export interface WeddingDateDto {
-  date: string;
-}
-
-export interface UpdateDateRequest {
-  date: string;
-}
-
-export interface ChecklistDto {
-  step: WeddingSteps;
-  isCompleted: boolean;
-  placeName: string | null;
-  placeId: number | null;
-}
-
-export interface ChecklistViewModel {
-  list: ChecklistDto[];
 }
 
 export interface PhotosDto {
@@ -230,7 +210,7 @@ export interface DeletePlaceRequest {
 }
 
 export interface CreatePlaceRequest {
-  type?: WeddingSteps;
+  type?: Categories;
 }
 
 export interface VendorPlaceDetailsDto {
@@ -295,7 +275,7 @@ export interface UpdateLocationInfo {
 
 export interface UpdatePlaceRequest {
   updateStep?: UpdateStep;
-  type?: WeddingSteps;
+  type?: Categories;
   id?: number;
   placeInfo?: UpdatePlaceInfo;
   description?: string;
@@ -638,25 +618,6 @@ export class Api<
      */
     plannerControllerGetPlaces: (
       query: {
-        step:
-          | "Host"
-          | "Dress"
-          | "Photographer"
-          | "Decorator"
-          | "Catering"
-          | "DancingCourse"
-          | "Dj"
-          | "MakeUpArtist"
-          | "Car"
-          | "Giveaways"
-          | "Aarada"
-          | "MusiciansAndPerformers"
-          | "Jewelry"
-          | "Perfumes"
-          | "Hammam"
-          | "CosmeticClinics"
-          | "Fireworks"
-          | "Extra";
         offset: number;
         countryCode:
           | "BH"
@@ -675,8 +636,26 @@ export class Api<
           | "AE"
           | "YE"
           | "SD";
+        category?:
+          | "Host"
+          | "Dress"
+          | "Photographer"
+          | "Decorator"
+          | "Catering"
+          | "DancingCourse"
+          | "Dj"
+          | "MakeUpArtist"
+          | "Car"
+          | "Giveaways"
+          | "Aarada"
+          | "MusiciansAndPerformers"
+          | "Jewelry"
+          | "Perfumes"
+          | "Hammam"
+          | "CosmeticClinics"
+          | "Fireworks"
+          | "Extra";
         search?: string;
-        filter?: "MyPick" | "MyFavourite" | "onSale";
       },
       params: RequestParams = {},
     ) =>
@@ -705,21 +684,6 @@ export class Api<
         path: `/api/planner/getPlaceById`,
         method: "GET",
         query: query,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Planner
-     * @name PlannerControllerGetSteps
-     * @request GET:/api/planner/getSteps
-     */
-    plannerControllerGetSteps: (params: RequestParams = {}) =>
-      this.request<StepsViewModel, any>({
-        path: `/api/planner/getSteps`,
-        method: "GET",
         format: "json",
         ...params,
       }),
@@ -759,55 +723,6 @@ export class Api<
         method: "POST",
         body: data,
         type: ContentType.Json,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Planner
-     * @name PlannerControllerGetWeddingDate
-     * @request GET:/api/planner/getWeddingDate
-     */
-    plannerControllerGetWeddingDate: (params: RequestParams = {}) =>
-      this.request<WeddingDateDto, any>({
-        path: `/api/planner/getWeddingDate`,
-        method: "GET",
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Planner
-     * @name PlannerControllerUpdateWeddingDate
-     * @request POST:/api/planner/updateWeddingDate
-     */
-    plannerControllerUpdateWeddingDate: (
-      data: UpdateDateRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<void, any>({
-        path: `/api/planner/updateWeddingDate`,
-        method: "POST",
-        body: data,
-        type: ContentType.Json,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Planner
-     * @name PlannerControllerGetChecklist
-     * @request GET:/api/planner/getChecklist
-     */
-    plannerControllerGetChecklist: (params: RequestParams = {}) =>
-      this.request<ChecklistViewModel, any>({
-        path: `/api/planner/getChecklist`,
-        method: "GET",
-        format: "json",
         ...params,
       }),
 

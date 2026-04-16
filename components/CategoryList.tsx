@@ -1,23 +1,21 @@
-import { StepsDto } from '@/types/open-api';
+import { Categories } from '@/types/open-api';
 import { FlatList, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import IconStep from '@/components/symbols/IconStep';
-import { useColors } from '@/utils/colors';
 import { Theme } from '@/styles/Theme';
 import Animated from 'react-native-reanimated';
 
-export default function StepsHeader({ stepsList, activeStep, setActiveStep }: {
-  stepsList: StepsDto[],
-  activeStep: StepsDto,
-  setActiveStep: Dispatch<SetStateAction<StepsDto | undefined>>
+export default function CategoryList({ activeStep, setActiveStep }: {
+  activeStep: Categories | undefined,
+  setActiveStep: Dispatch<SetStateAction<Categories | undefined>>
 }) {
 
-  const getColorByStep = useColors();
   const [headerWidth, setHeaderWidth] = useState(0);
   const [itemWidth, setItemWidth] = useState(0);
 
   const ITEMS_GAP = 10;
   const NUMBER_OF_ITEMS = 4; //number of items to show
+  const stepsList: string[] = Object.values(Categories);
 
 
   const flatListRef = useRef<FlatList>(null);
@@ -30,26 +28,26 @@ export default function StepsHeader({ stepsList, activeStep, setActiveStep }: {
     scrollToActiveStep();
   }, [activeStep]);
 
-  function RenderItem({ item }: { item: StepsDto }) {
-    const isActive = item === activeStep;
+  function RenderItem({ item, index }: { item: Categories, index: number }) {
+    const isActive = item === activeStep || activeStep === undefined && index === 0;
 
     // const iconAnimatedStyle = useAnimatedStyle(() => ({
     //     opacity: isScrollingDown.value ? withSpring(0) : withSpring(1)
     // }))
 
     return (
-      <TouchableOpacity onPress={() => setActiveStep(item)}
+      <TouchableOpacity onPress={() => index === 0 ? setActiveStep(undefined) : setActiveStep(item)}
                         style={[{ width: itemWidth }, styles.itemContainer]}>
 
         <Animated.View style={[styles.category, isActive && { backgroundColor: Theme.colors.primary }]}>
-          <IconStep fill={isActive ? Theme.colors.iconBackground : Theme.colors.primary} step={item.step} width={20}
+          <IconStep fill={isActive ? Theme.colors.iconBackground : Theme.colors.primary} step={item} width={20}
                     height={20}
           />
 
         </Animated.View>
 
         <Text style={[styles.itemTitle, isActive && { color: Theme.colors.primary }]}>
-          {item.title}
+          {item}
         </Text>
       </TouchableOpacity>
     );
@@ -58,7 +56,7 @@ export default function StepsHeader({ stepsList, activeStep, setActiveStep }: {
   function scrollToActiveStep() {
     if (flatListRef.current) {
       flatListRef.current.scrollToIndex({
-        index: stepsList.indexOf(activeStep),
+        index: activeStep ? stepsList.indexOf(activeStep) : 0,
         animated: true,
         viewOffset: 0,
         viewPosition: 0.5,
@@ -82,8 +80,8 @@ export default function StepsHeader({ stepsList, activeStep, setActiveStep }: {
           )}
           horizontal
           showsHorizontalScrollIndicator={false}
-          data={stepsList}
-          renderItem={({ item }) => <RenderItem item={item} />} />
+          data={['All', ...stepsList]}
+          renderItem={({ item, index }) => <RenderItem item={item} index={index} />} />
       </Animated.View>
     </>
   );

@@ -5,11 +5,13 @@ import { Stack, useLocalSearchParams } from 'expo-router';
 import AppView from '@/components/appComponents/AppView';
 import { useApi } from '@/utils/api';
 import PickPlaceHeader from '@/components/PickPlaceHeader';
-import { FlatList } from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 import PlaceItem from '@/components/items/PlaceItem';
 import { useLocationContext } from '@/contexts/location-context';
 import LocationAccessDenied from '@/components/errors/LocationAccessDenied';
 import { REFRESH_DELAY } from '@/constants/general';
+import { Theme } from '@/styles/Theme';
+import { IconSymbol } from '@/components/symbols/IconSymbol';
 
 
 export default function Index() {
@@ -120,6 +122,21 @@ export default function Index() {
     }, REFRESH_DELAY);
   }
 
+  function EmptyPlaceholder() {
+    return (
+      <View style={styles.emptyPlaceHolderContainer}>
+        <IconSymbol color={Theme.colors.gray.S300} name="magnifyingglass" size={35} />
+        <Text style={styles.emptyPlaceholderTitle}>
+          No vendors found
+        </Text>
+        <Text style={styles.emptyPlaceholderText}>
+          Try different search or category
+        </Text>
+      </View>
+
+    );
+  }
+
 
   return (
     <>
@@ -145,6 +162,9 @@ export default function Index() {
               scrollEventThrottle={100}
               onEndReached={handleEndReached}
               keyExtractor={(item, index) => index.toString()}
+              ListEmptyComponent={
+                <EmptyPlaceholder />
+              }
             /> :
 
             <LocationAccessDenied errorMsg={errorMsg} />
@@ -155,4 +175,23 @@ export default function Index() {
     </>
   );
 }
+const styles = StyleSheet.create({
+  emptyPlaceHolderContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '100%',
+  },
+  emptyPlaceholderTitle: {
+    textAlign: 'center',
+    marginTop: 20,
+    color: Theme.colors.gray.S700,
+    fontWeight: 'bold',
+  },
+  emptyPlaceholderText: {
+    textAlign: 'center',
+    marginTop: 5,
+    color: Theme.colors.gray.S500,
+  },
+});
 

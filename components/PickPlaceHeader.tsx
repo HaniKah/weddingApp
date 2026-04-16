@@ -1,10 +1,8 @@
 import StepsHeader from '@/components/StepsHeader';
 import AppSearchBar from '@/components/appComponents/AppSearchBar';
-import Animated from 'react-native-reanimated';
-import { CommonStyles } from '@/styles/Common';
 import { PlacesDto, SearchFilter, StepsDto } from '@/types/open-api';
 import { Dispatch, SetStateAction } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import { Theme } from '@/styles/Theme';
 
 export default function PickPlaceHeader({
@@ -39,18 +37,19 @@ export default function PickPlaceHeader({
       {/*  selectedFilter={selectedFilter}*/}
       {/*  setSelectedFilter={setSelectedFilter} />*/}
 
-      <Animated.Text
-        style={places?.length > 0 ? styles.foundPlaces : CommonStyles.dataNotFound}>{places?.length > 0 ? places?.length + (places.length > 1 ? ' places found' : ' place found') : ' no places were found for this search criteria'}
-      </Animated.Text>
+      <Text style={styles.allVendors}>
+        All Vendors
+      </Text>
     </>
   );
 }
 
 const styles = StyleSheet.create({
-  foundPlaces: {
-    marginVertical: 20,
-    fontWeight: 'normal',
+  allVendors: {
+    marginVertical: 10,
+    fontWeight: 'bold',
     fontSize: Theme.sizes.md,
     height: 'auto',
   },
+
 });

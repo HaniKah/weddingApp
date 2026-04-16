@@ -42,8 +42,9 @@ export default function StepsHeader({ stepsList, activeStep, setActiveStep }: {
       <TouchableOpacity onPress={() => setActiveStep(item)}
                         style={[{ width: itemWidth }, styles.itemContainer]}>
         <Animated.View style={[styles.category, isActive && { backgroundColor: Theme.colors.primary }]}>
-          <IconStep step={item.step} width={20} height={20}
-                    fill={color} />
+          <IconStep fill={isActive ? Theme.colors.iconBackground : Theme.colors.primary} step={item.step} width={20}
+                    height={20}
+          />
 
         </Animated.View>
 

@@ -23,7 +23,7 @@ export default function PlannerToolbar() {
 
           <View style={styles.location}>
             <IconSymbol name="mappin.circle" color={Theme.colors.primary} size={18} />
-            <Text>{address?.country}</Text>
+            <Text style={styles.locationText}>{address?.country}</Text>
           </View>
 
         </View>
@@ -53,6 +53,9 @@ const styles = StyleSheet.create({
     paddingVertical: 2,
     paddingHorizontal: 5,
     borderRadius: Theme.radius.full,
+  },
+  locationText: {
+    fontSize: Theme.sizes.xxs,
   },
 
   discoverTitle: {

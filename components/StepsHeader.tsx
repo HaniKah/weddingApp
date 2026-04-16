@@ -41,7 +41,6 @@ export default function StepsHeader({ stepsList, activeStep, setActiveStep }: {
     return (
       <TouchableOpacity onPress={() => setActiveStep(item)}
                         style={[{ width: itemWidth }, styles.itemContainer]}>
-
         <Animated.View style={[styles.category, isActive && { backgroundColor: Theme.colors.primary }]}>
           <IconStep step={item.step} width={20} height={20}
                     fill={color} />
@@ -69,8 +68,11 @@ export default function StepsHeader({ stepsList, activeStep, setActiveStep }: {
 
   return (
     <>
-      <Animated.View style={styles.container}
-                     onLayout={(event) => setHeaderWidth(event.nativeEvent.layout.width)}>
+      <Animated.View
+        onLayout={(event) => setHeaderWidth(event.nativeEvent.layout.width)}>
+        <Text style={styles.categoriesText}>
+          Categories
+        </Text>
         <FlatList
           ref={flatListRef}
           contentContainerStyle={{ gap: ITEMS_GAP }}
@@ -78,6 +80,7 @@ export default function StepsHeader({ stepsList, activeStep, setActiveStep }: {
             { length: itemWidth, offset: (itemWidth * index + ITEMS_GAP * index), index }
           )}
           horizontal
+          showsHorizontalScrollIndicator={false}
           data={stepsList}
           renderItem={({ item }) => <RenderItem item={item} />} />
       </Animated.View>
@@ -85,13 +88,14 @@ export default function StepsHeader({ stepsList, activeStep, setActiveStep }: {
   );
 }
 const styles = StyleSheet.create({
+  categoriesText: {
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
   category: {
     backgroundColor: Theme.colors.iconBackground,
-    padding: 20,
+    padding: 18,
     borderRadius: Theme.radius.full,
-  },
-  container: {
-    height: 100,
   },
   itemContainer: {
     display: 'flex',

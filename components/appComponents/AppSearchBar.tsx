@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   input: {
-    borderRadius: Theme.radius.full,
+    borderRadius: Theme.radius.md,
     overflow: 'hidden',
   },
 });

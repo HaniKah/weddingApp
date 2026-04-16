@@ -1,60 +1,82 @@
-import Toolbar from "@/components/toolbars/Toolbar";
+import Toolbar from '@/components/toolbars/Toolbar';
 
-import {StyleSheet, Text, View} from "react-native";
-import {Theme} from "@/styles/Theme";
-import * as Progress from 'react-native-progress';
-import {IconSymbol} from "@/components/symbols/IconSymbol";
-import {IconButton} from "@/components/symbols/IconButton";
+import { StyleSheet, Text, View } from 'react-native';
+import { Theme } from '@/styles/Theme';
+import { useLocationContext } from '@/contexts/location-context';
+import { IconSymbol } from '@/components/symbols/IconSymbol';
 
 
-export default function PlannerToolbar({progress, note, fullfilled}: {
-    progress: number,
-    note: string,
-    fullfilled: boolean,
-}) {
-    return (
-        <>
-            <Toolbar>
-                <View style={styles.progressContainer}>
-                    {fullfilled ?
-                        <IconSymbol color={Theme.colors.green.S700} name="checkmark.circle.fill"/> :
+export default function PlannerToolbar() {
 
-                        <Progress.Pie style={styles.pie} progress={progress} size={20} color={Theme.colors.primary}
-                                      borderWidth={2}/>
-                    }
+  const { address } = useLocationContext();
+  return (
+    <>
+      <Toolbar>
 
-                    <Text style={[styles.note, fullfilled && styles.filled]}>{note}</Text>
-                </View>
+        <View style={styles.title}>
+          <Text style={styles.discoverTitle}>
+            DISCOVER YOUR PERFECT
+          </Text>
+          <Text style={styles.weddingTitle}>
+            Wedding Marketplace
+          </Text>
 
-                <View style={styles.checklistBtn}>
-                    <IconButton name="checklist" href="/(tabs)/(planner)/checklist"/>
-                </View>
-            </Toolbar>
+          <View style={styles.location}>
+            <IconSymbol name="mappin.circle" color={Theme.colors.primary} size={18} />
+            <Text>{address?.country}</Text>
+          </View>
 
-        </>
-    )
+        </View>
+        {/*<View style={styles.checklistBtn}>*/}
+        {/*  <IconButton name="checklist" href="/(tabs)/(planner)/checklist" />*/}
+        {/*</View>*/}
+      </Toolbar>
+
+    </>
+  );
 }
 const styles = StyleSheet.create({
-    progressContainer: {
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-        gap: 7
-    },
-    note: {
-        color: Theme.colors.primary,
-    },
-    pie: {
-        alignSelf: "center",
-    },
-    checklistBtn: {
-        marginLeft: "auto",
-    },
-    skipBtn: {
-        alignSelf: "flex-end",
-    },
-    filled: {
-        color: Theme.colors.green.S700,
-        fontWeight: "bold"
-    }
-})
+  title: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 3,
+  },
+
+  location: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    alignSelf: 'flex-start',
+    gap: 5,
+    backgroundColor: Theme.colors.iconBackground,
+    paddingVertical: 2,
+    paddingHorizontal: 5,
+    borderRadius: Theme.radius.full,
+  },
+
+  discoverTitle: {
+    fontSize: Theme.sizes.xs,
+  },
+  weddingTitle: {
+    fontSize: Theme.sizes.xl,
+    fontWeight: 'bold',
+  },
+
+  note: {
+    color: Theme.colors.primary,
+  },
+  pie: {
+    alignSelf: 'center',
+  },
+  checklistBtn: {
+    marginLeft: 'auto',
+  },
+  skipBtn: {
+    alignSelf: 'flex-end',
+  },
+  filled: {
+    color: Theme.colors.green.S700,
+    fontWeight: 'bold',
+  },
+});

@@ -63,8 +63,7 @@ export default function RootLayout() {
                 <Stack.Screen name="sign-in" />
               </Stack.Protected>
               <Stack.Protected guard={!hasCompletedOnboarding}>
-                <Stack.Screen
-                  name="onboarding" />
+                <Stack.Screen name="onboarding" />
               </Stack.Protected>
               <Stack.Screen name="+not-found" />
             </Stack>

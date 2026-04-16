@@ -6,7 +6,6 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import CreatePlaceModal from '@/components/modals/CreatePlaceModal';
 import { VendorPlaceDto, VendorPlaceViewModel } from '@/types/open-api';
 import VendorPlaceItem from '@/components/items/VendorPlaceItem';
-import { Stack } from 'expo-router';
 import { IconSymbol } from '@/components/symbols/IconSymbol';
 import AppIf from '@/components/appComponents/AppIf';
 import { CommonStyles } from '@/styles/Common';
@@ -15,6 +14,7 @@ import VendorPlacesActionsBottomSheet from '@/components/bottomSheets/VendorPlac
 import { AppModalRef } from '@/components/appComponents/AppModal';
 import { AppBottomSheetRef } from '@/components/appComponents/AppBottomSheet';
 import { IconButton } from '@/components/symbols/IconButton';
+import { Stack } from 'expo-router';
 
 export default function Index() {
 
@@ -87,8 +87,9 @@ export default function Index() {
   return (
     <>
       <Stack.Screen options={{
+        headerBackButtonMenuEnabled: true,
+        headerBackButtonDisplayMode: 'minimal',
         headerStyle: { backgroundColor: Theme.colors.background },
-        headerShown: true,
         title: 'Listings',
         headerRight: () => <IconButton removeBackground onPress={() => createPlaceModalRef.current?.open()}
                                        name="plus" />,

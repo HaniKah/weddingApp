@@ -38,6 +38,7 @@ export default function TabsLayout() {
                          tabBarIcon: ({ color }) => <IconSymbol size={28} name="person.fill" color={color} />,
                        }} />
 
+
         </Tabs>
       </AppSafeAreaView>
     </>

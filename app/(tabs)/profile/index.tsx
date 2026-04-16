@@ -6,14 +6,15 @@ import AppButton from '@/components/appComponents/AppButton';
 import { ButtonType } from '@/styles/Button';
 import { Theme } from '@/styles/Theme';
 import MenuItem from '@/components/items/MenuItem';
-import { router } from 'expo-router';
+import { router, Stack } from 'expo-router';
 
-export default function Profile() {
+export default function Index() {
   const { signOut } = useAuth();
   const { address } = useLocationContext();
 
   return (
     <>
+      <Stack.Screen options={{ headerShown: false }} />
       <ScrollView style={styles.container}>
         <AppView withPadding>
 
@@ -32,7 +33,7 @@ export default function Profile() {
                 <MenuItem
                   icon="heart"
                   label="My Favorites"
-                  onPress={() => router.push('/vendor/favorites' as any)}
+                  onPress={() => router.push('/(tabs)/profile/favorites')}
                 />
               </View>
             </View>
@@ -44,7 +45,7 @@ export default function Profile() {
                 <MenuItem
                   icon="briefcase"
                   label="My Listings"
-                  onPress={() => router.push('/vendor')}
+                  onPress={() => router.push('/(tabs)/profile/listing')}
                 />
               </View>
             </View>

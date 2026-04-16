@@ -3,6 +3,7 @@ import { useApi } from '@/utils/api';
 import { FavouritePlacesDto } from '@/types/open-api';
 import { Text } from 'react-native';
 import AppView from '@/components/appComponents/AppView';
+import { Stack } from 'expo-router';
 
 export default function Favorites() {
   const [favorites, setFavorites] = useState<FavouritePlacesDto[]>();
@@ -21,6 +22,7 @@ export default function Favorites() {
 
   return (
     <>
+      <Stack.Screen options={{ headerBackButtonDisplayMode: 'minimal' }} />
       <AppView>
         <Text>
           This is the fav page

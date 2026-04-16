@@ -32,7 +32,6 @@ export default function StepsHeader({ stepsList, activeStep, setActiveStep }: {
 
   function RenderItem({ item }: { item: StepsDto }) {
     const isActive = item === activeStep;
-    const color = getColorByStep(item.step);
 
     // const iconAnimatedStyle = useAnimatedStyle(() => ({
     //     opacity: isScrollingDown.value ? withSpring(0) : withSpring(1)
@@ -41,6 +40,7 @@ export default function StepsHeader({ stepsList, activeStep, setActiveStep }: {
     return (
       <TouchableOpacity onPress={() => setActiveStep(item)}
                         style={[{ width: itemWidth }, styles.itemContainer]}>
+
         <Animated.View style={[styles.category, isActive && { backgroundColor: Theme.colors.primary }]}>
           <IconStep fill={isActive ? Theme.colors.iconBackground : Theme.colors.primary} step={item.step} width={20}
                     height={20}
@@ -76,7 +76,7 @@ export default function StepsHeader({ stepsList, activeStep, setActiveStep }: {
         </Text>
         <FlatList
           ref={flatListRef}
-          contentContainerStyle={{ gap: ITEMS_GAP }}
+          contentContainerStyle={{ gap: ITEMS_GAP, alignItems: 'flex-start' }}
           getItemLayout={(data, index) => (
             { length: itemWidth, offset: (itemWidth * index + ITEMS_GAP * index), index }
           )}

@@ -17,6 +17,32 @@ export enum UpdateStep {
   UploadImages = "UploadImages",
 }
 
+export enum CoupleSide {
+  Groom = "Groom",
+  Bride = "Bride",
+}
+
+export enum WeddingSteps {
+  Host = "Host",
+  Dress = "Dress",
+  Photographer = "Photographer",
+  Decorator = "Decorator",
+  Catering = "Catering",
+  DancingCourse = "DancingCourse",
+  Dj = "Dj",
+  MakeUpArtist = "MakeUpArtist",
+  Car = "Car",
+  Giveaways = "Giveaways",
+  Aarada = "Aarada",
+  MusiciansAndPerformers = "MusiciansAndPerformers",
+  Jewelry = "Jewelry",
+  Perfumes = "Perfumes",
+  Hammam = "Hammam",
+  CosmeticClinics = "CosmeticClinics",
+  Fireworks = "Fireworks",
+  Extra = "Extra",
+}
+
 export enum CountryCode {
   AE = "AE",
   BH = "BH",
@@ -42,32 +68,6 @@ export enum CountryCode {
   IR = "IR",
   TR = "TR",
   YE = "YE",
-}
-
-export enum CoupleSide {
-  Groom = "Groom",
-  Bride = "Bride",
-}
-
-export enum WeddingSteps {
-  Host = "Host",
-  Dress = "Dress",
-  Photographer = "Photographer",
-  Decorator = "Decorator",
-  Catering = "Catering",
-  DancingCourse = "DancingCourse",
-  Dj = "Dj",
-  MakeUpArtist = "MakeUpArtist",
-  Car = "Car",
-  Giveaways = "Giveaways",
-  Aarada = "Aarada",
-  MusiciansAndPerformers = "MusiciansAndPerformers",
-  Jewelry = "Jewelry",
-  Perfumes = "Perfumes",
-  Hammam = "Hammam",
-  CosmeticClinics = "CosmeticClinics",
-  Fireworks = "Fireworks",
-  Extra = "Extra",
 }
 
 export enum PriceType {
@@ -112,6 +112,7 @@ export interface FavouritePlacesViewModel {
 export interface PlacesDto {
   category: Categories;
   priceType: PriceType;
+  country: CountryCode;
   id: number;
   name?: string | null;
   formattedAddress?: string | null;
@@ -121,6 +122,7 @@ export interface PlacesDto {
   isPromoted: boolean;
   label: string | null;
   phoneNumber: string;
+  city: string;
 }
 
 export interface PlacesViewModel {

@@ -8,8 +8,6 @@ import { useAuthStore } from '@/utils/authStore';
 import { AuthProvider } from '@/contexts/auth-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { LocationProvider } from '@/contexts/location-context';
-import Purchases from 'react-native-purchases';
-import { Platform } from 'react-native';
 
 
 export default function RootLayout() {
@@ -21,22 +19,7 @@ export default function RootLayout() {
     'MeaCulpa-Regular': require('../assets/fonts/MeaCulpa-Regular.ttf'),
     'Aboreto-Regular': require('../assets/fonts/Aboreto-Regular.ttf'),
   });
-
-
-  useEffect(() => {
-    if (!isLoggedIn) return;
-    if (Platform.OS === 'ios') {
-      Purchases.configure({
-        apiKey: process.env.EXPO_PUBLIC_REVENUE_CAT_PUBLIC_KEY_IOS as string,
-        appUserID: user.rcAppUserId,
-      });
-    } else if (Platform.OS === 'android') {
-      Purchases.configure({ apiKey: 'we dont have it yet !', appUserID: user.rcAppUserId });
-    }
-
-  }, [isLoggedIn]);
-
-
+  
   useEffect(() => {
     if (loaded || error) {
       SplashScreen.hideAsync();

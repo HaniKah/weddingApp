@@ -1,9 +1,9 @@
-import {ScrollView, StyleSheet, View} from 'react-native';
+import {ActivityIndicator, ScrollView, StyleSheet, View} from 'react-native';
 import {AppForm, FormRef} from '@/contexts/form-context';
 import AppTextInput from '@/components/appComponents/AppTextInput';
 import {Dispatch, SetStateAction, useEffect, useMemo, useRef, useState} from 'react';
 import {Theme} from '@/styles/Theme';
-import {Categories, CountryCode, PriceType, UpdateStep, VendorPlaceDetailsDto} from '@/types/open-api';
+import {Categories, CountryCode, PriceType, VendorPlaceDetailsDto} from '@/types/open-api';
 import {PickerItem} from '@/components/appComponents/AppPickerDepr';
 import {useApi} from '@/utils/api';
 import WizardController from '@/components/wizards/WizardController';
@@ -23,6 +23,7 @@ export default function FillPlaceInfo({data, setData}: {
     setData: Dispatch<SetStateAction<VendorPlaceDetailsDto | undefined>>
 }) {
 
+
     const [placeName, setPlaceName] = useState<string | undefined>(data?.name);
     const [phoneNumber, setPhoneNumber] = useState<string | undefined>(data?.phoneNumber);
     const [minPrice, setMinPrice] = useState<string | undefined>(data?.minPrice);
@@ -32,6 +33,8 @@ export default function FillPlaceInfo({data, setData}: {
     const [city, setCity] = useState<string | undefined>(data?.city);
     const [category, setCategory] = useState<Categories | undefined>(data?.category);
     const [countryCode, setCountryCode] = useState<CountryCode | undefined>(data?.countryCode);
+
+    const [isLoading, setIsLoading] = useState(false);
 
     const countries = Array.from(COUNTRIES.keys());
 
@@ -44,7 +47,7 @@ export default function FillPlaceInfo({data, setData}: {
     const citiesPickerItem: PickerItem<string>[] | undefined = useMemo(() => {
         if (!countryCode) return;
         const cities = COUNTRIES.get(countryCode)?.cities;
-        return cities?.map((c: CountryCode) => ({value: c, name: c}));
+        return cities?.map((c: string) => ({value: c, name: c}));
     }, [countryCode]);
 
 
@@ -64,6 +67,7 @@ export default function FillPlaceInfo({data, setData}: {
     const createPlace = async () => {
         if (!tsRequiredCheck) return;//this is already checked through the from but just for the sake of ts
         try {
+            setIsLoading(true)
             const res = await API.placesControllerCreatePlace({
                 placeInfo: {
                     name: placeName,
@@ -81,45 +85,14 @@ export default function FillPlaceInfo({data, setData}: {
             setData(res.data);
         } catch (error) {
             console.error(error);
+        } finally {
+            setIsLoading(false)
         }
     };
 
-
-    const updatePlace = async () => {
-        if (!tsRequiredCheck) return;
-        if (!data?.id) return;
-        try {
-            const res = await API.placesControllerUpdatePlace({
-                id: data.id,
-                updateStep: UpdateStep.FillPlaceInfo,
-                placeInfo: {
-                    name: placeName,
-                    phoneNumber: phoneNumber,
-                    minPrice: minPrice,
-                    maxPrice: maxPrice,
-                    priceType: priceType,
-                    category: category,
-
-                },
-                location: {
-                    countryCode: countryCode,
-                    city: city,
-                },
-            });
-            setData(res.data);
-
-        } catch (err) {
-            console.error(err);
-        }
-    };
 
     const handleNextStep = (async () => {
-        if (data?.id) {
-            await updatePlace();
-        } else {
-            console.log('creating a place');
-            await createPlace();
-        }
+        await createPlace();
         wizard.nextStep();
     });
 
@@ -131,145 +104,147 @@ export default function FillPlaceInfo({data, setData}: {
 
     const formRef = useRef<FormRef>(null);
 
-
     useEffect(() => {
-        console.log("data changed", data)
+
     }, [data]);
 
-    return (
-        <>
-            <View style={styles.container}>
-                <AppForm ref={formRef} onSubmit={handleNextStep}>
-                    <ScrollView style={styles.scrollView}>
-                        <View style={styles.input}>
-                            <AppTextInput value={placeName}
-                                          required
-                                          design={2}
-                                          onChange={(s) => setPlaceName(s)}
-                                          name="name"
-                                          label="Business name"
-                                          placeholder="name of your business"
-                            />
-                        </View>
-
-                        <View style={styles.input}>
-                            <AppTagsSelect
-                                name="category"
-                                list={Object.values(Categories)}
-                                label="Categories"
-                                value={category}
-                                onChange={setCategory}
-
-                            />
-                        </View>
-
-                        <View style={styles.input}>
-                            <AppTextInput name="phoneNumber"
-                                          required
-                                          design={2}
-                                          label="Phone number"
-                                          placeholder="Phone number"
-                                          onChange={(s) => setPhoneNumber(s)}
-                                          value={phoneNumber}
-                            />
-                        </View>
-
-                        <View style={styles.input}>
-                            <AppDropDown name="country"
-                                         required
-                                         label="Country"
-                                         onChange={setCountryCode}
-                                         value={countryCode}
-                                         itemList={countriesPickerItems}
-                            />
-                        </View>
-
-                        <View style={styles.input}>
-                            <AppDropDown name="city"
-                                         required
-                                         label="City"
-                                         onChange={setCity}
-                                         value={city}
-                                         itemList={citiesPickerItem}
-                                         disabled={!countryCode}
-                            />
-                        </View>
-
-                        <View style={styles.input}>
-                            <AppTagsSelect
-                                name="priceKind"
-                                list={Object.values(PriceKind)}
-                                label="Price"
-                                value={priceKind}
-                                onChange={setPriceKind}
-                                borders="rectangle"
-                                disabled={!countryCode}
-                            />
-                        </View>
-
-                        {priceKind === PriceKind.Single && countryCode &&
+    return isLoading ? (<ActivityIndicator size="large" style={{flex: 1}}/>) :
+        (
+            <>
+                <View style={styles.container}>
+                    <AppForm ref={formRef} onSubmit={handleNextStep}>
+                        <ScrollView style={styles.scrollView}>
                             <View style={styles.input}>
-                                <AppTextInput onChange={(s) => enterFixedPrice(s)} name="singlePrice"
-                                              label="Single price"
-                                              placeholder="Add your price here"
-                                              value={minPrice}
-                                              keyboardType={'decimal-pad'}
-                                              unit={COUNTRIES.get(countryCode)?.currency}
+                                <AppTextInput value={placeName}
                                               required
                                               design={2}
+                                              onChange={(s) => setPlaceName(s)}
+                                              name="name"
+                                              label="Business name"
+                                              placeholder="name of your business"
                                 />
                             </View>
-                        }
 
-                        {priceKind === PriceKind.Range && countryCode &&
-                            <View style={[styles.input, styles.priceRangeContainer]}>
-                                <AppTextInput onChange={(s) => setMinPrice(s)} name="minPrice"
-                                              label="Min. price"
-                                              design={2}
-                                              extraStyles={{flex: 1}}
-                                              placeholder="Minimum price"
-                                              value={minPrice}
-                                              keyboardType={'decimal-pad'}
-                                              unit={COUNTRIES.get(countryCode)?.currency}
-                                              required
-                                />
-                                <AppTextInput onChange={(s) => setMaxPrice(s)} name="minPrice"
-                                              label="Max. price"
-                                              design={2}
-                                              extraStyles={{flex: 1}}
-                                              placeholder="Maximum price"
-                                              value={maxPrice}
-                                              keyboardType={'decimal-pad'}
-                                              unit={COUNTRIES.get(countryCode)?.currency}
-                                              required
+                            <View style={styles.input}>
+                                <AppTagsSelect
+                                    name="category"
+                                    list={Object.values(Categories)}
+                                    label="Categories"
+                                    value={category}
+                                    onChange={setCategory}
+                                    required
+
                                 />
                             </View>
-                        }
 
-                        {priceKind !== PriceKind.NoPrice &&
                             <View style={styles.input}>
-                                <AppDropDown
-                                    label="Price type"
-                                    itemList={priceTypeList}
-                                    value={priceType}
-                                    onChange={setPriceType}
-                                    title="Select price type"
-                                    name="priceType"
+                                <AppTextInput name="phoneNumber"
+                                              required
+                                              design={2}
+                                              label="Phone number"
+                                              placeholder="Phone number"
+                                              onChange={(s) => setPhoneNumber(s)}
+                                              value={phoneNumber}
+                                />
+                            </View>
+
+                            <View style={styles.input}>
+                                <AppDropDown name="country"
+                                             required
+                                             label="Country"
+                                             onChange={setCountryCode}
+                                             value={countryCode}
+                                             itemList={countriesPickerItems}
+                                />
+                            </View>
+
+                            <View style={styles.input}>
+                                <AppDropDown name="city"
+                                             required
+                                             label="City"
+                                             onChange={setCity}
+                                             value={city}
+                                             itemList={citiesPickerItem}
+                                             disabled={!countryCode}
+                                />
+                            </View>
+
+                            <View style={styles.input}>
+                                <AppTagsSelect
+                                    name="priceKind"
+                                    list={Object.values(PriceKind)}
+                                    label="Price"
+                                    value={priceKind}
+                                    onChange={setPriceKind}
+                                    borders="rectangle"
+                                    disabled={!countryCode}
                                     required
                                 />
                             </View>
-                        }
+
+                            {priceKind === PriceKind.Single && countryCode &&
+                                <View style={styles.input}>
+                                    <AppTextInput onChange={(s) => enterFixedPrice(s)} name="singlePrice"
+                                                  label="Single price"
+                                                  placeholder="Add your price here"
+                                                  value={minPrice}
+                                                  keyboardType={'decimal-pad'}
+                                                  unit={COUNTRIES.get(countryCode)?.currency}
+                                                  required
+                                                  design={2}
+                                    />
+                                </View>
+                            }
+
+                            {priceKind === PriceKind.Range && countryCode &&
+                                <View style={[styles.input, styles.priceRangeContainer]}>
+                                    <AppTextInput onChange={(s) => setMinPrice(s)} name="minPrice"
+                                                  label="Min. price"
+                                                  design={2}
+                                                  extraStyles={{flex: 1}}
+                                                  placeholder="Minimum price"
+                                                  value={minPrice}
+                                                  keyboardType={'decimal-pad'}
+                                                  unit={COUNTRIES.get(countryCode)?.currency}
+                                                  required
+                                    />
+                                    <AppTextInput onChange={(s) => setMaxPrice(s)} name="minPrice"
+                                                  label="Max. price"
+                                                  design={2}
+                                                  extraStyles={{flex: 1}}
+                                                  placeholder="Maximum price"
+                                                  value={maxPrice}
+                                                  keyboardType={'decimal-pad'}
+                                                  unit={COUNTRIES.get(countryCode)?.currency}
+                                                  required
+                                    />
+                                </View>
+                            }
+
+                            {priceKind !== PriceKind.NoPrice &&
+                                <View style={styles.input}>
+                                    <AppDropDown
+                                        label="Price type"
+                                        itemList={priceTypeList}
+                                        value={priceType}
+                                        onChange={setPriceType}
+                                        title="Select price type"
+                                        name="priceType"
+                                        required
+                                    />
+                                </View>
+                            }
 
 
-                    </ScrollView>
-                </AppForm>
-            </View>
-            <WizardController
-                onNext={formRef.current?.submit}
-                isFirstStep={false}
-                isLastStep={false}/>
-        </>
-    );
+                        </ScrollView>
+                    </AppForm>
+                </View>
+                <WizardController
+                    onNext={formRef.current?.submit}
+                    isFirstStep={false}
+                    isLastStep={false}/>
+            </>
+        );
 }
 
 const styles = StyleSheet.create({

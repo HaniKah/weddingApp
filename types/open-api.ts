@@ -18,22 +18,30 @@ export enum UpdateStep {
 }
 
 export enum CountryCode {
+  AE = "AE",
   BH = "BH",
-  EG = "EG",
-  IR = "IR",
-  IQ = "IQ",
-  JO = "JO",
   KW = "KW",
-  LB = "LB",
   OM = "OM",
-  PS = "PS",
   QA = "QA",
   SA = "SA",
+  IQ = "IQ",
+  JO = "JO",
+  LB = "LB",
+  PS = "PS",
   SY = "SY",
-  TR = "TR",
-  AE = "AE",
-  YE = "YE",
+  DZ = "DZ",
+  EG = "EG",
+  LY = "LY",
+  MA = "MA",
+  MR = "MR",
+  TN = "TN",
+  DJ = "DJ",
+  KM = "KM",
+  SO = "SO",
   SD = "SD",
+  IR = "IR",
+  TR = "TR",
+  YE = "YE",
 }
 
 export enum CoupleSide {
@@ -200,6 +208,13 @@ export interface ExchangeTokenDto {
   user: UserInfo;
 }
 
+export interface CountryInfo {
+  countryCode: CountryCode;
+  countryName: string;
+  cities: string[];
+  currency: string;
+}
+
 export interface DeletePlaceRequest {
   id: number;
 }
@@ -216,22 +231,30 @@ export interface PlaceInfo {
 export interface LocationInfo {
   city: string;
   countryCode:
+    | "AE"
     | "BH"
-    | "EG"
-    | "IR"
-    | "IQ"
-    | "JO"
     | "KW"
-    | "LB"
     | "OM"
-    | "PS"
     | "QA"
     | "SA"
+    | "IQ"
+    | "JO"
+    | "LB"
+    | "PS"
     | "SY"
+    | "DZ"
+    | "EG"
+    | "LY"
+    | "MA"
+    | "MR"
+    | "TN"
+    | "DJ"
+    | "KM"
+    | "SO"
+    | "SD"
+    | "IR"
     | "TR"
-    | "AE"
-    | "YE"
-    | "SD";
+    | "YE";
   streetName?: string;
   postalCode?: string;
   lat?: number;
@@ -281,6 +304,7 @@ export interface UpdatePlaceRequest {
 }
 
 export interface VendorPlaceDto {
+  country: CountryCode;
   id: number;
   name: string;
   streetName?: string;
@@ -290,6 +314,7 @@ export interface VendorPlaceDto {
   isPromoted: boolean;
   minPrice: string;
   maxPrice: string;
+  city: string;
 }
 
 export interface VendorPlaceViewModel {
@@ -606,22 +631,30 @@ export class Api<
       query: {
         offset: number;
         countryCode:
+          | "AE"
           | "BH"
-          | "EG"
-          | "IR"
-          | "IQ"
-          | "JO"
           | "KW"
-          | "LB"
           | "OM"
-          | "PS"
           | "QA"
           | "SA"
+          | "IQ"
+          | "JO"
+          | "LB"
+          | "PS"
           | "SY"
+          | "DZ"
+          | "EG"
+          | "LY"
+          | "MA"
+          | "MR"
+          | "TN"
+          | "DJ"
+          | "KM"
+          | "SO"
+          | "SD"
+          | "IR"
           | "TR"
-          | "AE"
-          | "YE"
-          | "SD";
+          | "YE";
         category?:
           | "Host"
           | "Dress"

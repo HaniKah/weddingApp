@@ -1,30 +1,30 @@
-import AppBottomSheet, { AppBottomSheetRef } from "@/components/appComponents/AppBottomSheet";
-import { Alert, StyleSheet, View } from "react-native";
-import { VendorPlaceDto } from "@/types/open-api";
+import AppBottomSheet, {AppBottomSheetRef} from "@/components/appComponents/AppBottomSheet";
+import {Alert, StyleSheet, View} from "react-native";
+import {VendorPlaceDto} from "@/types/open-api";
 import AppButton from "@/components/appComponents/AppButton";
-import { Theme } from "@/styles/Theme";
-import { Link } from "expo-router";
-import { ButtonType } from "@/styles/Button";
-import { RefObject, useRef, useState } from "react";
+import {Theme} from "@/styles/Theme";
+import {Link} from "expo-router";
+import {ButtonType} from "@/styles/Button";
+import {RefObject, useRef, useState} from "react";
 import CreatePlaceModal from "@/components/modals/CreatePlaceModal";
 import PromotePlaceModal from "@/components/modals/PromotePlaceModal";
-import { AppModalRef } from "@/components/appComponents/AppModal";
-import { useApi } from "@/utils/api";
+import {AppModalRef} from "@/components/appComponents/AppModal";
+import {useApi} from "@/utils/api";
 
 export default function VendorPlacesActionsBottomSheet({
-    ref,
-    selectedPlace,
-    reloadPlaces
+                                                           ref,
+                                                           selectedPlace,
+                                                           reloadPlaces
 
 
-}: {
+                                                       }: {
     ref: RefObject<AppBottomSheetRef | null>
     selectedPlace: VendorPlaceDto | undefined
     reloadPlaces: () => void
 
 }) {
 
-    const { api } = useApi()
+    const {api} = useApi()
 
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
@@ -71,7 +71,7 @@ export default function VendorPlacesActionsBottomSheet({
         if (!selectedPlace) return
         try {
             setIsLoading(true)
-            await api.placesControllerToggleStatus({ placeId: selectedPlace?.id, isPublished: value })
+            await api.placesControllerToggleStatus({placeId: selectedPlace?.id, isPublished: value})
             reloadPlaces()
         } catch (err) {
             console.error(err)
@@ -85,7 +85,7 @@ export default function VendorPlacesActionsBottomSheet({
         if (!selectedPlace) return
         try {
             setIsLoading(true)
-            await api.placesControllerDeletePlace({ id: selectedPlace.id })
+            await api.placesControllerDeletePlace({id: selectedPlace.id})
             reloadPlaces()
         } catch (err) {
             console.error(err)
@@ -103,12 +103,12 @@ export default function VendorPlacesActionsBottomSheet({
                     <View>
                         {selectedPlace.isPublished && !selectedPlace.isPromoted &&
                             <AppButton extraStylesBtn={styles.actionBtn}
-                                informative
-                                fullWidth
-                                textPosition="LEFT"
-                                onPress={handlePromotePlace}
-                                buttonType={ButtonType.PLAIN}
-                                icon="horn.blast"
+                                       informative
+                                       fullWidth
+                                       textPosition="LEFT"
+                                       onPress={handlePromotePlace}
+                                       buttonType={ButtonType.PLAIN}
+                                       icon="horn.blast"
                             >
                                 Promote
                             </AppButton>
@@ -134,9 +134,9 @@ export default function VendorPlacesActionsBottomSheet({
                         {selectedPlace.isCompleted &&
                             <Link
                                 asChild push href={{
-                                    pathname: "/(switch-tabs)/(places)/[id]",
-                                    params: { id: selectedPlace.id?.toString() }
-                                }}>
+                                pathname: "/(tabs)/profile/listing/[id]",
+                                params: {id: selectedPlace.id?.toString()}
+                            }}>
                                 <AppButton
                                     extraStylesBtn={styles.actionBtn}
                                     fullWidth
@@ -190,7 +190,6 @@ export default function VendorPlacesActionsBottomSheet({
             <CreatePlaceModal
                 reloadPlaces={reloadPlaces}
                 ref={editPlaceModal}
-                placeId={selectedPlace?.id}
             />
 
 

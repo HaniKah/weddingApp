@@ -1,22 +1,22 @@
-import { Image, StyleSheet, Text, View } from 'react-native';
-import { VendorPlaceDto } from '@/types/open-api';
-import { Theme } from '@/styles/Theme';
-import { Dispatch, SetStateAction } from "react";
+import {Image, StyleSheet, Text, View} from 'react-native';
+import {VendorPlaceDto} from '@/types/open-api';
+import {Theme} from '@/styles/Theme';
+import {Dispatch, SetStateAction} from "react";
 import AppIf from "@/components/appComponents/AppIf";
-import { IconSymbol } from "@/components/symbols/IconSymbol";
-import AppPressable from "@/components/appComponents/AppPressable";
+import {IconSymbol} from "@/components/symbols/IconSymbol";
+import {COUNTRIES} from "@/constants/countries";
+import {Link} from "expo-router";
 
 type VendorPlaceItemProps = {
     data: VendorPlaceDto;
     setTrigger: Dispatch<SetStateAction<boolean>>;
-    onPress: (place: VendorPlaceDto) => void;
 }
 
-export default function VendorPlaceItem({ data, setTrigger, onPress }: VendorPlaceItemProps) {
+export default function VendorPlaceItem({data, setTrigger}: VendorPlaceItemProps) {
 
     return (
         <>
-            <AppPressable onPress={() => onPress(data)}>
+            <Link href={`/profile/listing/${data.id}`}>
                 <View style={[styles.container, !data.isCompleted && styles.containerUncompleted]}>
                     {
                         data.isPromoted &&
@@ -25,10 +25,10 @@ export default function VendorPlaceItem({ data, setTrigger, onPress }: VendorPla
 
                     <View style={[styles.imageContainer, !data.isCompleted && styles.imagesContainerUncompleted]}>
                         <AppIf value={data.isCompleted}>
-                            <Image style={styles.image} source={{ uri: data.thumbnail }} />
+                            <Image style={styles.image} source={{uri: data.thumbnail}}/>
                         </AppIf>
                         <AppIf value={!data.isCompleted}>
-                            <IconSymbol color={Theme.colors.gray.S400} size={40} weight="thin" name="plus" />
+                            <IconSymbol color={Theme.colors.gray.S400} size={40} weight="thin" name="plus"/>
                         </AppIf>
                     </View>
 
@@ -43,11 +43,11 @@ export default function VendorPlaceItem({ data, setTrigger, onPress }: VendorPla
                                 </Text>
                             }
                             {!data.minPrice && <Text style={styles.priceUncompleted}>add your price</Text>}
-                            <Text style={styles.currency}>  {data.currency}</Text>
+                            <Text style={styles.currency}>  {COUNTRIES.get(data.country)?.currency}</Text>
                         </View>
                     </View>
                 </View>
-            </AppPressable>
+            </Link>
         </>
     );
 }

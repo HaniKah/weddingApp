@@ -74,9 +74,9 @@ export default function Index() {
             <View style={styles.sectionHeaderContainer}>
                 <AppIf value={title === 'Published'}>
                     <IconSymbol name="checkmark.circle" weight="bold" size={20} color={Theme.colors.green.S700}/>
+                    <Text
+                        style={[styles.sectionHeader, title === 'Published' ? styles.publishedSectionHeader : styles.unpublishedSectionHeader]}>{title} ({length})</Text>
                 </AppIf>
-                <Text
-                    style={[styles.sectionHeader, title === 'Published' ? styles.publishedSectionHeader : styles.unpublishedSectionHeader]}>{title} ({length})</Text>
             </View>
 
         );

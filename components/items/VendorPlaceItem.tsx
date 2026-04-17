@@ -6,6 +6,8 @@ import AppIf from "@/components/appComponents/AppIf";
 import {IconSymbol} from "@/components/symbols/IconSymbol";
 import {COUNTRIES} from "@/constants/countries";
 import {Link} from "expo-router";
+import CategoryTag from "@/components/CategoryTag";
+import {Feather} from "@expo/vector-icons";
 
 type VendorPlaceItemProps = {
     data: VendorPlaceDto;
@@ -18,10 +20,7 @@ export default function VendorPlaceItem({data, setTrigger}: VendorPlaceItemProps
         <>
             <Link href={`/profile/listing/${data.id}`}>
                 <View style={[styles.container, !data.isCompleted && styles.containerUncompleted]}>
-                    {
-                        data.isPromoted &&
-                        <View testID="promotionDot" style={styles.promotionDot}></View>
-                    }
+
 
                     <View style={[styles.imageContainer, !data.isCompleted && styles.imagesContainerUncompleted]}>
                         <AppIf value={data.isCompleted}>
@@ -34,8 +33,9 @@ export default function VendorPlaceItem({data, setTrigger}: VendorPlaceItemProps
 
                     <View style={styles.infoContainer}>
                         <Text
-                            style={[styles.placeName, !data.name && styles.placeNameUncompleted]}>{data.name || "add place name"}</Text>
-                        <Text>{data.streetName}</Text>
+                            style={[styles.placeName, !data.name && styles.placeNameUncompleted]}>{data.name}
+                        </Text>
+                        <CategoryTag category={data.category}/>
                         <View style={styles.priceContainer}>
                             {data.minPrice === data.maxPrice ?
                                 <Text>{data.minPrice}</Text> :
@@ -46,6 +46,7 @@ export default function VendorPlaceItem({data, setTrigger}: VendorPlaceItemProps
                             <Text style={styles.currency}>  {COUNTRIES.get(data.country)?.currency}</Text>
                         </View>
                     </View>
+                    <Feather name="chevron-right" size={24} color={Theme.colors.gray.S400}/>
                 </View>
             </Link>
         </>
@@ -64,7 +65,7 @@ const styles = StyleSheet.create({
         borderRadius: Theme.radius.md,
         backgroundColor: Theme.colors.white,
         overflow: 'hidden',
-        padding: 10,
+        padding: 5,
         position: "relative",
 
     },
@@ -74,8 +75,8 @@ const styles = StyleSheet.create({
         borderColor: Theme.colors.gray.S300
     },
     imageContainer: {
-        height: 75,
-        width: 75,
+        height: 95,
+        width: 95,
         borderRadius: Theme.radius.xs,
         overflow: 'hidden',
     },
@@ -90,7 +91,10 @@ const styles = StyleSheet.create({
         height: '100%',
     },
     infoContainer: {
+        display: "flex",
+        gap: 5,
         flex: 1,
+        paddingVertical: 8
     },
     placeName: {
         fontWeight: 'bold',

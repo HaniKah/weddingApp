@@ -1,0 +1,35 @@
+import {Categories} from "@/types/open-api";
+import {StyleSheet, Text, View} from "react-native";
+import IconStep from "@/components/symbols/IconStep";
+import {Theme} from "@/styles/Theme";
+
+export default function CategoryTag({category}: { category: Categories }) {
+    return (
+        <View style={styles.container}>
+            <IconStep width={14} height={14} step={category}/>
+            <Text style={styles.text}>
+                {category}
+            </Text>
+        </View>
+
+    )
+}
+const styles = StyleSheet.create({
+    container: {
+        backgroundColor: Theme.colors.iconBackground,
+        alignSelf: "flex-start",
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 5,
+        paddingHorizontal: 12,
+        paddingVertical: 5,
+        borderRadius: Theme.radius.full,
+        marginVertical: 5
+    },
+    text: {
+        fontSize: Theme.sizes.xs,
+        fontWeight: "bold",
+        color: Theme.colors.primary,
+    }
+})

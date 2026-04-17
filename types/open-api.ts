@@ -307,6 +307,7 @@ export interface UpdatePlaceRequest {
 
 export interface VendorPlaceDto {
   country: CountryCode;
+  category: Categories;
   id: number;
   name: string;
   streetName?: string;

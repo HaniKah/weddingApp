@@ -11,7 +11,6 @@
  */
 
 export enum UpdateStep {
-  PickPlaceType = "PickPlaceType",
   FillPlaceInfo = "FillPlaceInfo",
   AddDescription = "AddDescription",
   PickPlaceLocation = "PickPlaceLocation",
@@ -111,11 +110,9 @@ export interface PlacesDto {
   mainPhoto: string;
   minPrice: string;
   maxPrice: string;
-  currency: string;
   isPromoted: boolean;
   label: string | null;
   phoneNumber: string;
-  city: string;
 }
 
 export interface PlacesViewModel {
@@ -137,8 +134,6 @@ export interface PlaceDetailsDto {
   mainPhoto: string;
   maxPrice: string;
   minPrice: string;
-  countryName: string;
-  currency: string;
   description: string;
 }
 
@@ -209,48 +204,18 @@ export interface DeletePlaceRequest {
   id: number;
 }
 
-export interface CreatePlaceRequest {
-  type?: Categories;
-}
-
-export interface VendorPlaceDetailsDto {
-  step: WeddingSteps;
-  priceType: PriceType;
-  countryCode: CountryCode;
-  id: number;
+export interface PlaceInfo {
+  category: Categories;
   name: string;
-  streetName?: string;
   phoneNumber: string;
-  facebook?: string;
-  instagram?: string;
-  tiktok?: string;
-  website?: string;
-  isPublished: boolean;
-  description?: string;
-  mainPhoto: string;
-  minPrice: string;
-  maxPrice: string;
-  googleId?: string;
-  currency: string;
-  countryName: string;
-}
-
-export interface UpdatePlaceInfo {
-  name?: string;
-  phoneNumber?: string;
-  facebook?: string;
-  instagram?: string;
-  tiktok?: string;
-  website?: string;
   minPrice?: string;
   maxPrice?: string;
-  priceType?: "None" | "PerPerson" | "PerHour" | "PerItem" | "PerEvent";
+  priceType: "None" | "PerPerson" | "PerHour" | "PerItem" | "PerEvent";
 }
 
-export interface UpdateLocationInfo {
-  streetName?: string;
-  city?: string;
-  countryCode?:
+export interface LocationInfo {
+  city: string;
+  countryCode:
     | "BH"
     | "EG"
     | "IR"
@@ -267,26 +232,58 @@ export interface UpdateLocationInfo {
     | "AE"
     | "YE"
     | "SD";
+  streetName?: string;
   postalCode?: string;
   lat?: number;
   lng?: number;
   googleId?: string;
 }
 
-export interface UpdatePlaceRequest {
-  updateStep?: UpdateStep;
-  type?: Categories;
-  id?: number;
-  placeInfo?: UpdatePlaceInfo;
+export interface CreatePlaceRequest {
+  placeInfo: PlaceInfo;
+  location: LocationInfo;
+}
+
+export interface VendorPlaceDetailsDto {
+  category: Categories;
+  priceType: PriceType;
+  countryCode: CountryCode;
+  id: number;
+  name: string;
+  streetName?: string;
+  phoneNumber: string;
+  facebook?: string;
+  instagram?: string;
+  tiktok?: string;
+  website?: string;
+  isPublished: boolean;
   description?: string;
-  location?: UpdateLocationInfo;
+  mainPhoto: string;
+  minPrice: string;
+  maxPrice: string;
+  city: string;
+}
+
+export interface SocialMediaInfo {
+  instagram?: string;
+  facebook?: string;
+  tiktok?: string;
+  website?: string;
+}
+
+export interface UpdatePlaceRequest {
+  updateStep: UpdateStep;
+  id: number;
+  placeInfo?: PlaceInfo;
+  description?: string;
+  location?: LocationInfo;
+  socialMedia?: SocialMediaInfo;
 }
 
 export interface VendorPlaceDto {
   id: number;
   name: string;
   streetName?: string;
-  currency: string;
   thumbnail: string;
   isPublished: boolean;
   isCompleted: boolean;
@@ -313,17 +310,6 @@ export interface VendorPlaceViewModel {
 export interface PublishPlaceRequest {
   placeId: number;
   isPublished: boolean;
-}
-
-export interface CountryInfo {
-  countryCode: CountryCode;
-  countryName: string;
-  cities: string[];
-  currency: string;
-}
-
-export interface CountryInfoViewModel {
-  result: CountryInfo[];
 }
 
 export interface SubscriberAttributesDto {
@@ -1016,21 +1002,6 @@ export class Api<
         path: `/api/places/getPlaceDetails`,
         method: "GET",
         query: query,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Places
-     * @name PlacesControllerGetCountries
-     * @request GET:/api/places/getCountries
-     */
-    placesControllerGetCountries: (params: RequestParams = {}) =>
-      this.request<CountryInfoViewModel, any>({
-        path: `/api/places/getCountries`,
-        method: "GET",
         format: "json",
         ...params,
       }),

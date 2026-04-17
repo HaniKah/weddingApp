@@ -15,7 +15,7 @@ export default function AppSearchBar({ searchText, setSearchText }: {
                       placeholder="search"
                       value={searchText}
                       name="search"
-                      onTextChange={(text) => setSearchText(text)}
+                      onChange={(text) => setSearchText(text)}
                       extraStyles={styles.input}
         />
       </View>

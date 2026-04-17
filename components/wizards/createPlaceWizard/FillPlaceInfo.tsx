@@ -1,71 +1,92 @@
-import {ScrollView, StyleSheet, Switch, Text, View} from "react-native";
-import {AppForm, FormRef} from "@/contexts/form-context";
-import AppTextInput from "@/components/appComponents/AppTextInput";
-import {Dispatch, SetStateAction, useEffect, useRef, useState} from "react";
-import {Theme} from "@/styles/Theme";
-import {CountryCode, CountryInfo, PriceType, UpdateStep, VendorPlaceDetailsDto} from "@/types/open-api";
-import {PickerItem} from "@/components/appComponents/AppPickerDepr";
-import {useApi} from "@/utils/api";
-import WizardController from "@/components/wizards/WizardController";
-import {useWizardContext} from "@/components/wizards/Wizard";
-import AppDropDown from "@/components/appComponents/AppDropDown";
+import {ScrollView, StyleSheet, View} from 'react-native';
+import {AppForm, FormRef} from '@/contexts/form-context';
+import AppTextInput from '@/components/appComponents/AppTextInput';
+import {Dispatch, SetStateAction, useEffect, useMemo, useRef, useState} from 'react';
+import {Theme} from '@/styles/Theme';
+import {Categories, CountryCode, PriceType, UpdateStep, VendorPlaceDetailsDto} from '@/types/open-api';
+import {PickerItem} from '@/components/appComponents/AppPickerDepr';
+import {useApi} from '@/utils/api';
+import WizardController from '@/components/wizards/WizardController';
+import {useWizardContext} from '@/components/wizards/Wizard';
+import AppDropDown from '@/components/appComponents/AppDropDown';
+import {COUNTRIES} from '@/constants/countries';
+import AppTagsSelect from '@/components/appComponents/AppTagsSelect';
 
+enum PriceKind {
+    NoPrice = 'NoPrice',
+    Single = 'Single',
+    Range = 'Range'
+}
 
 export default function FillPlaceInfo({data, setData}: {
     data: VendorPlaceDetailsDto | undefined
     setData: Dispatch<SetStateAction<VendorPlaceDetailsDto | undefined>>
 }) {
 
-    const [placeName, setPlaceName] = useState<string | undefined>(data?.name)
-    const [phoneNumber, setPhoneNumber] = useState<string | undefined>(data?.phoneNumber)
-    const [facebook, setFacebook] = useState<string | undefined>(data?.facebook)
-    const [instagram, setInstagram] = useState<string | undefined>(data?.instagram)
-    const [tiktok, setTiktok] = useState<string | undefined>(data?.tiktok)
-    const [website, setWebsite] = useState<string | undefined>(data?.website)
-    const [minPrice, setMinPrice] = useState<string | undefined>(data?.minPrice)
-    const [maxPrice, setMaxPrice] = useState<string | undefined>(data?.maxPrice)
-    const [priceType, setPriceType] = useState<PriceType>(data?.priceType || PriceType.None)
+    const [placeName, setPlaceName] = useState<string | undefined>(data?.name);
+    const [phoneNumber, setPhoneNumber] = useState<string | undefined>(data?.phoneNumber);
+    const [minPrice, setMinPrice] = useState<string | undefined>(data?.minPrice);
+    const [maxPrice, setMaxPrice] = useState<string | undefined>(data?.maxPrice);
+    const [priceKind, setPriceKind] = useState<PriceKind>(PriceKind.NoPrice);
+    const [priceType, setPriceType] = useState<PriceType>(data?.priceType || PriceType.None);
+    const [city, setCity] = useState<string | undefined>(data?.city);
+    const [category, setCategory] = useState<Categories | undefined>(data?.category);
+    const [countryCode, setCountryCode] = useState<CountryCode | undefined>(data?.countryCode);
 
-    const [selectedCountryCode, setSelectedCountryCode] = useState<CountryCode | undefined>(data?.countryCode)
-    const [countriesList, setCountriesList] = useState<CountryInfo[]>([])
-    const [countriesDropDownOptions, setCountriesDropDownOption] = useState<PickerItem<CountryCode>[]>([])
-    const [currency, setCurrency] = useState<string | undefined>(data?.currency)
+    const countries = Array.from(COUNTRIES.keys());
 
-    const API = useApi().api
-    const wizard = useWizardContext()
 
-    const [switchEnabled, setSwitchEnabled] = useState(data?.minPrice !== data?.maxPrice);
+    const countriesPickerItems: PickerItem<CountryCode>[] = countries.map(c => ({
+        value: c,
+        name: COUNTRIES.get(c)?.countryName ?? '',
+    }));
+
+    const citiesPickerItem: PickerItem<string>[] | undefined = useMemo(() => {
+        if (!countryCode) return;
+        const cities = COUNTRIES.get(countryCode)?.cities;
+        return cities?.map((c: CountryCode) => ({value: c, name: c}));
+    }, [countryCode]);
+
+
+    const API = useApi().api;
+
+    const wizard = useWizardContext();
+
+    // const [switchEnabled, setSwitchEnabled] = useState(data?.minPrice !== data?.maxPrice);
 
     function enterFixedPrice(price: string | undefined) {
-        setMinPrice(price)
-        setMaxPrice(price)
+        setMinPrice(price);
+        setMaxPrice(price);
     }
 
-    useEffect(() => {
-        const getCountries = async () => {
-            try {
-                const res = await API.placesControllerGetCountries()
+    const tsRequiredCheck = placeName && phoneNumber && priceType && category && countryCode && city;
 
-                setCountriesList(res.data.result)
-
-                const options: PickerItem<CountryCode>[] = res.data.result.map((c) => ({
-                    name: c.countryName,
-                    value: c.countryCode
-                }))
-                setCountriesDropDownOption(options)
-
-            } catch (err) {
-                console.log(err)
-            }
+    const createPlace = async () => {
+        if (!tsRequiredCheck) return;//this is already checked through the from but just for the sake of ts
+        try {
+            const res = await API.placesControllerCreatePlace({
+                placeInfo: {
+                    name: placeName,
+                    phoneNumber: phoneNumber,
+                    minPrice: minPrice,
+                    maxPrice: maxPrice,
+                    priceType: priceType,
+                    category: category,
+                },
+                location: {
+                    countryCode: countryCode,
+                    city: city,
+                },
+            });
+            setData(res.data);
+        } catch (error) {
+            console.error(error);
         }
-        getCountries()
-    }, []);
+    };
 
-    useEffect(() => {
-        setCurrency(countriesList?.find(c => c.countryCode === selectedCountryCode)?.currency)
-    }, [selectedCountryCode]);
 
     const updatePlace = async () => {
+        if (!tsRequiredCheck) return;
         if (!data?.id) return;
         try {
             const res = await API.placesControllerUpdatePlace({
@@ -74,172 +95,171 @@ export default function FillPlaceInfo({data, setData}: {
                 placeInfo: {
                     name: placeName,
                     phoneNumber: phoneNumber,
-                    facebook: facebook,
-                    instagram: instagram,
-                    tiktok: tiktok,
-                    website: website,
                     minPrice: minPrice,
                     maxPrice: maxPrice,
                     priceType: priceType,
+                    category: category,
 
                 },
                 location: {
-                    countryCode: selectedCountryCode
-                }
-            })
-            setData(res.data)
+                    countryCode: countryCode,
+                    city: city,
+                },
+            });
+            setData(res.data);
 
         } catch (err) {
-            console.error(err)
+            console.error(err);
         }
-    }
+    };
 
     const handleNextStep = (async () => {
         if (data?.id) {
-            await updatePlace()
+            await updatePlace();
+        } else {
+            console.log('creating a place');
+            await createPlace();
         }
-        wizard.nextStep()
-    })
+        wizard.nextStep();
+    });
 
 
     const priceTypeList: PickerItem<PriceType>[] = Object.values(PriceType).map((v) => ({
         name: v.toString(), // needs to be translated here
-        value: v
-    }))
+        value: v,
+    }));
 
-    const formRef = useRef<FormRef>(null)
+    const formRef = useRef<FormRef>(null);
 
+
+    useEffect(() => {
+        console.log("data changed", data)
+    }, [data]);
 
     return (
         <>
             <View style={styles.container}>
                 <AppForm ref={formRef} onSubmit={handleNextStep}>
-                    <ScrollView>
-                        <Text style={styles.title}>Your place&#39;s info</Text>
-                        <Text style={styles.subtitle}>
-                            Basic Info
-                        </Text>
-                        <AppTextInput value={placeName}
-                                      required
-                                      onTextChange={(s) => setPlaceName(s)} name="name"
-                                      label="Place's name"
-                                      placeholder="name of your place"
-                                      extraStyles={styles.input}/>
-                        <AppTextInput name="phoneNumber"
-                                      required
-                                      label="Phone number"
-                                      placeholder="Phone number"
-                                      onTextChange={(s) => setPhoneNumber(s)}
-                                      value={phoneNumber}
-                                      extraStyles={styles.input}
-                        />
-
-                        <Text style={styles.subtitle}>
-                            Location
-                        </Text>
-                        <AppDropDown name="country"
-                                     required
-                                     label="Country"
-                                     onChange={setSelectedCountryCode}
-                            // value={selectedCountryCode}
-                                     value={CountryCode.JO}
-                                     itemList={countriesDropDownOptions}
-                                     disabled
-                        />
-
-
-                        <Text style={styles.subtitle}>
-                            Price details
-                        </Text>
-                        <View style={styles.switchContainer}>
-                            <Text style={styles.switchText}>Price range </Text>
-                            <Switch
-                                trackColor={{false: '#767577', true: Theme.colors.green.S600}}
-                                thumbColor={Theme.colors.white}
-                                onValueChange={() => setSwitchEnabled(!switchEnabled)}
-                                value={switchEnabled}
+                    <ScrollView style={styles.scrollView}>
+                        <View style={styles.input}>
+                            <AppTextInput value={placeName}
+                                          required
+                                          design={2}
+                                          onChange={(s) => setPlaceName(s)}
+                                          name="name"
+                                          label="Business name"
+                                          placeholder="name of your business"
                             />
-
                         </View>
 
-                        {!switchEnabled &&
-                            <AppTextInput onTextChange={(s) => enterFixedPrice(s)} name="Price"
-                                          label="Price"
-                                          extraStyles={styles.input}
-                                          placeholder="Add your price here"
-                                          value={minPrice}
-                                          keyboardType={"decimal-pad"}
-                                          unit={currency}
-                                          required
-                            />
+                        <View style={styles.input}>
+                            <AppTagsSelect
+                                name="category"
+                                list={Object.values(Categories)}
+                                label="Categories"
+                                value={category}
+                                onChange={setCategory}
 
+                            />
+                        </View>
+
+                        <View style={styles.input}>
+                            <AppTextInput name="phoneNumber"
+                                          required
+                                          design={2}
+                                          label="Phone number"
+                                          placeholder="Phone number"
+                                          onChange={(s) => setPhoneNumber(s)}
+                                          value={phoneNumber}
+                            />
+                        </View>
+
+                        <View style={styles.input}>
+                            <AppDropDown name="country"
+                                         required
+                                         label="Country"
+                                         onChange={setCountryCode}
+                                         value={countryCode}
+                                         itemList={countriesPickerItems}
+                            />
+                        </View>
+
+                        <View style={styles.input}>
+                            <AppDropDown name="city"
+                                         required
+                                         label="City"
+                                         onChange={setCity}
+                                         value={city}
+                                         itemList={citiesPickerItem}
+                                         disabled={!countryCode}
+                            />
+                        </View>
+
+                        <View style={styles.input}>
+                            <AppTagsSelect
+                                name="priceKind"
+                                list={Object.values(PriceKind)}
+                                label="Price"
+                                value={priceKind}
+                                onChange={setPriceKind}
+                                borders="rectangle"
+                                disabled={!countryCode}
+                            />
+                        </View>
+
+                        {priceKind === PriceKind.Single && countryCode &&
+                            <View style={styles.input}>
+                                <AppTextInput onChange={(s) => enterFixedPrice(s)} name="singlePrice"
+                                              label="Single price"
+                                              placeholder="Add your price here"
+                                              value={minPrice}
+                                              keyboardType={'decimal-pad'}
+                                              unit={COUNTRIES.get(countryCode)?.currency}
+                                              required
+                                              design={2}
+                                />
+                            </View>
                         }
 
-                        {switchEnabled &&
-                            <View style={styles.priceRangeContainer}>
-                                <AppTextInput onTextChange={(s) => setMinPrice(s)} name="minPrice"
+                        {priceKind === PriceKind.Range && countryCode &&
+                            <View style={[styles.input, styles.priceRangeContainer]}>
+                                <AppTextInput onChange={(s) => setMinPrice(s)} name="minPrice"
                                               label="Min. price"
-                                              extraStyles={[styles.input, {flex: 1}]}
+                                              design={2}
+                                              extraStyles={{flex: 1}}
                                               placeholder="Minimum price"
                                               value={minPrice}
-                                              keyboardType={"decimal-pad"}
-                                              unit={currency}
+                                              keyboardType={'decimal-pad'}
+                                              unit={COUNTRIES.get(countryCode)?.currency}
                                               required
                                 />
-                                <AppTextInput onTextChange={(s) => setMaxPrice(s)} name="minPrice"
+                                <AppTextInput onChange={(s) => setMaxPrice(s)} name="minPrice"
                                               label="Max. price"
-                                              extraStyles={[styles.input, {flex: 1}]}
+                                              design={2}
+                                              extraStyles={{flex: 1}}
                                               placeholder="Maximum price"
                                               value={maxPrice}
-                                              keyboardType={"decimal-pad"}
-                                              unit={currency}
+                                              keyboardType={'decimal-pad'}
+                                              unit={COUNTRIES.get(countryCode)?.currency}
                                               required
                                 />
                             </View>
                         }
 
-                        <AppDropDown style={styles.input}
-                                     label="Price type"
-                                     itemList={priceTypeList}
-                                     value={priceType}
-                                     onChange={setPriceType}
-                                     title="Select price type"
-                                     name="priceType"
-                                     required
-                        />
+                        {priceKind !== PriceKind.NoPrice &&
+                            <View style={styles.input}>
+                                <AppDropDown
+                                    label="Price type"
+                                    itemList={priceTypeList}
+                                    value={priceType}
+                                    onChange={setPriceType}
+                                    title="Select price type"
+                                    name="priceType"
+                                    required
+                                />
+                            </View>
+                        }
 
-
-                        <Text style={styles.subtitle}>
-                            Social media
-                        </Text>
-                        <AppTextInput name="facebook"
-                                      label="Facebook"
-                                      placeholder="Link to your place's facebook account"
-                                      onTextChange={(s) => setFacebook(s)}
-                                      value={facebook}
-                                      extraStyles={styles.input}
-                        />
-                        <AppTextInput name="instagram"
-                                      label="Instagram"
-                                      placeholder="Link to your place's instagram account"
-                                      onTextChange={(s) => setInstagram(s)}
-                                      value={instagram}
-                                      extraStyles={styles.input}
-                        />
-                        <AppTextInput name="tiktok"
-                                      label="Tiktok"
-                                      placeholder="Link to your place's Tikok account"
-                                      onTextChange={(s) => setTiktok(s)}
-                                      value={tiktok}
-                                      extraStyles={styles.input}
-                        />
-                        <AppTextInput name="website"
-                                      label="Website"
-                                      placeholder="Link to your place's website"
-                                      onTextChange={(s) => setWebsite(s)}
-                                      value={website}
-                                      extraStyles={styles.input}
-                        />
 
                     </ScrollView>
                 </AppForm>
@@ -249,52 +269,68 @@ export default function FillPlaceInfo({data, setData}: {
                 isFirstStep={false}
                 isLastStep={false}/>
         </>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
+    scrollView: {
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+    },
+    input: {
+        marginVertical: 10,
+    },
     container: {
         padding: 15,
         marginBottom: 100,
     },
     title: {
         fontSize: Theme.sizes.xl,
-        fontWeight: "bold",
-        textAlign: "center",
-        width: "100%",
+        fontWeight: 'bold',
+        textAlign: 'center',
+        width: '100%',
     },
     subtitle: {
         fontSize: Theme.sizes.xl,
-        fontWeight: "bold",
+        fontWeight: 'bold',
         color: Theme.colors.gray.S300,
         paddingTop: 25,
         paddingBottom: 25,
-
-        // backgroundColor: Theme.colors.gray.S200,
-        // padding: 10
-
-    },
-    input: {
-        marginTop: 15,
-        marginBottom: 5
     },
 
+
+    priceKindContainer: {
+        display: 'flex',
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        gap: 10,
+        marginTop: 10,
+    },
+    priceKind: {
+        backgroundColor: Theme.colors.iconBackground,
+        flex: 1,
+        paddingVertical: 8,
+        paddingHorizontal: 16,
+        borderRadius: Theme.radius.sm,
+    },
+    priceKindText: {
+        textAlign: 'center',
+    },
     switchContainer: {
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
         marginVertical: 15,
 
     },
-    switchText: {
-        flex: 1,
-        fontSize: Theme.sizes.md
-    },
     priceRangeContainer: {
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-        gap: 35
-    }
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 35,
+    },
 
-})
+
+});

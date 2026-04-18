@@ -79,9 +79,10 @@ export default function AppTagsSelect({
 const styles = StyleSheet.create({
     label: {
         marginBottom: 5,
+        color: Theme.colors.primary,
     },
     disabledLabel: {
-        color: Theme.colors.gray.S400,
+        color: Theme.colors.textDisabled,
     },
     scrollView: {
         flexDirection: 'row',
@@ -94,9 +95,15 @@ const styles = StyleSheet.create({
         backgroundColor: Theme.colors.white,
         borderRadius: Theme.radius.full,
         flexGrow: 1,
+        borderWidth: 1,
+        borderColor: Theme.colors.border
+    },
+    itemsText: {
+        textAlign: 'center',
+        color: Theme.colors.primary,
     },
     disabledItem: {
-        backgroundColor: Theme.colors.gray.S200,
+        backgroundColor: Theme.colors.backgroundDisabled,
     },
     activeItem: {
         backgroundColor: Theme.colors.primary,
@@ -105,14 +112,12 @@ const styles = StyleSheet.create({
     rectangleItem: {
         borderRadius: Theme.radius.sm,
     },
-    itemsText: {
-        textAlign: 'center',
-    },
+
     activeText: {
         color: Theme.colors.white,
     },
     disabledText: {
-        color: Theme.colors.gray.S400,
+        color: Theme.colors.textDisabled,
     },
     error: {
         fontSize: Theme.sizes.xs,

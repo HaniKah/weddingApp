@@ -44,7 +44,7 @@ export default function VendorPlaceItem({data, setTrigger}: VendorPlaceItemProps
                             <Text style={styles.currency}>  {COUNTRIES.get(data.country)?.currency}</Text>
                         </View>
                     </View>
-                    <IconSymbol name="chevron.right" size={24} color={Theme.colors.gray.S400}/>
+                    <IconSymbol name="chevron.right" size={20} color={Theme.colors.border}/>
                 </View>
             </Link>
         </>
@@ -65,7 +65,8 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         padding: 5,
         position: "relative",
-
+        borderWidth: 1,
+        borderColor: Theme.colors.border,
     },
     containerUncompleted: {
         backgroundColor: "transparent",

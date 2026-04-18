@@ -6,8 +6,8 @@ export const Theme = {
         border: "#E8D8CF",
         iconBackground: "#f2e7e2",
         background: "#FDF8F5",
-        primaryInactive: '#C0C0C0',
-        primaryTextInactive: '#606060',
+        backgroundDisabled: '#eae2de',
+        textDisabled: '#9d938e',
         green: {
             S100: '#D6F8D6',
             S200: '#A3F0A3',

@@ -88,7 +88,7 @@ export default function Index() {
             <Stack.Screen options={{
                 headerBackButtonMenuEnabled: true,
                 headerBackButtonDisplayMode: 'minimal',
-                headerStyle: {backgroundColor: Theme.colors.background},
+                contentStyle: {backgroundColor: Theme.colors.background},
                 title: 'Listings',
                 headerRight: () => <IconButton removeBackground onPress={() => createPlaceModalRef.current?.open()}
                                                name="plus"/>,

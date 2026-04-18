@@ -127,7 +127,7 @@ const design1: TextInputType = StyleSheet.create({
             flexDirection: 'row',
             alignItems: 'center',
             borderBottomWidth: 2,
-            borderColor: Theme.colors.primaryInactive,
+            borderColor: Theme.colors.backgroundDisabled,
         },
         input: {
             paddingRight: 10,
@@ -172,7 +172,7 @@ const design2: TextInputType = StyleSheet.create({
         borderRadius: Theme.radius.sm,
         overflow: 'hidden',
         paddingRight: 10,
-        borderWidth: 2,
+        borderWidth: 1,
 
 
     },

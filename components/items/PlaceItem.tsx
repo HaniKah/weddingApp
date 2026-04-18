@@ -50,7 +50,8 @@ export default function PlaceItem({item}: { item: PlacesDto }) {
 
                                 <Text style={styles.price}>{item.minPrice} - {item.maxPrice}</Text>
                             }
-                            <Text style={styles.currency}>{COUNTRIES.get(item.country)?.currency} / price type</Text>
+                            <Text
+                                style={styles.currency}>{COUNTRIES.get(item.country)?.currency} / {item.priceType}</Text>
                         </View>
                         <AppButton buttonSize={ButtonSize.SM}
                                    onPress={() => Linking.openURL(`tel:${item.phoneNumber}`)}>
@@ -127,6 +128,8 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         backgroundColor: Theme.colors.white,
         overflow: 'hidden',
+        boxShadow: `0px 3px 10px ${Theme.colors.border}`,
+        shadowOpacity: 0.1
     },
     image: {
         resizeMode: 'cover',

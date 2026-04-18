@@ -4,8 +4,8 @@ import {Link} from 'expo-router';
 import {Theme} from '@/styles/Theme';
 import AppButton from '@/components/appComponents/AppButton';
 import {ButtonSize} from '@/styles/Button';
-import {IconSymbol} from '@/components/symbols/IconSymbol';
 import {COUNTRIES} from "@/constants/countries";
+import {Feather} from "@expo/vector-icons";
 
 
 export default function PlaceItem({item}: { item: PlacesDto }) {
@@ -36,7 +36,7 @@ export default function PlaceItem({item}: { item: PlacesDto }) {
                         {item.name}
                     </Text>
                     <View style={styles.countryContainer}>
-                        <IconSymbol color={Theme.colors.gray.S600} name="mappin.circle" size={14}/>
+                        <Feather name="map-pin" size={14} color={Theme.colors.secondary}/>
                         <Text style={styles.countryText}>
                             {item.city}
                         </Text>
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     },
     countryText: {
         fontSize: Theme.sizes.xs,
-        color: Theme.colors.gray.S600,
+        color: Theme.colors.secondary,
     },
     priceAndCallContainer: {
         display: 'flex',
@@ -142,20 +142,21 @@ const styles = StyleSheet.create({
     },
     currency: {
         fontWeight: 'normal',
-        color: Theme.colors.gray.S500,
+        color: Theme.colors.secondary,
         fontSize: Theme.sizes.xs,
 
     },
     priceContainer: {
         display: 'flex',
         flexDirection: 'row',
-        alignItems: 'flex-end',
+        alignItems: 'center',
         gap: 5,
         flex: 1,
     },
     price: {
         fontWeight: 'bold',
-        fontSize: Theme.sizes.sm,
+        fontSize: Theme.sizes.md,
+        color: Theme.colors.primary,
     },
 
 });

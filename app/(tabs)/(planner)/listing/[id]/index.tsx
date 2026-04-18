@@ -1,21 +1,20 @@
-import { ActivityIndicator, Animated, Image, Pressable, StyleSheet, Text, View } from "react-native";
-import { useCallback, useEffect, useState } from "react";
-import { Link, Stack, useLocalSearchParams, usePathname, useRouter } from "expo-router";
-import { PlaceDetailsDto, Categories } from "@/types/open-api";
+import {ActivityIndicator, Animated, Image, Pressable, StyleSheet, Text, View} from "react-native";
+import {useCallback, useEffect, useState} from "react";
+import {Link, Stack, useLocalSearchParams, usePathname, useRouter} from "expo-router";
+import {Categories, PlaceDetailsDto} from "@/types/open-api";
 import AppButton from "@/components/appComponents/AppButton";
-import { ButtonType } from "@/styles/Button";
+import {ButtonType} from "@/styles/Button";
 import AppIf from "@/components/appComponents/AppIf";
 import PlaceInfo from "@/components/PlaceInfo";
-import { Theme } from "@/styles/Theme";
-import { useApi } from "@/utils/api";
-import { IconButton } from "@/components/symbols/IconButton";
+import {Theme} from "@/styles/Theme";
+import {useApi} from "@/utils/api";
+import {IconButton} from "@/components/symbols/IconButton";
 import ScrollView = Animated.ScrollView;
-import { tryCatch } from "@/utils/tryCatch";
 
 
 export default function PlaceId() {
     const API = useApi().api
-    const { id } = useLocalSearchParams<{ id: string }>();
+    const {id} = useLocalSearchParams<{ id: string }>();
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const [placeDetails, setPlaceDetails] = useState<PlaceDetailsDto>()
     const [notes, setNotes] = useState<string>()
@@ -30,7 +29,7 @@ export default function PlaceId() {
 
     const getPlaceDetails = useCallback(async () => {
         try {
-            const response = await API.plannerControllerGetPlaceById({ placeId: Number(id) })
+            const response = await API.plannerControllerGetPlaceById({placeId: Number(id)})
             setPlaceDetails(response.data)
             // setPhotosOrder(response.data?.photos?.map((p) => p.photoRef))
         } catch (err) {
@@ -49,7 +48,11 @@ export default function PlaceId() {
         if (!placeDetails) return
         try {
             setIsLoading(true)
-            await API.plannerControllerTogglePickedPlaceFilter({ placeId: placeDetails?.id, picked: !placeDetails.picked, step: placeDetails.step })
+            await API.plannerControllerTogglePickedPlaceFilter({
+                placeId: placeDetails?.id,
+                picked: !placeDetails.picked,
+                step: placeDetails.category
+            })
             await getPlaceDetails()
         } catch (err) {
             console.error(err)
@@ -63,7 +66,10 @@ export default function PlaceId() {
         if (!placeDetails) return
         try {
             setIsLoading(false)
-            await API.plannerControllerToggleFavoritePlaceFilter({ placeId: placeDetails?.id, favorite: !placeDetails?.favourite })
+            await API.plannerControllerToggleFavoritePlaceFilter({
+                placeId: placeDetails?.id,
+                favorite: !placeDetails?.favourite
+            })
             await getPlaceDetails()
         } catch (err) {
             console.error(err)
@@ -82,15 +88,15 @@ export default function PlaceId() {
                         headerShown: true,
                         headerTintColor: Theme.colors.primary,
                         headerBackButtonDisplayMode: "minimal"
-                    }} />
+                    }}/>
 
                 <Link asChild href={{
                     pathname: "/(tabs)/(planner)/[step]/[id]/images",
-                    params: { id: params.id, step: params.step }
+                    params: {id: params.id, step: params.step}
                 }}>
                     <Pressable style={styles.imageContainer}>
 
-                        <Image style={styles.image} source={{ uri: placeDetails.mainPhoto }} />
+                        <Image style={styles.image} source={{uri: placeDetails.mainPhoto}}/>
                     </Pressable>
                 </Link>
 
@@ -100,8 +106,8 @@ export default function PlaceId() {
                         <View style={styles.titleContainer}>
                             <Text style={styles.title}>{placeDetails?.name}</Text>
                             {placeDetails.favourite ?
-                                <IconButton onPress={toggleFavorites} removeBackground name="heart.fill" /> :
-                                <IconButton onPress={toggleFavorites} removeBackground name="heart" />}
+                                <IconButton onPress={toggleFavorites} removeBackground name="heart.fill"/> :
+                                <IconButton onPress={toggleFavorites} removeBackground name="heart"/>}
                         </View>
                         <View style={styles.priceContainer}>
                             <Text
@@ -125,29 +131,31 @@ export default function PlaceId() {
 
                     <View style={styles.contactInfoContainer}>
                         <AppIf value={placeDetails.phoneNumber}>
-                            <PlaceInfo iconName='phone.circle' info={placeDetails?.phoneNumber} />
+                            <PlaceInfo iconName='phone.circle' info={placeDetails?.phoneNumber}/>
                         </AppIf>
 
                         <AppIf value={placeDetails.website}>
-                            <PlaceInfo iconName='globe' info={placeDetails?.website} />
+                            <PlaceInfo iconName='globe' info={placeDetails?.website}/>
                         </AppIf>
 
 
                         <AppIf value={placeDetails?.facebook}>
-                            <PlaceInfo iconName='globe' info={placeDetails?.facebook} />
+                            <PlaceInfo iconName='globe' info={placeDetails?.facebook}/>
                         </AppIf>
 
                         <AppIf value={placeDetails?.instagram}>
-                            <PlaceInfo iconName='globe' info={placeDetails?.instagram} />
+                            <PlaceInfo iconName='globe' info={placeDetails?.instagram}/>
                         </AppIf>
 
                         <AppIf value={placeDetails?.instagram}>
-                            <PlaceInfo iconName='globe' info={placeDetails?.tiktok} />
+                            <PlaceInfo iconName='globe' info={placeDetails?.tiktok}/>
                         </AppIf>
                     </View>
 
                     <View style={styles.callForActionContainer}>
-                        <AppButton extraStylesTxt={[styles.pickedText, { color: !placeDetails.picked ? Theme.colors.primary : Theme.colors.red.S500 }]} fullWidth onPress={togglePicked} buttonType={ButtonType.PLAIN}>
+                        <AppButton
+                            extraStylesTxt={[styles.pickedText, {color: !placeDetails.picked ? Theme.colors.primary : Theme.colors.red.S500}]}
+                            fullWidth onPress={togglePicked} buttonType={ButtonType.PLAIN}>
                             {!placeDetails.picked ? "save in my checklist" : "remove place from my checklist"}
                         </AppButton>
 
@@ -160,18 +168,15 @@ export default function PlaceId() {
                     </View>
 
 
-
-
-
                 </View>
 
-            </ScrollView >
+            </ScrollView>
 
         )
     } else {
         return (
             <View>
-                <ActivityIndicator size="large" />
+                <ActivityIndicator size="large"/>
             </View>
         )
     }

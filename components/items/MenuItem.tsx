@@ -1,6 +1,6 @@
 import {StyleSheet, Text, TouchableOpacity} from 'react-native';
-import {Feather} from '@expo/vector-icons';
 import {Theme} from '@/styles/Theme';
+import {IconSymbol} from "@/components/symbols/IconSymbol";
 
 export default function MenuItem({
                                      icon,
@@ -16,13 +16,13 @@ export default function MenuItem({
             style={styles.container}
             onPress={onPress}
         >
-            <Feather name={icon as any} size={18} color={Theme.colors.primary}/>
+            <IconSymbol name={icon as any} size={18} color={Theme.colors.primary}/>
             <Text
                 style={styles.text}
             >
                 {label}
             </Text>
-            <Feather name="chevron-right" size={16} color={Theme.colors.primary}/>
+            <IconSymbol name="chevron.right" size={16} color={Theme.colors.primary}/>
         </TouchableOpacity>
     );
 }

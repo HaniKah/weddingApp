@@ -7,7 +7,6 @@ import {IconSymbol} from "@/components/symbols/IconSymbol";
 import {COUNTRIES} from "@/constants/countries";
 import {Link} from "expo-router";
 import CategoryTag from "@/components/CategoryTag";
-import {Feather} from "@expo/vector-icons";
 
 type VendorPlaceItemProps = {
     data: VendorPlaceDto;
@@ -45,7 +44,7 @@ export default function VendorPlaceItem({data, setTrigger}: VendorPlaceItemProps
                             <Text style={styles.currency}>  {COUNTRIES.get(data.country)?.currency}</Text>
                         </View>
                     </View>
-                    <Feather name="chevron-right" size={24} color={Theme.colors.gray.S400}/>
+                    <IconSymbol name="chevron.right" size={24} color={Theme.colors.gray.S400}/>
                 </View>
             </Link>
         </>

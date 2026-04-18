@@ -1,33 +1,20 @@
-import {
-    ActivityIndicator,
-    Alert,
-    Dimensions,
-    FlatList,
-    Image,
-    ScrollView,
-    StyleSheet,
-    Text,
-    View,
-} from 'react-native';
-import {Stack, useLocalSearchParams, useRouter} from 'expo-router';
+import {Alert, Dimensions, StyleSheet, Text, View} from 'react-native';
+import {Link, Stack, useLocalSearchParams, useRouter} from 'expo-router';
 import {useApi} from '@/utils/api';
 import {useEffect, useRef, useState} from 'react';
-import {VendorPlaceDetailsDto, PhotosDto} from '@/types/open-api';
+import {PhotosDto, VendorPlaceDetailsDto} from '@/types/open-api';
 import {Theme} from '@/styles/Theme';
-import {COUNTRIES} from '@/constants/countries';
-import PlaceInfo from '@/components/PlaceInfo';
-import AppIf from '@/components/appComponents/AppIf';
-import AppButton from '@/components/appComponents/AppButton';
-import {ButtonType} from '@/styles/Button';
-import AppModal, {AppModalRef} from '@/components/appComponents/AppModal';
-import AppView from '@/components/appComponents/AppView';
-import CreatePlaceWizard from '@/components/wizards/createPlaceWizard/CreatePlaceWizard';
-import {IconSymbol} from '@/components/symbols/IconSymbol';
+import {AppModalRef} from '@/components/appComponents/AppModal';
+import {ImageUploadModel} from '@/components/wizards/createPlaceWizard/CreatePlaceWizard';
 import * as ImagePicker from 'expo-image-picker';
 import {ImagePickerAsset} from 'expo-image-picker';
 import {ImageManipulator, SaveFormat} from 'expo-image-manipulator';
-import {ImageUploadModel} from '@/components/wizards/createPlaceWizard/CreatePlaceWizard';
-import AppPressable from '@/components/appComponents/AppPressable';
+import AppButton from "@/components/appComponents/AppButton";
+import {ButtonType} from "@/styles/Button";
+import AppView from "@/components/appComponents/AppView";
+import CategoryTag from "@/components/CategoryTag";
+import {COUNTRIES} from "@/constants/countries";
+import {IconSymbol, IconSymbolName} from "@/components/symbols/IconSymbol";
 
 const IMAGE_GAP = 8;
 const COLUMN_PER_ROW = 3;
@@ -37,13 +24,13 @@ const IMAGE_SIZE =
 
 export default function Place() {
     const {api} = useApi();
-    const {id} = useLocalSearchParams<{id: string}>();
+    const {id} = useLocalSearchParams<{ id: string }>();
     const router = useRouter();
 
     const [placeDetails, setPlaceDetails] = useState<VendorPlaceDetailsDto>();
     const [isLoading, setIsLoading] = useState(false);
     const [photos, setPhotos] = useState<PhotosDto[]>([]);
-    const [isPhotosLoading, setIsPhotosLoading] = useState(false);
+
 
     const editModalRef = useRef<AppModalRef>(null);
 
@@ -66,13 +53,13 @@ export default function Place() {
 
     async function fetchPhotos() {
         try {
-            setIsPhotosLoading(true);
+            setIsLoading(true);
             const res = await api.photosControllerGetPhotos(Number(id));
             setPhotos(res.data.result);
         } catch (err) {
             console.error(err);
         } finally {
-            setIsPhotosLoading(false);
+            setIsLoading(false);
         }
     }
 
@@ -142,320 +129,145 @@ export default function Place() {
         );
     }
 
-    if (isLoading) {
-        return (
-            <View style={styles.centered}>
-                <ActivityIndicator size="large"/>
-            </View>
-        );
-    }
-
-    if (!placeDetails) return null;
-
-    const currency = COUNTRIES.get(placeDetails.countryCode)?.currency;
-    const isSamePrice = placeDetails.minPrice === placeDetails.maxPrice;
-    const priceLabel = isSamePrice
-        ? `${placeDetails.minPrice} ${currency}`
-        : `${placeDetails.minPrice} - ${placeDetails.maxPrice} ${currency}`;
-    const publishedColor = placeDetails.isPublished ? Theme.colors.green.S600 : Theme.colors.gray.S400;
 
     return (
         <>
             <Stack.Screen
                 options={{
-                    title: placeDetails.name,
+                    title: "Manage listing",
                     headerShown: true,
-                    headerTintColor: Theme.colors.primary,
+                    headerTintColor: Theme.colors.secondary,
                     headerBackButtonDisplayMode: 'minimal',
+                    contentStyle: {backgroundColor: Theme.colors.background},
+                    headerStyle: {backgroundColor: Theme.colors.background},
+                    headerRight: () => (
+                        <Link asChild push href={`/(tabs)/(planner)/listing/${placeDetails?.id}`}>
+                            <AppButton icon="eye" extraStylesBtn={{paddingHorizontal: 10}}
+                                       buttonType={ButtonType.PLAIN}>Preview</AppButton>
+
+                        </Link>
+
+                    )
+
                 }}
             />
-
-            <ScrollView style={styles.container}>
-                {/* Hero image */}
-                <View style={styles.imageContainer}>
-                    <Image style={styles.image} source={{uri: placeDetails.mainPhoto}}/>
-                    <View style={styles.badgeContainer}>
-                        <View style={[styles.badge, {backgroundColor: publishedColor}]}>
-                            <Text style={styles.badgeText}>
-                                {placeDetails.isPublished ? 'Published' : 'Draft'}
-                            </Text>
+            <AppView withPadding isLoading={isLoading}>
+                {placeDetails &&
+                    <InfoCard label="LISTING DETAILS" onPress={() => {
+                    }}>
+                        <Text style={styles.placeName}>{placeDetails?.name}</Text>
+                        <View style={styles.categoryTag}>
+                            <CategoryTag category={placeDetails?.category}/>
                         </View>
-                        <View style={styles.categoryBadge}>
-                            <Text style={styles.categoryBadgeText}>{placeDetails.category}</Text>
-                        </View>
-                    </View>
-                </View>
-
-                <View style={styles.content}>
-                    {/* Name & location */}
-                    <View style={styles.headerRow}>
-                        <View style={styles.titleBlock}>
-                            <Text style={styles.name}>{placeDetails.name}</Text>
-                            <Text style={styles.location}>
-                                {placeDetails.city},{' '}
-                                {COUNTRIES.get(placeDetails.countryCode)?.countryName}
-                            </Text>
-                        </View>
-                        <AppButton
-                            buttonType={ButtonType.OUTLINED}
-                            buttonSize="SM"
-                            onPress={() => editModalRef.current?.open()}
-                            icon="pencil"
-                        >
-                            Edit
-                        </AppButton>
-                    </View>
-
-                    <View style={styles.divider}/>
-
-                    {/* Price */}
-                    <View style={styles.priceRow}>
-                        <Text style={styles.sectionLabel}>Price</Text>
-                        <Text style={styles.price}>{priceLabel}</Text>
-                        <Text style={styles.priceType}>{placeDetails.priceType}</Text>
-                    </View>
-
-                    {/* Description */}
-                    <AppIf value={placeDetails.description}>
-                        <View style={styles.section}>
-                            <Text style={styles.sectionLabel}>About</Text>
-                            <Text style={styles.description}>{placeDetails.description}</Text>
-                        </View>
-                    </AppIf>
-
-                    {/* Contact */}
-                    <View style={styles.section}>
-                        <Text style={styles.sectionLabel}>Contact</Text>
-                        <PlaceInfo iconName="phone.circle" info={placeDetails.phoneNumber}/>
-                        <AppIf value={placeDetails.website}>
-                            <PlaceInfo iconName="globe" info={placeDetails.website}/>
-                        </AppIf>
-                        <AppIf value={placeDetails.instagram}>
-                            <PlaceInfo iconName="camera.circle" info={placeDetails.instagram}/>
-                        </AppIf>
-                        <AppIf value={placeDetails.facebook}>
-                            <PlaceInfo iconName="person.crop.circle" info={placeDetails.facebook}/>
-                        </AppIf>
-                        <AppIf value={placeDetails.tiktok}>
-                            <PlaceInfo iconName="music.note" info={placeDetails.tiktok}/>
-                        </AppIf>
-                    </View>
-
-                    {/* Address */}
-                    <AppIf value={placeDetails.streetName}>
-                        <View style={styles.section}>
-                            <Text style={styles.sectionLabel}>Address</Text>
-                            <PlaceInfo iconName="location.circle" info={placeDetails.streetName}/>
-                        </View>
-                    </AppIf>
-
-                    <View style={styles.divider}/>
-
-                    {/* Photos */}
-                    <View style={styles.section}>
-                        <View style={styles.sectionHeaderRow}>
-                            <Text style={styles.sectionLabel}>Photos</Text>
-                            <AppButton
-                                buttonType={ButtonType.PLAIN}
-                                buttonSize="SM"
-                                onPress={handlePickImages}
-                                icon="plus"
-                            >
-                                Add
-                            </AppButton>
-                        </View>
-
-                        {isPhotosLoading ? (
-                            <ActivityIndicator style={{marginTop: 12}}/>
-                        ) : photos.length === 0 ? (
-                            <AppPressable onPress={handlePickImages}>
-                                <View style={styles.emptyPhotos}>
-                                    <IconSymbol
-                                        name="photo.on.rectangle"
-                                        size={32}
-                                        color={Theme.colors.gray.S400}
-                                        weight="thin"
-                                    />
-                                    <Text style={styles.emptyPhotosText}>Tap to add photos</Text>
-                                </View>
-                            </AppPressable>
-                        ) : (
-                            <FlatList
-                                scrollEnabled={false}
-                                numColumns={3}
-                                columnWrapperStyle={{gap: IMAGE_GAP}}
-                                contentContainerStyle={{gap: IMAGE_GAP}}
-                                data={photos}
-                                keyExtractor={(_, i) => i.toString()}
-                                renderItem={({item}) => (
-                                    <Image
-                                        source={{uri: item.uri}}
-                                        width={IMAGE_SIZE}
-                                        height={IMAGE_SIZE}
-                                        style={styles.photo}
-                                    />
-                                )}
-                            />
-                        )}
-                    </View>
-
-                    <View style={styles.divider}/>
-
-                    {/* Delete */}
-                    <View style={styles.deleteSection}>
-                        <AppButton
-                            fullWidth
-                            buttonType={ButtonType.PRIMARY}
-                            destructive
-                            onPress={confirmDelete}
-                        >
-                            Delete listing
-                        </AppButton>
-                    </View>
-                </View>
-            </ScrollView>
-
-            {/* Edit modal */}
-            <AppModal ref={editModalRef} presentationStyle="fullScreen" allowSwipeDismissal={false}>
-                <AppView>
-                    <CreatePlaceWizard
-                        onFinish={() => {
-                            editModalRef.current?.close();
-                            fetchPlace();
-                        }}
-                    />
-                </AppView>
-            </AppModal>
+                        <SingleInfo icon="location"
+                                    info={`${placeDetails?.city}, ${COUNTRIES.get(placeDetails?.countryCode)?.countryName}`}/>
+                        <SingleInfo icon="phone" info={placeDetails?.phoneNumber}/>
+                        <SingleInfo icon="tag"
+                                    info={placeDetails?.minPrice === placeDetails?.maxPrice ? `${placeDetails?.minPrice} ${COUNTRIES.get(placeDetails?.countryCode)?.currency} / ${placeDetails?.priceType} ` : `${placeDetails?.minPrice} - ${placeDetails?.maxPrice} ${COUNTRIES.get(placeDetails?.countryCode)?.currency} / ${placeDetails?.priceType}`}/>
+                        {placeDetails.description &&
+                            <SingleInfo icon="text.justify.left" info={placeDetails?.description}/>
+                        }
+                    </InfoCard>
+                }
+            </AppView>
         </>
     );
 }
 
-const styles = StyleSheet.create({
-    centered: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
+function SingleInfo({icon, info}: { icon: IconSymbolName, info: string }) {
+    return (
+        <View style={infoStyle.container}>
+            <View style={infoStyle.iconWrapper}>
+                <IconSymbol size={14} color={Theme.colors.primary} name={icon}/>
+            </View>
+            <Text numberOfLines={1} ellipsizeMode={"tail"} style={infoStyle.infoText}>{info}</Text>
+        </View>
+    )
+}
+
+const infoStyle = StyleSheet.create({
     container: {
-        flex: 1,
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 10,
+        marginBottom: 10,
+    },
+    iconWrapper: {
+        backgroundColor: Theme.colors.iconBackground,
+        padding: 8,
+        borderRadius: Theme.radius.xs,
+    },
+    infoText: {
+        maxWidth: '85%',
+    }
+
+
+})
+
+function InfoCard({children, label, onPress}: { children: React.ReactNode, label: string, onPress?: () => void }) {
+    return (
+        <View style={styles.container}>
+            <View style={styles.containerHeader}>
+                <Text style={styles.containerText}>
+                    {label}
+                </Text>
+                <AppButton onPress={onPress} fullRound buttonSize="SM" buttonType={ButtonType.OUTLINED}
+                           icon="pencil">
+                    Edit
+                </AppButton>
+            </View>
+            <View style={styles.cardContainer}>
+                {children}
+            </View>
+
+        </View>
+    )
+}
+
+const styles = StyleSheet.create({
+    container: {
+        marginVertical: 10
+    },
+    containerHeader: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 5,
+
+    },
+    categoryTag: {
+        marginTop: 5,
+        marginBottom: 10
+    },
+    placeName: {
+        fontWeight: "bold",
+        fontSize: Theme.sizes.lg
+    },
+    containerText: {
+        color: Theme.colors.secondary,
+        fontSize: Theme.sizes.sm,
+    },
+    cardContainer: {
         backgroundColor: Theme.colors.white,
-    },
-    imageContainer: {
-        height: 280,
-        position: 'relative',
-    },
-    image: {
-        height: '100%',
-        width: '100%',
-        resizeMode: 'cover',
-    },
-    badgeContainer: {
-        position: 'absolute',
-        bottom: 12,
-        left: 12,
-        flexDirection: 'row',
-        gap: 8,
-    },
-    badge: {
-        paddingHorizontal: 10,
-        paddingVertical: 4,
-        borderRadius: Theme.radius.full,
-    },
-    badgeText: {
-        color: Theme.colors.white,
-        fontSize: Theme.sizes.xs,
-        fontWeight: '600',
-    },
-    categoryBadge: {
-        paddingHorizontal: 10,
-        paddingVertical: 4,
-        borderRadius: Theme.radius.full,
-        backgroundColor: 'rgba(0,0,0,0.45)',
-    },
-    categoryBadgeText: {
-        color: Theme.colors.white,
-        fontSize: Theme.sizes.xs,
-        fontWeight: '500',
-    },
-    content: {
-        padding: Theme.global.appPadding,
-    },
-    headerRow: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'flex-start',
-        marginTop: 8,
-        gap: 12,
-    },
-    titleBlock: {
-        flex: 1,
-        gap: 4,
-    },
-    name: {
-        fontSize: Theme.sizes.xl,
-        fontWeight: 'bold',
-        color: Theme.colors.black,
-    },
-    location: {
-        fontSize: Theme.sizes.sm,
-        color: Theme.colors.gray.S500,
-    },
-    divider: {
-        height: 1,
-        backgroundColor: Theme.colors.gray.S200,
-        marginVertical: 16,
-    },
-    priceRow: {
-        gap: 4,
-        marginBottom: 16,
-    },
-    price: {
-        fontSize: Theme.sizes.lg,
-        fontWeight: 'bold',
-        color: Theme.colors.black,
-    },
-    priceType: {
-        fontSize: Theme.sizes.sm,
-        color: Theme.colors.gray.S500,
-    },
-    section: {
-        marginBottom: 20,
-    },
-    sectionLabel: {
-        fontSize: Theme.sizes.xs,
-        fontWeight: '600',
-        color: Theme.colors.gray.S500,
-        textTransform: 'uppercase',
-        letterSpacing: 0.8,
-        marginBottom: 8,
-    },
-    sectionHeaderRow: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: 8,
-    },
-    description: {
-        fontSize: Theme.sizes.md,
-        color: Theme.colors.gray.S700,
-        lineHeight: 22,
-    },
-    emptyPhotos: {
-        height: 100,
-        backgroundColor: Theme.colors.gray.S100,
+        padding: 14,
         borderRadius: Theme.radius.md,
-        justifyContent: 'center',
-        alignItems: 'center',
-        gap: 8,
+        borderWidth: 1,
+        borderColor: Theme.colors.border,
     },
-    emptyPhotosText: {
-        fontSize: Theme.sizes.sm,
-        color: Theme.colors.gray.S400,
-    },
-    photo: {
+    headerRightBtn: {
+        borderWidth: 1.5,
+        borderColor: Theme.colors.secondary,
         borderRadius: Theme.radius.sm,
+        paddingHorizontal: 12,
+        paddingVertical: 5,
     },
-    deleteSection: {
-        marginBottom: 40,
-    },
-});
+    headerRight: {
+        color: Theme.colors.secondary,
+        fontSize: Theme.sizes.sm,
+        fontWeight: '600',
+    }
+
+})
+

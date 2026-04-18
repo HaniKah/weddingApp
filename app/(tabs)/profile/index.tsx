@@ -7,7 +7,7 @@ import {ButtonType} from '@/styles/Button';
 import {Theme} from '@/styles/Theme';
 import MenuItem from '@/components/items/MenuItem';
 import {router, Stack} from 'expo-router';
-import {Feather} from "@expo/vector-icons";
+import {IconSymbol} from "@/components/symbols/IconSymbol";
 
 export default function Index() {
     const {signOut} = useAuth();
@@ -22,7 +22,7 @@ export default function Index() {
                     <View style={styles.info}>
                         <Text style={styles.name}>Welcome back</Text>
                         <View style={styles.location}>
-                            <Feather name="map-pin" size={14} color={Theme.colors.secondary}/>
+                            <IconSymbol name="location" size={14} color={Theme.colors.secondary}/>
                             <Text style={styles.address}>{address?.city}, {address?.country}</Text>
                         </View>
                     </View>

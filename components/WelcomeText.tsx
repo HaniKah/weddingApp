@@ -1,7 +1,7 @@
 import {StyleSheet, Text, View} from 'react-native';
 import {Theme} from '@/styles/Theme';
 import {useLocationContext} from '@/contexts/location-context';
-import {Feather} from "@expo/vector-icons";
+import {IconSymbol} from "@/components/symbols/IconSymbol";
 
 
 export default function WelcomeText() {
@@ -19,7 +19,7 @@ export default function WelcomeText() {
                     </Text>
 
                     <View style={styles.location}>
-                        <Feather name="map-pin" size={14} color={Theme.colors.primary}/>
+                        <IconSymbol name="location" size={14} color={Theme.colors.primary}/>
                         <Text style={styles.locationText}>{address?.country}</Text>
                     </View>
                 </View>

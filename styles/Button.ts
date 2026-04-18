@@ -56,8 +56,8 @@ export const ButtonStyles = StyleSheet.create({
 
     smSizeBtn: {
         borderRadius: Theme.radius.sm,
-        paddingHorizontal: 14,
-        paddingVertical: 8,
+        paddingHorizontal: 12,
+        paddingVertical: 6,
     },
     smSizeTxt: {
         fontSize: Theme.sizes.xs,

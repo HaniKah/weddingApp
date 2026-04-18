@@ -87,11 +87,11 @@ export default function PlaceId() {
                         title: placeDetails.name,
                         headerShown: true,
                         headerTintColor: Theme.colors.primary,
-                        headerBackButtonDisplayMode: "minimal"
+                        headerBackButtonDisplayMode: "minimal",
                     }}/>
 
                 <Link asChild href={{
-                    pathname: "/(tabs)/(planner)/[step]/[id]/images",
+                    pathname: "/(tabs)/(planner)/listing/[id]/images",
                     params: {id: params.id, step: params.step}
                 }}>
                     <Pressable style={styles.imageContainer}>

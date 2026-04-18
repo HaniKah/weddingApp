@@ -22,14 +22,13 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         gap: 5,
-        paddingHorizontal: 10,
+        paddingHorizontal: 12,
         paddingVertical: 5,
         borderRadius: Theme.radius.full,
         marginVertical: 5
     },
     text: {
         fontSize: Theme.sizes.xs,
-        fontWeight: "bold",
         color: Theme.colors.primary,
     }
 })

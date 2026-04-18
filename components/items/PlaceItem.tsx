@@ -5,7 +5,7 @@ import {Theme} from '@/styles/Theme';
 import AppButton from '@/components/appComponents/AppButton';
 import {ButtonSize} from '@/styles/Button';
 import {COUNTRIES} from "@/constants/countries";
-import {Feather} from "@expo/vector-icons";
+import {IconSymbol} from "@/components/symbols/IconSymbol";
 
 
 export default function PlaceItem({item}: { item: PlacesDto }) {
@@ -36,7 +36,7 @@ export default function PlaceItem({item}: { item: PlacesDto }) {
                         {item.name}
                     </Text>
                     <View style={styles.countryContainer}>
-                        <Feather name="map-pin" size={14} color={Theme.colors.secondary}/>
+                        <IconSymbol name="location" size={14} color={Theme.colors.secondary}/>
                         <Text style={styles.countryText}>
                             {item.city}
                         </Text>

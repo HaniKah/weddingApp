@@ -1,36 +1,35 @@
-import { StyleProp, Text, TextStyle, ViewStyle } from 'react-native';
-import { ButtonSize, ButtonStyles, ButtonType } from '@/styles/Button';
-import { useFormContext } from '@/contexts/form-context';
-import { IconSymbol } from '@/components/symbols/IconSymbol';
-import { SFSymbols6_0 } from 'sf-symbols-typescript';
-import { Theme } from '@/styles/Theme';
-import { SvgProps } from "react-native-svg";
-import { FC, ReactNode } from "react";
+import {StyleProp, Text, TextStyle, ViewStyle} from 'react-native';
+import {ButtonSize, ButtonStyles, ButtonType} from '@/styles/Button';
+import {useFormContext} from '@/contexts/form-context';
+import {IconSymbol} from '@/components/symbols/IconSymbol';
+import {SFSymbols6_0} from 'sf-symbols-typescript';
+import {Theme} from '@/styles/Theme';
+import {SvgProps} from "react-native-svg";
+import {FC} from "react";
 import Animated from "react-native-reanimated";
 import AppPressable from "@/components/appComponents/AppPressable";
-import { Href, Link, useRouter } from "expo-router";
 
 export default function AppButton({
-    buttonType,
-    buttonSize,
-    isSubmit,
-    onPress,
-    children,
-    extraStylesBtn,
-    extraStylesTxt,
-    icon,
-    CustomIcon,
-    destructive,
-    confirmative,
-    informative,
-    fullWidth,
-    underline,
-    inactive,
-    textPosition,
-    fullRound,
+                                      buttonType,
+                                      buttonSize,
+                                      isSubmit,
+                                      onPress,
+                                      children,
+                                      extraStylesBtn,
+                                      extraStylesTxt,
+                                      icon,
+                                      CustomIcon,
+                                      destructive,
+                                      confirmative,
+                                      informative,
+                                      fullWidth,
+                                      underline,
+                                      inactive,
+                                      textPosition,
+                                      fullRound,
 
 
-}: {
+                                  }: {
     buttonSize?: 'SM' | 'MD' | 'LG',
     buttonType?: ButtonType,
     isSubmit?: boolean,
@@ -50,7 +49,6 @@ export default function AppButton({
     fullRound?: boolean,
 
 
-
 }) {
     let buttonStyles: StyleProp<ViewStyle> = {};
     let textStyles: StyleProp<TextStyle> = {};
@@ -61,72 +59,72 @@ export default function AppButton({
         buttonStyles = ButtonStyles.outlinedBtn;
         textStyles = ButtonStyles.outlinedTxt;
         if (destructive) {
-            buttonStyles = { ...buttonStyles, borderColor: Theme.colors.red.S500 };
-            textStyles = { ...textStyles, color: Theme.colors.red.S500 };
+            buttonStyles = {...buttonStyles, borderColor: Theme.colors.red.S500};
+            textStyles = {...textStyles, color: Theme.colors.red.S500};
         }
         if (confirmative) {
-            buttonStyles = { ...buttonStyles, borderColor: Theme.colors.green.S500 };
-            textStyles = { ...textStyles, color: Theme.colors.green.S500 };
+            buttonStyles = {...buttonStyles, borderColor: Theme.colors.green.S500};
+            textStyles = {...textStyles, color: Theme.colors.green.S500};
         }
         if (informative) {
-            buttonStyles = { ...buttonStyles, borderColor: Theme.colors.blue.S500 };
-            textStyles = { ...textStyles, color: Theme.colors.blue.S500 };
+            buttonStyles = {...buttonStyles, borderColor: Theme.colors.blue.S500};
+            textStyles = {...textStyles, color: Theme.colors.blue.S500};
         }
         if (inactive) {
-            buttonStyles = { ...buttonStyles, borderColor: Theme.colors.gray.S300 };
-            textStyles = { ...textStyles, color: Theme.colors.gray.S500 };
+            buttonStyles = {...buttonStyles, borderColor: Theme.colors.gray.S300};
+            textStyles = {...textStyles, color: Theme.colors.gray.S500};
         }
 
     } else if (buttonType === ButtonType.PLAIN) {
         buttonStyles = ButtonStyles.plainBtn;
         textStyles = ButtonStyles.plainTxt;
         if (destructive) {
-            textStyles = { ...textStyles, color: Theme.colors.red.S500 };
+            textStyles = {...textStyles, color: Theme.colors.red.S500};
         }
         if (confirmative) {
-            textStyles = { ...textStyles, color: Theme.colors.green.S600 };
+            textStyles = {...textStyles, color: Theme.colors.green.S600};
         }
         if (informative) {
-            textStyles = { ...textStyles, color: Theme.colors.blue.S500 };
+            textStyles = {...textStyles, color: Theme.colors.blue.S500};
         }
         if (inactive) {
-            textStyles = { ...textStyles, color: Theme.colors.gray.S500 };
+            textStyles = {...textStyles, color: Theme.colors.gray.S500};
         }
     } else {
         buttonStyles = ButtonStyles.primaryBtn;
         textStyles = ButtonStyles.primaryTxt;
         if (destructive) {
-            buttonStyles = { ...buttonStyles, backgroundColor: Theme.colors.red.S100 };
-            textStyles = { ...textStyles, color: Theme.colors.red.S500 };
+            buttonStyles = {...buttonStyles, backgroundColor: Theme.colors.red.S100};
+            textStyles = {...textStyles, color: Theme.colors.red.S500};
         }
         if (confirmative) {
-            buttonStyles = { ...buttonStyles, backgroundColor: Theme.colors.green.S100 };
-            textStyles = { ...textStyles, color: Theme.colors.green.S600 };
+            buttonStyles = {...buttonStyles, backgroundColor: Theme.colors.green.S100};
+            textStyles = {...textStyles, color: Theme.colors.green.S600};
         }
         if (informative) {
-            buttonStyles = { ...buttonStyles, backgroundColor: Theme.colors.blue.S100 };
-            textStyles = { ...textStyles, color: Theme.colors.blue.S500 };
+            buttonStyles = {...buttonStyles, backgroundColor: Theme.colors.blue.S100};
+            textStyles = {...textStyles, color: Theme.colors.blue.S500};
         }
         if (inactive) {
-            buttonStyles = { ...buttonStyles, backgroundColor: Theme.colors.gray.S300 };
-            textStyles = { ...textStyles, color: Theme.colors.gray.S600 };
+            buttonStyles = {...buttonStyles, backgroundColor: Theme.colors.gray.S300};
+            textStyles = {...textStyles, color: Theme.colors.gray.S600};
         }
     }
 
     switch (buttonSize) {
         case ButtonSize.SM:
-            buttonStyles = { ...buttonStyles, ...ButtonStyles.smSizeBtn };
-            textStyles = { ...textStyles, ...ButtonStyles.smSizeTxt };
-            iconSize = Theme.sizes.lg;
+            buttonStyles = {...buttonStyles, ...ButtonStyles.smSizeBtn};
+            textStyles = {...textStyles, ...ButtonStyles.smSizeTxt};
+            iconSize = Theme.sizes.md;
             break;
         case ButtonSize.LG:
-            buttonStyles = { ...buttonStyles, ...ButtonStyles.lgSizeBtn };
-            textStyles = { ...textStyles, ...ButtonStyles.lgSizeTxt };
+            buttonStyles = {...buttonStyles, ...ButtonStyles.lgSizeBtn};
+            textStyles = {...textStyles, ...ButtonStyles.lgSizeTxt};
             iconSize = Theme.sizes.xxl;
             break;
         default:
-            buttonStyles = { ...buttonStyles, ...ButtonStyles.mdSizeBtn };
-            textStyles = { ...textStyles, ...ButtonStyles.mdSizeTxt };
+            buttonStyles = {...buttonStyles, ...ButtonStyles.mdSizeBtn};
+            textStyles = {...textStyles, ...ButtonStyles.mdSizeTxt};
             iconSize = Theme.sizes.xl;
             break;
     }
@@ -159,8 +157,6 @@ export default function AppButton({
     const formContext = useFormContext();
 
 
-
-
     const handleOnPress = () => {
 
         if (isSubmit) {
@@ -175,19 +171,18 @@ export default function AppButton({
     }
 
 
-
     return (
         <>
 
             <AppPressable disabled={inactive}
-                onPress={handleOnPress}
+                          onPress={handleOnPress}
 
             >
                 <Animated.View style={[buttonStyles, extraStylesBtn]}>
-                    {CustomIcon && <CustomIcon />}
+                    {CustomIcon && <CustomIcon/>}
 
                     {icon &&
-                        <IconSymbol size={iconSize} color={textStyles.color || 'black'} name={icon} />
+                        <IconSymbol size={iconSize} color={textStyles.color || 'black'} name={icon}/>
                     }
 
                     <Text style={[textStyles, extraStylesTxt]}>

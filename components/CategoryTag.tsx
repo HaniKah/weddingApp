@@ -6,7 +6,7 @@ import {Theme} from "@/styles/Theme";
 export default function CategoryTag({category}: { category: Categories }) {
     return (
         <View style={styles.container}>
-            <IconStep width={14} height={14} step={category}/>
+            <IconStep width={14} height={14} fill={Theme.colors.primary} step={category}/>
             <Text style={styles.text}>
                 {category}
             </Text>
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         gap: 5,
-        paddingHorizontal: 12,
+        paddingHorizontal: 10,
         paddingVertical: 5,
         borderRadius: Theme.radius.full,
         marginVertical: 5

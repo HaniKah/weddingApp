@@ -38,11 +38,10 @@ export default function VendorPlaceItem({data, setTrigger}: VendorPlaceItemProps
                         <CategoryTag category={data.category}/>
                         <View style={styles.priceContainer}>
                             {data.minPrice === data.maxPrice ?
-                                <Text>{data.minPrice}</Text> :
-                                <Text>{data.minPrice} - {data.maxPrice}
+                                <Text style={styles.priceText}>{data.minPrice}</Text> :
+                                <Text style={styles.priceText}>{data.minPrice} - {data.maxPrice}
                                 </Text>
                             }
-                            {!data.minPrice && <Text style={styles.priceUncompleted}>add your price</Text>}
                             <Text style={styles.currency}>  {COUNTRIES.get(data.country)?.currency}</Text>
                         </View>
                     </View>
@@ -103,8 +102,12 @@ const styles = StyleSheet.create({
     placeNameUncompleted: {
         color: Theme.colors.gray.S400
     },
+    priceText: {
+        color: Theme.colors.primary,
+        fontWeight: 'bold',
+    },
     currency: {
-        color: Theme.colors.gray.S500,
+        color: Theme.colors.secondary,
 
     },
     priceContainer: {
@@ -112,9 +115,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
     },
-    priceUncompleted: {
-        color: Theme.colors.gray.S400,
-    },
+
     promotionDot: {
         backgroundColor: Theme.colors.blue.S500,
         height: 10,

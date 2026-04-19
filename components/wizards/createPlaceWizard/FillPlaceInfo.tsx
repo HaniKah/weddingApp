@@ -159,7 +159,7 @@ export default function FillPlaceInfo({data, setData}: {
                     <AppForm ref={formRef} onSubmit={handleNextStep}>
                         <ScrollView style={styles.scrollView}>
                             <View style={styles.input}>
-                                <AppTextInput value={data?.name}
+                                <AppTextInput value={placeName}
                                               required
                                               design={2}
                                               onChange={(s) => setPlaceName(s)}
@@ -174,7 +174,7 @@ export default function FillPlaceInfo({data, setData}: {
                                     name="category"
                                     list={Object.values(Categories)}
                                     label="Categories"
-                                    value={data?.category}
+                                    value={category}
                                     onChange={setCategory}
                                     required
 
@@ -188,7 +188,7 @@ export default function FillPlaceInfo({data, setData}: {
                                               label="Phone number"
                                               placeholder="Phone number"
                                               onChange={(s) => setPhoneNumber(s)}
-                                              value={data?.phoneNumber}
+                                              value={phoneNumber}
                                 />
                             </View>
 
@@ -197,7 +197,7 @@ export default function FillPlaceInfo({data, setData}: {
                                              required
                                              label="Country"
                                              onChange={setCountryCode}
-                                             value={data?.countryCode}
+                                             value={countryCode}
                                              itemList={countriesPickerItems}
                                 />
                             </View>
@@ -207,7 +207,7 @@ export default function FillPlaceInfo({data, setData}: {
                                              required
                                              label="City"
                                              onChange={setCity}
-                                             value={data?.city}
+                                             value={city}
                                              itemList={citiesPickerItem}
                                              disabled={!data?.countryCode && !countryCode}
                                 />
@@ -231,7 +231,7 @@ export default function FillPlaceInfo({data, setData}: {
                                     <AppTextInput onChange={(s) => enterFixedPrice(s)} name="singlePrice"
                                                   label="Single price"
                                                   placeholder="Add your price here"
-                                                  value={data?.minPrice}
+                                                  value={minPrice}
                                                   keyboardType={'decimal-pad'}
                                                   unit={COUNTRIES.get(countryCode)?.currency}
                                                   required
@@ -247,7 +247,7 @@ export default function FillPlaceInfo({data, setData}: {
                                                   design={2}
                                                   extraStyles={{flex: 1}}
                                                   placeholder="Minimum price"
-                                                  value={data?.minPrice}
+                                                  value={minPrice}
                                                   keyboardType={'decimal-pad'}
                                                   unit={COUNTRIES.get(countryCode)?.currency}
                                                   required
@@ -257,7 +257,7 @@ export default function FillPlaceInfo({data, setData}: {
                                                   design={2}
                                                   extraStyles={{flex: 1}}
                                                   placeholder="Maximum price"
-                                                  value={data?.maxPrice}
+                                                  value={maxPrice}
                                                   keyboardType={'decimal-pad'}
                                                   unit={COUNTRIES.get(countryCode)?.currency}
                                                   required
@@ -270,7 +270,7 @@ export default function FillPlaceInfo({data, setData}: {
                                     <AppDropDown
                                         label="Price type"
                                         itemList={priceTypeList}
-                                        value={data?.priceType}
+                                        value={priceType}
                                         onChange={setPriceType}
                                         title="Select price type"
                                         name="priceType"

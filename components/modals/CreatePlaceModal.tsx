@@ -3,8 +3,8 @@ import AppView from "@/components/appComponents/AppView";
 import CreatePlaceWizard from "@/components/wizards/createPlaceWizard/CreatePlaceWizard";
 import {RefObject} from "react";
 
-export default function CreatePlaceModal({ref, reloadPlaces}: {
-
+export default function CreatePlaceModal({id, ref, reloadPlaces}: {
+    id?: number
     ref: RefObject<AppModalRef | null>
     reloadPlaces: () => void
 
@@ -24,7 +24,7 @@ export default function CreatePlaceModal({ref, reloadPlaces}: {
                 beforeCancel={() => reloadPlaces()}
             >
                 <AppView>
-                    <CreatePlaceWizard onFinish={closeAndReload}/>
+                    <CreatePlaceWizard id={id} onFinish={closeAndReload}/>
                 </AppView>
             </AppModal>
         </>

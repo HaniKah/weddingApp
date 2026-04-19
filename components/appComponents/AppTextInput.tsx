@@ -39,7 +39,8 @@ export default function AppTextInput({
 
     const inputRef = useRef<TextInput>(null);
     const [error, setError] = useState<string | undefined>();
-    const [textInput, setTextInput] = useState<string | undefined>(value);
+    // const [textInput, setTextInput] = useState<string | undefined>(value);
+
 
     const form = useFormContext();
 
@@ -56,12 +57,11 @@ export default function AppTextInput({
     }, [onChange, debounceTime]);
 
     function preTextChange(text: string) {
-        setTextInput(text);
+        onChange(text);
         setError(undefined);
         debouncer(text);
 
     }
-
 
     useEffect(() => {
         if (form.submitting) {
@@ -85,11 +85,12 @@ export default function AppTextInput({
 
     }, [form.submitting]);
 
+
     return (
         <View style={extraStyles}>
             {label && <Text style={[styles.label]}>{label}</Text>}
             <View style={styles.inputContainer}>
-                <TextInput value={textInput}
+                <TextInput value={value}
                            autoCorrect={false}
                            keyboardType={keyboardType}
                            placeholder={placeholder}

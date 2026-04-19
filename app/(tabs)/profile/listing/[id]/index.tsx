@@ -15,6 +15,7 @@ import AppView from "@/components/appComponents/AppView";
 import CategoryTag from "@/components/CategoryTag";
 import {COUNTRIES} from "@/constants/countries";
 import {IconSymbol, IconSymbolName} from "@/components/symbols/IconSymbol";
+import CreatePlaceModal from "@/components/modals/CreatePlaceModal";
 
 const IMAGE_GAP = 8;
 const COLUMN_PER_ROW = 3;
@@ -153,8 +154,7 @@ export default function Place() {
             />
             <AppView withPadding isLoading={isLoading}>
                 {placeDetails &&
-                    <InfoCard label="LISTING DETAILS" onPress={() => {
-                    }}>
+                    <InfoCard label="LISTING DETAILS" onPress={() => editModalRef.current?.open()}>
                         <Text style={styles.placeName}>{placeDetails?.name}</Text>
                         <View style={styles.categoryTag}>
                             <CategoryTag category={placeDetails?.category}/>
@@ -170,6 +170,8 @@ export default function Place() {
                     </InfoCard>
                 }
             </AppView>
+
+            <CreatePlaceModal id={placeDetails?.id} ref={editModalRef} reloadPlaces={() => fetchPlace()}/>
         </>
     );
 }

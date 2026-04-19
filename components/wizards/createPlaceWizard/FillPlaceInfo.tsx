@@ -1,9 +1,9 @@
-import {ActivityIndicator, ScrollView, StyleSheet, View} from 'react-native';
+import {ActivityIndicator, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {AppForm, FormRef} from '@/contexts/form-context';
 import AppTextInput from '@/components/appComponents/AppTextInput';
-import {Dispatch, SetStateAction, useEffect, useMemo, useRef, useState} from 'react';
+import {Dispatch, SetStateAction, useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {Theme} from '@/styles/Theme';
-import {Categories, CountryCode, PriceType, VendorPlaceDetailsDto} from '@/types/open-api';
+import {Categories, CountryCode, PriceType, UpdateStep, VendorPlaceDetailsDto} from '@/types/open-api';
 import {PickerItem} from '@/components/appComponents/AppPickerDepr';
 import {useApi} from '@/utils/api';
 import WizardController from '@/components/wizards/WizardController';
@@ -89,10 +89,43 @@ export default function FillPlaceInfo({data, setData}: {
             setIsLoading(false)
         }
     };
+    const updatePlace = async () => {
+        if (!tsRequiredCheck) return;//this is already checked through the from but just for the sake of ts
+        if (!data?.id) return
+        try {
+            setIsLoading(true)
+            const res = await API.placesControllerUpdatePlace({
+                id: data.id,
+                updateStep: UpdateStep.FillPlaceInfo,
+                placeInfo: {
+                    name: placeName,
+                    phoneNumber: phoneNumber,
+                    minPrice: minPrice,
+                    maxPrice: maxPrice,
+                    priceType: priceType,
+                    category: category,
+                }, location: {
+                    countryCode: countryCode,
+                    city: city,
+                },
+            })
+            setData(res.data);
+
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setIsLoading(false)
+        }
+    }
 
 
     const handleNextStep = (async () => {
-        await createPlace();
+        if (data?.id) {
+            await updatePlace()
+        } else {
+            await createPlace();
+        }
+
         wizard.nextStep();
     });
 
@@ -104,9 +137,20 @@ export default function FillPlaceInfo({data, setData}: {
 
     const formRef = useRef<FormRef>(null);
 
+    useCallback(() => {
+        if (data?.minPrice === data?.maxPrice) {
+            setPriceKind(PriceKind.Single)
+        } else if (data?.minPrice !== data?.maxPrice) {
+            setPriceKind(PriceKind.Range)
+        } else {
+            setPriceKind(PriceKind.NoPrice)
+        }
+
+    }, [data?.minPrice, data?.maxPrice])
     useEffect(() => {
 
     }, [data]);
+
 
     return isLoading ? (<ActivityIndicator size="large" style={{flex: 1}}/>) :
         (
@@ -114,8 +158,10 @@ export default function FillPlaceInfo({data, setData}: {
                 <View style={styles.container}>
                     <AppForm ref={formRef} onSubmit={handleNextStep}>
                         <ScrollView style={styles.scrollView}>
+                            <Text>1- {placeName}</Text>
+                            <Text>1- {data?.name}</Text>
                             <View style={styles.input}>
-                                <AppTextInput value={placeName}
+                                <AppTextInput value={data?.name}
                                               required
                                               design={2}
                                               onChange={(s) => setPlaceName(s)}
@@ -130,7 +176,7 @@ export default function FillPlaceInfo({data, setData}: {
                                     name="category"
                                     list={Object.values(Categories)}
                                     label="Categories"
-                                    value={category}
+                                    value={data?.category}
                                     onChange={setCategory}
                                     required
 
@@ -144,7 +190,7 @@ export default function FillPlaceInfo({data, setData}: {
                                               label="Phone number"
                                               placeholder="Phone number"
                                               onChange={(s) => setPhoneNumber(s)}
-                                              value={phoneNumber}
+                                              value={data?.phoneNumber}
                                 />
                             </View>
 
@@ -153,7 +199,7 @@ export default function FillPlaceInfo({data, setData}: {
                                              required
                                              label="Country"
                                              onChange={setCountryCode}
-                                             value={countryCode}
+                                             value={data?.countryCode}
                                              itemList={countriesPickerItems}
                                 />
                             </View>
@@ -163,9 +209,9 @@ export default function FillPlaceInfo({data, setData}: {
                                              required
                                              label="City"
                                              onChange={setCity}
-                                             value={city}
+                                             value={data?.city}
                                              itemList={citiesPickerItem}
-                                             disabled={!countryCode}
+                                             disabled={!data?.countryCode && !countryCode}
                                 />
                             </View>
 
@@ -177,7 +223,7 @@ export default function FillPlaceInfo({data, setData}: {
                                     value={priceKind}
                                     onChange={setPriceKind}
                                     borders="rectangle"
-                                    disabled={!countryCode}
+                                    disabled={!data?.countryCode && !countryCode}
                                     required
                                 />
                             </View>
@@ -187,7 +233,7 @@ export default function FillPlaceInfo({data, setData}: {
                                     <AppTextInput onChange={(s) => enterFixedPrice(s)} name="singlePrice"
                                                   label="Single price"
                                                   placeholder="Add your price here"
-                                                  value={minPrice}
+                                                  value={data?.minPrice}
                                                   keyboardType={'decimal-pad'}
                                                   unit={COUNTRIES.get(countryCode)?.currency}
                                                   required
@@ -203,7 +249,7 @@ export default function FillPlaceInfo({data, setData}: {
                                                   design={2}
                                                   extraStyles={{flex: 1}}
                                                   placeholder="Minimum price"
-                                                  value={minPrice}
+                                                  value={data?.minPrice}
                                                   keyboardType={'decimal-pad'}
                                                   unit={COUNTRIES.get(countryCode)?.currency}
                                                   required
@@ -213,7 +259,7 @@ export default function FillPlaceInfo({data, setData}: {
                                                   design={2}
                                                   extraStyles={{flex: 1}}
                                                   placeholder="Maximum price"
-                                                  value={maxPrice}
+                                                  value={data?.maxPrice}
                                                   keyboardType={'decimal-pad'}
                                                   unit={COUNTRIES.get(countryCode)?.currency}
                                                   required
@@ -226,7 +272,7 @@ export default function FillPlaceInfo({data, setData}: {
                                     <AppDropDown
                                         label="Price type"
                                         itemList={priceTypeList}
-                                        value={priceType}
+                                        value={data?.priceType}
                                         onChange={setPriceType}
                                         title="Select price type"
                                         name="priceType"

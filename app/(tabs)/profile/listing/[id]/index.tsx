@@ -190,7 +190,6 @@ export default function Place() {
                 options={{
                     title: "Manage listing",
                     headerShown: true,
-                    headerTintColor: Theme.colors.secondary,
                     headerBackButtonDisplayMode: 'minimal',
                     contentStyle: {backgroundColor: Theme.colors.background},
                     headerStyle: {backgroundColor: Theme.colors.background},

@@ -22,27 +22,6 @@ export enum CoupleSide {
   Bride = "Bride",
 }
 
-export enum WeddingSteps {
-  Host = "Host",
-  Dress = "Dress",
-  Photographer = "Photographer",
-  Decorator = "Decorator",
-  Catering = "Catering",
-  DancingCourse = "DancingCourse",
-  Dj = "Dj",
-  MakeUpArtist = "MakeUpArtist",
-  Car = "Car",
-  Giveaways = "Giveaways",
-  Aarada = "Aarada",
-  MusiciansAndPerformers = "MusiciansAndPerformers",
-  Jewelry = "Jewelry",
-  Perfumes = "Perfumes",
-  Hammam = "Hammam",
-  CosmeticClinics = "CosmeticClinics",
-  Fireworks = "Fireworks",
-  Extra = "Extra",
-}
-
 export enum CountryCode {
   AE = "AE",
   BH = "BH",
@@ -131,6 +110,7 @@ export interface PlacesViewModel {
 
 export interface PlaceDetailsDto {
   category: Categories;
+  countryCode: CountryCode;
   id: number;
   name: string;
   address?: string;
@@ -153,7 +133,7 @@ export interface ToggleFavoritePlaceFilterRequest {
 }
 
 export interface TogglePickedPlaceFilterRequest {
-  step: WeddingSteps;
+  category: Categories;
   placeId: number;
   picked: boolean;
 }

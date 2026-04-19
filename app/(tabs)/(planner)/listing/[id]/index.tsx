@@ -1,6 +1,6 @@
 import {ActivityIndicator, Animated, Image, Pressable, StyleSheet, Text, View} from "react-native";
 import {useCallback, useEffect, useState} from "react";
-import {Link, Stack, useLocalSearchParams, usePathname, useRouter} from "expo-router";
+import {Link, Stack, useLocalSearchParams} from "expo-router";
 import {Categories, PlaceDetailsDto} from "@/types/open-api";
 import AppButton from "@/components/appComponents/AppButton";
 import {ButtonType} from "@/styles/Button";
@@ -9,6 +9,7 @@ import PlaceInfo from "@/components/PlaceInfo";
 import {Theme} from "@/styles/Theme";
 import {useApi} from "@/utils/api";
 import {IconButton} from "@/components/symbols/IconButton";
+import {COUNTRIES} from "@/constants/countries";
 import ScrollView = Animated.ScrollView;
 
 
@@ -17,14 +18,8 @@ export default function PlaceId() {
     const {id} = useLocalSearchParams<{ id: string }>();
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const [placeDetails, setPlaceDetails] = useState<PlaceDetailsDto>()
-    const [notes, setNotes] = useState<string>()
-    const [cost, setCost] = useState<number>()
 
-    // const [photoUri, setPhotoUri] = useState<PhotosDto>()
-    // const [photosOrder, setPhotosOrder] = useState<string[]>([])
 
-    const router = useRouter()
-    const path = usePathname()
     const params = useLocalSearchParams<{ id: string, step: Categories }>()
 
     const getPlaceDetails = useCallback(async () => {
@@ -51,7 +46,7 @@ export default function PlaceId() {
             await API.plannerControllerTogglePickedPlaceFilter({
                 placeId: placeDetails?.id,
                 picked: !placeDetails.picked,
-                step: placeDetails.category
+                category: placeDetails.category
             })
             await getPlaceDetails()
         } catch (err) {
@@ -112,7 +107,7 @@ export default function PlaceId() {
                         <View style={styles.priceContainer}>
                             <Text
                                 style={styles.price}>{placeDetails.minPrice === placeDetails.maxPrice ? placeDetails.minPrice : placeDetails.minPrice + " - " + placeDetails.maxPrice}</Text>
-                            <Text style={styles.currency}>{placeDetails?.currency}</Text>
+                            <Text style={styles.currency}>{COUNTRIES.get(placeDetails.countryCode)?.currency}</Text>
                         </View>
                     </View>
 

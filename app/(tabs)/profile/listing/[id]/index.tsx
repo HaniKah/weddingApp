@@ -1,7 +1,7 @@
 import {Alert, Dimensions, Image, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {Link, Stack, useLocalSearchParams, useRouter} from 'expo-router';
 import {useApi} from '@/utils/api';
-import {ReactNode, useEffect, useRef, useState} from 'react';
+import {ReactNode, useCallback, useEffect, useRef, useState} from 'react';
 import {PhotosDto, VendorPlaceDetailsDto} from '@/types/open-api';
 import {Theme} from '@/styles/Theme';
 import {AppModalRef} from '@/components/appComponents/AppModal';
@@ -116,7 +116,7 @@ export default function Place() {
                     onPress: async () => {
                         try {
                             await api.placesControllerDeletePlace({id: Number(id)});
-                            router.back();
+                            router.replace({pathname: "/(tabs)/profile/listing"})
                         } catch (err) {
                             console.error(err);
                         }
@@ -126,6 +126,41 @@ export default function Place() {
         );
     }
 
+    function confirmUnpublish() {
+        if (!placeDetails?.id) return
+        Alert.alert(
+            'Unpublish listing',
+            'This will unpublish your listing. Users will not be able see your listing anymore. You can publish it again anytime you want to make it visible to the public.',
+            [
+                {text: 'Cancel', style: 'cancel'},
+                {
+                    text: 'Unpublish',
+                    style: 'destructive',
+                    onPress: () => handleTogglePublish(placeDetails?.id, false)
+                }
+            ]
+        )
+    }
+
+    async function handleTogglePublish(placeId: number | undefined, isPublished: boolean) {
+        if (!placeId) return
+        try {
+            setIsLoading(true)
+            await api.placesControllerToggleStatus({placeId: placeId, isPublished: isPublished})
+
+            if (!isPublished) {
+                router.replace({pathname: "/(tabs)/profile/listing"})
+            } else {
+                fetchPlace()
+            }
+
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
     const [containerWidth, setContainerWidth] = useState(0);
 
     const numColumns = 3;
@@ -133,6 +168,20 @@ export default function Place() {
 
     const itemWidth =
         (containerWidth - spacing * (numColumns - 1)) / numColumns;
+
+
+    const HeaderRightElement = useCallback(() => {
+        return placeDetails?.isPublished ?
+            <Link asChild push href={`/(tabs)/(planner)/listing/${placeDetails?.id}`}>
+                <AppButton extraStylesBtn={{paddingHorizontal: 10}}
+                           buttonType={ButtonType.PLAIN}>Preview</AppButton>
+
+            </Link> :
+            <AppButton extraStylesBtn={{paddingHorizontal: 10}} confirmative buttonType={ButtonType.PLAIN}
+                       onPress={() => handleTogglePublish(placeDetails?.id, true)}>
+                Publish
+            </AppButton>
+    }, [placeDetails?.isPublished])
 
 
     return (
@@ -146,12 +195,7 @@ export default function Place() {
                     contentStyle: {backgroundColor: Theme.colors.background},
                     headerStyle: {backgroundColor: Theme.colors.background},
                     headerRight: () => (
-                        <Link asChild push href={`/(tabs)/(planner)/listing/${placeDetails?.id}`}>
-                            <AppButton icon="eye" extraStylesBtn={{paddingHorizontal: 10}}
-                                       buttonType={ButtonType.PLAIN}>Preview</AppButton>
-
-                        </Link>
-
+                        <HeaderRightElement/>
                     )
 
                 }}
@@ -195,6 +239,19 @@ export default function Place() {
                             })}
                         </View>
                     </InfoCard>
+
+                    <View style={styles.dangerZoneContainer}>
+                        {placeDetails?.isPublished &&
+                            <AppButton onPress={confirmUnpublish} destructive
+                                       buttonType={ButtonType.OUTLINED} fullWidth>
+                                Unpublish listing
+                            </AppButton>
+                        }
+                        <AppButton onPress={confirmDelete} destructive fullWidth>
+                            Delete listing
+                        </AppButton>
+                    </View>
+
                 </ScrollView>
             </AppView>
 
@@ -234,21 +291,22 @@ const infoStyle = StyleSheet.create({
 
 })
 
-function InfoCard({children, label, rightElement}: {
+function InfoCard({children, label, rightElement, destructive}: {
     children: React.ReactNode,
     label: string,
     rightElement?: ReactNode
+    destructive?: boolean,
 }) {
     return (
         <View style={styles.container}>
             <View style={styles.containerHeader}>
-                <Text style={styles.containerText}>
+                <Text style={[styles.containerText, destructive && styles.containerTextDestructive]}>
                     {label}
                 </Text>
                 {rightElement}
 
             </View>
-            <View style={styles.cardContainer}>
+            <View style={[styles.cardContainer, destructive && styles.cardContainerDestructive]}>
                 {children}
             </View>
 
@@ -280,6 +338,9 @@ const styles = StyleSheet.create({
         color: Theme.colors.secondary,
         fontSize: Theme.sizes.sm,
     },
+    containerTextDestructive: {
+        color: Theme.colors.red.S500,
+    },
     cardContainer: {
         backgroundColor: Theme.colors.white,
         padding: 14,
@@ -287,6 +348,10 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: Theme.colors.border,
     },
+    cardContainerDestructive: {
+        borderColor: Theme.colors.red.S500,
+    },
+
     headerRightBtn: {
         borderWidth: 1.5,
         borderColor: Theme.colors.secondary,
@@ -308,7 +373,12 @@ const styles = StyleSheet.create({
     imageView: {
         borderRadius: Theme.radius.sm,
         overflow: 'hidden',
+    },
+    dangerZoneContainer: {
+        marginTop: 10,
+        gap: 10
     }
+
 
 })
 

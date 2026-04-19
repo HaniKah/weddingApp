@@ -39,11 +39,7 @@ export default function AppDropDown<T>({itemList, label, value, onChange, style,
 
     useEffect(() => {
         if (form.submitting) {
-
-            let valid: boolean = false;
-            if (value !== undefined && value !== null) {
-                valid = true;
-            }
+            const valid = value !== undefined && value !== null;
 
             if (required) {
                 if (valid) {
@@ -57,11 +53,10 @@ export default function AppDropDown<T>({itemList, label, value, onChange, style,
             }
         }
 
-        if (value) {
+        if (value !== undefined && value !== null) {
             setError(undefined);
         }
-
-    }, [form.submitting, value]);
+    }, [form.submitting, value, required, name, form]);
 
     return (
         <View style={style}>

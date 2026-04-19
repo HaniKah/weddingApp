@@ -1,24 +1,24 @@
 import {ScrollView, StyleProp, StyleSheet, Text, TouchableOpacity, View, ViewStyle} from 'react-native';
-import {SetStateAction, useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {Theme} from '@/styles/Theme';
 import {useFormContext} from "@/contexts/form-context";
 
-export default function AppTagsSelect({
-                                          name,
-                                          list,
-                                          label,
-                                          onChange,
-                                          value,
-                                          style,
-                                          borders = 'rounded',
-                                          disabled,
-                                          required
-                                      }: {
+export default function AppTagsSelect<T>({
+                                             name,
+                                             list,
+                                             label,
+                                             onChange,
+                                             value,
+                                             style,
+                                             borders = 'rounded',
+                                             disabled,
+                                             required
+                                         }: {
     name: string,
-    list: any[],
+    list: T[],
     label: string,
-    onChange: SetStateAction<any>
-    value: any
+    onChange: (value: T) => void,
+    value: T | undefined
     style?: StyleProp<ViewStyle>
     borders?: 'rounded' | 'rectangle'
     disabled?: boolean
@@ -30,11 +30,7 @@ export default function AppTagsSelect({
 
     useEffect(() => {
         if (form.submitting) {
-
-            let valid: boolean = false;
-            if (value !== undefined && value !== null) {
-                valid = true;
-            }
+            const valid = value !== undefined && value !== null;
 
             if (required) {
                 if (valid) {
@@ -48,12 +44,10 @@ export default function AppTagsSelect({
             }
         }
 
-        if (value) {
+        if (value !== undefined && value !== null) {
             setError(undefined);
         }
-
-    }, [form.submitting, value]);
-
+    }, [form.submitting, value, required, name, form]);
 
     return (
         <>
@@ -63,17 +57,33 @@ export default function AppTagsSelect({
                             contentContainerStyle={styles.scrollView}>
                     {list.map(c => {
                         return (
-                            <TouchableOpacity disabled={disabled} onPress={() => onChange(c)}
-                                              style={[styles.items, value === c && styles.activeItem, borders === 'rectangle' && styles.rectangleItem, disabled && styles.disabledItem]}
-                                              key={c}>
+                            <TouchableOpacity
+                                disabled={disabled}
+                                onPress={() => onChange(c)}
+                                style={[
+                                    styles.items,
+                                    value === c && styles.activeItem,
+                                    borders === 'rectangle' && styles.rectangleItem,
+                                    disabled && styles.disabledItem
+                                ]}
+                                key={String(c)}
+                            >
                                 <Text
-                                    style={[styles.itemsText, value === c && styles.activeText, disabled && styles.disabledText]}>{c}</Text>
+                                    style={[
+                                        styles.itemsText,
+                                        value === c && styles.activeText,
+                                        disabled && styles.disabledText
+                                    ]}
+                                >
+                                    {String(c)}
+                                </Text>
                             </TouchableOpacity>
                         );
                     })}
                 </ScrollView>
                 {error && <Text style={styles.error}>{error}</Text>}
-            </View></>
+            </View>
+        </>
     );
 }
 const styles = StyleSheet.create({

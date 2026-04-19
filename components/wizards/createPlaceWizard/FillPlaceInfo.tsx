@@ -1,7 +1,7 @@
 import {ActivityIndicator, ScrollView, StyleSheet, View} from 'react-native';
 import {AppForm, FormRef} from '@/contexts/form-context';
 import AppTextInput from '@/components/appComponents/AppTextInput';
-import {Dispatch, SetStateAction, useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import {Dispatch, SetStateAction, useEffect, useMemo, useRef, useState} from 'react';
 import {Theme} from '@/styles/Theme';
 import {Categories, CountryCode, PriceType, UpdateStep, VendorPlaceDetailsDto} from '@/types/open-api';
 import {PickerItem} from '@/components/appComponents/AppPickerDepr';
@@ -137,18 +137,21 @@ export default function FillPlaceInfo({data, setData}: {
 
     const formRef = useRef<FormRef>(null);
 
-    useCallback(() => {
-        if (data?.minPrice === data?.maxPrice) {
-            setPriceKind(PriceKind.Single)
-        } else if (data?.minPrice !== data?.maxPrice) {
-            setPriceKind(PriceKind.Range)
-        } else {
-            setPriceKind(PriceKind.NoPrice)
-        }
-
-    }, [data?.minPrice, data?.maxPrice])
     useEffect(() => {
+        setPlaceName(data?.name ?? undefined);
+        setPhoneNumber(data?.phoneNumber ?? undefined);
+        setMinPrice(data?.minPrice ?? undefined);
+        setMaxPrice(data?.maxPrice ?? undefined);
+        setPriceType(data?.priceType ?? PriceType.None);
+        setCity(data?.city ?? undefined);
+        setCategory(data?.category ?? undefined);
+        setCountryCode(data?.countryCode ?? undefined);
 
+        if (data?.minPrice && data?.maxPrice) {
+            setPriceKind(data.minPrice === data.maxPrice ? PriceKind.Single : PriceKind.Range);
+        } else {
+            setPriceKind(PriceKind.NoPrice);
+        }
     }, [data]);
 
 
@@ -209,7 +212,7 @@ export default function FillPlaceInfo({data, setData}: {
                                              onChange={setCity}
                                              value={city}
                                              itemList={citiesPickerItem}
-                                             disabled={!data?.countryCode && !countryCode}
+                                             disabled={!countryCode}
                                 />
                             </View>
 

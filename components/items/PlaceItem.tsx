@@ -12,7 +12,7 @@ export default function PlaceItem({item}: { item: PlacesDto }) {
 
     return (
         <Link push style={styles.link} href={{
-            pathname: "/(tabs)/(planner)/listing/[id]",
+            pathname: "/listing/[id]",
             params: {id: item.id!,},
         }}>
             <View style={styles.container}>

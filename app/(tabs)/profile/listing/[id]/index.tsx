@@ -172,7 +172,7 @@ export default function Place() {
 
     const HeaderRightElement = useCallback(() => {
         return placeDetails?.isPublished ?
-            <Link asChild push href={`/(tabs)/(planner)/listing/${placeDetails?.id}`}>
+            <Link asChild push href={`/listing/${placeDetails?.id}`}>
                 <AppButton extraStylesBtn={{paddingHorizontal: 10}}
                            buttonType={ButtonType.PLAIN}>Preview</AppButton>
 

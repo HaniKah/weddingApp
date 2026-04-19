@@ -85,8 +85,8 @@ export default function PlaceId() {
                         headerBackButtonDisplayMode: "minimal",
                     }}/>
 
-                <Link asChild href={{
-                    pathname: "/(tabs)/(planner)/listing/[id]/images",
+                <Link push asChild href={{
+                    pathname: "/listing/[id]/images",
                     params: {id: params.id, step: params.step}
                 }}>
                     <Pressable style={styles.imageContainer}>

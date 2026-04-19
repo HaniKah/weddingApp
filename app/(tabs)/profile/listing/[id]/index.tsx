@@ -1,14 +1,10 @@
-import {Alert, Dimensions, StyleSheet, Text, View} from 'react-native';
+import {Alert, Dimensions, Image, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {Link, Stack, useLocalSearchParams, useRouter} from 'expo-router';
 import {useApi} from '@/utils/api';
-import {useEffect, useRef, useState} from 'react';
+import {ReactNode, useEffect, useRef, useState} from 'react';
 import {PhotosDto, VendorPlaceDetailsDto} from '@/types/open-api';
 import {Theme} from '@/styles/Theme';
 import {AppModalRef} from '@/components/appComponents/AppModal';
-import {ImageUploadModel} from '@/components/wizards/createPlaceWizard/CreatePlaceWizard';
-import * as ImagePicker from 'expo-image-picker';
-import {ImagePickerAsset} from 'expo-image-picker';
-import {ImageManipulator, SaveFormat} from 'expo-image-manipulator';
 import AppButton from "@/components/appComponents/AppButton";
 import {ButtonType} from "@/styles/Button";
 import AppView from "@/components/appComponents/AppView";
@@ -64,49 +60,49 @@ export default function Place() {
         }
     }
 
-    async function handlePickImages() {
-        const result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ['images'],
-            allowsMultipleSelection: true,
-            quality: 1,
-        });
-        if (result.canceled) return;
-
-        const [other, heic] = result.assets.reduce(
-            ([pass, fail]: ImagePickerAsset[][], val) => {
-                if (val.mimeType !== 'image/heic') pass.push(val);
-                else fail.push(val);
-                return [pass, fail];
-            },
-            [[], []],
-        );
-
-        const converted: ImageUploadModel[] = await Promise.all(
-            heic.map(async (asset) => {
-                const img = await ImageManipulator.manipulate(asset.uri).renderAsync();
-                const saved = await img.saveAsync({format: SaveFormat.JPEG});
-                return {uri: saved.uri, type: 'image/jpeg', name: asset.fileName?.replace('heic', 'jpeg')};
-            }),
-        );
-        const others: ImageUploadModel[] = other.map((asset) => ({
-            uri: asset.uri,
-            type: asset.mimeType,
-            name: 'places' + asset.fileName,
-        }));
-
-        const formData = new FormData();
-        formData.append('placeId', id);
-        [...others, ...converted].forEach((img) => {
-            formData.append('file', {uri: img.uri, type: img.type, name: img.name} as any);
-        });
-
-        try {
-            await api.photosControllerUploadFile(formData);
-            fetchPhotos();
-        } catch (err) {
-            console.error(err);
-        }
-    }
+    // async function handlePickImages() {
+    //     const result = await ImagePicker.launchImageLibraryAsync({
+    //         mediaTypes: ['images'],
+    //         allowsMultipleSelection: true,
+    //         quality: 1,
+    //     });
+    //     if (result.canceled) return;
+    //
+    //     const [other, heic] = result.assets.reduce(
+    //         ([pass, fail]: ImagePickerAsset[][], val) => {
+    //             if (val.mimeType !== 'image/heic') pass.push(val);
+    //             else fail.push(val);
+    //             return [pass, fail];
+    //         },
+    //         [[], []],
+    //     );
+    //
+    //     const converted: ImageUploadModel[] = await Promise.all(
+    //         heic.map(async (asset) => {
+    //             const img = await ImageManipulator.manipulate(asset.uri).renderAsync();
+    //             const saved = await img.saveAsync({format: SaveFormat.JPEG});
+    //             return {uri: saved.uri, type: 'image/jpeg', name: asset.fileName?.replace('heic', 'jpeg')};
+    //         }),
+    //     );
+    //     const others: ImageUploadModel[] = other.map((asset) => ({
+    //         uri: asset.uri,
+    //         type: asset.mimeType,
+    //         name: 'places' + asset.fileName,
+    //     }));
+    //
+    //     const formData = new FormData();
+    //     formData.append('placeId', id);
+    //     [...others, ...converted].forEach((img) => {
+    //         formData.append('file', {uri: img.uri, type: img.type, name: img.name} as any);
+    //     });
+    //
+    //     try {
+    //         await api.photosControllerUploadFile(formData);
+    //         fetchPhotos();
+    //     } catch (err) {
+    //         console.error(err);
+    //     }
+    // }
 
     function confirmDelete() {
         Alert.alert(
@@ -129,6 +125,14 @@ export default function Place() {
             ],
         );
     }
+
+    const [containerWidth, setContainerWidth] = useState(0);
+
+    const numColumns = 3;
+    const spacing = 10;
+
+    const itemWidth =
+        (containerWidth - spacing * (numColumns - 1)) / numColumns;
 
 
     return (
@@ -153,22 +157,45 @@ export default function Place() {
                 }}
             />
             <AppView withPadding isLoading={isLoading}>
-                {placeDetails &&
-                    <InfoCard label="LISTING DETAILS" onPress={() => editModalRef.current?.open()}>
-                        <Text style={styles.placeName}>{placeDetails?.name}</Text>
-                        <View style={styles.categoryTag}>
-                            <CategoryTag category={placeDetails?.category}/>
+                <ScrollView>
+
+                    {placeDetails &&
+                        <InfoCard label="LISTING DETAILS"
+                                  rightElement={
+                                      <AppButton onPress={() => editModalRef.current?.open()} fullRound
+                                                 buttonSize="SM" buttonType={ButtonType.OUTLINED}
+                                                 icon="pencil">
+                                          Edit
+                                      </AppButton>}>
+                            <Text style={styles.placeName}>{placeDetails?.name}</Text>
+                            <View style={styles.categoryTag}>
+                                <CategoryTag category={placeDetails?.category}/>
+                            </View>
+                            <SingleInfo icon="location"
+                                        info={`${placeDetails?.city}, ${COUNTRIES.get(placeDetails?.countryCode)?.countryName}`}/>
+                            <SingleInfo icon="phone" info={placeDetails?.phoneNumber}/>
+                            <SingleInfo icon="tag"
+                                        info={placeDetails?.minPrice === placeDetails?.maxPrice ? `${placeDetails?.minPrice} ${COUNTRIES.get(placeDetails?.countryCode)?.currency} / ${placeDetails?.priceType} ` : `${placeDetails?.minPrice} - ${placeDetails?.maxPrice} ${COUNTRIES.get(placeDetails?.countryCode)?.currency} / ${placeDetails?.priceType}`}/>
+                            {placeDetails.description &&
+                                <SingleInfo icon="text.justify.left" info={placeDetails?.description}/>
+                            }
+                        </InfoCard>
+                    }
+                    <InfoCard label="GALLERY">
+                        <View style={styles.imageContainer} onLayout={(event) => {
+                            const {width} = event.nativeEvent.layout;
+                            setContainerWidth(width);
+                        }}>
+                            {photos.map((p, i) => {
+                                return (
+                                    <View style={styles.imageView} key={i}>
+                                        <Image source={{uri: p.uri}} width={itemWidth} height={itemWidth}/>
+                                    </View>
+                                )
+                            })}
                         </View>
-                        <SingleInfo icon="location"
-                                    info={`${placeDetails?.city}, ${COUNTRIES.get(placeDetails?.countryCode)?.countryName}`}/>
-                        <SingleInfo icon="phone" info={placeDetails?.phoneNumber}/>
-                        <SingleInfo icon="tag"
-                                    info={placeDetails?.minPrice === placeDetails?.maxPrice ? `${placeDetails?.minPrice} ${COUNTRIES.get(placeDetails?.countryCode)?.currency} / ${placeDetails?.priceType} ` : `${placeDetails?.minPrice} - ${placeDetails?.maxPrice} ${COUNTRIES.get(placeDetails?.countryCode)?.currency} / ${placeDetails?.priceType}`}/>
-                        {placeDetails.description &&
-                            <SingleInfo icon="text.justify.left" info={placeDetails?.description}/>
-                        }
                     </InfoCard>
-                }
+                </ScrollView>
             </AppView>
 
             <CreatePlaceModal id={placeDetails?.id} ref={editModalRef} reloadPlaces={() => fetchPlace()}/>
@@ -202,22 +229,24 @@ const infoStyle = StyleSheet.create({
     },
     infoText: {
         maxWidth: '85%',
-    }
+    },
 
 
 })
 
-function InfoCard({children, label, onPress}: { children: React.ReactNode, label: string, onPress?: () => void }) {
+function InfoCard({children, label, rightElement}: {
+    children: React.ReactNode,
+    label: string,
+    rightElement?: ReactNode
+}) {
     return (
         <View style={styles.container}>
             <View style={styles.containerHeader}>
                 <Text style={styles.containerText}>
                     {label}
                 </Text>
-                <AppButton onPress={onPress} fullRound buttonSize="SM" buttonType={ButtonType.OUTLINED}
-                           icon="pencil">
-                    Edit
-                </AppButton>
+                {rightElement}
+
             </View>
             <View style={styles.cardContainer}>
                 {children}
@@ -269,6 +298,16 @@ const styles = StyleSheet.create({
         color: Theme.colors.secondary,
         fontSize: Theme.sizes.sm,
         fontWeight: '600',
+    },
+    imageContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        gap: 10,
+    },
+    imageView: {
+        borderRadius: Theme.radius.sm,
+        overflow: 'hidden',
     }
 
 })

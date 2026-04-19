@@ -1,4 +1,4 @@
-import {ActivityIndicator, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {ActivityIndicator, ScrollView, StyleSheet, View} from 'react-native';
 import {AppForm, FormRef} from '@/contexts/form-context';
 import AppTextInput from '@/components/appComponents/AppTextInput';
 import {Dispatch, SetStateAction, useCallback, useEffect, useMemo, useRef, useState} from 'react';
@@ -158,8 +158,6 @@ export default function FillPlaceInfo({data, setData}: {
                 <View style={styles.container}>
                     <AppForm ref={formRef} onSubmit={handleNextStep}>
                         <ScrollView style={styles.scrollView}>
-                            <Text>1- {placeName}</Text>
-                            <Text>1- {data?.name}</Text>
                             <View style={styles.input}>
                                 <AppTextInput value={data?.name}
                                               required

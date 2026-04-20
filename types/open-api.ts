@@ -22,33 +22,6 @@ export enum CoupleSide {
   Bride = "Bride",
 }
 
-export enum CountryCode {
-  AE = "AE",
-  BH = "BH",
-  KW = "KW",
-  OM = "OM",
-  QA = "QA",
-  SA = "SA",
-  IQ = "IQ",
-  JO = "JO",
-  LB = "LB",
-  PS = "PS",
-  SY = "SY",
-  DZ = "DZ",
-  EG = "EG",
-  LY = "LY",
-  MA = "MA",
-  MR = "MR",
-  TN = "TN",
-  DJ = "DJ",
-  KM = "KM",
-  SO = "SO",
-  SD = "SD",
-  IR = "IR",
-  TR = "TR",
-  YE = "YE",
-}
-
 export enum PriceType {
   None = "None",
   PerPerson = "PerPerson",
@@ -78,10 +51,41 @@ export enum Categories {
   Extra = "Extra",
 }
 
+export enum CountryCode {
+  AE = "AE",
+  BH = "BH",
+  KW = "KW",
+  OM = "OM",
+  QA = "QA",
+  SA = "SA",
+  IQ = "IQ",
+  JO = "JO",
+  LB = "LB",
+  PS = "PS",
+  SY = "SY",
+  DZ = "DZ",
+  EG = "EG",
+  LY = "LY",
+  MA = "MA",
+  MR = "MR",
+  TN = "TN",
+  DJ = "DJ",
+  KM = "KM",
+  SO = "SO",
+  SD = "SD",
+  IR = "IR",
+  TR = "TR",
+  YE = "YE",
+}
+
 export interface FavouritePlacesDto {
+  country: CountryCode;
+  category: Categories;
   id: number;
   name: string;
-  city: string;
+  minPrice: string;
+  maxPrice: string;
+  mainPhoto: string;
 }
 
 export interface FavouritePlacesViewModel {

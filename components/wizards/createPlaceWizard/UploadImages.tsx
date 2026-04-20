@@ -141,6 +141,13 @@ export default function UploadImages({onFinish, placeId}: {
         else return <ImageItem item={item}/>
     }
 
+    // async function deleteImage(id: number) {
+    //     try {
+    //         const res = api.photos
+    //     }
+    //
+    // }
+
 
     return (
         <>

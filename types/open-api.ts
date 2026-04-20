@@ -111,6 +111,7 @@ export interface PlacesViewModel {
 export interface PlaceDetailsDto {
   category: Categories;
   countryCode: CountryCode;
+  priceType: PriceType;
   id: number;
   name: string;
   address?: string;
@@ -125,6 +126,7 @@ export interface PlaceDetailsDto {
   maxPrice: string;
   minPrice: string;
   description: string;
+  city: string;
 }
 
 export interface ToggleFavoritePlaceFilterRequest {
@@ -184,7 +186,6 @@ export interface UserInfo {
 
 export interface ExchangeTokenDto {
   id: number;
-  rcAppUserId: string;
   accessToken: string;
   refreshToken: string;
   user: UserInfo;
@@ -756,6 +757,20 @@ export class Api<
         path: `/api/photos/${id}`,
         method: "GET",
         format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Photos
+     * @name PhotosControllerDeletePhoto
+     * @request POST:/api/photos/delete/{id}
+     */
+    photosControllerDeletePhoto: (id: number, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/photos/delete/${id}`,
+        method: "POST",
         ...params,
       }),
 

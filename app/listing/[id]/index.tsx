@@ -1,16 +1,15 @@
-import {ActivityIndicator, Animated, Image, Pressable, StyleSheet, Text, View} from "react-native";
+import {ActivityIndicator, Image, Pressable, ScrollView, StyleSheet, Text, View} from "react-native";
 import {useCallback, useEffect, useState} from "react";
 import {Link, Stack, useLocalSearchParams} from "expo-router";
 import {Categories, PlaceDetailsDto} from "@/types/open-api";
 import AppButton from "@/components/appComponents/AppButton";
 import {ButtonType} from "@/styles/Button";
 import AppIf from "@/components/appComponents/AppIf";
-import PlaceInfo from "@/components/PlaceInfo";
 import {Theme} from "@/styles/Theme";
 import {useApi} from "@/utils/api";
 import {IconButton} from "@/components/symbols/IconButton";
 import {COUNTRIES} from "@/constants/countries";
-import ScrollView = Animated.ScrollView;
+import LocationTag from "@/components/LocationTag";
 
 
 export default function PlaceId() {
@@ -76,98 +75,78 @@ export default function PlaceId() {
 
     if (!isLoading && placeDetails) {
         return (
-            <ScrollView>
+            <View style={styles.screen}>
                 <Stack.Screen
                     options={{
                         title: placeDetails.name,
                         headerShown: true,
-                        headerTintColor: Theme.colors.primary,
                         headerBackButtonDisplayMode: "minimal",
-                    }}/>
+                        headerStyle: {backgroundColor: Theme.colors.background},
+                        contentStyle: {backgroundColor: Theme.colors.background},
+                    }}
+                />
 
-                <Link push asChild href={{
-                    pathname: "/listing/[id]/images",
-                    params: {id: params.id, step: params.step}
-                }}>
-                    <Pressable style={styles.imageContainer}>
+                <ScrollView
+                    style={styles.scroll}
+                    contentContainerStyle={styles.scrollContent}
+                    showsVerticalScrollIndicator
+                >
+                    <Link
+                        push
+                        asChild
+                        href={{
+                            pathname: "/listing/[id]/images",
+                            params: {id: params.id, step: params.step},
+                        }}
+                    >
+                        <Pressable style={styles.imageContainer}>
+                            <Image style={styles.image} source={{uri: placeDetails.mainPhoto}}/>
+                        </Pressable>
+                    </Link>
 
-                        <Image style={styles.image} source={{uri: placeDetails.mainPhoto}}/>
-                    </Pressable>
-                </Link>
+                    <View style={styles.infosContainer}>
 
-                <View style={styles.infosContainer}>
-
-                    <View style={styles.infoHeaderContainer}>
-                        <View style={styles.titleContainer}>
-                            <Text style={styles.title}>{placeDetails?.name}</Text>
-                            {placeDetails.favourite ?
-                                <IconButton onPress={toggleFavorites} removeBackground name="heart.fill"/> :
-                                <IconButton onPress={toggleFavorites} removeBackground name="heart"/>}
+                        <View style={styles.infoHeaderContainer}>
+                            <View style={styles.titleContainer}>
+                                <Text style={styles.title}>{placeDetails?.name}</Text>
+                                {placeDetails.favourite ?
+                                    <IconButton onPress={toggleFavorites} removeBackground name="heart.fill"/> :
+                                    <IconButton onPress={toggleFavorites} removeBackground name="heart"/>}
+                            </View>
+                            <LocationTag location={placeDetails.city}/>
+                            <View style={styles.priceContainer}>
+                                <Text
+                                    style={styles.price}>{placeDetails.minPrice === placeDetails.maxPrice ? placeDetails.minPrice : placeDetails.minPrice + " - " + placeDetails.maxPrice}</Text>
+                                <Text
+                                    style={styles.currency}>{COUNTRIES.get(placeDetails.countryCode)?.currency} / {placeDetails.priceType}</Text>
+                            </View>
                         </View>
-                        <View style={styles.priceContainer}>
-                            <Text
-                                style={styles.price}>{placeDetails.minPrice === placeDetails.maxPrice ? placeDetails.minPrice : placeDetails.minPrice + " - " + placeDetails.maxPrice}</Text>
-                            <Text style={styles.currency}>{COUNTRIES.get(placeDetails.countryCode)?.currency}</Text>
-                        </View>
+
+
+                        {/*<AppIf value={placeDetails?.address}>*/}
+                        {/*    <PlaceInfo iconName="location.circle" info={placeDetails?.address}/>*/}
+                        {/*</AppIf>*/}
+
+
+                        <AppIf value={placeDetails.description}>
+                            <View style={styles.descriptionContainer}>
+                                <Text style={styles.description}>{placeDetails.description}</Text>
+                            </View>
+                        </AppIf>
+
+
                     </View>
+                </ScrollView>
 
-
-                    {/*<AppIf value={placeDetails?.address}>*/}
-                    {/*    <PlaceInfo iconName="location.circle" info={placeDetails?.address}/>*/}
-                    {/*</AppIf>*/}
-
-
-                    <AppIf value={placeDetails.description}>
-                        <View style={styles.descriptionContainer}>
-                            <Text style={styles.description}>{placeDetails.description}</Text>
-                        </View>
-                    </AppIf>
-
-
-                    <View style={styles.contactInfoContainer}>
-                        <AppIf value={placeDetails.phoneNumber}>
-                            <PlaceInfo iconName='phone.circle' info={placeDetails?.phoneNumber}/>
-                        </AppIf>
-
-                        <AppIf value={placeDetails.website}>
-                            <PlaceInfo iconName='globe' info={placeDetails?.website}/>
-                        </AppIf>
-
-
-                        <AppIf value={placeDetails?.facebook}>
-                            <PlaceInfo iconName='globe' info={placeDetails?.facebook}/>
-                        </AppIf>
-
-                        <AppIf value={placeDetails?.instagram}>
-                            <PlaceInfo iconName='globe' info={placeDetails?.instagram}/>
-                        </AppIf>
-
-                        <AppIf value={placeDetails?.instagram}>
-                            <PlaceInfo iconName='globe' info={placeDetails?.tiktok}/>
-                        </AppIf>
-                    </View>
-
-                    <View style={styles.callForActionContainer}>
-                        <AppButton
-                            extraStylesTxt={[styles.pickedText, {color: !placeDetails.picked ? Theme.colors.primary : Theme.colors.red.S500}]}
-                            fullWidth onPress={togglePicked} buttonType={ButtonType.PLAIN}>
-                            {!placeDetails.picked ? "save in my checklist" : "remove place from my checklist"}
+                <View style={styles.callForActionContainer}>
+                    <Link asChild href={`tel:${placeDetails.phoneNumber}`}>
+                        <AppButton icon="phone" fullWidth buttonType={ButtonType.PRIMARY}>
+                            Call Now
                         </AppButton>
-
-                        <Link asChild href={`tel:${placeDetails.phoneNumber}`}>
-                            <AppButton fullWidth buttonType={ButtonType.PRIMARY}>
-                                call now
-                            </AppButton>
-                        </Link>
-
-                    </View>
-
-
+                    </Link>
                 </View>
-
-            </ScrollView>
-
-        )
+            </View>
+        );
     } else {
         return (
             <View>
@@ -177,6 +156,24 @@ export default function PlaceId() {
     }
 }
 const styles = StyleSheet.create({
+    screen: {
+        flex: 1,
+        backgroundColor: Theme.colors.background,
+    },
+    scroll: {
+        flex: 1,
+    },
+    scrollContent: {
+        paddingBottom: 100, // enough space so content isn't hidden behind the bottom bar
+    },
+    callForActionContainer: {
+        padding: 20,
+        paddingBottom: 30,
+        backgroundColor: Theme.colors.iconBackground,
+        borderTopWidth: 1,
+        borderTopColor: Theme.colors.border,
+
+    },
     infosContainer: {
         padding: 20,
     },
@@ -189,7 +186,7 @@ const styles = StyleSheet.create({
     },
     infoHeaderContainer: {
         display: "flex",
-        gap: 10,
+        gap: 5,
     },
     titleContainer: {
         display: "flex",
@@ -198,21 +195,26 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
     },
     title: {
-        fontSize: Theme.sizes.lg,
-        flexShrink: 1
+        fontSize: Theme.sizes.xl,
+        flexShrink: 1,
+        fontWeight: "bold"
     },
+
     priceContainer: {
         display: "flex",
         alignItems: "center",
         flexDirection: "row",
-        gap: 10
+        gap: 10,
+        marginTop: 5
     },
     price: {
-        fontSize: Theme.sizes.lg,
+        fontSize: Theme.sizes.md,
+        color: Theme.colors.primary,
         fontWeight: "bold",
+
     },
     currency: {
-        color: Theme.colors.gray.S500
+        color: Theme.colors.secondary
     },
     descriptionContainer: {
         marginTop: 20,
@@ -221,9 +223,6 @@ const styles = StyleSheet.create({
         fontSize: Theme.sizes.md,
     },
     contactInfoContainer: {
-        marginTop: 20
-    },
-    callForActionContainer: {
         marginTop: 20
     },
 

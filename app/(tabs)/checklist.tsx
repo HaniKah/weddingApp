@@ -188,6 +188,8 @@ export default function Checklist() {
                     )}
                     contentContainerStyle={styles.listContent}
                     showsVerticalScrollIndicator={false}
+                    refreshing={isloading}
+                    onRefresh={getTodos}
                 />
             </AppView>
         </>

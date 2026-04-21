@@ -1,8 +1,8 @@
-import { useAuth } from "@/contexts/auth-context";
+import {useAuth} from "@/contexts/auth-context";
 import AppButton from "@/components/appComponents/AppButton";
-import { ButtonType } from "@/styles/Button";
-import { useVideoPlayer, VideoSource, VideoView } from "expo-video";
-import { StyleSheet, Text, View } from "react-native";
+import {ButtonType} from "@/styles/Button";
+import {useVideoPlayer, VideoSource, VideoView} from "expo-video";
+import {StyleSheet, View} from "react-native";
 import Google from "@/assets/icons/social-media/google.svg"
 
 // const videoSource =
@@ -22,7 +22,7 @@ const videoSource: VideoSource = {
 
 
 export default function SignIn() {
-    const { signInWithGoogle } = useAuth()
+    const {signInWithGoogle} = useAuth()
 
     const player = useVideoPlayer(videoSource, (player) => {
         player.loop = true;
@@ -57,6 +57,7 @@ export default function SignIn() {
                 <AppButton
                     fullWidth
                     buttonType={ButtonType.PRIMARY}
+                    extraStylesBtn={{backgroundColor: "black"}}
                     onPress={signInWithGoogle}
                     CustomIcon={Google}
                 >

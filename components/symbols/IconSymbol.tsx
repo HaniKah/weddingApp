@@ -29,6 +29,10 @@ const MAPPING = {
     "square.and.arrow.up": "publish",
     "trash": "delete-outline",
     "checkmark.circle.fill": "check-circle",
+    "location": "location-on",
+    "chevron.right": "chevron-right",
+    "mappin.and.ellipse": "location-city",
+    "magnifyingglass": "search"
 } as IconMapping;
 
 /**

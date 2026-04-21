@@ -2,11 +2,12 @@ import {StyleSheet, Text, View} from 'react-native';
 import {Theme} from '@/styles/Theme';
 import {useLocationContext} from '@/contexts/location-context';
 import {IconSymbol} from "@/components/symbols/IconSymbol";
+import {COUNTRIES} from "@/constants/countries";
 
 
 export default function WelcomeText() {
 
-    const {address} = useLocationContext();
+    const {isoCountry} = useLocationContext();
     return (
         <>
             <View style={styles.container}>
@@ -18,10 +19,17 @@ export default function WelcomeText() {
                         Wedding Marketplace
                     </Text>
 
-                    <View style={styles.location}>
-                        <IconSymbol name="location" size={14} color={Theme.colors.primary}/>
-                        <Text style={styles.locationText}>{address?.country}</Text>
-                    </View>
+                    {isoCountry ?
+                        <View style={styles.location}>
+                            <IconSymbol name="location" size={14} color={Theme.colors.primary}/>
+                            <Text style={styles.locationText}>{COUNTRIES.get(isoCountry)?.countryName}</Text>
+                        </View> :
+                        <Text>
+                            location is not found
+                        </Text>
+                    }
+
+
                 </View>
             </View>
         </>

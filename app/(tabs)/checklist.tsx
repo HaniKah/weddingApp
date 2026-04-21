@@ -96,7 +96,7 @@ export default function Checklist() {
                     <View style={[styles.connectingLine, isFirst && styles.lineHidden]}/>
                     <AppPressable onPress={() => handleToggleTodo(item.id, item.isChecked)}>
                         {item.isChecked ? (
-                            <IconSymbol size={28} color={Theme.colors.green.S700} name="checkmark.circle.fill"/>
+                            <IconSymbol size={28} color={Theme.colors.primary} name="checkmark.circle.fill"/>
                         ) : (
                             <IconSymbol size={28} color={Theme.colors.primary} name="circle"/>
                         )}
@@ -285,7 +285,7 @@ const styles = StyleSheet.create({
     },
     emptyText: {
         textAlign: "center",
-        color: Theme.colors.gray.S400,
+        color: Theme.colors.placeholder,
         fontStyle: "italic",
         marginTop: 5,
     },

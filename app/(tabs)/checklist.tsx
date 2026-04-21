@@ -4,10 +4,11 @@ import {Theme} from "@/styles/Theme";
 import {IconSymbol} from "@/components/symbols/IconSymbol";
 import AppTextInput from "@/components/appComponents/AppTextInput";
 import AppPressable from "@/components/appComponents/AppPressable";
-import AppSafeAreaView from "@/components/appComponents/AppSafeAreaView";
 import {useApi} from "@/utils/api";
 import {ChecklistDto, Timeframe} from "@/types/open-api";
 import {IconButton} from "@/components/symbols/IconButton";
+import AppView from "@/components/appComponents/AppView";
+import {Stack} from "expo-router";
 
 export default function Checklist() {
     const [todos, setTodos] = useState<ChecklistDto[]>([]);
@@ -116,10 +117,10 @@ export default function Checklist() {
     };
 
     return (
-        <AppSafeAreaView>
-            <View style={styles.container}>
+        <>
+            <Stack.Screen options={{headerShown: false}}/>
+            <AppView extraStyles={{backgroundColor: Theme.colors.background}} withPadding>
                 <Text style={styles.header}>Wedding Checklist</Text>
-
                 <FlatList
                     data={groupedTodos}
                     keyExtractor={(item) => item.timeFrame}
@@ -164,7 +165,7 @@ export default function Checklist() {
                                     />
                                     <IconButton
                                         name="checkmark"
-                                        color={Theme.colors.green.S500}
+                                        color={Theme.colors.green.S700}
                                         onPress={() => handleAddTodo(item.timeFrame as Timeframe)}
                                     />
                                 </View>
@@ -184,26 +185,18 @@ export default function Checklist() {
                     contentContainerStyle={styles.listContent}
                     showsVerticalScrollIndicator={false}
                 />
-            </View>
-        </AppSafeAreaView>
+            </AppView>
+        </>
     );
 }
 
 const styles = StyleSheet.create({
-    safeArea: {
-        flex: 1,
-        backgroundColor: Theme.colors.background,
-    },
-    container: {
-        flex: 1,
-        paddingHorizontal: Theme.global.appPadding,
-    },
+
     header: {
         fontSize: Theme.sizes.xl,
         fontWeight: "bold",
         color: Theme.colors.primary,
         marginVertical: 15,
-        fontFamily: Theme.typographies.aboreto,
     },
     listContent: {
         paddingBottom: 40,
@@ -223,7 +216,7 @@ const styles = StyleSheet.create({
     },
     sectionTitle: {
         fontSize: Theme.sizes.md,
-        fontWeight: "700",
+        fontWeight: "bold",
         color: Theme.colors.secondary,
     },
     headerActions: {
@@ -232,15 +225,13 @@ const styles = StyleSheet.create({
         gap: 8,
     },
     sectionBadge: {
-        backgroundColor: Theme.colors.white,
-        paddingHorizontal: 8,
+
         paddingVertical: 2,
         borderRadius: Theme.radius.full,
     },
     badgeText: {
         fontSize: Theme.sizes.xs,
-        fontWeight: "600",
-        color: Theme.colors.primary,
+        color: Theme.colors.secondary,
     },
     inlineAddContainer: {
         flexDirection: "row",

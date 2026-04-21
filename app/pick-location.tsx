@@ -7,14 +7,22 @@ import {FlatList, StyleSheet, Text, View} from "react-native";
 import CountryItem from "@/components/items/CountryItem";
 import {CountryCode} from "@/types/open-api";
 import AppSafeAreaView from "@/components/appComponents/AppSafeAreaView";
+import {useLocationStore} from "@/utils/locationStore";
 
 export default function PickLocation() {
-    const {setIsoCountry} = useLocationContext();
+    const {setIsoCountry, setErrorMsg} = useLocationContext();
 
     const countriesList = Array.from(COUNTRIES.values());
+    const {setLocation} = useLocationStore()
 
-    const handleCountrySelect = (countryCode: CountryCode) => {
-        setIsoCountry(countryCode);
+    const handleCountrySelect = async (countryCode: CountryCode) => {
+        try {
+            await setLocation(countryCode)
+            setIsoCountry(countryCode);
+
+        } catch (err) {
+            console.error(err);
+        }
         router.push("/(tabs)/(planner)");
     };
 

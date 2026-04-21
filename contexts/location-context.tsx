@@ -4,10 +4,12 @@ import {LocationGeocodedAddress} from 'expo-location';
 import {ErrorMsg} from "@/types/general";
 import {CountryCode} from "@/types/open-api";
 import {useRouter} from "expo-router";
+import {useLocationStore} from "@/utils/locationStore";
 
 type LocationContextType = {
     isLocationGranted: boolean,
     errorMsg: ErrorMsg | null,
+    setErrorMsg: Dispatch<SetStateAction<ErrorMsg | null>>,
     isoCountry: CountryCode | null
     setIsoCountry: Dispatch<SetStateAction<CountryCode | null>>
 
@@ -16,6 +18,8 @@ type LocationContextType = {
 const LocationContext = createContext<LocationContextType>({
     isLocationGranted: false,
     errorMsg: {title: "", msg: ""},
+    setErrorMsg: () => {
+    },
     isoCountry: null,
     setIsoCountry: () => {
     },
@@ -30,11 +34,19 @@ export function LocationProvider({children}: { children: React.ReactNode }) {
     const [isoCountry, setIsoCountry] = useState<CountryCode | null>(null)
 
     const router = useRouter();
+    const {setLocation, getLocation} = useLocationStore()
+
     useEffect(() => {
 
-
         const getCurrentLocation = async () => {
+            const countryCode = await getLocation()
+            if (countryCode) {
+                console.log("country found in store")
+                setIsoCountry(countryCode as CountryCode)
+                return
+            }
 
+            console.log("country could not be found in store")
             let {status} = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
                 // setErrorMsg({
@@ -48,10 +60,11 @@ export function LocationProvider({children}: { children: React.ReactNode }) {
             try {
                 let location = await Location.getCurrentPositionAsync({});
                 if (!location) {
-                    setErrorMsg({
-                        title: "Location not found",
-                        msg: 'We were unable to get your location, please check your settings'
-                    });
+                    // setErrorMsg({
+                    //     title: "Location not found",
+                    //     msg: 'We were unable to get your location, please check your settings'
+                    // });
+                    router.dismissTo("/pick-location")
                 } else {
                     setIsLocationGranted(true);
 
@@ -61,6 +74,7 @@ export function LocationProvider({children}: { children: React.ReactNode }) {
                     });
                     //todo: iso Countries should actually match
                     setIsoCountry(postalAddress[0].isoCountryCode as CountryCode)
+                    setLocation(postalAddress[0].isoCountryCode as CountryCode)
                 }
             } catch (e) {
                 setErrorMsg({
@@ -68,6 +82,7 @@ export function LocationProvider({children}: { children: React.ReactNode }) {
                     msg: 'We were unable to get your location, please check your settings'
                 });
             }
+
 
         }
 
@@ -79,6 +94,7 @@ export function LocationProvider({children}: { children: React.ReactNode }) {
             value={{
                 isLocationGranted,
                 errorMsg,
+                setErrorMsg,
                 isoCountry,
                 setIsoCountry
             }}>

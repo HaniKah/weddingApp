@@ -8,10 +8,11 @@ import {Theme} from '@/styles/Theme';
 import MenuItem from '@/components/items/MenuItem';
 import {router, Stack} from 'expo-router';
 import {IconSymbol} from "@/components/symbols/IconSymbol";
+import {COUNTRIES} from "@/constants/countries";
 
 export default function Index() {
     const {signOut} = useAuth();
-    const {address} = useLocationContext();
+    const {isoCountry} = useLocationContext();
 
     return (
         <>
@@ -23,7 +24,9 @@ export default function Index() {
                         <Text style={styles.name}>Welcome back</Text>
                         <View style={styles.location}>
                             <IconSymbol name="location" size={14} color={Theme.colors.secondary}/>
-                            <Text style={styles.address}>{address?.city}, {address?.country}</Text>
+                            {isoCountry &&
+                                <Text style={styles.address}>{COUNTRIES.get(isoCountry)?.countryName}</Text>
+                            }
                         </View>
                     </View>
 

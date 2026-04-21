@@ -16,6 +16,7 @@ export default function AppTextInput({
                                          extraStyles,
                                          unit,
                                          textArea,
+                                         onBlur,
 
                                      }: {
 
@@ -31,6 +32,7 @@ export default function AppTextInput({
     extraStyles?: StyleProp<ViewStyle>
     unit?: string
     textArea?: boolean
+    onBlur?: () => void
 
 }) {
 
@@ -99,6 +101,7 @@ export default function AppTextInput({
                            style={[styles.input, textArea && styles.textArea]}
                            onChangeText={preTextChange}
                            multiline={textArea}
+                           onBlur={onBlur}
 
                 />
                 {unit && <Text style={styles.unit}>{unit}</Text>}

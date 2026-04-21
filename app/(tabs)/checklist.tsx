@@ -3,18 +3,16 @@ import {Alert, FlatList, StyleSheet, Text, View} from "react-native";
 import {Theme} from "@/styles/Theme";
 import {IconSymbol} from "@/components/symbols/IconSymbol";
 import AppTextInput from "@/components/appComponents/AppTextInput";
-import AppButton from "@/components/appComponents/AppButton";
-import AppPicker from "@/components/appComponents/AppPicker";
-import {ButtonType} from "@/styles/Button";
 import AppPressable from "@/components/appComponents/AppPressable";
 import AppSafeAreaView from "@/components/appComponents/AppSafeAreaView";
 import {useApi} from "@/utils/api";
 import {ChecklistDto, Timeframe} from "@/types/open-api";
+import {IconButton} from "@/components/symbols/IconButton";
 
 export default function Checklist() {
     const [todos, setTodos] = useState<ChecklistDto[]>([]);
     const [newTodoTitle, setNewTodoTitle] = useState("");
-    const [selectedTimeFrame, setSelectedTimeFrame] = useState<Timeframe>(Timeframe.Year);
+    const [addingToTimeFrame, setAddingToTimeFrame] = useState<Timeframe | null>(null);
 
     const {api} = useApi()
 
@@ -40,13 +38,14 @@ export default function Checklist() {
     }
 
 
-    const handleAddTodo = async () => {
+    const handleAddTodo = async (timeframe: Timeframe) => {
         if (!newTodoTitle.trim()) {
-            Alert.alert("Error", "Please enter a todo title");
+            setAddingToTimeFrame(null);
             return;
         }
-        await addTodo(newTodoTitle, selectedTimeFrame);
+        await addTodo(newTodoTitle, timeframe);
         setNewTodoTitle("");
+        setAddingToTimeFrame(null);
         getTodos();
     };
 
@@ -121,30 +120,6 @@ export default function Checklist() {
             <View style={styles.container}>
                 <Text style={styles.header}>Wedding Checklist</Text>
 
-                <View style={styles.addTodoContainer}>
-                    <AppTextInput
-                        name="todoTitle"
-                        placeholder="What needs to be done?"
-                        value={newTodoTitle}
-                        onChange={setNewTodoTitle}
-                        extraStyles={styles.input}
-                    />
-                    <AppPicker
-                        name="timeFrame"
-                        value={selectedTimeFrame}
-                        onChange={(val) => setSelectedTimeFrame(val as Timeframe)}
-                        itemList={Object.values(Timeframe).map(tf => ({name: tf, value: tf}))}
-                        style={styles.picker}
-                    />
-                    <AppButton
-                        buttonType={ButtonType.PRIMARY}
-                        onPress={handleAddTodo}
-                        fullWidth
-                    >
-                        Add to Checklist
-                    </AppButton>
-                </View>
-
                 <FlatList
                     data={groupedTodos}
                     keyExtractor={(item) => item.timeFrame}
@@ -152,12 +127,49 @@ export default function Checklist() {
                         <View style={styles.sectionContainer}>
                             <View style={styles.sectionHeader}>
                                 <Text style={styles.sectionTitle}>{item.timeFrame}</Text>
-                                <View style={styles.sectionBadge}>
-                                    <Text style={styles.badgeText}>
-                                        {item.data.filter(t => t.isChecked).length}/{item.data.length}
-                                    </Text>
+                                <View style={styles.headerActions}>
+                                    <View style={styles.sectionBadge}>
+                                        <Text style={styles.badgeText}>
+                                            {item.data.filter(t => t.isChecked).length}/{item.data.length}
+                                        </Text>
+                                    </View>
+                                    <IconButton
+                                        name="plus"
+                                        size={18}
+                                        onPress={() => {
+                                            if (addingToTimeFrame === item.timeFrame) {
+                                                setAddingToTimeFrame(null);
+                                            } else {
+                                                setAddingToTimeFrame(item.timeFrame as Timeframe);
+                                                setNewTodoTitle("");
+                                            }
+                                        }}
+                                    />
                                 </View>
                             </View>
+
+                            {addingToTimeFrame === item.timeFrame && (
+                                <View style={styles.inlineAddContainer}>
+                                    <AppTextInput
+                                        name="todoTitle"
+                                        placeholder="What needs to be done?"
+                                        value={newTodoTitle}
+                                        onChange={setNewTodoTitle}
+                                        extraStyles={styles.inlineInput}
+                                        onBlur={() => {
+                                            if (!newTodoTitle.trim()) {
+                                                setAddingToTimeFrame(null);
+                                            }
+                                        }}
+                                    />
+                                    <IconButton
+                                        name="checkmark"
+                                        color={Theme.colors.green.S500}
+                                        onPress={() => handleAddTodo(item.timeFrame as Timeframe)}
+                                    />
+                                </View>
+                            )}
+
                             {item.data.length > 0 ? (
                                 item.data.map((todo, idx) => (
                                     <React.Fragment key={todo.id}>
@@ -193,25 +205,6 @@ const styles = StyleSheet.create({
         marginVertical: 15,
         fontFamily: Theme.typographies.aboreto,
     },
-    addTodoContainer: {
-        backgroundColor: Theme.colors.white,
-        padding: 15,
-        borderRadius: Theme.radius.md,
-        marginBottom: 20,
-        borderWidth: 1,
-        borderColor: Theme.colors.border,
-        shadowColor: "#000",
-        shadowOffset: {width: 0, height: 2},
-        shadowOpacity: 0.05,
-        shadowRadius: 5,
-        elevation: 2,
-    },
-    input: {
-        marginBottom: 5,
-    },
-    picker: {
-        marginBottom: 10,
-    },
     listContent: {
         paddingBottom: 40,
     },
@@ -233,6 +226,11 @@ const styles = StyleSheet.create({
         fontWeight: "700",
         color: Theme.colors.secondary,
     },
+    headerActions: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 8,
+    },
     sectionBadge: {
         backgroundColor: Theme.colors.white,
         paddingHorizontal: 8,
@@ -243,6 +241,20 @@ const styles = StyleSheet.create({
         fontSize: Theme.sizes.xs,
         fontWeight: "600",
         color: Theme.colors.primary,
+    },
+    inlineAddContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginBottom: 15,
+        gap: 10,
+        backgroundColor: Theme.colors.white,
+        padding: 8,
+        borderRadius: Theme.radius.md,
+        borderWidth: 1,
+        borderColor: Theme.colors.border,
+    },
+    inlineInput: {
+        flex: 1,
     },
     todoItemContainer: {
         flexDirection: "row",

@@ -14,15 +14,19 @@ export default function Checklist() {
     const [todos, setTodos] = useState<ChecklistDto[]>([]);
     const [newTodoTitle, setNewTodoTitle] = useState("");
     const [addingToTimeFrame, setAddingToTimeFrame] = useState<Timeframe | null>(null);
+    const [isloading, setIsLoading] = useState(false);
 
     const {api} = useApi()
 
     const getTodos = useCallback(async () => {
         try {
+            setIsLoading(true)
             const res = await api.checklistControllerGetAllTasks()
             setTodos(res.data.result)
         } catch (err) {
 
+        } finally {
+            setIsLoading(false)
         }
     }, [])
 

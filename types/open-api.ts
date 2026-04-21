@@ -10,6 +10,17 @@
  * ---------------------------------------------------------------
  */
 
+export enum Timeframe {
+  Year = "Year",
+  NineMonths = "NineMonths",
+  SixMonths = "SixMonths",
+  ThreeMonths = "ThreeMonths",
+  OneMonth = "OneMonth",
+  LastWeek = "LastWeek",
+  LastDay = "LastDay",
+  BigDay = "BigDay",
+}
+
 export enum UpdateStep {
   FillPlaceInfo = "FillPlaceInfo",
   AddDescription = "AddDescription",
@@ -390,6 +401,31 @@ export interface RevenueCatEvent {
 export interface RevenueCatRequest {
   api_version: string;
   event: RevenueCatEvent;
+}
+
+export interface ChecklistDto {
+  timeframe: Timeframe;
+  id: number;
+  task: string;
+  isChecked: boolean;
+}
+
+export interface ChecklistViewModel {
+  result: ChecklistDto[];
+}
+
+export interface CreateTaskRequest {
+  timeframe: Timeframe;
+  task: string;
+}
+
+export interface DeleteTaskRequest {
+  taskId: number;
+}
+
+export interface ToggleTaskRequest {
+  taskId: number;
+  isChecked: boolean;
 }
 
 import type {
@@ -1068,6 +1104,78 @@ export class Api<
     ) =>
       this.request<void, any>({
         path: `/api/webhooks/revenue-cat`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Checklist
+     * @name ChecklistControllerGetAllTasks
+     * @request GET:/api/checklist/getAllTasks
+     */
+    checklistControllerGetAllTasks: (params: RequestParams = {}) =>
+      this.request<ChecklistViewModel, any>({
+        path: `/api/checklist/getAllTasks`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Checklist
+     * @name ChecklistControllerCreateTask
+     * @request POST:/api/checklist/createTask
+     */
+    checklistControllerCreateTask: (
+      data: CreateTaskRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/checklist/createTask`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Checklist
+     * @name ChecklistControllerDeleteTask
+     * @request POST:/api/checklist/deleteTask
+     */
+    checklistControllerDeleteTask: (
+      data: DeleteTaskRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/checklist/deleteTask`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Checklist
+     * @name ChecklistControllerToggleTask
+     * @request POST:/api/checklist/toggleTask
+     */
+    checklistControllerToggleTask: (
+      data: ToggleTaskRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/checklist/toggleTask`,
         method: "POST",
         body: data,
         type: ContentType.Json,

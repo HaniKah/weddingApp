@@ -1,83 +1,122 @@
-import {useAuth} from "@/contexts/auth-context";
-import AppButton from "@/components/appComponents/AppButton";
-import {ButtonType} from "@/styles/Button";
-import {useVideoPlayer, VideoSource, VideoView} from "expo-video";
-import {StyleSheet, View} from "react-native";
-import Google from "@/assets/icons/social-media/google.svg"
+import { useAuth } from '@/contexts/auth-context';
+import AppButton from '@/components/appComponents/AppButton';
+import { ButtonType } from '@/styles/Button';
+import { useVideoPlayer, VideoSource, VideoView } from 'expo-video';
+import { StyleSheet, Text, View } from 'react-native';
+import Google from '@/assets/icons/social-media/google.svg';
+import { Theme } from '@/styles/Theme';
 
 // const videoSource =
 //     'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
 
-const assetId = require("../assets/videos/ring.mp4")
+const assetId = require('../assets/videos/ring.mp4');
 
 const videoSource: VideoSource = {
-    assetId,
-    metadata: {
-        title: 'ring',
-        artist: 'artist',
-    },
+  assetId,
+  metadata: {
+    title: 'ring',
+    artist: 'artist',
+  },
 };
 
 // const videoSource = process.env.EXPO_PUBLIC_VIDEO_URL as string
 
 
 export default function SignIn() {
-    const {signInWithGoogle} = useAuth()
+  const { signInWithGoogle } = useAuth();
 
-    const player = useVideoPlayer(videoSource, (player) => {
-        player.loop = true;
-        player.play();
-    })
+  const player = useVideoPlayer(videoSource, (player) => {
+    player.loop = true;
+    player.play();
+  });
 
 
-    return (
+  return (
 
-        <View style={styles.container}>
+    <View style={styles.container}>
 
-            <VideoView
-                player={player}
-                nativeControls={false}
-                style={StyleSheet.absoluteFill}
-                contentFit="cover"
-            />
-            <View style={{
-                width: "100%",
-                height: "100%",
-                position: "absolute",
-                backgroundColor: "white",
-                opacity: 0.3,
-            }}>
+      <VideoView
+        player={player}
+        nativeControls={false}
+        style={StyleSheet.absoluteFill}
+        contentFit="cover"
+      />
+      <View style={{
+        width: '100%',
+        height: '100%',
+        position: 'absolute',
+        backgroundColor: 'white',
+        opacity: 0.3,
+      }}>
 
-            </View>
+      </View>
 
-            <View
-                style={styles.signInContainer}
-            >
+      <View
+        style={styles.signInContainer}
+      >
 
-                <AppButton
-                    fullWidth
-                    buttonType={ButtonType.PRIMARY}
-                    extraStylesBtn={{backgroundColor: "black"}}
-                    onPress={signInWithGoogle}
-                    CustomIcon={Google}
-                >
-                    Sign In with Google
-                </AppButton>
-            </View>
+        <AppButton
+          fullWidth
+          buttonType={ButtonType.PRIMARY}
+          extraStylesBtn={{ backgroundColor: 'black' }}
+          onPress={signInWithGoogle}
+          CustomIcon={Google}
+        >
+          Sign In with Google
+        </AppButton>
+
+        <View style={styles.orContainer}>
+          <View style={styles.line} />
+          <Text style={styles.orText}>or</Text>
+          <View style={styles.line} />
         </View>
 
+        <AppButton fullWidth
+                   extraStylesBtn={styles.emailSignInButton} extraStylesTxt={styles.emailSignInText}
+                   iconColor="black"
+                   icon="mail"
+                   buttonType={ButtonType.OUTLINED}>
+          Continue with Email
+        </AppButton>
+      </View>
+    </View>
 
-    );
+
+  );
 }
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: "black",
-    },
-    signInContainer: {
-        flex: 1,
-        justifyContent: "flex-end",
-        paddingBottom: 60,
-        paddingHorizontal: 30,
-    },
+  container: {
+    flex: 1,
+    backgroundColor: 'black',
+  },
+  signInContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    paddingBottom: 60,
+    paddingHorizontal: 30,
+  },
+  emailSignInButton: {
+    borderColor: 'black',
+  },
+  emailSignInText: {
+    color: 'black',
+  },
+  orContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 15,
+    paddingHorizontal: 10,
+  },
+  line: {
+    flex: 1,
+    height: 1,
+    backgroundColor: Theme.colors.gray.S700,
+    opacity: 0.5,
+  },
+  orText: {
+    marginHorizontal: 10,
+    fontSize: 14,
+    color: 'black',
+    fontWeight: '500',
+  },
 });

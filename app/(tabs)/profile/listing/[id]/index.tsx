@@ -190,13 +190,13 @@ export default function Place() {
                             const {width} = event.nativeEvent.layout;
                             setContainerWidth(width);
                         }}>
-                            {photos.map((p, i) => {
+                            {photos.length > 0 ? photos.map((p, i) => {
                                 return (
                                     <View style={styles.imageView} key={i}>
                                         <Image source={{uri: p.uri}} width={itemWidth} height={itemWidth}/>
                                     </View>
                                 )
-                            })}
+                            }) : <Text style={styles.notFoundText}>you haven&#39;t uploaded images yet</Text>}
                         </View>
                     </InfoCard>
 
@@ -337,6 +337,13 @@ const styles = StyleSheet.create({
     dangerZoneContainer: {
         marginTop: 10,
         gap: 10
+    },
+    notFoundText: {
+        width: '100%',
+        textAlign: 'center',
+        color: Theme.colors.gray.S500,
+        fontSize: Theme.sizes.sm,
+        fontStyle: "italic"
     }
 
 

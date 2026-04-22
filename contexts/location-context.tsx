@@ -5,6 +5,8 @@ import {ErrorMsg} from "@/types/general";
 import {CountryCode} from "@/types/open-api";
 import {useRouter} from "expo-router";
 import {useLocationStore} from "@/utils/locationStore";
+import {COUNTRIES} from "@/constants/countries";
+import {useAuthStore} from "@/utils/authStore";
 
 type LocationContextType = {
     isLocationGranted: boolean,
@@ -35,13 +37,18 @@ export function LocationProvider({children}: { children: React.ReactNode }) {
 
     const router = useRouter();
     const {setLocation, getLocation} = useLocationStore()
+    const {isLoggedIn} = useAuthStore()
 
     useEffect(() => {
-
+        if (!isLoggedIn) return;
         const getCurrentLocation = async () => {
             const countryCode = await getLocation()
             if (countryCode) {
                 console.log("country found in store")
+                if (!COUNTRIES.has(countryCode as CountryCode)) {
+                    console.log(`country stored: ${countryCode} is not supported `)
+                    router.dismissTo("/pick-location")
+                }
                 setIsoCountry(countryCode as CountryCode)
                 return
             }
@@ -73,6 +80,10 @@ export function LocationProvider({children}: { children: React.ReactNode }) {
                         longitude: location.coords.longitude
                     });
                     //todo: iso Countries should actually match
+                    if (!COUNTRIES.has(postalAddress[0].isoCountryCode as CountryCode)) {
+                        console.log(`country: ${postalAddress[0].isoCountryCode} is not supported `)
+                        router.dismissTo("/pick-location")
+                    }
                     setIsoCountry(postalAddress[0].isoCountryCode as CountryCode)
                     setLocation(postalAddress[0].isoCountryCode as CountryCode)
                 }

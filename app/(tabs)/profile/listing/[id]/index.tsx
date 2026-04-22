@@ -1,4 +1,4 @@
-import {Alert, Dimensions, Image, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {Alert, Dimensions, Image, RefreshControl, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {Link, Stack, useLocalSearchParams, useRouter} from 'expo-router';
 import {useApi} from '@/utils/api';
 import {ReactNode, useCallback, useEffect, useRef, useState} from 'react';
@@ -60,49 +60,6 @@ export default function Place() {
         }
     }
 
-    // async function handlePickImages() {
-    //     const result = await ImagePicker.launchImageLibraryAsync({
-    //         mediaTypes: ['images'],
-    //         allowsMultipleSelection: true,
-    //         quality: 1,
-    //     });
-    //     if (result.canceled) return;
-    //
-    //     const [other, heic] = result.assets.reduce(
-    //         ([pass, fail]: ImagePickerAsset[][], val) => {
-    //             if (val.mimeType !== 'image/heic') pass.push(val);
-    //             else fail.push(val);
-    //             return [pass, fail];
-    //         },
-    //         [[], []],
-    //     );
-    //
-    //     const converted: ImageUploadModel[] = await Promise.all(
-    //         heic.map(async (asset) => {
-    //             const img = await ImageManipulator.manipulate(asset.uri).renderAsync();
-    //             const saved = await img.saveAsync({format: SaveFormat.JPEG});
-    //             return {uri: saved.uri, type: 'image/jpeg', name: asset.fileName?.replace('heic', 'jpeg')};
-    //         }),
-    //     );
-    //     const others: ImageUploadModel[] = other.map((asset) => ({
-    //         uri: asset.uri,
-    //         type: asset.mimeType,
-    //         name: 'places' + asset.fileName,
-    //     }));
-    //
-    //     const formData = new FormData();
-    //     formData.append('placeId', id);
-    //     [...others, ...converted].forEach((img) => {
-    //         formData.append('file', {uri: img.uri, type: img.type, name: img.name} as any);
-    //     });
-    //
-    //     try {
-    //         await api.photosControllerUploadFile(formData);
-    //         fetchPhotos();
-    //     } catch (err) {
-    //         console.error(err);
-    //     }
-    // }
 
     function confirmDelete() {
         Alert.alert(
@@ -183,6 +140,10 @@ export default function Place() {
             </AppButton>
     }, [placeDetails?.isPublished])
 
+    function handleRefresh() {
+        fetchPlace()
+        fetchPhotos()
+    }
 
     return (
         <>
@@ -200,7 +161,7 @@ export default function Place() {
                 }}
             />
             <AppView withPadding isLoading={isLoading}>
-                <ScrollView>
+                <ScrollView refreshControl={<RefreshControl refreshing={isLoading} onRefresh={handleRefresh}/>}>
 
                     {placeDetails &&
                         <InfoCard label="LISTING DETAILS"

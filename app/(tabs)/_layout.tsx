@@ -28,9 +28,11 @@ export default function TabsLayout() {
 
                     <Tabs.Screen name="guests"
                                  options={{
+                                     href: null,
                                      title: 'Guestlist',
                                      tabBarIcon: ({color}) => <IconSymbol size={28} name="person.3"
                                                                           color={color}/>,
+
                                  }}/>
 
                     <Tabs.Screen name="profile"

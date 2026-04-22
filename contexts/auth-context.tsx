@@ -47,7 +47,7 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
     // we are not using useAuthRequest because we are implementing oAuth2.0 with passport in the backend
     // const [request, response, promptAsync] = useAuthRequest(config, discovery)
 
-    const {logIn, logOut} = useAuthStore();
+    const {logIn, logOut, isLoggedIn} = useAuthStore();
 
 
     WebBrowser.maybeCompleteAuthSession();
@@ -109,6 +109,7 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
 
     );
 };
+
 
 export const useAuth = () => {
     const context = React.useContext(AuthContext);

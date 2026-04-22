@@ -8,7 +8,6 @@ import {useAuthStore} from '@/utils/authStore';
 import {AuthProvider} from '@/contexts/auth-context';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {LocationProvider} from '@/contexts/location-context';
-import {Theme} from '@/styles/Theme';
 
 
 export default function RootLayout() {
@@ -48,6 +47,9 @@ export default function RootLayout() {
                             </Stack.Protected>
                             <Stack.Protected guard={!hasCompletedOnboarding}>
                                 <Stack.Screen name="onboarding"/>
+                            </Stack.Protected>
+                            <Stack.Protected guard={isLoggedIn}>
+                                <Stack.Screen name="pick-location"/>
                             </Stack.Protected>
                             <Stack.Screen name="+not-found"/>
                         </Stack>

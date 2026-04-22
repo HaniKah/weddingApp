@@ -36,11 +36,15 @@ export function LocationProvider({children}: { children: React.ReactNode }) {
     const [isoCountry, setIsoCountry] = useState<CountryCode | null>(null)
 
     const router = useRouter();
-    const {setLocation, getLocation} = useLocationStore()
+    const {setLocation, getLocation, removeLocation} = useLocationStore()
     const {isLoggedIn} = useAuthStore()
 
     useEffect(() => {
-        if (!isLoggedIn) return;
+        if (!isLoggedIn) {
+            removeLocation()
+            return
+
+        }
         const getCurrentLocation = async () => {
             const countryCode = await getLocation()
             if (countryCode) {
@@ -98,7 +102,7 @@ export function LocationProvider({children}: { children: React.ReactNode }) {
         }
 
         getCurrentLocation();
-    }, []);
+    }, [isLoggedIn]);
 
     return (
         <LocationContext.Provider

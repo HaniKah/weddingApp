@@ -1,15 +1,16 @@
-import {Dimensions, FlatList, Image, Pressable, StyleSheet, Text} from "react-native";
+import {Dimensions, FlatList, Image, StyleSheet, Text, View} from "react-native";
 import * as ImagePicker from 'expo-image-picker';
 import {ImagePickerAsset} from 'expo-image-picker';
 import {ImageUploadModel} from "@/components/wizards/createPlaceWizard/CreatePlaceWizard";
 import {ImageManipulator, SaveFormat} from "expo-image-manipulator";
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {useApi} from "@/utils/api";
 import {PhotosDto} from "@/types/open-api";
 import WizardController from "@/components/wizards/WizardController";
 import {Theme} from "@/styles/Theme";
+import {IconButton} from "@/components/symbols/IconButton";
 import AppView from "@/components/appComponents/AppView";
-import {IconSymbol} from "@/components/symbols/IconSymbol";
+import AppButton from "@/components/appComponents/AppButton";
 
 export default function UploadImages({onFinish, placeId}: {
     onFinish: () => void,
@@ -24,23 +25,23 @@ export default function UploadImages({onFinish, placeId}: {
     const COLUMN_PER_ROW = 3
     const IMAGE_SIZE = (Dimensions.get("window").width - IMAGE_GAP * (COLUMN_PER_ROW - 1) - (Theme.global.appPadding * 2)) / COLUMN_PER_ROW
 
+    const getPhotos = useCallback(async () => {
+        if (!placeId) return
+        try {
+            setIsLoading(true)
+            const res = await api.photosControllerGetPhotos(placeId)
+            setImages(res.data.result)
+        } catch (err) {
+            console.error(err)
+        } finally {
+            setIsLoading(false)
+        }
+
+    }, [placeId, refresh])
 
     useEffect(() => {
-        const getPhotos = async () => {
-            if (!placeId) return
-            try {
-                setIsLoading(true)
-                const res = await api.photosControllerGetPhotos(placeId)
-                setImages(res.data.result)
-            } catch (err) {
-                console.error(err)
-            } finally {
-                setIsLoading(false)
-            }
-
-        }
         getPhotos()
-    }, [placeId, refresh]);
+    }, [getPhotos]);
 
 
     const pickImage = async () => {
@@ -106,6 +107,17 @@ export default function UploadImages({onFinish, placeId}: {
 
     }
 
+    async function deleteImage(id: number) {
+        if (!placeId) return
+        try {
+            console.log("deleting image :", id)
+            await api.photosControllerDeletePhoto({id: id})
+            await getPhotos()
+        } catch (err) {
+            console.error(err)
+        }
+    }
+
     function constructRequest(placeId: number, newImages: ImageUploadModel[]): FormData | undefined {
         const formData = new FormData();
         formData.append('placeId', placeId.toString())
@@ -126,39 +138,43 @@ export default function UploadImages({onFinish, placeId}: {
 
     function ImageItem({item}: { item: PhotosDto }) {
         return (
-            <Image source={{uri: item.uri}} width={IMAGE_SIZE} height={IMAGE_SIZE} style={styles.image}/>
+            <>
+                <View style={styles.imageContainer}>
+                    <View style={styles.xButton}>
+                        <IconButton onPress={() => deleteImage(item.id)} size={10} name="xmark" color="black"/>
+                    </View>
+                    <Image source={{uri: item.uri}} width={IMAGE_SIZE} height={IMAGE_SIZE} style={styles.image}/>
+                </View>
+            </>
+
         )
     }
 
-    function AddImageItem() {
-        return (<Pressable onPress={pickImage} style={[styles.addImage, {width: IMAGE_SIZE, height: IMAGE_SIZE}]}>
-            <IconSymbol weight="thin" size={50} color={Theme.colors.gray.S300} name="plus"/>
-        </Pressable>)
-    }
+    // function AddImageItem() {
+    //     return (<Pressable onPress={pickImage} style={[styles.addImage, {width: IMAGE_SIZE, height: IMAGE_SIZE}]}>
+    //         <IconSymbol weight="thin" size={50} color={Theme.colors.gray.S300} name="plus"/>
+    //     </Pressable>)
+    // }
 
-    function renderItem({item}: { item: PhotosDto }) {
-        if (item.uri === "add") return <AddImageItem/>
-        else return <ImageItem item={item}/>
-    }
-
-    // async function deleteImage(id: number) {
-    //     try {
-    //         const res = api.photos
-    //     }
-    //
+    // function renderItem({item}: { item: PhotosDto }) {
+    //     if (item.uri === "add") return <AddImageItem/>
+    //     else return <ImageItem item={item}/>
     // }
 
 
     return (
         <>
-            <AppView isLoading={isLoading} withPadding>
+            <AppView withPadding isLoading={isLoading}>
                 <Text style={styles.title}>Upload photos</Text>
+                <AppButton buttonSize="SM" onPress={pickImage} extraStylesBtn={{marginBottom: 15}}>
+                    Add new +
+                </AppButton>
 
                 <FlatList
                     numColumns={3}
                     columnWrapperStyle={{gap: IMAGE_GAP}}
-                    data={[{uri: "add", ratio: 0}, ...images]}
-                    renderItem={renderItem}
+                    data={images}
+                    renderItem={ImageItem}
                     contentContainerStyle={{gap: 10}}
                 />
 
@@ -183,15 +199,23 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
+    imageContainer: {
+        position: "relative",
+    },
     image: {
         borderRadius: 10,
+    },
+    xButton: {
+        position: "absolute",
+        top: 5,
+        right: 5,
+        zIndex: 10,
     },
     title: {
         fontSize: Theme.sizes.xl,
         fontWeight: "bold",
         textAlign: "center",
-        marginTop: 20,
-        marginBottom: 50,
+        marginVertical: 20,
         width: "100%",
     },
 });

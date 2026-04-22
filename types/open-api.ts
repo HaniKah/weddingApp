@@ -156,12 +156,17 @@ export interface TogglePickedPlaceFilterRequest {
 }
 
 export interface PhotosDto {
+  id: number;
   uri: string;
   ratio: number;
 }
 
 export interface PhotosViewModel {
   result: PhotosDto[];
+}
+
+export interface DeletePhotoRequest {
+  id: number;
 }
 
 export interface GuestsDto {
@@ -805,12 +810,17 @@ export class Api<
      *
      * @tags Photos
      * @name PhotosControllerDeletePhoto
-     * @request POST:/api/photos/delete/{id}
+     * @request POST:/api/photos/delete
      */
-    photosControllerDeletePhoto: (id: number, params: RequestParams = {}) =>
+    photosControllerDeletePhoto: (
+      data: DeletePhotoRequest,
+      params: RequestParams = {},
+    ) =>
       this.request<void, any>({
-        path: `/api/photos/delete/${id}`,
+        path: `/api/photos/delete`,
         method: "POST",
+        body: data,
+        type: ContentType.Json,
         ...params,
       }),
 

@@ -11,7 +11,7 @@ import { LocationProvider } from '@/contexts/location-context';
 
 
 export default function RootLayout() {
-  const { isLoggedIn, shouldCreateAccount, hasCompletedOnboarding } = useAuthStore();
+  const { isLoggedIn, shouldCreateAccount } = useAuthStore();
 
   SplashScreen.preventAutoHideAsync();
 
@@ -42,10 +42,10 @@ export default function RootLayout() {
               <Stack.Protected guard={isLoggedIn}>
                 <Stack.Screen name="(tabs)" />
               </Stack.Protected>
-              <Stack.Protected guard={!isLoggedIn && !shouldCreateAccount && hasCompletedOnboarding}>
+              <Stack.Protected guard={!isLoggedIn && !shouldCreateAccount}>
                 <Stack.Screen name="sign-in" />
               </Stack.Protected>
-              <Stack.Protected guard={!hasCompletedOnboarding}>
+              <Stack.Protected guard={false}>
                 <Stack.Screen name="onboarding" />
               </Stack.Protected>
               <Stack.Protected guard={isLoggedIn}>

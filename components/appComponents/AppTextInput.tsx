@@ -1,4 +1,14 @@
-import {KeyboardTypeOptions, StyleProp, StyleSheet, Text, TextInput, TextStyle, View, ViewStyle} from 'react-native';
+import {
+    InputModeOptions,
+    KeyboardTypeOptions,
+    StyleProp,
+    StyleSheet,
+    Text,
+    TextInput,
+    TextStyle,
+    View,
+    ViewStyle
+} from 'react-native';
 import {Theme} from '@/styles/Theme';
 import {useFormContext} from '@/contexts/form-context';
 import {useEffect, useMemo, useRef, useState} from 'react';
@@ -18,6 +28,7 @@ export default function AppTextInput({
                                          textArea,
                                          onBlur,
                                          secureTextEntry,
+                                         inputMode
 
                                      }: {
 
@@ -35,6 +46,7 @@ export default function AppTextInput({
     textArea?: boolean
     onBlur?: () => void
     secureTextEntry?: boolean
+    inputMode?: InputModeOptions
 
 }) {
 
@@ -105,6 +117,8 @@ export default function AppTextInput({
                            multiline={textArea}
                            onBlur={onBlur}
                            secureTextEntry={secureTextEntry}
+                           inputMode={inputMode}
+
                 />
                 {unit && <Text style={styles.unit}>{unit}</Text>}
             </View>

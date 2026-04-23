@@ -23,7 +23,7 @@ export default function AuthForm() {
 
     const formRef = useRef<FormRef>(null);
 
-    const {signInWithEmail, signUpWithEmail} = useAuth();
+    const {signInWithEmail, signUpWithEmail, error} = useAuth();
 
     const handleSubmit = () => {
         if (activeTab === AuthTabs.SignIn) {
@@ -94,6 +94,7 @@ export default function AuthForm() {
                         onChange={setEmail}
                         required
                         keyboardType="email-address"
+                        inputMode={"email"}
                     />
                     <AppTextInput
                         name="password"
@@ -127,6 +128,9 @@ export default function AuthForm() {
                     {activeTab === AuthTabs.SignIn ? 'Sign in' : 'Sign up'}
                 </AppButton>
             </AppForm>
+            {error &&
+                <Text>{error.error}</Text>
+            }
         </View>
     );
 }

@@ -7,7 +7,7 @@ import Google from '@/assets/icons/social-media/google.svg';
 import {Theme} from '@/styles/Theme';
 import {useState} from 'react';
 import AuthForm from '@/components/auth/AuthForm';
-import Animated, {FadeInUp, FadeOutDown, Layout} from 'react-native-reanimated';
+import Animated, {FadeInUp, FadeOutDown, LinearTransition} from 'react-native-reanimated';
 
 // const videoSource =
 //     'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
@@ -49,14 +49,15 @@ export default function SignIn() {
                 width: '100%',
                 height: '100%',
                 position: 'absolute',
-                backgroundColor: 'white',
-                opacity: 0.3,
+                backgroundColor: Theme.colors.white,
+                opacity: 0.2,
             }}>
 
             </View>
 
             <Animated.View
-                layout={Layout.springify()}
+                layout={LinearTransition.duration(400)}
+
                 style={styles.signInContainer}
             >
 
@@ -97,10 +98,8 @@ export default function SignIn() {
                 )}
 
                 {showEmailForm && (
-                    <Animated.View
-                        entering={FadeInUp.duration(400)}
-                        exiting={FadeOutDown}
-                    >
+                    <Animated.View entering={FadeInUp.duration(400)}
+                                   exiting={FadeOutDown}>
                         <AuthForm/>
                     </Animated.View>
                 )}

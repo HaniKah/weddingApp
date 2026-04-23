@@ -48,16 +48,13 @@ export function LocationProvider({children}: { children: React.ReactNode }) {
         const getCurrentLocation = async () => {
             const countryCode = await getLocation()
             if (countryCode) {
-                console.log("country found in store")
                 if (!COUNTRIES.has(countryCode as CountryCode)) {
-                    console.log(`country stored: ${countryCode} is not supported `)
                     router.dismissTo("/pick-location")
                 }
                 setIsoCountry(countryCode as CountryCode)
                 return
             }
 
-            console.log("country could not be found in store")
             let {status} = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
                 // setErrorMsg({

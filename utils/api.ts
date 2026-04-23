@@ -36,14 +36,12 @@ export function useApi() {
                 const oldRefreshToken = getItem("refreshToken")
                 const res = await axios.post(`${api.instance.getUri()}/api/auth/refresh`, null, {headers: {Authorization: `Bearer ${oldRefreshToken}`}})
                 const {accessToken, refreshToken} = res.data
-
                 setItem("accessToken", accessToken)
                 setItem("refreshToken", refreshToken)
                 originalRequest.headers["Authorization"] = `Bearer ${accessToken}`
                 return api.instance(originalRequest)
             } catch (err) {
                 logOut()
-                console.error(err)
                 return Promise.reject(err)
             }
         }

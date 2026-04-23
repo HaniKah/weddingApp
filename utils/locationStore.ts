@@ -21,9 +21,8 @@ const getData = async () => {
 const removeData = async () => {
     try {
         await AsyncStorage.removeItem(keyName);
-        console.log("removing location from store")
     } catch (error) {
-        console.log("unable to remove location from store", error)
+        console.error("unable to remove location from store", error)
     }
 }
 

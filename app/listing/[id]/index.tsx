@@ -10,6 +10,7 @@ import {useApi} from "@/utils/api";
 import {IconButton} from "@/components/symbols/IconButton";
 import {COUNTRIES} from "@/constants/countries";
 import LocationTag from "@/components/LocationTag";
+import IconStep from "@/components/symbols/IconStep";
 
 
 export default function PlaceId() {
@@ -99,9 +100,17 @@ export default function PlaceId() {
                             params: {id: params.id, step: params.step},
                         }}
                     >
-                        <Pressable style={styles.imageContainer}>
-                            <Image style={styles.image} source={{uri: placeDetails.mainPhoto}}/>
-                        </Pressable>
+                        {placeDetails.mainPhoto ?
+                            <Pressable style={styles.imageContainer}>
+                                <Image style={styles.image} source={{uri: placeDetails.mainPhoto}}/>
+                            </Pressable> :
+                            <View style={styles.imagePlaceHolder}>
+                                <View style={styles.iconWrapper}>
+                                    <IconStep height={25} fill={Theme.colors.primary} step={placeDetails.category}/>
+                                </View>
+                            </View>
+                        }
+
                     </Link>
 
                     <View style={styles.infosContainer}>
@@ -180,6 +189,15 @@ const styles = StyleSheet.create({
     imageContainer: {
         height: 300,
     },
+    imagePlaceHolder: {
+        height: '100%',
+        backgroundColor: Theme.colors.iconBackground,
+
+    },
+    iconWrapper: {
+        marginVertical: "auto",
+        opacity: .70
+    },
     image: {
         resizeMode: "cover",
         height: "100%"
@@ -229,5 +247,6 @@ const styles = StyleSheet.create({
     pickedText: {
         textDecorationLine: "underline",
         marginBottom: 20
-    }
+    },
+
 })

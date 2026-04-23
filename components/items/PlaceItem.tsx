@@ -6,6 +6,7 @@ import AppButton from '@/components/appComponents/AppButton';
 import {ButtonSize} from '@/styles/Button';
 import {COUNTRIES} from "@/constants/countries";
 import {IconSymbol} from "@/components/symbols/IconSymbol";
+import IconStep from "@/components/symbols/IconStep";
 
 
 export default function PlaceItem({item}: { item: PlacesDto }) {
@@ -26,8 +27,17 @@ export default function PlaceItem({item}: { item: PlacesDto }) {
                             </Text>
                         </View>
                     }
-                    <Image style={styles.image}
-                           source={{uri: item.mainPhoto}}/>
+                    {item.mainPhoto ?
+                        <Image style={styles.image}
+                               source={{uri: item.mainPhoto}}/>
+                        :
+                        <View style={styles.imagePlaceHolder}>
+                            <View style={styles.iconWrapper}>
+                                <IconStep height={25} fill={Theme.colors.primary} step={item.category}/>
+                            </View>
+                        </View>
+                    }
+
                 </View>
 
 
@@ -135,6 +145,15 @@ const styles = StyleSheet.create({
         resizeMode: 'cover',
         height: '100%',
 
+    },
+    imagePlaceHolder: {
+        height: '100%',
+        backgroundColor: Theme.colors.iconBackground,
+
+    },
+    iconWrapper: {
+        marginVertical: "auto",
+        opacity: .70
     },
     name: {
         fontWeight: 'bold',

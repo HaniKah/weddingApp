@@ -40,18 +40,25 @@ export default function AuthForm() {
         }
     };
 
+    function handleToggleTab(activeTab: AuthTabs) {
+        setEmail(undefined)
+        setPassword(undefined)
+        setConfirmPassword(undefined)
+        setActiveTab(activeTab);
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.tabContainer}>
                 <TouchableOpacity
                     style={[styles.tab, activeTab === AuthTabs.SignIn && styles.activeTab]}
-                    onPress={() => setActiveTab(AuthTabs.SignIn)}
+                    onPress={() => handleToggleTab(AuthTabs.SignIn)}
                 >
                     <Text style={[styles.tabText, activeTab === AuthTabs.SignIn && styles.activeTabText]}>Sign In</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={[styles.tab, activeTab === AuthTabs.SignUp && styles.activeTab]}
-                    onPress={() => setActiveTab(AuthTabs.SignUp)}
+                    onPress={() => handleToggleTab(AuthTabs.SignUp)}
                 >
                     <Text style={[styles.tabText, activeTab === AuthTabs.SignUp && styles.activeTabText]}>Sign Up</Text>
                 </TouchableOpacity>
@@ -59,6 +66,26 @@ export default function AuthForm() {
 
             <AppForm ref={formRef} onSubmit={handleSubmit}>
                 <View style={styles.formFields}>
+                    {activeTab === AuthTabs.SignUp && (
+                        <AppTextInput
+                            name="firstName"
+                            label="First name"
+                            placeholder="Enter your first name"
+                            value={firstName}
+                            onChange={setFirstName}
+                            required
+                        />
+                    )}
+                    {activeTab === AuthTabs.SignUp && (
+                        <AppTextInput
+                            name="lastName"
+                            label="Last name"
+                            placeholder="Enter your last name"
+                            value={lastName}
+                            onChange={setLastName}
+                            required
+                        />
+                    )}
                     <AppTextInput
                         name="email"
                         label="Email"
@@ -77,6 +104,7 @@ export default function AuthForm() {
                         required
                         secureTextEntry
                     />
+
                     {activeTab === AuthTabs.SignUp && (
                         <AppTextInput
                             name="confirmPassword"
@@ -138,6 +166,7 @@ const styles = StyleSheet.create({
     },
     formFields: {
         marginBottom: 20,
+        gap: 20
     },
     submitButton: {
         backgroundColor: 'black',

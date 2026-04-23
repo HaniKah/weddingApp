@@ -914,6 +914,20 @@ export class Api<
      * No description
      *
      * @tags Auth
+     * @name AuthControllerErrorTest
+     * @request GET:/api/auth/error
+     */
+    authControllerErrorTest: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/auth/error`,
+        method: "GET",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Auth
      * @name AuthControllerRefreshToken
      * @request POST:/api/auth/refresh
      */

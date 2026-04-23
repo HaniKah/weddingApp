@@ -3,8 +3,7 @@ import React, {useEffect} from 'react';
 import * as WebBrowser from 'expo-web-browser';
 import {useApi} from '@/utils/api';
 import {useAuthStore} from '@/utils/authStore';
-import {ErrorsDto, SignInDto, SignUpDto} from '@/types/open-api';
-import {AxiosError} from "axios";
+import {SignInDto, SignUpDto} from '@/types/open-api';
 
 interface AuthContextType {
     signInWithGoogle: () => void,
@@ -12,7 +11,8 @@ interface AuthContextType {
     signUpWithEmail: (data: SignUpDto) => void,
     signOut: () => void,
     isLoading: boolean,
-    error: ErrorsDto
+    errorMessage: string | null
+    setErrorMessage: React.Dispatch<React.SetStateAction<string | null>>
 }
 
 const AuthContext = React.createContext<AuthContextType>({
@@ -25,8 +25,10 @@ const AuthContext = React.createContext<AuthContextType>({
     },
     signOut: () => {
     },
+    setErrorMessage: () => {
+    },
     isLoading: false,
-    error: null as ErrorsDto | null,
+    errorMessage: null,
 });
 
 
@@ -56,7 +58,7 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
 
     // const [user, setUser] = React.useState<AuthUser | null>(null);
     const [isLoading, setIsLoading] = React.useState(false);
-    const [error, setError] = React.useState<AxiosError | null>(null);
+    const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
     const [request, response, promptAsync] = useAuthRequest(config, discovery);
 
     // we are not using useAuthRequest because we are implementing oAuth2.0 with passport in the backend
@@ -72,8 +74,8 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
             setIsLoading(true);
             await API.api.authControllerSignIn({email: data.email, password: data.password});
         } catch (err: any) {
-            console.log("this is the Error: ", error?.response?.data?.message)
-            setError(err)
+            console.log(err?.response?.data?.message);
+            setErrorMessage(err?.response?.data?.message);
 
         } finally {
             setIsLoading(false);
@@ -86,8 +88,8 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
             const res = await API.api.authControllerSignUp(signUpData);
             logIn(res.data.accessToken, res.data.refreshToken, res.data.user.firstName, res.data.user.lastName, res.data.user.email);
 
-        } catch (err: ErrorsDto) {
-            setError(err)
+        } catch (err: any) {
+            setErrorMessage(err.response.data.message);
         } finally {
             setIsLoading(false);
         }
@@ -144,7 +146,8 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
             signUpWithEmail,
             signOut,
             isLoading,
-            error,
+            errorMessage,
+            setErrorMessage,
 
         }}>
             {children}

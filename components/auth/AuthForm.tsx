@@ -5,7 +5,8 @@ import AppTextInput from '@/components/appComponents/AppTextInput';
 import AppButton from '@/components/appComponents/AppButton';
 import {ButtonType} from '@/styles/Button';
 import {Theme} from '@/styles/Theme';
-import {useAuth} from "@/contexts/auth-context";
+import {useAuth} from '@/contexts/auth-context';
+import {useApi} from '@/utils/api';
 
 enum AuthTabs {
     SignIn = 'SignIn',
@@ -23,11 +24,23 @@ export default function AuthForm() {
 
     const formRef = useRef<FormRef>(null);
 
-    const {signInWithEmail, signUpWithEmail, error} = useAuth();
+    const {signInWithEmail, signUpWithEmail, errorMessage, setErrorMessage} = useAuth();
+
+    const {api} = useApi();
+
+    // const signInTest = async (data: SignInDto) => {
+    //   try {
+    //     await api.authControllerErrorTest();
+    //   } catch (error: any) {
+    //     console.log('Error test: ' + error?.response?.data?.message);
+    //   }
+    // };
+
 
     const handleSubmit = () => {
+        setErrorMessage(null);
         if (activeTab === AuthTabs.SignIn) {
-            if (!email || !password) return
+            if (!email || !password) return;
             signInWithEmail({email: email, password: password});
         } else {
             if (password !== confirmPassword) {
@@ -35,15 +48,16 @@ export default function AuthForm() {
                 alert('Passwords don\'t match');
                 return;
             }
-            if (!password || !confirmPassword || !firstName || !lastName || !email) return
-            signUpWithEmail({email: email, password: password, firstName: firstName, lastName: lastName})
+            if (!password || !confirmPassword || !firstName || !lastName || !email) return;
+            signUpWithEmail({email: email, password: password, firstName: firstName, lastName: lastName});
         }
     };
 
     function handleToggleTab(activeTab: AuthTabs) {
-        setEmail(undefined)
-        setPassword(undefined)
-        setConfirmPassword(undefined)
+        setEmail(undefined);
+        setPassword(undefined);
+        setConfirmPassword(undefined);
+        setErrorMessage(null)
         setActiveTab(activeTab);
     }
 
@@ -94,7 +108,7 @@ export default function AuthForm() {
                         onChange={setEmail}
                         required
                         keyboardType="email-address"
-                        inputMode={"email"}
+                        inputMode={'email'}
                     />
                     <AppTextInput
                         name="password"
@@ -118,7 +132,9 @@ export default function AuthForm() {
                         />
                     )}
                 </View>
-
+                {errorMessage &&
+                    <Text style={styles.errorTextMessage}>{errorMessage}</Text>
+                }
                 <AppButton
                     fullWidth
                     buttonType={ButtonType.PRIMARY}
@@ -128,9 +144,7 @@ export default function AuthForm() {
                     {activeTab === AuthTabs.SignIn ? 'Sign in' : 'Sign up'}
                 </AppButton>
             </AppForm>
-            {error &&
-                <Text>{error.error}</Text>
-            }
+
         </View>
     );
 }
@@ -170,9 +184,13 @@ const styles = StyleSheet.create({
     },
     formFields: {
         marginBottom: 20,
-        gap: 20
+        gap: 20,
     },
     submitButton: {
         backgroundColor: 'black',
     },
+    errorTextMessage: {
+        color: Theme.colors.red.S500,
+        marginBottom: 20
+    }
 });

@@ -97,9 +97,13 @@ export default function AppTextInput({
             } else {
                 form.addValue({[name]: valid});
             }
+
+            // If it's not required and we added the value, or if it was valid and we added it,
+            // we don't need to do anything else here. 
+            // The problem is if everything is valid, submitting stays true until AppForm resets it.
         }
 
-    }, [form.submitting]);
+    }, [form.submitting, value]);
 
 
     return (

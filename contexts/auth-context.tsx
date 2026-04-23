@@ -70,7 +70,6 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
     WebBrowser.maybeCompleteAuthSession();
 
     const signInWithEmail = async (data: SignInDto) => {
-        console.log("signing in with these data: ", data);
         try {
             setIsLoading(true);
             const res = await API.api.authControllerSignIn({email: data.email, password: data.password});
@@ -78,7 +77,6 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
                 logIn(res.data.accessToken, res.data.refreshToken, res.data.user.firstName, res.data.user.lastName, res.data.user.email);
             }
         } catch (err: any) {
-            console.log(err?.response?.data?.message);
             setErrorMessage(err?.response?.data?.message);
 
         } finally {

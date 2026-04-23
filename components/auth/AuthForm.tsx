@@ -37,7 +37,7 @@ export default function AuthForm() {
     // };
 
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         setErrorMessage(null);
         if (activeTab === AuthTabs.SignIn) {
             if (!email || !password) return;

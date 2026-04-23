@@ -63,10 +63,10 @@ export default function SignIn() {
                 <AppButton
                     fullWidth
                     buttonType={showEmailForm ? ButtonType.OUTLINED : ButtonType.PRIMARY}
-                    extraStylesBtn={showEmailForm ? styles.googleButtonOutlined : {backgroundColor: 'black'}}
+                    extraStylesBtn={showEmailForm ? styles.googleButtonOutlined : styles.googleButtonPrimary}
+                    extraStylesTxt={showEmailForm && styles.googleTxtOutlined}
                     onPress={signInWithGoogle}
                     CustomIcon={Google}
-                    iconColor={showEmailForm ? 'black' : 'white'}
                 >
                     Sign In with Google
                 </AppButton>
@@ -121,10 +121,19 @@ const styles = StyleSheet.create({
         paddingBottom: 60,
         paddingHorizontal: 30,
     },
+
+    googleButtonPrimary: {
+        backgroundColor: Theme.colors.black
+    },
     googleButtonOutlined: {
-        borderColor: 'black',
+        borderColor: Theme.colors.black,
         backgroundColor: 'transparent',
     },
+    googleTxtOutlined: {
+        color: 'black',
+    },
+
+
     emailSignInButton: {
         borderColor: 'black',
     },

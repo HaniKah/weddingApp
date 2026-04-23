@@ -5,6 +5,9 @@ import { useVideoPlayer, VideoSource, VideoView } from 'expo-video';
 import { StyleSheet, Text, View } from 'react-native';
 import Google from '@/assets/icons/social-media/google.svg';
 import { Theme } from '@/styles/Theme';
+import { useState } from 'react';
+import AuthForm from '@/components/auth/AuthForm';
+import Animated, { FadeInUp, FadeOutDown, Layout } from 'react-native-reanimated';
 
 // const videoSource =
 //     'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
@@ -24,6 +27,7 @@ const videoSource: VideoSource = {
 
 export default function SignIn() {
   const { signInWithGoogle } = useAuth();
+  const [showEmailForm, setShowEmailForm] = useState(false);
 
   const player = useVideoPlayer(videoSource, (player) => {
     player.loop = true;
@@ -51,16 +55,18 @@ export default function SignIn() {
 
       </View>
 
-      <View
+      <Animated.View
+        layout={Layout.springify()}
         style={styles.signInContainer}
       >
 
         <AppButton
           fullWidth
-          buttonType={ButtonType.PRIMARY}
-          extraStylesBtn={{ backgroundColor: 'black' }}
+          buttonType={showEmailForm ? ButtonType.OUTLINED : ButtonType.PRIMARY}
+          extraStylesBtn={showEmailForm ? styles.googleButtonOutlined : { backgroundColor: 'black' }}
           onPress={signInWithGoogle}
           CustomIcon={Google}
+          iconColor={showEmailForm ? 'black' : 'white'}
         >
           Sign In with Google
         </AppButton>
@@ -70,15 +76,38 @@ export default function SignIn() {
           <Text style={styles.orText}>or</Text>
           <View style={styles.line} />
         </View>
+        
+        {!showEmailForm && (
+          <Animated.View
+            entering={FadeInUp}
+            exiting={FadeOutDown}
+          >
 
-        <AppButton fullWidth
-                   extraStylesBtn={styles.emailSignInButton} extraStylesTxt={styles.emailSignInText}
-                   iconColor="black"
-                   icon="mail"
-                   buttonType={ButtonType.OUTLINED}>
-          Continue with Email
-        </AppButton>
-      </View>
+
+            <AppButton fullWidth
+                       extraStylesBtn={styles.emailSignInButton}
+                       extraStylesTxt={styles.emailSignInText}
+                       iconColor="black"
+                       icon="mail"
+                       onPress={() => setShowEmailForm(true)}
+                       buttonType={ButtonType.OUTLINED}>
+              Continue with Email
+            </AppButton>
+          </Animated.View>
+        )}
+
+        {showEmailForm && (
+          <Animated.View
+            entering={FadeInUp.duration(400)}
+            exiting={FadeOutDown}
+          >
+            <AuthForm
+              onSignIn={(data) => console.log('Sign In', data)}
+              onSignUp={(data) => console.log('Sign Up', data)}
+            />
+          </Animated.View>
+        )}
+      </Animated.View>
     </View>
 
 
@@ -94,6 +123,10 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     paddingBottom: 60,
     paddingHorizontal: 30,
+  },
+  googleButtonOutlined: {
+    borderColor: 'black',
+    backgroundColor: 'transparent',
   },
   emailSignInButton: {
     borderColor: 'black',

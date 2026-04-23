@@ -3,10 +3,24 @@ import React, {useEffect} from 'react';
 import * as WebBrowser from 'expo-web-browser';
 import {useApi} from '@/utils/api';
 import {useAuthStore} from '@/utils/authStore';
+import {SignInDto, SignUpDto} from '@/types/open-api';
 
-const AuthContext = React.createContext({
+interface AuthContextType {
+    signInWithGoogle: () => void,
+    signInWithEmail: (data: SignInDto) => void,
+    signUpWithEmail: (data: SignUpDto) => void,
+    signOut: () => void,
+    isLoading: boolean,
+    error: AuthError | null
+}
+
+const AuthContext = React.createContext<AuthContextType>({
     // user: null as AuthUser | null,
     signInWithGoogle: () => {
+    },
+    signInWithEmail: () => {
+    },
+    signUpWithEmail: () => {
     },
     signOut: () => {
     },
@@ -51,6 +65,30 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
 
 
     WebBrowser.maybeCompleteAuthSession();
+
+    const signInWithEmail = async (data: SignInDto) => {
+        try {
+            setIsLoading(true);
+            await API.api.authControllerSignIn({email: data.email, password: data.password});
+        } catch (err) {
+            console.error('error signing in with email: ' + err);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const signUpWithEmail = async (signUpData: SignUpDto) => {
+        try {
+            setIsLoading(true);
+            const res = await API.api.authControllerSignUp(signUpData);
+            logIn(res.data.accessToken, res.data.refreshToken, res.data.user.firstName, res.data.user.lastName, res.data.user.email);
+
+        } catch (err) {
+            console.error('error signing up with email: ' + err);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
 
     const signInWithGoogle = async () => {
@@ -99,6 +137,8 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
         <AuthContext.Provider value={{
 
             signInWithGoogle,
+            signInWithEmail,
+            signUpWithEmail,
             signOut,
             isLoading,
             error,

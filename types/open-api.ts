@@ -198,6 +198,14 @@ export interface DeleteGuestRequest {
   id: number;
 }
 
+export interface SignUpDto {
+  firstName: string;
+  lastName: string;
+  /** @format email */
+  email: string;
+  password: string;
+}
+
 export interface UserInfo {
   firstName: string;
   lastName: string;
@@ -209,6 +217,12 @@ export interface ExchangeTokenDto {
   accessToken: string;
   refreshToken: string;
   user: UserInfo;
+}
+
+export interface SignInDto {
+  /** @format email */
+  email: string;
+  password: string;
 }
 
 export interface CountryInfo {
@@ -907,6 +921,39 @@ export class Api<
       this.request<void, any>({
         path: `/api/auth/refresh`,
         method: "POST",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Auth
+     * @name AuthControllerSignUp
+     * @request POST:/api/auth/signup
+     */
+    authControllerSignUp: (data: SignUpDto, params: RequestParams = {}) =>
+      this.request<ExchangeTokenDto, any>({
+        path: `/api/auth/signup`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Auth
+     * @name AuthControllerSignIn
+     * @request POST:/api/auth/signin
+     */
+    authControllerSignIn: (data: SignInDto, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/auth/signin`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
         ...params,
       }),
 

@@ -64,15 +64,19 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
     // we are not using useAuthRequest because we are implementing oAuth2.0 with passport in the backend
     // const [request, response, promptAsync] = useAuthRequest(config, discovery)
 
-    const {logIn, logOut, isLoggedIn} = useAuthStore();
+    const {logIn, logOut} = useAuthStore();
 
 
     WebBrowser.maybeCompleteAuthSession();
 
     const signInWithEmail = async (data: SignInDto) => {
+        console.log("signing in with these data: ", data);
         try {
             setIsLoading(true);
-            await API.api.authControllerSignIn({email: data.email, password: data.password});
+            const res = await API.api.authControllerSignIn({email: data.email, password: data.password});
+            if (res.data) {
+                logIn(res.data.accessToken, res.data.refreshToken, res.data.user.firstName, res.data.user.lastName, res.data.user.email);
+            }
         } catch (err: any) {
             console.log(err?.response?.data?.message);
             setErrorMessage(err?.response?.data?.message);
@@ -83,10 +87,13 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
     };
 
     const signUpWithEmail = async (signUpData: SignUpDto) => {
+
         try {
             setIsLoading(true);
             const res = await API.api.authControllerSignUp(signUpData);
-            logIn(res.data.accessToken, res.data.refreshToken, res.data.user.firstName, res.data.user.lastName, res.data.user.email);
+            if (res.data) {
+                logIn(res.data.accessToken, res.data.refreshToken, res.data.user.firstName, res.data.user.lastName, res.data.user.email);
+            }
 
         } catch (err: any) {
             setErrorMessage(err.response.data.message);

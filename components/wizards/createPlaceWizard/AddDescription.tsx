@@ -2,11 +2,12 @@ import AppTextInput from '@/components/appComponents/AppTextInput';
 import { ScrollView, StyleSheet, Text } from 'react-native';
 import { Theme } from '@/styles/Theme';
 import { UpdateStep, VendorPlaceDetailsDto } from '@/types/open-api';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useRef, useState } from 'react';
 import { useApi } from '@/utils/api';
 import WizardController from '@/components/wizards/WizardController';
 import { useWizardContext } from '@/components/wizards/Wizard';
 import AppView from '@/components/appComponents/AppView';
+import { AppForm, FormRef } from '@/contexts/form-context';
 
 export default function AddDescription({ data, setData }: {
   data: VendorPlaceDetailsDto | undefined
@@ -38,28 +39,30 @@ export default function AddDescription({ data, setData }: {
     wizard.nextStep();
 
   };
-
+  const formRef = useRef<FormRef>(null);
   return (
     <>
       <AppView withPadding>
 
         <ScrollView>
           <Text style={styles.title}>Add Description</Text>
+          <AppForm ref={formRef} onSubmit={handleNextStep}>
+            <AppTextInput name="description"
+                          value={data?.description}
+                          onChange={(text) => setDescription(text)}
+                          design={1}
+                          textArea
+                          label="Description"
+                          placeholder="Add your description to your place"
 
-          <AppTextInput name="description"
-                        value={data?.description}
-                        onChange={(text) => setDescription(text)}
-                        design={1}
-                        textArea
-                        label="Description"
-                        placeholder="Add your description to your place"
 
+            />
+          </AppForm>
 
-          />
         </ScrollView>
 
 
-        <WizardController onNext={handleNextStep} isFirstStep={false}
+        <WizardController onNext={() => formRef.current?.submit} isFirstStep={false}
                           isLastStep={false} />
       </AppView>
     </>

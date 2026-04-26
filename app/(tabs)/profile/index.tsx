@@ -9,6 +9,7 @@ import MenuItem from '@/components/items/MenuItem';
 import {router, Stack} from 'expo-router';
 import {IconSymbol} from "@/components/symbols/IconSymbol";
 import {COUNTRIES} from "@/constants/countries";
+import AppSafeAreaView from "@/components/appComponents/AppSafeAreaView";
 
 export default function Index() {
     const {signOut} = useAuth();
@@ -17,55 +18,56 @@ export default function Index() {
     return (
         <>
             <Stack.Screen options={{headerShown: false, contentStyle: {backgroundColor: Theme.colors.background}}}/>
-            <ScrollView style={styles.container}>
-                <AppView withPadding>
+            <AppSafeAreaView>
+                <ScrollView style={styles.container}>
+                    <AppView withPadding>
 
-                    <View style={styles.info}>
-                        <Text style={styles.name}>Welcome back</Text>
-                        <View style={styles.location}>
-                            <IconSymbol name="location" size={14} color={Theme.colors.secondary}/>
-                            {isoCountry &&
-                                <Text style={styles.address}>{COUNTRIES.get(isoCountry)?.countryName}</Text>
-                            }
-                        </View>
-                    </View>
-
-
-                    <View style={styles.sectionContainer}>
-
-                        {/* ACCOUNT */}
-                        <View style={styles.section}>
-                            <Text style={styles.sectionTitle}>Account</Text>
-                            <View style={styles.menuCard}>
-                                <MenuItem
-                                    icon="heart"
-                                    label="My Favorites"
-                                    onPress={() => router.push('/(tabs)/profile/favorites')}
-                                />
+                        <View style={styles.info}>
+                            <Text style={styles.name}>Welcome back</Text>
+                            <View style={styles.location}>
+                                <IconSymbol name="location" size={14} color={Theme.colors.secondary}/>
+                                {isoCountry &&
+                                    <Text style={styles.address}>{COUNTRIES.get(isoCountry)?.countryName}</Text>
+                                }
                             </View>
                         </View>
 
-                        {/* BUSINESS */}
-                        <View style={styles.section}>
-                            <Text style={styles.sectionTitle}>Business</Text>
-                            <View style={styles.menuCard}>
-                                <MenuItem
-                                    icon="briefcase"
-                                    label="My Listings"
-                                    onPress={() => router.push('/(tabs)/profile/listing')}
-                                />
+
+                        <View style={styles.sectionContainer}>
+
+                            {/* ACCOUNT */}
+                            <View style={styles.section}>
+                                <Text style={styles.sectionTitle}>Account</Text>
+                                <View style={styles.menuCard}>
+                                    <MenuItem
+                                        icon="heart"
+                                        label="My Favorites"
+                                        onPress={() => router.push('/(tabs)/profile/favorites')}
+                                    />
+                                </View>
                             </View>
+
+                            {/* BUSINESS */}
+                            <View style={styles.section}>
+                                <Text style={styles.sectionTitle}>Business</Text>
+                                <View style={styles.menuCard}>
+                                    <MenuItem
+                                        icon="briefcase"
+                                        label="My Listings"
+                                        onPress={() => router.push('/(tabs)/profile/listing')}
+                                    />
+                                </View>
+                            </View>
+
                         </View>
 
-                    </View>
-
-                    <AppButton extraStylesBtn={{marginTop: 20}} fullWidth destructive buttonType={ButtonType.PLAIN}
-                               buttonSize="MD" onPress={signOut}>
-                        Logout
-                    </AppButton>
-                </AppView>
-            </ScrollView>
-
+                        <AppButton extraStylesBtn={{marginTop: 20}} fullWidth destructive buttonType={ButtonType.PLAIN}
+                                   buttonSize="MD" onPress={signOut}>
+                            Logout
+                        </AppButton>
+                    </AppView>
+                </ScrollView>
+            </AppSafeAreaView>
         </>
     );
 }

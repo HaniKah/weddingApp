@@ -9,6 +9,7 @@ import {ChecklistDto, Timeframe} from "@/types/open-api";
 import {IconButton} from "@/components/symbols/IconButton";
 import AppView from "@/components/appComponents/AppView";
 import {Stack} from "expo-router";
+import AppSafeAreaView from "@/components/appComponents/AppSafeAreaView";
 
 export default function Checklist() {
     const [todos, setTodos] = useState<ChecklistDto[]>([]);
@@ -123,75 +124,77 @@ export default function Checklist() {
     return (
         <>
             <Stack.Screen options={{headerShown: false}}/>
-            <AppView extraStyles={{backgroundColor: Theme.colors.background}} withPadding>
-                <Text style={styles.header}>Wedding Checklist</Text>
-                <FlatList
-                    data={groupedTodos}
-                    keyExtractor={(item) => item.timeFrame}
-                    renderItem={({item}) => (
-                        <View style={styles.sectionContainer}>
-                            <View style={styles.sectionHeader}>
-                                <Text style={styles.sectionTitle}>{item.timeFrame}</Text>
-                                <View style={styles.headerActions}>
-                                    <View style={styles.sectionBadge}>
-                                        <Text style={styles.badgeText}>
-                                            {item.data.filter(t => t.isChecked).length}/{item.data.length}
-                                        </Text>
+            <AppSafeAreaView>
+                <AppView extraStyles={{backgroundColor: Theme.colors.background}} withPadding>
+                    <Text style={styles.header}>Wedding Checklist</Text>
+                    <FlatList
+                        data={groupedTodos}
+                        keyExtractor={(item) => item.timeFrame}
+                        renderItem={({item}) => (
+                            <View style={styles.sectionContainer}>
+                                <View style={styles.sectionHeader}>
+                                    <Text style={styles.sectionTitle}>{item.timeFrame}</Text>
+                                    <View style={styles.headerActions}>
+                                        <View style={styles.sectionBadge}>
+                                            <Text style={styles.badgeText}>
+                                                {item.data.filter(t => t.isChecked).length}/{item.data.length}
+                                            </Text>
+                                        </View>
+                                        <IconButton
+                                            name="plus"
+                                            size={18}
+                                            onPress={() => {
+                                                if (addingToTimeFrame === item.timeFrame) {
+                                                    setAddingToTimeFrame(null);
+                                                } else {
+                                                    setAddingToTimeFrame(item.timeFrame as Timeframe);
+                                                    setNewTodoTitle("");
+                                                }
+                                            }}
+                                        />
                                     </View>
-                                    <IconButton
-                                        name="plus"
-                                        size={18}
-                                        onPress={() => {
-                                            if (addingToTimeFrame === item.timeFrame) {
-                                                setAddingToTimeFrame(null);
-                                            } else {
-                                                setAddingToTimeFrame(item.timeFrame as Timeframe);
-                                                setNewTodoTitle("");
-                                            }
-                                        }}
-                                    />
                                 </View>
+
+                                {addingToTimeFrame === item.timeFrame && (
+                                    <View style={styles.inlineAddContainer}>
+                                        <AppTextInput
+                                            name="todoTitle"
+                                            placeholder="What needs to be done?"
+                                            value={newTodoTitle}
+                                            onChange={setNewTodoTitle}
+                                            extraStyles={styles.inlineInput}
+                                            onBlur={() => {
+                                                if (!newTodoTitle.trim()) {
+                                                    setAddingToTimeFrame(null);
+                                                }
+                                            }}
+                                        />
+                                        <IconButton
+                                            name="checkmark"
+                                            color={Theme.colors.green.S700}
+                                            onPress={() => handleAddTodo(item.timeFrame as Timeframe)}
+                                        />
+                                    </View>
+                                )}
+
+                                {item.data.length > 0 ? (
+                                    item.data.map((todo, idx) => (
+                                        <React.Fragment key={todo.id}>
+                                            {renderTodoItem({item: todo, index: idx, sectionData: item.data})}
+                                        </React.Fragment>
+                                    ))
+                                ) : (
+                                    <Text style={styles.emptyText}>No tasks yet</Text>
+                                )}
                             </View>
-
-                            {addingToTimeFrame === item.timeFrame && (
-                                <View style={styles.inlineAddContainer}>
-                                    <AppTextInput
-                                        name="todoTitle"
-                                        placeholder="What needs to be done?"
-                                        value={newTodoTitle}
-                                        onChange={setNewTodoTitle}
-                                        extraStyles={styles.inlineInput}
-                                        onBlur={() => {
-                                            if (!newTodoTitle.trim()) {
-                                                setAddingToTimeFrame(null);
-                                            }
-                                        }}
-                                    />
-                                    <IconButton
-                                        name="checkmark"
-                                        color={Theme.colors.green.S700}
-                                        onPress={() => handleAddTodo(item.timeFrame as Timeframe)}
-                                    />
-                                </View>
-                            )}
-
-                            {item.data.length > 0 ? (
-                                item.data.map((todo, idx) => (
-                                    <React.Fragment key={todo.id}>
-                                        {renderTodoItem({item: todo, index: idx, sectionData: item.data})}
-                                    </React.Fragment>
-                                ))
-                            ) : (
-                                <Text style={styles.emptyText}>No tasks yet</Text>
-                            )}
-                        </View>
-                    )}
-                    contentContainerStyle={styles.listContent}
-                    showsVerticalScrollIndicator={false}
-                    refreshing={isloading}
-                    onRefresh={getTodos}
-                />
-            </AppView>
+                        )}
+                        contentContainerStyle={styles.listContent}
+                        showsVerticalScrollIndicator={false}
+                        refreshing={isloading}
+                        onRefresh={getTodos}
+                    />
+                </AppView>
+            </AppSafeAreaView>
         </>
     );
 }

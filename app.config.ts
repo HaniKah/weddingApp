@@ -84,7 +84,7 @@ export default ({config}: ConfigContext): ExpoConfig => {
         },
 
         "ios": {
-            "supportsTablet": true,
+            "supportsTablet": false,
             "bundleIdentifier": bundleIdentifier,
             "config": {
                 "googleMapsApiKey": process.env.GOOGLE_MAPS_API_KEY_IOS

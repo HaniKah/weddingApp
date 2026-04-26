@@ -14,7 +14,7 @@ export type IconSymbolName = keyof typeof MAPPING;
  * - see SF Symbols in the [SF Symbols](https://developer.apple.com/sf-symbols/) app.
  */
 const MAPPING = {
-    'house.fill': 'home',
+    'house': 'home',
     'person.3.fill': 'groups',
     'heart.text.clipboard.fill': 'description',
     'gearshape.fill': 'settings',
@@ -22,7 +22,7 @@ const MAPPING = {
     'chart.line.uptrend.xyaxis': "trending-up",
     'square.and.pencil': 'edit',
     'horn.blast': 'campaign',
-    'person.fill': 'person',
+    'person': 'person',
     'plus': "add",
     "eye": "preview",
     "square.and.arrow.down": "download",
@@ -32,7 +32,8 @@ const MAPPING = {
     "location": "location-on",
     "chevron.right": "chevron-right",
     "mappin.and.ellipse": "location-city",
-    "magnifyingglass": "search"
+    "magnifyingglass": "search",
+    "checkmark": "check",
 } as IconMapping;
 
 /**

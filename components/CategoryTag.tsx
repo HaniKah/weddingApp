@@ -1,12 +1,12 @@
 import {Categories} from "@/types/open-api";
 import {StyleSheet, Text, View} from "react-native";
-import IconStep from "@/components/symbols/IconStep";
+import IconCategory from "./symbols/IconCategory";
 import {Theme} from "@/styles/Theme";
 
 export default function CategoryTag({category}: { category: Categories }) {
     return (
         <View style={styles.container}>
-            <IconStep width={14} height={14} fill={Theme.colors.primary} step={category}/>
+            <IconCategory width={14} height={14} fill={Theme.colors.primary} category={category}/>
             <Text style={styles.text}>
                 {category}
             </Text>

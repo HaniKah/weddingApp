@@ -6,7 +6,7 @@ import AppButton from '@/components/appComponents/AppButton';
 import {ButtonSize} from '@/styles/Button';
 import {COUNTRIES} from "@/constants/countries";
 import {IconSymbol} from "@/components/symbols/IconSymbol";
-import IconStep from "@/components/symbols/IconStep";
+import IconCategory from "../symbols/IconCategory";
 
 
 export default function PlaceItem({item}: { item: PlacesDto }) {
@@ -33,7 +33,7 @@ export default function PlaceItem({item}: { item: PlacesDto }) {
                         :
                         <View style={styles.imagePlaceHolder}>
                             <View style={styles.iconWrapper}>
-                                <IconStep height={25} fill={Theme.colors.primary} step={item.category}/>
+                                <IconCategory height={25} fill={Theme.colors.primary} category={item.category}/>
                             </View>
                         </View>
                     }

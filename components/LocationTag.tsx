@@ -2,7 +2,7 @@ import {StyleSheet, Text, View} from "react-native";
 import {Theme} from "@/styles/Theme";
 import {IconSymbol} from "@/components/symbols/IconSymbol";
 
-export default function LocationTag({location}: { location: string }) {
+export default function LocationTag({location}: { location: string | undefined }) {
     return (
         <View style={styles.container}>
             <IconSymbol name="location" size={14} color={Theme.colors.primary}/>

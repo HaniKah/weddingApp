@@ -1,4 +1,4 @@
-import {ActivityIndicator, Image, Pressable, ScrollView, StyleSheet, Text, View} from "react-native";
+import {Image, Pressable, ScrollView, StyleSheet, Text, View} from "react-native";
 import {useCallback, useEffect, useState} from "react";
 import {Link, Stack, useLocalSearchParams} from "expo-router";
 import {Categories, PlaceDetailsDto} from "@/types/open-api";
@@ -10,7 +10,8 @@ import {useApi} from "@/utils/api";
 import {IconButton} from "@/components/symbols/IconButton";
 import {COUNTRIES} from "@/constants/countries";
 import LocationTag from "@/components/LocationTag";
-import IconStep from "@/components/symbols/IconStep";
+import IconCategory from "../../../components/symbols/IconCategory";
+import AppView from "@/components/appComponents/AppView";
 
 
 export default function PlaceId() {
@@ -74,21 +75,21 @@ export default function PlaceId() {
     }
 
 
-    if (!isLoading && placeDetails) {
-        return (
-            <View style={styles.screen}>
-                <Stack.Screen
-                    options={{
-                        title: placeDetails.name,
-                        headerShown: true,
-                        headerBackButtonDisplayMode: "minimal",
-                        headerStyle: {backgroundColor: Theme.colors.background},
-                        contentStyle: {backgroundColor: Theme.colors.background},
-                    }}
-                />
+    return (
+        <>
+
+            <Stack.Screen
+                options={{
+                    title: placeDetails?.name,
+                    headerShown: true,
+                    headerBackButtonDisplayMode: "minimal",
+                    headerStyle: {backgroundColor: Theme.colors.background},
+                    contentStyle: {backgroundColor: Theme.colors.background},
+                }}
+            />
+            <AppView isLoading={!placeDetails && isLoading}>
 
                 <ScrollView
-                    style={styles.scroll}
                     contentContainerStyle={styles.scrollContent}
                     showsVerticalScrollIndicator
                 >
@@ -100,13 +101,14 @@ export default function PlaceId() {
                             params: {id: params.id, step: params.step},
                         }}
                     >
-                        {placeDetails.mainPhoto ?
+                        {placeDetails?.mainPhoto ?
                             <Pressable style={styles.imageContainer}>
                                 <Image style={styles.image} source={{uri: placeDetails.mainPhoto}}/>
                             </Pressable> :
                             <View style={styles.imagePlaceHolder}>
                                 <View style={styles.iconWrapper}>
-                                    <IconStep height={25} fill={Theme.colors.primary} step={placeDetails.category}/>
+                                    <IconCategory height={25} fill={Theme.colors.primary}
+                                                  category={placeDetails?.category}/>
                                 </View>
                             </View>
                         }
@@ -118,51 +120,39 @@ export default function PlaceId() {
                         <View style={styles.infoHeaderContainer}>
                             <View style={styles.titleContainer}>
                                 <Text style={styles.title}>{placeDetails?.name}</Text>
-                                {placeDetails.favourite ?
+                                {placeDetails?.favourite ?
                                     <IconButton onPress={toggleFavorites} removeBackground name="heart.fill"/> :
                                     <IconButton onPress={toggleFavorites} removeBackground name="heart"/>}
                             </View>
-                            <LocationTag location={placeDetails.city}/>
+                            <LocationTag location={placeDetails?.city}/>
                             <View style={styles.priceContainer}>
                                 <Text
-                                    style={styles.price}>{placeDetails.minPrice === placeDetails.maxPrice ? placeDetails.minPrice : placeDetails.minPrice + " - " + placeDetails.maxPrice}</Text>
+                                    style={styles.price}>{placeDetails?.minPrice === placeDetails?.maxPrice ? placeDetails?.minPrice : placeDetails?.minPrice + " - " + placeDetails?.maxPrice}</Text>
                                 <Text
-                                    style={styles.currency}>{COUNTRIES.get(placeDetails.countryCode)?.currency} / {placeDetails.priceType}</Text>
+                                    style={styles.currency}>{COUNTRIES.get(placeDetails?.countryCode)?.currency} / {placeDetails?.priceType}</Text>
                             </View>
                         </View>
 
-
-                        {/*<AppIf value={placeDetails?.address}>*/}
-                        {/*    <PlaceInfo iconName="location.circle" info={placeDetails?.address}/>*/}
-                        {/*</AppIf>*/}
-
-
-                        <AppIf value={placeDetails.description}>
+                        <AppIf value={placeDetails?.description}>
                             <View style={styles.descriptionContainer}>
-                                <Text style={styles.description}>{placeDetails.description}</Text>
+                                <Text style={styles.description}>{placeDetails?.description}</Text>
                             </View>
                         </AppIf>
 
 
                     </View>
                 </ScrollView>
+            </AppView>
 
-                <View style={styles.callForActionContainer}>
-                    <Link asChild href={`tel:${placeDetails.phoneNumber}`}>
-                        <AppButton icon="phone" fullWidth buttonType={ButtonType.PRIMARY}>
-                            Call Now
-                        </AppButton>
-                    </Link>
-                </View>
+            <View style={styles.callForActionContainer}>
+                <Link asChild href={`tel:${placeDetails?.phoneNumber}`}>
+                    <AppButton icon="phone" fullWidth buttonType={ButtonType.PRIMARY}>
+                        Call Now
+                    </AppButton>
+                </Link>
             </View>
-        );
-    } else {
-        return (
-            <View>
-                <ActivityIndicator size="large"/>
-            </View>
-        )
-    }
+        </>
+    );
 }
 const styles = StyleSheet.create({
     screen: {

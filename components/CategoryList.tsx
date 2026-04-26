@@ -1,7 +1,7 @@
 import {Categories} from '@/types/open-api';
 import {FlatList, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {Dispatch, SetStateAction, useEffect, useRef, useState} from 'react';
-import IconStep from '@/components/symbols/IconStep';
+import IconCategory from './symbols/IconCategory';
 import {Theme} from '@/styles/Theme';
 import Animated from 'react-native-reanimated';
 
@@ -40,9 +40,9 @@ export default function CategoryList({activeStep, setActiveStep}: {
                               style={[{width: itemWidth}, styles.itemContainer]}>
 
                 <Animated.View style={[styles.category, isActive && {backgroundColor: Theme.colors.primary}]}>
-                    <IconStep fill={isActive ? Theme.colors.iconBackground : Theme.colors.primary} step={item}
-                              width={20}
-                              height={20}
+                    <IconCategory fill={isActive ? Theme.colors.iconBackground : Theme.colors.primary} category={item}
+                                  width={20}
+                                  height={20}
                     />
 
                 </Animated.View>

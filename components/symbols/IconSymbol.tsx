@@ -31,10 +31,13 @@ const MAPPING = {
     "checkmark.circle.fill": "check-circle",
     "location": "location-on",
     "chevron.right": "chevron-right",
-    "mappin.and.ellipse": "location-city",
+    "mappin.and.ellipse": "location-pin",
     "magnifyingglass": "search",
     "checkmark": "check",
     "circle": "radio-button-unchecked",
+    "phone": "phone",
+    "tag": "sell",
+    "pencil": "edit",
 } as IconMapping;
 
 /**

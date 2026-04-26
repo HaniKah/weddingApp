@@ -34,6 +34,7 @@ const MAPPING = {
     "mappin.and.ellipse": "location-city",
     "magnifyingglass": "search",
     "checkmark": "check",
+    "circle": "radio-button-unchecked",
 } as IconMapping;
 
 /**

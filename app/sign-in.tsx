@@ -9,6 +9,7 @@ import {useState} from 'react';
 import AuthForm from '@/components/auth/AuthForm';
 import Animated, {FadeInUp, FadeOutDown} from 'react-native-reanimated';
 import AppKeyboardAvoidingView from '@/components/appComponents/AppKeyboardAvoidingView';
+import AppSafeAreaView from "@/components/appComponents/AppSafeAreaView";
 
 // const videoSource =
 //     'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
@@ -86,28 +87,38 @@ export default function SignIn() {
             )}
 
             {showEmailForm && (
-                <Pressable onPress={closeForm} style={{flex: 1}}>
-                    <AppKeyboardAvoidingView>
-                        <Animated.View entering={FadeInUp.duration(300)}
-                                       exiting={FadeOutDown.duration(300)}
-                                       style={styles.signInContainer}>
-                            <AuthForm/>
-                        </Animated.View>
-                    </AppKeyboardAvoidingView>
-                </Pressable>
+                <AppSafeAreaView transparentBackground>
+                    <Pressable onPress={closeForm} style={{flex: 1}}>
+                        <AppKeyboardAvoidingView>
+                            <Animated.View entering={FadeInUp.duration(300)}
+                                           exiting={FadeOutDown.duration(300)}
+                                           style={styles.signInFormContainer}>
+                                <AuthForm/>
+                            </Animated.View>
+                        </AppKeyboardAvoidingView>
+                    </Pressable>
+                </AppSafeAreaView>
             )}
         </View>
     );
 }
 const styles = StyleSheet.create({
     container: {
-        height: "100%"
+        flex: 1
     },
     signInContainer: {
         flex: 1,
         justifyContent: 'flex-end',
         paddingBottom: 60,
         paddingHorizontal: 30,
+    },
+    signInFormContainer: {
+        justifyContent: "flex-end",
+        flex: 1,
+        paddingVertical: 60,
+        paddingHorizontal: 30,
+
+
     },
 
     googleButtonPrimary: {

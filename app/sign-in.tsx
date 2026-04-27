@@ -1,13 +1,13 @@
-import { useAuth } from '@/contexts/auth-context';
+import {useAuth} from '@/contexts/auth-context';
 import AppButton from '@/components/appComponents/AppButton';
-import { ButtonType } from '@/styles/Button';
-import { useVideoPlayer, VideoSource, VideoView } from 'expo-video';
-import { StyleSheet, Text, View } from 'react-native';
+import {ButtonType} from '@/styles/Button';
+import {useVideoPlayer, VideoSource, VideoView} from 'expo-video';
+import {Pressable, StyleSheet, Text, View} from 'react-native';
 import Google from '@/assets/icons/social-media/google.svg';
-import { Theme } from '@/styles/Theme';
-import { useState } from 'react';
+import {Theme} from '@/styles/Theme';
+import {useState} from 'react';
 import AuthForm from '@/components/auth/AuthForm';
-import Animated, { FadeInUp, FadeOutDown, LinearTransition } from 'react-native-reanimated';
+import Animated, {FadeInUp, FadeOutDown} from 'react-native-reanimated';
 import AppKeyboardAvoidingView from '@/components/appComponents/AppKeyboardAvoidingView';
 
 // const videoSource =
@@ -16,146 +16,134 @@ import AppKeyboardAvoidingView from '@/components/appComponents/AppKeyboardAvoid
 const assetId = require('../assets/videos/ring.mp4');
 
 const videoSource: VideoSource = {
-  assetId,
-  metadata: {
-    title: 'ring',
-    artist: 'artist',
-  },
+    assetId,
+    metadata: {
+        title: 'ring',
+        artist: 'artist',
+    },
 };
 
 // const videoSource = process.env.EXPO_PUBLIC_VIDEO_URL as string
 
 
 export default function SignIn() {
-  const { signInWithGoogle } = useAuth();
-  const [showEmailForm, setShowEmailForm] = useState(false);
+    const {signInWithGoogle} = useAuth();
+    const [showEmailForm, setShowEmailForm] = useState(false);
 
-  const player = useVideoPlayer(videoSource, (player) => {
-    player.loop = true;
-    player.play();
-  });
+    const player = useVideoPlayer(videoSource, (player) => {
+        player.loop = true;
+        player.play();
+    });
+
+    function closeForm() {
+        player.play()
+        setShowEmailForm(false)
+    }
 
 
-  return (
-    <AppKeyboardAvoidingView>
+    return (
 
-      <View style={styles.container}>
+        <View style={styles.container}>
 
-        <VideoView
-          player={player}
-          nativeControls={false}
-          style={StyleSheet.absoluteFill}
-          contentFit="cover"
-        />
-        <View style={{
-          width: '100%',
-          height: '100%',
-          position: 'absolute',
-          backgroundColor: Theme.colors.white,
-          opacity: 0.2,
-        }}>
+            <VideoView
+                player={player}
+                nativeControls={false}
+                style={StyleSheet.absoluteFill}
+                contentFit="cover"
+            />
+            {!showEmailForm && (
+                <View style={styles.signInContainer}
+                >
 
+                    <AppButton
+                        fullWidth
+                        buttonType={showEmailForm ? ButtonType.OUTLINED : ButtonType.PRIMARY}
+                        extraStylesBtn={showEmailForm ? styles.googleButtonOutlined : styles.googleButtonPrimary}
+                        extraStylesTxt={showEmailForm && styles.googleTxtOutlined}
+                        onPress={signInWithGoogle}
+                        CustomIcon={Google}
+                    >
+                        Sign In with Google
+                    </AppButton>
+
+                    <View style={styles.orContainer}>
+                        <View style={styles.line}/>
+                        <Text style={styles.orText}>or</Text>
+                        <View style={styles.line}/>
+                    </View>
+
+
+                    <AppButton fullWidth
+                               extraStylesBtn={styles.emailSignInButton}
+                               extraStylesTxt={styles.emailSignInText}
+                               iconColor="black"
+                               icon="mail"
+                               onPress={() => setShowEmailForm(true)}
+                               buttonType={ButtonType.OUTLINED}>
+                        Continue with Email
+                    </AppButton>
+                </View>
+            )}
+
+            {showEmailForm && (
+                <Pressable onPress={closeForm} style={{flex: 1}}>
+                    <AppKeyboardAvoidingView>
+                        <Animated.View entering={FadeInUp.duration(300)}
+                                       exiting={FadeOutDown.duration(300)}
+                                       style={styles.signInContainer}>
+                            <AuthForm/>
+                        </Animated.View>
+                    </AppKeyboardAvoidingView>
+                </Pressable>
+            )}
         </View>
-
-        <Animated.View
-          layout={LinearTransition.duration(400)}
-
-          style={styles.signInContainer}
-        >
-
-          <AppButton
-            fullWidth
-            buttonType={showEmailForm ? ButtonType.OUTLINED : ButtonType.PRIMARY}
-            extraStylesBtn={showEmailForm ? styles.googleButtonOutlined : styles.googleButtonPrimary}
-            extraStylesTxt={showEmailForm && styles.googleTxtOutlined}
-            onPress={signInWithGoogle}
-            CustomIcon={Google}
-          >
-            Sign In with Google
-          </AppButton>
-
-          <View style={styles.orContainer}>
-            <View style={styles.line} />
-            <Text style={styles.orText}>or</Text>
-            <View style={styles.line} />
-          </View>
-
-          {!showEmailForm && (
-            <Animated.View
-              entering={FadeInUp}
-              exiting={FadeOutDown}
-            >
-
-
-              <AppButton fullWidth
-                         extraStylesBtn={styles.emailSignInButton}
-                         extraStylesTxt={styles.emailSignInText}
-                         iconColor="black"
-                         icon="mail"
-                         onPress={() => setShowEmailForm(true)}
-                         buttonType={ButtonType.OUTLINED}>
-                Continue with Email
-              </AppButton>
-            </Animated.View>
-          )}
-
-          {showEmailForm && (
-            <Animated.View entering={FadeInUp.duration(400)}
-                           exiting={FadeOutDown}>
-              <AuthForm />
-            </Animated.View>
-          )}
-        </Animated.View>
-      </View>
-    </AppKeyboardAvoidingView>
-  );
+    );
 }
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'black',
-  },
-  signInContainer: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    paddingBottom: 60,
-    paddingHorizontal: 30,
-  },
+    container: {
+        height: "100%"
+    },
+    signInContainer: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        paddingBottom: 60,
+        paddingHorizontal: 30,
+    },
 
-  googleButtonPrimary: {
-    backgroundColor: Theme.colors.black,
-  },
-  googleButtonOutlined: {
-    borderColor: Theme.colors.black,
-    backgroundColor: 'transparent',
-  },
-  googleTxtOutlined: {
-    color: 'black',
-  },
+    googleButtonPrimary: {
+        backgroundColor: Theme.colors.black,
+    },
+    googleButtonOutlined: {
+        borderColor: Theme.colors.black,
+        backgroundColor: 'transparent',
+    },
+    googleTxtOutlined: {
+        color: 'black',
+    },
 
 
-  emailSignInButton: {
-    borderColor: 'black',
-  },
-  emailSignInText: {
-    color: 'black',
-  },
-  orContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 15,
-    paddingHorizontal: 10,
-  },
-  line: {
-    flex: 1,
-    height: 1,
-    backgroundColor: Theme.colors.gray.S700,
-    opacity: 0.5,
-  },
-  orText: {
-    marginHorizontal: 10,
-    fontSize: 14,
-    color: 'black',
-    fontWeight: '500',
-  },
+    emailSignInButton: {
+        borderColor: 'black',
+    },
+    emailSignInText: {
+        color: 'black',
+    },
+    orContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginVertical: 15,
+        paddingHorizontal: 10,
+    },
+    line: {
+        flex: 1,
+        height: 1,
+        backgroundColor: Theme.colors.gray.S700,
+        opacity: 0.5,
+    },
+    orText: {
+        marginHorizontal: 10,
+        fontSize: 14,
+        color: 'black',
+        fontWeight: '500',
+    },
 });

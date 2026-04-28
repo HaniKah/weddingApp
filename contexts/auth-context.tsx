@@ -6,6 +6,7 @@ import {useAuthStore} from '@/utils/authStore';
 import {SignInDto, SignUpDto} from '@/types/open-api';
 
 interface AuthContextType {
+    signInWithApple: () => void,
     signInWithGoogle: () => void,
     signInWithEmail: (data: SignInDto) => void,
     signUpWithEmail: (data: SignUpDto) => void,
@@ -17,6 +18,8 @@ interface AuthContextType {
 
 const AuthContext = React.createContext<AuthContextType>({
     // user: null as AuthUser | null,
+    signInWithApple: () => {
+    },
     signInWithGoogle: () => {
     },
     signInWithEmail: () => {
@@ -56,10 +59,20 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
         // scopes: ["openid", "profile", "email"], //defined in the backend
     };
 
+    const discoveryIOS: DiscoveryDocument = {
+        authorizationEndpoint: `${API.instance.getUri()}/api/auth/apple/login`,
+
+    };
+    const configIOS: AuthRequestConfig = {
+        clientId: 'apple',
+        redirectUri: makeRedirectUri(),
+    };
+
     // const [user, setUser] = React.useState<AuthUser | null>(null);
     const [isLoading, setIsLoading] = React.useState(false);
     const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
     const [request, response, promptAsync] = useAuthRequest(config, discovery);
+    const [requestIOS, responseIOS, promptAsyncIOS] = useAuthRequest(configIOS, discoveryIOS);
 
     // we are not using useAuthRequest because we are implementing oAuth2.0 with passport in the backend
     // const [request, response, promptAsync] = useAuthRequest(config, discovery)
@@ -104,7 +117,7 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
     const signInWithGoogle = async () => {
         try {
             if (!request) {
-                console.log('No request fon google sign in');
+                console.log('No request from google sign in');
                 return;
             }
             await promptAsync();
@@ -113,15 +126,18 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
         }
     };
 
-
-    useEffect(() => {
-        const exchangeToken = async () => {
-            if (response?.type === 'success') {
-                await exchangeWithToken(response.params.exchangeToken);
+    const signInWithApple = async () => {
+        try {
+            if (!requestIOS) {
+                console.log('No request from Apple sign in');
+                return;
             }
-        };
-        exchangeToken();
-    }, [response]);
+            await promptAsyncIOS();
+        } catch (e) {
+            console.error(e);
+        }
+    };
+
 
     const signOut = async () => {
         try {
@@ -134,18 +150,37 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
     };
 
     const exchangeWithToken = async (code: string) => {
-        const response = await API.api.authControllerExchangeToken({
+        const res = await API.api.authControllerExchangeToken({
             headers: {
                 Authorization: `Bearer ${code}`,
             },
         });
-        logIn(response.data.accessToken, response.data.refreshToken, response.data.user.firstName, response.data.user.lastName, response.data.user.email);
+        logIn(res.data.accessToken, res.data.refreshToken, res.data.user.firstName, res.data.user.lastName, res.data.user.email);
 
     };
 
+
+    useEffect(() => {
+        const exchangeToken = async () => {
+            if (response?.type === 'success') {
+                await exchangeWithToken(response.params.exchangeToken);
+            }
+        };
+        exchangeToken();
+    }, [response]);
+
+    useEffect(() => {
+        const exchangeToken = async () => {
+            if (responseIOS?.type === 'success') {
+                await exchangeWithToken(responseIOS.params.exchangeToken);
+            }
+        };
+        exchangeToken();
+    }, [responseIOS]);
+
     return (
         <AuthContext.Provider value={{
-
+            signInWithApple,
             signInWithGoogle,
             signInWithEmail,
             signUpWithEmail,

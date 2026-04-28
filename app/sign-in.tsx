@@ -2,7 +2,7 @@ import {useAuth} from '@/contexts/auth-context';
 import AppButton from '@/components/appComponents/AppButton';
 import {ButtonType} from '@/styles/Button';
 import {useVideoPlayer, VideoSource, VideoView} from 'expo-video';
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {Pressable, StyleSheet, View} from 'react-native';
 import Google from '@/assets/icons/social-media/google.svg';
 import {Theme} from '@/styles/Theme';
 import {useState} from 'react';
@@ -28,7 +28,7 @@ const videoSource: VideoSource = {
 
 
 export default function SignIn() {
-    const {signInWithGoogle} = useAuth();
+    const {signInWithGoogle, signInWithApple} = useAuth();
     const [showEmailForm, setShowEmailForm] = useState(false);
 
     const player = useVideoPlayer(videoSource, (player) => {
@@ -58,20 +58,31 @@ export default function SignIn() {
 
                     <AppButton
                         fullWidth
-                        buttonType={showEmailForm ? ButtonType.OUTLINED : ButtonType.PRIMARY}
-                        extraStylesBtn={showEmailForm ? styles.googleButtonOutlined : styles.googleButtonPrimary}
-                        extraStylesTxt={showEmailForm && styles.googleTxtOutlined}
+                        buttonType={ButtonType.PRIMARY}
+                        extraStylesBtn={styles.googleButtonPrimary}
+                        extraStylesTxt={styles.googleTextPrimary}
                         onPress={signInWithGoogle}
                         CustomIcon={Google}
                     >
                         Sign In with Google
                     </AppButton>
 
-                    <View style={styles.orContainer}>
-                        <View style={styles.line}/>
-                        <Text style={styles.orText}>or</Text>
-                        <View style={styles.line}/>
-                    </View>
+                    <AppButton
+                        icon="apple.logo"
+                        fullWidth
+                        buttonType={ButtonType.PRIMARY}
+                        extraStylesBtn={styles.appleButtonPrimary}
+                        extraStylesTxt={styles.appleTextPrimary}
+                        onPress={signInWithApple}
+                    >
+                        Sign In with Apple
+                    </AppButton>
+
+                    {/*<View style={styles.orContainer}>*/}
+                    {/*    <View style={styles.line}/>*/}
+                    {/*    <Text style={styles.orText}>or</Text>*/}
+                    {/*    <View style={styles.line}/>*/}
+                    {/*</View>*/}
 
 
                     <AppButton fullWidth
@@ -108,6 +119,7 @@ const styles = StyleSheet.create({
     },
     signInContainer: {
         flex: 1,
+        gap: 10,
         justifyContent: 'flex-end',
         paddingBottom: 60,
         paddingHorizontal: 30,
@@ -122,15 +134,24 @@ const styles = StyleSheet.create({
     },
 
     googleButtonPrimary: {
+        backgroundColor: Theme.colors.white,
+    },
+    googleTextPrimary: {
+        color: Theme.colors.black,
+    },
+    appleButtonPrimary: {
         backgroundColor: Theme.colors.black,
     },
-    googleButtonOutlined: {
-        borderColor: Theme.colors.black,
-        backgroundColor: 'transparent',
+    appleTextPrimary: {
+        color: Theme.colors.white,
     },
-    googleTxtOutlined: {
-        color: 'black',
-    },
+    // googleButtonOutlined: {
+    //     borderColor: Theme.colors.black,
+    //     backgroundColor: 'transparent',
+    // },
+    // googleTxtOutlined: {
+    //     color: 'black',
+    // },
 
 
     emailSignInButton: {
@@ -139,22 +160,22 @@ const styles = StyleSheet.create({
     emailSignInText: {
         color: 'black',
     },
-    orContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginVertical: 15,
-        paddingHorizontal: 10,
-    },
-    line: {
-        flex: 1,
-        height: 1,
-        backgroundColor: Theme.colors.gray.S700,
-        opacity: 0.5,
-    },
-    orText: {
-        marginHorizontal: 10,
-        fontSize: 14,
-        color: 'black',
-        fontWeight: '500',
-    },
+    // orContainer: {
+    //     flexDirection: 'row',
+    //     alignItems: 'center',
+    //     marginVertical: 15,
+    //     paddingHorizontal: 10,
+    // },
+    // line: {
+    //     flex: 1,
+    //     height: 1,
+    //     backgroundColor: Theme.colors.gray.S700,
+    //     opacity: 0.5,
+    // },
+    // orText: {
+    //     marginHorizontal: 10,
+    //     fontSize: 14,
+    //     color: 'black',
+    //     fontWeight: '500',
+    // },
 });

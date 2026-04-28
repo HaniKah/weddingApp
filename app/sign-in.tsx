@@ -52,70 +52,78 @@ export default function SignIn() {
                 style={StyleSheet.absoluteFill}
                 contentFit="cover"
             />
-            {!showEmailForm && (
-                <View style={styles.signInContainer}
-                >
-
-                    <AppButton
-                        fullWidth
-                        buttonType={ButtonType.PRIMARY}
-                        extraStylesBtn={styles.googleButtonPrimary}
-                        extraStylesTxt={styles.googleTextPrimary}
-                        onPress={signInWithGoogle}
-                        CustomIcon={Google}
+            <View style={styles.backgroundWhite}>
+                {!showEmailForm && (
+                    <View style={styles.signInContainer}
                     >
-                        Sign In with Google
-                    </AppButton>
 
-                    <AppButton
-                        icon="apple.logo"
-                        fullWidth
-                        buttonType={ButtonType.PRIMARY}
-                        extraStylesBtn={styles.appleButtonPrimary}
-                        extraStylesTxt={styles.appleTextPrimary}
-                        onPress={signInWithApple}
-                    >
-                        Sign In with Apple
-                    </AppButton>
+                        <AppButton
+                            fullWidth
+                            buttonType={ButtonType.PRIMARY}
+                            extraStylesBtn={styles.googleButtonPrimary}
+                            extraStylesTxt={styles.googleTextPrimary}
+                            onPress={signInWithGoogle}
+                            CustomIcon={Google}
+                        >
+                            Sign In with Google
+                        </AppButton>
 
-                    {/*<View style={styles.orContainer}>*/}
-                    {/*    <View style={styles.line}/>*/}
-                    {/*    <Text style={styles.orText}>or</Text>*/}
-                    {/*    <View style={styles.line}/>*/}
-                    {/*</View>*/}
+                        <AppButton
+                            icon="apple.logo"
+                            fullWidth
+                            buttonType={ButtonType.PRIMARY}
+                            extraStylesBtn={styles.appleButtonPrimary}
+                            extraStylesTxt={styles.appleTextPrimary}
+                            onPress={signInWithApple}
+                        >
+                            Sign In with Apple
+                        </AppButton>
+
+                        {/*<View style={styles.orContainer}>*/}
+                        {/*    <View style={styles.line}/>*/}
+                        {/*    <Text style={styles.orText}>or</Text>*/}
+                        {/*    <View style={styles.line}/>*/}
+                        {/*</View>*/}
 
 
-                    <AppButton fullWidth
-                               extraStylesBtn={styles.emailSignInButton}
-                               extraStylesTxt={styles.emailSignInText}
-                               iconColor="black"
-                               icon="mail"
-                               onPress={() => setShowEmailForm(true)}
-                               buttonType={ButtonType.OUTLINED}>
-                        Continue with Email
-                    </AppButton>
-                </View>
-            )}
+                        <AppButton fullWidth
+                                   extraStylesBtn={styles.emailSignInButton}
+                                   extraStylesTxt={styles.emailSignInText}
+                                   iconColor="black"
+                                   icon="mail"
+                                   onPress={() => setShowEmailForm(true)}
+                                   buttonType={ButtonType.OUTLINED}>
+                            Continue with Email
+                        </AppButton>
+                    </View>
+                )}
 
-            {showEmailForm && (
-                <AppSafeAreaView transparentBackground>
-                    <Pressable onPress={closeForm} style={{flex: 1}}>
-                        <AppKeyboardAvoidingView>
-                            <Animated.View entering={FadeInUp.duration(300)}
-                                           exiting={FadeOutDown.duration(300)}
-                                           style={styles.signInFormContainer}>
-                                <AuthForm/>
-                            </Animated.View>
-                        </AppKeyboardAvoidingView>
-                    </Pressable>
-                </AppSafeAreaView>
-            )}
+                {showEmailForm && (
+                    <AppSafeAreaView transparentBackground>
+                        <Pressable onPress={closeForm} style={{flex: 1}}>
+                            <AppKeyboardAvoidingView>
+                                <Animated.View entering={FadeInUp.duration(300)}
+                                               exiting={FadeOutDown.duration(300)}
+                                               style={styles.signInFormContainer}>
+                                    <AuthForm/>
+                                </Animated.View>
+                            </AppKeyboardAvoidingView>
+                        </Pressable>
+                    </AppSafeAreaView>
+                )}
+            </View>
         </View>
     );
 }
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+
+
+    },
+    backgroundWhite: {
+        flex: 1,
+        backgroundColor: 'rgba(255,255,255,0.3)',
     },
     signInContainer: {
         flex: 1,
@@ -123,6 +131,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         paddingBottom: 60,
         paddingHorizontal: 30,
+
     },
     signInFormContainer: {
         justifyContent: "flex-end",

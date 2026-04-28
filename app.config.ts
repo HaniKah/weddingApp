@@ -112,13 +112,13 @@ export default ({config}: ConfigContext): ExpoConfig => {
             [
                 "expo-location",
                 {
-                    "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
+                    "locationAlwaysAndWhenInUsePermission": "$(PRODUCT_NAME) wants to use your location to help you find vendors in your country"
                 }
             ],
             [
                 "expo-image-picker",
                 {
-                    "photosPermission": "The app accesses your photos in case you want to create a place"
+                    "photosPermission": "Uploading photos will increase your chance to be better seen and contacted by users"
                 }
             ],
             "expo-router",

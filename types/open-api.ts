@@ -963,11 +963,12 @@ export class Api<
      * @request POST:/api/auth/signin
      */
     authControllerSignIn: (data: SignInDto, params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<ExchangeTokenDto, any>({
         path: `/api/auth/signin`,
         method: "POST",
         body: data,
         type: ContentType.Json,
+        format: "json",
         ...params,
       }),
 

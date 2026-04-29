@@ -38,6 +38,7 @@ const MAPPING = {
     "phone": "phone",
     "tag": "sell",
     "pencil": "edit",
+    "exclamationmark.square": "warning"
 } as IconMapping;
 
 /**

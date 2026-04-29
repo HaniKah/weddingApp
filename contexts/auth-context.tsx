@@ -11,6 +11,7 @@ interface AuthContextType {
     signInWithEmail: (data: SignInDto) => void,
     signUpWithEmail: (data: SignUpDto) => void,
     signOut: () => void,
+    deleteUser: () => void,
     isLoading: boolean,
     errorMessage: string | null
     setErrorMessage: React.Dispatch<React.SetStateAction<string | null>>
@@ -27,6 +28,9 @@ const AuthContext = React.createContext<AuthContextType>({
     signUpWithEmail: () => {
     },
     signOut: () => {
+    },
+    deleteUser: () => {
+
     },
     setErrorMessage: () => {
     },
@@ -149,6 +153,16 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
 
     };
 
+    const deleteUser = async () => {
+        try {
+            await API.api.usersControllerDeleteUser()
+            logOut()
+        } catch (err) {
+            console.error(err)
+        }
+    }
+
+
     const exchangeWithToken = async (code: string) => {
         const res = await API.api.authControllerExchangeToken({
             headers: {
@@ -185,6 +199,7 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
             signInWithEmail,
             signUpWithEmail,
             signOut,
+            deleteUser,
             isLoading,
             errorMessage,
             setErrorMessage,

@@ -1,13 +1,13 @@
 import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {Theme} from '@/styles/Theme';
-import {IconSymbol} from "@/components/symbols/IconSymbol";
+import {IconSymbol, IconSymbolName} from "@/components/symbols/IconSymbol";
 
 export default function MenuItem({
                                      icon,
                                      label,
                                      onPress,
                                  }: {
-    icon: string;
+    icon: IconSymbolName;
     label: string;
     onPress: () => void;
 }) {
@@ -16,7 +16,7 @@ export default function MenuItem({
             style={styles.container}
             onPress={onPress}
         >
-            <IconSymbol name={icon as any} size={18} color={Theme.colors.primary}/>
+            <IconSymbol name={icon} size={18} color={Theme.colors.primary}/>
             <Text
                 style={styles.text}
             >

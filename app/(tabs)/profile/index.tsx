@@ -1,7 +1,7 @@
 import {useAuth} from '@/contexts/auth-context';
 import {useLocationContext} from '@/contexts/location-context';
 import AppView from '@/components/appComponents/AppView';
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {Alert, ScrollView, StyleSheet, Text, View} from 'react-native';
 import AppButton from '@/components/appComponents/AppButton';
 import {ButtonType} from '@/styles/Button';
 import {Theme} from '@/styles/Theme';
@@ -12,8 +12,19 @@ import {COUNTRIES} from "@/constants/countries";
 import AppSafeAreaView from "@/components/appComponents/AppSafeAreaView";
 
 export default function Index() {
-    const {signOut} = useAuth();
+    const {signOut, deleteUser} = useAuth();
     const {isoCountry} = useLocationContext();
+
+    function deleteAccount() {
+        Alert.alert("Delete account", "Are you sure you want to delete your account? All related data for this account will be deleted as well.", [{
+            text: "Cancel", style: "default",
+        }, {
+            text: "Delete",
+            onPress: () => deleteUser(),
+            style: "destructive"
+        }])
+    }
+
 
     return (
         <>
@@ -35,9 +46,9 @@ export default function Index() {
 
                         <View style={styles.sectionContainer}>
 
-                            {/* ACCOUNT */}
+                            {/* PERSONAL */}
                             <View style={styles.section}>
-                                <Text style={styles.sectionTitle}>Account</Text>
+                                <Text style={styles.sectionTitle}>Personal</Text>
                                 <View style={styles.menuCard}>
                                     <MenuItem
                                         icon="heart"
@@ -55,6 +66,18 @@ export default function Index() {
                                         icon="briefcase"
                                         label="My Listings"
                                         onPress={() => router.push('/(tabs)/profile/listing')}
+                                    />
+                                </View>
+                            </View>
+
+                            {/* ACCOUNT */}
+                            <View style={styles.section}>
+                                <Text style={styles.sectionTitle}>Account</Text>
+                                <View style={styles.menuCard}>
+                                    <MenuItem
+                                        icon="exclamationmark.square"
+                                        label="Delete my account"
+                                        onPress={deleteAccount}
                                     />
                                 </View>
                             </View>

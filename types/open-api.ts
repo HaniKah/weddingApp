@@ -1004,6 +1004,40 @@ export class Api<
      * No description
      *
      * @tags Auth
+     * @name AuthControllerAppleLogin
+     * @request GET:/api/auth/apple/login
+     */
+    authControllerAppleLogin: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/auth/apple/login`,
+        method: "GET",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Auth
+     * @name AuthControllerAppleCallback
+     * @request POST:/api/auth/apple/callback
+     */
+    authControllerAppleCallback: (
+      query: {
+        state: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/auth/apple/callback`,
+        method: "POST",
+        query: query,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Auth
      * @name AuthControllerGoogleCallback
      * @request GET:/api/auth/google/callback
      */
@@ -1032,6 +1066,20 @@ export class Api<
         path: `/api/auth/exchangeToken`,
         method: "POST",
         format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Users
+     * @name UsersControllerDeleteUser
+     * @request POST:/api/users/delete
+     */
+    usersControllerDeleteUser: (params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/users/delete`,
+        method: "POST",
         ...params,
       }),
 

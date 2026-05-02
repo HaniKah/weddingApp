@@ -7,7 +7,7 @@ import Google from '@/assets/icons/social-media/google.svg';
 import {Theme} from '@/styles/Theme';
 import {useState} from 'react';
 import AuthForm from '@/components/auth/AuthForm';
-import Animated, {FadeInUp, FadeOutDown} from 'react-native-reanimated';
+import Animated, {FadeInDown, FadeOutDown} from 'react-native-reanimated';
 import AppKeyboardAvoidingView from '@/components/appComponents/AppKeyboardAvoidingView';
 import AppSafeAreaView from "@/components/appComponents/AppSafeAreaView";
 
@@ -102,9 +102,10 @@ export default function SignIn() {
                     <AppSafeAreaView transparentBackground>
                         <Pressable onPress={closeForm} style={{flex: 1}}>
                             <AppKeyboardAvoidingView>
-                                <Animated.View entering={FadeInUp.duration(300)}
-                                               exiting={FadeOutDown.duration(300)}
-                                               style={styles.signInFormContainer}>
+                                <Animated.View
+                                    entering={FadeInDown.duration(400)}
+                                    exiting={FadeOutDown.duration(300)}
+                                    style={styles.signInFormContainer}>
                                     <AuthForm/>
                                 </Animated.View>
                             </AppKeyboardAvoidingView>

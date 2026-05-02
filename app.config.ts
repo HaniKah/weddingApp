@@ -89,6 +89,9 @@ export default ({config}: ConfigContext): ExpoConfig => {
             "config": {
                 "googleMapsApiKey": process.env.GOOGLE_MAPS_API_KEY_IOS
             },
+            "entitlements": {
+                "com.apple.developer.applesignin": ["Default"]
+            }
         },
         "android": {
             "adaptiveIcon": {

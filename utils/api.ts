@@ -16,7 +16,7 @@ export function useApi() {
     //request interceptor to add access token to header
     api.instance.interceptors.request.use(config => {
         const token = getItem("accessToken")
-        if (token) {
+        if (token && !config.headers["Authorization"]) {
             config.headers["Authorization"] = `Bearer ${token}`
         }
         return config

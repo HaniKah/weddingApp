@@ -163,14 +163,21 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
     }
 
 
-    const exchangeWithToken = async (code: string) => {
-        const res = await API.api.authControllerExchangeToken({
-            headers: {
-                Authorization: `Bearer ${code}`,
-            },
-        });
-        logIn(res.data.accessToken, res.data.refreshToken, res.data.user.firstName, res.data.user.lastName, res.data.user.email);
-
+    const exchangeWithToken = async (token: string) => {
+        if (!token) {
+            console.error('No token to exchange');
+            return
+        }
+        try {
+            const res = await API.api.authControllerExchangeToken({
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            logIn(res.data.accessToken, res.data.refreshToken, res.data.user.firstName, res.data.user.lastName, res.data.user.email);
+        } catch (err) {
+            console.error(err)
+        }
     };
 
 

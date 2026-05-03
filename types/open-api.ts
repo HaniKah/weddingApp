@@ -1007,10 +1007,17 @@ export class Api<
      * @name AuthControllerAppleLogin
      * @request GET:/api/auth/apple/login
      */
-    authControllerAppleLogin: (params: RequestParams = {}) =>
+    authControllerAppleLogin: (
+      query: {
+        scope: string;
+        state: string;
+      },
+      params: RequestParams = {},
+    ) =>
       this.request<void, any>({
         path: `/api/auth/apple/login`,
         method: "GET",
+        query: query,
         ...params,
       }),
 
@@ -1021,16 +1028,10 @@ export class Api<
      * @name AuthControllerAppleCallback
      * @request POST:/api/auth/apple/callback
      */
-    authControllerAppleCallback: (
-      query: {
-        state: string;
-      },
-      params: RequestParams = {},
-    ) =>
+    authControllerAppleCallback: (params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/api/auth/apple/callback`,
         method: "POST",
-        query: query,
         ...params,
       }),
 

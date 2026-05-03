@@ -48,17 +48,17 @@ export const useAuthStore = create(persist<userState>((set) => ({
             },
         };
     }),
-    logOut: () => set((state) => {
+    logOut: () => {
         deleteItemAsync('accessToken');
         deleteItemAsync('refreshToken');
         deleteItemAsync('firstName');
         deleteItemAsync('lastName');
         deleteItemAsync('email');
-        return {
+        set((state) => ({
             ...state,
             isLoggedIn: false,
-        };
-    }),
+        }));
+    },
     completeOnboarding: () => set((state) => {
         return {
             ...state,

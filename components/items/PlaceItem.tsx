@@ -138,8 +138,8 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         backgroundColor: Theme.colors.white,
         overflow: 'hidden',
-        boxShadow: `0px 3px 10px ${Theme.colors.border}`,
-        shadowOpacity: 0.1
+        boxShadow: Theme.effects.boxShadow,
+
     },
     image: {
         resizeMode: 'cover',

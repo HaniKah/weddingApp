@@ -1,6 +1,6 @@
 import {CountryCode, CountryInfo} from '@/types/open-api';
 
-export const COUNTRIES: Map<CountryCode | undefined, CountryInfo> = new Map<
+export const COUNTRIES: Map<CountryCode, CountryInfo> = new Map<
     CountryCode,
     CountryInfo
 >([

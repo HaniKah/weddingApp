@@ -135,6 +135,10 @@ export default ({config}: ConfigContext): ExpoConfig => {
                 }
             ],
             "expo-secure-store",
+            [
+                "expo-localization"
+            ]
+
         ],
         "experiments": {
             "typedRoutes": true

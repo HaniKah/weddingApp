@@ -23,7 +23,7 @@ export default function Index() {
     const [isRefreshing, setRefreshing] = useState<boolean>(false);
 
 
-    const [activeCategory, setActiveCategory] = useState<Categories | undefined>(Categories.Host);
+    const [activeCategory, setActiveCategory] = useState<Categories | undefined>();
 
 
     const [places, setPlaces] = useState<PlacesDto[]>([]);

@@ -33,7 +33,7 @@ export default function PlaceItem({item}: { item: PlacesDto }) {
                         :
                         <View style={styles.imagePlaceHolder}>
                             <View style={styles.iconWrapper}>
-                                <IconCategory size={100} color={Theme.colors.primary} category={item.category}/>
+                                <IconCategory size={100} color={Theme.colors.secondary} category={item.category}/>
                             </View>
                         </View>
                     }

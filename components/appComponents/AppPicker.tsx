@@ -1,4 +1,3 @@
-import {PickerItem} from "@/components/appComponents/AppPickerDepr";
 import {useEffect, useRef, useState} from "react";
 import {Pressable, StyleProp, StyleSheet, Text, View, ViewStyle} from "react-native";
 import {Theme} from "@/styles/Theme";
@@ -6,6 +5,11 @@ import {IconSymbol} from "@/components/symbols/IconSymbol";
 import AppBottomSheet, {AppBottomSheetRef} from "@/components/appComponents/AppBottomSheet";
 import {useFormContext} from "@/contexts/form-context";
 import {Picker} from "@react-native-picker/picker";
+
+export type PickerItem<P> = {
+    name: string;
+    value: P;
+}
 
 export default function AppPicker<T>({itemList, label, value, onChange, style, title, required, name}: {
     style?: StyleProp<ViewStyle>,

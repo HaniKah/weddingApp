@@ -94,7 +94,7 @@ export const Theme = {
         wizardControllerBottomMargin: 110,
     },
     effects: {
-        boxShadow: "0px 2px 5px rgba(154, 112, 96, 0.2)"
+        boxShadow: "0px 0px 10px rgba(154, 112, 96, 0.3)"
     }
 
 };

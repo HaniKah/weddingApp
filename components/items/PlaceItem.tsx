@@ -12,10 +12,12 @@ import IconCategory from "../symbols/IconCategory";
 export default function PlaceItem({item}: { item: PlacesDto }) {
 
     return (
-        <Link push style={styles.link} href={{
+        <Link push style={styles.wrapper} href={{
             pathname: "/listing/[id]",
             params: {id: item.id!,},
         }}>
+
+
             <View style={styles.container}>
 
                 <View style={styles.imageContainer}>
@@ -99,7 +101,7 @@ const styles = StyleSheet.create({
     infoContainer: {
         display: 'flex',
         alignItems: 'flex-start',
-        padding: 10,
+        padding: 15,
     },
     link: {
         marginBottom: 30,
@@ -133,9 +135,14 @@ const styles = StyleSheet.create({
         color: Theme.colors.white,
         fontWeight: 'bold',
     },
+    wrapper: {
+        paddingHorizontal: Theme.global.appPadding,
+        paddingBottom: Theme.global.appPadding,
+        width: '100%',
+    },
     container: {
         width: '100%',
-        borderRadius: 10,
+        borderRadius: Theme.radius.xl,
         backgroundColor: Theme.colors.white,
         overflow: 'hidden',
         boxShadow: Theme.effects.boxShadow,

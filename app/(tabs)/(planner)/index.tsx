@@ -130,7 +130,7 @@ export default function Index() {
         <>
             <Stack.Screen options={{headerShown: false}}/>
             <AppSafeAreaView>
-                <AppView withPadding isLoading={isLoading}>
+                <AppView isLoading={isLoading}>
                     {isoCountry ? <FlatList
                             ListHeaderComponent={
                                 <SearchHeader

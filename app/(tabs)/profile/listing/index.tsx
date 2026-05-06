@@ -81,20 +81,21 @@ export default function Index() {
                                                name="plus"/>,
             }}/>
 
-            <AppView withPadding>
+            <AppView>
 
                 {
                     places && Object.values(places).flatMap(s => s.data).length > 0 ?
-                        <SectionList
-                            refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refreshPlaces}/>}
-                            renderSectionHeader={({section}) => (
-                                <SectionHeaderItem title={section.data.length > 0 ? section.title : null}
-                                />)}
-                            keyExtractor={(item) => item.id.toString()}
-                            sections={[places.published, places.unpublished]}
-                            renderItem={(item) => <VendorPlaceItem
-                                setTrigger={setIsLoading} data={item.item}/>
-                            }/>
+                        <SectionList style={styles.sectionlist}
+                                     refreshControl={<RefreshControl refreshing={isRefreshing}
+                                                                     onRefresh={refreshPlaces}/>}
+                                     renderSectionHeader={({section}) => (
+                                         <SectionHeaderItem title={section.data.length > 0 ? section.title : null}
+                                         />)}
+                                     keyExtractor={(item) => item.id.toString()}
+                                     sections={[places.published, places.unpublished]}
+                                     renderItem={(item) => <VendorPlaceItem
+                                         setTrigger={setIsLoading} data={item.item}/>
+                                     }/>
                         :
                         <Text style={[{marginVertical: 'auto'}, CommonStyles.dataNotFound]}>You dont have places yet ,
                             create one
@@ -115,6 +116,9 @@ export default function Index() {
     );
 }
 const styles = StyleSheet.create({
+    sectionlist: {
+        padding: Theme.global.appPadding
+    },
     title: {
         fontSize: Theme.sizes.xl,
         fontWeight: 'bold',

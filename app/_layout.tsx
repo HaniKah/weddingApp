@@ -1,3 +1,4 @@
+import '@/utils/i18n'
 import {useFonts} from 'expo-font';
 import {SplashScreen, Stack} from 'expo-router';
 import {StatusBar} from 'expo-status-bar';
@@ -8,7 +9,6 @@ import {useAuthStore} from '@/utils/authStore';
 import {AuthProvider} from '@/contexts/auth-context';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {LocationProvider} from '@/contexts/location-context';
-
 
 export default function RootLayout() {
     const {isLoggedIn, shouldCreateAccount} = useAuthStore();
@@ -51,7 +51,7 @@ export default function RootLayout() {
                             <Stack.Protected guard={isLoggedIn}>
                                 <Stack.Screen name="pick-location"/>
                             </Stack.Protected>
-                       
+
                             <Stack.Screen name="+not-found"/>
                         </Stack>
                     </LocationProvider>

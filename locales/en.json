@@ -1,0 +1,47 @@
+{
+  "categories": {
+    "All": "All",
+    "Host": "Halls & Venues",
+    "Dress": "Wedding Dress",
+    "Suit": "Suits",
+    "Photographer": "Photographers",
+    "Car": "Cars",
+    "Salon": "Salons",
+    "Dj": "DJs",
+    "MakeUpArtist": "Make-Up Artists",
+    "Florist": "Florists",
+    "Decorator": "Decorators",
+    "Catering": "Catering",
+    "DancingCourse": "Dancing Course",
+    "Giveaway": "Giveaways",
+    "Procession": "Procession",
+    "Performer": "Musicians & Performers",
+    "Jewelry": "Jewelry",
+    "Perfume": "Perfumes",
+    "Shower": "Shower",
+    "Clinic": "Cosmetic Clinics",
+    "Firework": "Fireworks",
+    "Miscellaneous": "Miscellaneous"
+  },
+  "priceType": {
+    "None": "",
+    "PerPerson": "per person",
+    "PerHour": "per hour",
+    "PerItem": "per item",
+    "PerEvent": "per event"
+  },
+  "timeframe": {
+    "Year": "1 Year Before",
+    "NineMonths": "9 Months Before",
+    "SixMonths": "6 Months Before",
+    "ThreeMonths": "3 Months Before",
+    "OneMonth": "1 Month Before",
+    "LastWeek": "Last Week",
+    "LastDay": "Last Day",
+    "BigDay": "The Big Day"
+  },
+  "coupleSide": {
+    "Groom": "Groom's Side",
+    "Bride": "Bride's Side"
+  }
+}

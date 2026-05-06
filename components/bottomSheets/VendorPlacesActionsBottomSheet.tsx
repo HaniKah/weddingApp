@@ -10,7 +10,7 @@ import CreatePlaceModal from "@/components/modals/CreatePlaceModal";
 import PromotePlaceModal from "@/components/modals/PromotePlaceModal";
 import {AppModalRef} from "@/components/appComponents/AppModal";
 import {useApi} from "@/utils/api";
-
+//Deprecated
 export default function VendorPlacesActionsBottomSheet({
                                                            ref,
                                                            selectedPlace,

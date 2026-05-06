@@ -4,14 +4,11 @@ import {RefreshControl, SectionList, StyleSheet, Text, View} from 'react-native'
 import {Theme} from '@/styles/Theme';
 import {useCallback, useEffect, useRef, useState} from 'react';
 import CreatePlaceModal from '@/components/modals/CreatePlaceModal';
-import {VendorPlaceDto, VendorPlaceViewModel} from '@/types/open-api';
+import {VendorPlaceViewModel} from '@/types/open-api';
 import VendorPlaceItem from '@/components/items/VendorPlaceItem';
-import {IconSymbol} from '@/components/symbols/IconSymbol';
-import AppIf from '@/components/appComponents/AppIf';
 import {CommonStyles} from '@/styles/Common';
 import {REFRESH_DELAY} from '@/constants/general';
 import {AppModalRef} from '@/components/appComponents/AppModal';
-import {AppBottomSheetRef} from '@/components/appComponents/AppBottomSheet';
 import {IconButton} from '@/components/symbols/IconButton';
 import {Stack} from 'expo-router';
 
@@ -22,10 +19,8 @@ export default function Index() {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
 
-    const [selectedPlace, setSelectedPlace] = useState<VendorPlaceDto>();
 
     const createPlaceModalRef = useRef<AppModalRef>(null);
-    const actionsBottomSheetRef = useRef<AppBottomSheetRef>(null);
 
 
     const getPlaces = useCallback(async () => {
@@ -61,22 +56,14 @@ export default function Index() {
         reloadPlaces();
     }, []);
 
-    //
-    // function handlePlacePress(place: VendorPlaceDto) {
-    //     setSelectedPlace(place);
-    //     actionsBottomSheetRef.current?.open();
-    //
-    // }
 
-
-    function SectionHeaderItem({title, length}: { title: string | null; length: number | null }) {
+    function SectionHeaderItem({title}: { title: string | null; }) {
         return (
             <View style={styles.sectionHeaderContainer}>
-                <AppIf value={title === 'Published'}>
-                    <IconSymbol name="checkmark.circle" weight="bold" size={20} color={Theme.colors.green.S700}/>
+                {title &&
                     <Text
-                        style={[styles.sectionHeader, title === 'Published' ? styles.publishedSectionHeader : styles.unpublishedSectionHeader]}>{title} ({length})</Text>
-                </AppIf>
+                        style={[styles.sectionHeader, title === 'Published' ? styles.publishedSectionHeader : styles.unpublishedSectionHeader]}>{title}</Text>
+                }
             </View>
 
         );
@@ -102,10 +89,9 @@ export default function Index() {
                             refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refreshPlaces}/>}
                             renderSectionHeader={({section}) => (
                                 <SectionHeaderItem title={section.data.length > 0 ? section.title : null}
-                                                   length={section.data.length > 0 ? section.data.length : null}/>)}
-                            contentContainerStyle={styles.flatlist}
+                                />)}
                             keyExtractor={(item) => item.id.toString()}
-                            sections={[places.published, places.unpublished, places.uncompleted]}
+                            sections={[places.published, places.unpublished]}
                             renderItem={(item) => <VendorPlaceItem
                                 setTrigger={setIsLoading} data={item.item}/>
                             }/>
@@ -125,20 +111,10 @@ export default function Index() {
                 ref={createPlaceModalRef}
             />
 
-
-            {/*<VendorPlacesActionsBottomSheet*/}
-            {/*  ref={actionsBottomSheetRef}*/}
-            {/*  selectedPlace={selectedPlace}*/}
-            {/*  reloadPlaces={reloadPlaces}*/}
-
-            {/*/>*/}
         </>
     );
 }
 const styles = StyleSheet.create({
-    flatlist: {
-        gap: 10,
-    },
     title: {
         fontSize: Theme.sizes.xl,
         fontWeight: 'bold',
@@ -155,6 +131,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         gap: 5,
         alignItems: 'center',
+        marginTop: 10
     },
     sectionHeader: {
         fontWeight: 'bold',

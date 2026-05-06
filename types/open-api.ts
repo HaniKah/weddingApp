@@ -331,7 +331,6 @@ export interface VendorPlaceDto {
   streetName?: string;
   thumbnail: string;
   isPublished: boolean;
-  isCompleted: boolean;
   isPromoted: boolean;
   minPrice: string;
   maxPrice: string;
@@ -344,10 +343,6 @@ export interface VendorPlaceViewModel {
     data: VendorPlaceDto[];
   };
   unpublished: {
-    title: string;
-    data: VendorPlaceDto[];
-  };
-  uncompleted: {
     title: string;
     data: VendorPlaceDto[];
   };

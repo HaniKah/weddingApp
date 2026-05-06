@@ -7,73 +7,75 @@ import {ButtonSize} from '@/styles/Button';
 import {COUNTRIES} from "@/constants/countries";
 import {IconSymbol} from "@/components/symbols/IconSymbol";
 import IconCategory from "../symbols/IconCategory";
+import AppPressable from "@/components/appComponents/AppPressable";
 
 
 export default function PlaceItem({item}: { item: PlacesDto }) {
 
     return (
-        <Link push style={styles.wrapper} href={{
+        <Link push asChild style={styles.wrapper} href={{
             pathname: "/listing/[id]",
             params: {id: item.id!,},
         }}>
+            <AppPressable>
+
+                <View style={styles.container}>
+
+                    <View style={styles.imageContainer}>
+                        {
+                            item.isPromoted &&
+                            <View style={styles.label}>
+                                <Text style={styles.labelText}>
+                                    {item.label}
+                                </Text>
+                            </View>
+                        }
+                        {item.mainPhoto ?
+                            <Image style={styles.image}
+                                   source={{uri: item.mainPhoto}}/>
+                            :
+                            <View style={styles.imagePlaceHolder}>
+                                <View style={styles.iconWrapper}>
+                                    <IconCategory size={100} color={Theme.colors.secondary} category={item.category}/>
+                                </View>
+                            </View>
+                        }
+
+                    </View>
 
 
-            <View style={styles.container}>
-
-                <View style={styles.imageContainer}>
-                    {
-                        item.isPromoted &&
-                        <View style={styles.label}>
-                            <Text style={styles.labelText}>
-                                {item.label}
+                    <View style={styles.infoContainer}>
+                        <Text numberOfLines={1} ellipsizeMode="tail" style={styles.name}>
+                            {item.name}
+                        </Text>
+                        <View style={styles.countryContainer}>
+                            <IconSymbol name="location" size={14} color={Theme.colors.secondary}/>
+                            <Text style={styles.countryText}>
+                                {item.city}
                             </Text>
                         </View>
-                    }
-                    {item.mainPhoto ?
-                        <Image style={styles.image}
-                               source={{uri: item.mainPhoto}}/>
-                        :
-                        <View style={styles.imagePlaceHolder}>
-                            <View style={styles.iconWrapper}>
-                                <IconCategory size={100} color={Theme.colors.secondary} category={item.category}/>
+
+                        <View style={styles.priceAndCallContainer}>
+                            <View style={styles.priceContainer}>
+                                {item.minPrice === item.maxPrice ?
+
+                                    <Text style={styles.price}>{item.minPrice}</Text> :
+
+                                    <Text style={styles.price}>{item.minPrice} - {item.maxPrice}</Text>
+                                }
+                                <Text
+                                    style={styles.currency}>{COUNTRIES.get(item.country)?.currency} / {item.priceType}</Text>
                             </View>
+                            <AppButton buttonSize={ButtonSize.SM}
+                                       onPress={() => Linking.openURL(`tel:${item.phoneNumber}`)}>
+                                Call now
+                            </AppButton>
                         </View>
-                    }
 
-                </View>
-
-
-                <View style={styles.infoContainer}>
-                    <Text numberOfLines={1} ellipsizeMode="tail" style={styles.name}>
-                        {item.name}
-                    </Text>
-                    <View style={styles.countryContainer}>
-                        <IconSymbol name="location" size={14} color={Theme.colors.secondary}/>
-                        <Text style={styles.countryText}>
-                            {item.city}
-                        </Text>
-                    </View>
-
-                    <View style={styles.priceAndCallContainer}>
-                        <View style={styles.priceContainer}>
-                            {item.minPrice === item.maxPrice ?
-
-                                <Text style={styles.price}>{item.minPrice}</Text> :
-
-                                <Text style={styles.price}>{item.minPrice} - {item.maxPrice}</Text>
-                            }
-                            <Text
-                                style={styles.currency}>{COUNTRIES.get(item.country)?.currency} / {item.priceType}</Text>
-                        </View>
-                        <AppButton buttonSize={ButtonSize.SM}
-                                   onPress={() => Linking.openURL(`tel:${item.phoneNumber}`)}>
-                            Call now
-                        </AppButton>
                     </View>
 
                 </View>
-
-            </View>
+            </AppPressable>
         </Link>
 
     );

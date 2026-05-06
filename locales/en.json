@@ -31,11 +31,11 @@
     "PerEvent": "per event"
   },
   "timeframe": {
-    "Year": "1 Year Before",
-    "NineMonths": "9 Months Before",
-    "SixMonths": "6 Months Before",
-    "ThreeMonths": "3 Months Before",
-    "OneMonth": "1 Month Before",
+    "Year": "1 Year",
+    "NineMonths": "9 Months",
+    "SixMonths": "6 Months",
+    "ThreeMonths": "3 Months",
+    "OneMonth": "1 Month",
     "LastWeek": "Last Week",
     "LastDay": "Last Day",
     "BigDay": "The Big Day"

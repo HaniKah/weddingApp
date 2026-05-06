@@ -10,6 +10,7 @@ import {IconButton} from "@/components/symbols/IconButton";
 import AppView from "@/components/appComponents/AppView";
 import {Stack} from "expo-router";
 import AppSafeAreaView from "@/components/appComponents/AppSafeAreaView";
+import {useTranslation} from "react-i18next";
 
 export default function Checklist() {
     const [todos, setTodos] = useState<ChecklistDto[]>([]);
@@ -18,6 +19,7 @@ export default function Checklist() {
     const [isloading, setIsLoading] = useState(false);
 
     const {api} = useApi()
+    const {t} = useTranslation()
 
     const getTodos = useCallback(async () => {
         try {
@@ -133,7 +135,7 @@ export default function Checklist() {
                         renderItem={({item}) => (
                             <View style={styles.sectionContainer}>
                                 <View style={styles.sectionHeader}>
-                                    <Text style={styles.sectionTitle}>{item.timeFrame}</Text>
+                                    <Text style={styles.sectionTitle}>{t("timeframe." + item.timeFrame)}</Text>
                                     <View style={styles.headerActions}>
                                         <View style={styles.sectionBadge}>
                                             <Text style={styles.badgeText}>

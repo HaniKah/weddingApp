@@ -33,7 +33,7 @@ export default function PlaceItem({item}: { item: PlacesDto }) {
                         :
                         <View style={styles.imagePlaceHolder}>
                             <View style={styles.iconWrapper}>
-                                <IconCategory height={25} color={Theme.colors.primary} category={item.category}/>
+                                <IconCategory size={100} color={Theme.colors.primary} category={item.category}/>
                             </View>
                         </View>
                     }
@@ -152,8 +152,8 @@ const styles = StyleSheet.create({
 
     },
     iconWrapper: {
-        marginVertical: "auto",
-        opacity: .70
+        margin: "auto",
+        opacity: 0.2
     },
     name: {
         fontWeight: 'bold',

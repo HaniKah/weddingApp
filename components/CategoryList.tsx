@@ -4,11 +4,14 @@ import {Dispatch, SetStateAction, useEffect, useRef, useState} from 'react';
 import IconCategory from './symbols/IconCategory';
 import {Theme} from '@/styles/Theme';
 import Animated from 'react-native-reanimated';
+import {useTranslation} from "react-i18next";
 
 export default function CategoryList({activeStep, setActiveStep}: {
     activeStep: Categories | undefined,
     setActiveStep: Dispatch<SetStateAction<Categories | undefined>>
 }) {
+
+    const {t} = useTranslation();
 
     const [headerWidth, setHeaderWidth] = useState(0);
     const [itemWidth, setItemWidth] = useState(0);
@@ -47,7 +50,7 @@ export default function CategoryList({activeStep, setActiveStep}: {
                 </Animated.View>
 
                 <Text style={[styles.itemTitle, isActive && {color: Theme.colors.primary}]}>
-                    {item}
+                    {t('categories.' + item)}
                 </Text>
             </TouchableOpacity>
         );

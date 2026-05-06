@@ -49,37 +49,31 @@ export default function Index() {
                             {/* PERSONAL */}
                             <View style={styles.section}>
                                 <Text style={styles.sectionTitle}>Personal</Text>
-                                <View style={styles.menuCard}>
-                                    <MenuItem
-                                        icon="heart"
-                                        label="My Favorites"
-                                        onPress={() => router.push('/(tabs)/profile/favorites')}
-                                    />
-                                </View>
+                                <MenuItem
+                                    icon="heart"
+                                    label="My Favorites"
+                                    onPress={() => router.push('/(tabs)/profile/favorites')}
+                                />
                             </View>
 
                             {/* BUSINESS */}
                             <View style={styles.section}>
                                 <Text style={styles.sectionTitle}>Business</Text>
-                                <View style={styles.menuCard}>
-                                    <MenuItem
-                                        icon="briefcase"
-                                        label="My Listings"
-                                        onPress={() => router.push('/(tabs)/profile/listing')}
-                                    />
-                                </View>
+                                <MenuItem
+                                    icon="briefcase"
+                                    label="My Listings"
+                                    onPress={() => router.push('/(tabs)/profile/listing')}
+                                />
                             </View>
 
                             {/* ACCOUNT */}
                             <View style={styles.section}>
                                 <Text style={styles.sectionTitle}>Account</Text>
-                                <View style={styles.menuCard}>
-                                    <MenuItem
-                                        icon="exclamationmark.square"
-                                        label="Delete my account"
-                                        onPress={deleteAccount}
-                                    />
-                                </View>
+                                <MenuItem
+                                    icon="exclamationmark.square"
+                                    label="Delete my account"
+                                    onPress={deleteAccount}
+                                />
                             </View>
 
                         </View>
@@ -133,11 +127,5 @@ const styles = StyleSheet.create({
         marginBottom: 8,
         paddingHorizontal: 4,
     },
-    menuCard: {
-        backgroundColor: Theme.colors.white,
-        borderRadius: Theme.radius.md,
-        overflow: 'hidden',
-        borderColor: Theme.colors.border,
-        borderWidth: 1
-    },
+
 });

@@ -93,6 +93,9 @@ export const Theme = {
         appPadding: 16,
         wizardControllerBottomMargin: 110,
     },
+    effects: {
+        boxShadow: "0px 2px 5px rgba(154, 112, 96, 0.2)"
+    }
 
 };
 

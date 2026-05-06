@@ -23,6 +23,8 @@ export default function MenuItem({
                 {label}
             </Text>
             <IconSymbol name="chevron.right" size={16} color={Theme.colors.primary}/>
+
+
         </TouchableOpacity>
     );
 }
@@ -30,12 +32,18 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         alignItems: 'center',
-        padding: 14,
+        paddingHorizontal: 14,
+        paddingVertical: 22,
         gap: 12,
+        backgroundColor: Theme.colors.white,
+        borderRadius: Theme.radius.md,
+        overflow: 'hidden',
+        boxShadow: Theme.effects.boxShadow
     },
     text: {
         flex: 1,
         fontSize: 15,
         color: Theme.colors.primary,
-    }
+    },
+    menuCard: {},
 })

@@ -1,69 +1,56 @@
 import {Categories} from '@/types/open-api';
-import DiscoBall from '@/assets/icons/steps/disco-ball.svg';
-import Camera from '@/assets/icons/steps/camera.svg';
-import Dress from '@/assets/icons/steps/dress.svg';
-import Disc from '@/assets/icons/steps/disc.svg';
-import Lipstick from '@/assets/icons/steps/lipstick.svg';
-import Vase from '@/assets/icons/steps/vase.svg';
-import Catering from '@/assets/icons/steps/catering.svg';
-import Dance from '@/assets/icons/steps/dance.svg';
-import Drum from '@/assets/icons/steps/drum.svg';
-import Car from '@/assets/icons/steps/car.svg';
-import Present from '@/assets/icons/steps/present.svg';
-import ShavingBlade from '@/assets/icons/steps/shaving-blade.svg';
-import Ring from '@/assets/icons/steps/ring.svg';
-import Perfume from '@/assets/icons/steps/perfume.svg';
-import Hammam from '@/assets/icons/steps/massage.svg';
-import Fireworks from '@/assets/icons/steps/firework.svg';
-import Guitar from '@/assets/icons/steps/guitar.svg';
-import Star from '@/assets/icons/steps/star.svg';
+import {MaterialCommunityIcons} from "@expo/vector-icons";
 
-export default function IconCategory({category, width, height, fill}: {
-    category: Categories | undefined,
-    width?: number,
-    height?: number,
-    fill?: string
+export default function IconCategory({category, size, color}: {
+    category: Categories | undefined | string,
+    size?: number,
+    color?: string
 }) {
+
     switch (category) {
+        case "All":
+            return <MaterialCommunityIcons name="view-grid" color={color} size={size}/>;
         case Categories.Host:
-            return <DiscoBall width={width} height={height} fill={fill}/>;
+            return <MaterialCommunityIcons name="home-city" color={color} size={size}/>;
         case Categories.Dress:
-            return <Dress width={width} height={height} fill={fill}/>;
+            return <MaterialCommunityIcons name="shoe-heel" color={color} size={size}/>;
+        case Categories.Suit:
+            return <MaterialCommunityIcons name="tie" color={color} size={size}/>;
         case Categories.Photographer:
-            return <Camera width={width} height={height} fill={fill}/>;
+            return <MaterialCommunityIcons name="camera" color={color} size={size}/>;
         case Categories.Dj:
-            return <Disc width={width} height={height} fill={fill}/>;
+            return <MaterialCommunityIcons name="music" color={color} size={size}/>;
+        case Categories.Salon:
+            return <MaterialCommunityIcons name="hair-dryer" color={color} size={size}/>;
         case Categories.MakeUpArtist:
-            return <Lipstick width={width} height={height} fill={fill}/>;
+            return <MaterialCommunityIcons name="lipstick" color={color} size={size}/>;
+        case Categories.Florist:
+            return <MaterialCommunityIcons name="flower" color={color} size={size}/>;
         case Categories.Decorator:
-            return <Vase width={width} height={height} fill={fill}/>;
+            return <MaterialCommunityIcons name="balloon" color={color} size={size}/>;
         case Categories.Catering:
-            return <Catering width={width} height={height} fill={fill}/>;
+            return <MaterialCommunityIcons name="silverware-fork-knife" color={color} size={size}/>;
         case Categories.DancingCourse:
-            return <Dance width={width} height={height} fill={fill}/>;
-        case Categories.Aarada:
-            return <Drum width={width} height={height} fill={fill}/>;
-        case Categories.Car:
-            return <Car width={width} height={height} fill={fill}/>;
-        case Categories.Giveaways:
-            return <Present width={width} height={height} fill={fill}/>;
-        case Categories.CosmeticClinics:
-            return <ShavingBlade width={width} height={height} fill={fill}/>;
+            return <MaterialCommunityIcons name="dance-ballroom" color={color} size={size}/>;
+        case Categories.Giveaway:
+            return <MaterialCommunityIcons name="gift" color={color} size={size}/>;
+        case Categories.Procession:
+            return <MaterialCommunityIcons name="mustache" color={color} size={size}/>;
+        case Categories.Performer:
+            return <MaterialCommunityIcons name="guitar-acoustic" color={color} size={size}/>;
         case Categories.Jewelry:
-            return <Ring width={width} height={height} fill={fill}/>;
-        case Categories.Perfumes:
-            return <Perfume width={width} height={height} fill={fill}/>;
-        case Categories.Hammam:
-            return <Hammam width={width} height={height} fill={fill}/>;
-        case Categories.Fireworks:
-            return <Fireworks width={width} height={height} fill={fill}/>;
-        case Categories.MusiciansAndPerformers:
-            return <Guitar width={width} height={height} fill={fill}/>;
-        case Categories.Extra:
-            return <Star width={width} height={height} fill={fill}/>;
+            return <MaterialCommunityIcons name="ring" color={color} size={size}/>;
+        case Categories.Perfume:
+            return <MaterialCommunityIcons name="bottle-tonic" color={color} size={size}/>;
+        case Categories.Shower:
+            return <MaterialCommunityIcons name="bathtub" color={color} size={size}/>;
+        case Categories.Clinic:
+            return <MaterialCommunityIcons name="hospital-box" color={color} size={size}/>;
+        case Categories.Firework:
+            return <MaterialCommunityIcons name="firework" color={color} size={size}/>;
+        case Categories.Car:
+            return <MaterialCommunityIcons name="car-convertible" color={color} size={size}/>;
         default:
-            return <Star width={width} height={height} fill={fill}/>;
+            return <MaterialCommunityIcons name="star" color={color} size={size}/>;
     }
-
 }
-

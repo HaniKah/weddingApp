@@ -107,7 +107,7 @@ export default function PlaceId() {
                             </Pressable> :
                             <View style={styles.imagePlaceHolder}>
                                 <View style={styles.iconWrapper}>
-                                    <IconCategory height={25} fill={Theme.colors.primary}
+                                    <IconCategory size={25} color={Theme.colors.primary}
                                                   category={placeDetails?.category}/>
                                 </View>
                             </View>
@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
     },
     iconWrapper: {
         marginVertical: "auto",
-        opacity: .70
+        opacity: .70,
     },
     image: {
         resizeMode: "cover",

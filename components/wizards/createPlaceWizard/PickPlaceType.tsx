@@ -24,7 +24,7 @@ export default function PickPlaceType({data, setData}: {
             <>
                 <Pressable onPress={() => setSelectedType(step)}
                            style={[styles.placeItem, selectedType === step && styles.selected]}>
-                    <IconCategory category={step} width={50} height={50} fill={getColorByStep(step)}/>
+                    <IconCategory category={step} width={50} height={50} color={getColorByStep(step)}/>
                     <Text style={styles.placeText}>{step}</Text>
                 </Pressable>
             </>

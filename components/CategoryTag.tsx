@@ -6,7 +6,7 @@ import {Theme} from "@/styles/Theme";
 export default function CategoryTag({category}: { category: Categories }) {
     return (
         <View style={styles.container}>
-            <IconCategory width={14} height={14} fill={Theme.colors.primary} category={category}/>
+            <IconCategory size={14} color={Theme.colors.primary} category={category}/>
             <Text style={styles.text}>
                 {category}
             </Text>

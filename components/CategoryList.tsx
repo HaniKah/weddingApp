@@ -40,9 +40,8 @@ export default function CategoryList({activeStep, setActiveStep}: {
                               style={[{width: itemWidth}, styles.itemContainer]}>
 
                 <Animated.View style={[styles.category, isActive && {backgroundColor: Theme.colors.primary}]}>
-                    <IconCategory fill={isActive ? Theme.colors.iconBackground : Theme.colors.primary} category={item}
-                                  width={20}
-                                  height={20}
+                    <IconCategory color={isActive ? Theme.colors.iconBackground : Theme.colors.primary} category={item}
+                                  size={24}
                     />
 
                 </Animated.View>
@@ -95,7 +94,7 @@ const styles = StyleSheet.create({
     },
     category: {
         backgroundColor: Theme.colors.iconBackground,
-        padding: 18,
+        padding: 16,
         borderRadius: Theme.radius.full,
     },
     itemContainer: {

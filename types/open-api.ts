@@ -44,22 +44,25 @@ export enum PriceType {
 export enum Categories {
   Host = "Host",
   Dress = "Dress",
+  Suit = "Suit",
   Photographer = "Photographer",
+  Car = "Car",
+  Dj = "Dj",
+  MakeUpArtist = "MakeUpArtist",
+  Salon = "Salon",
+  Florist = "Florist",
   Decorator = "Decorator",
   Catering = "Catering",
   DancingCourse = "DancingCourse",
-  Dj = "Dj",
-  MakeUpArtist = "MakeUpArtist",
-  Car = "Car",
-  Giveaways = "Giveaways",
-  Aarada = "Aarada",
-  MusiciansAndPerformers = "MusiciansAndPerformers",
+  Giveaway = "Giveaway",
+  Procession = "Procession",
+  Performer = "Performer",
   Jewelry = "Jewelry",
-  Perfumes = "Perfumes",
-  Hammam = "Hammam",
-  CosmeticClinics = "CosmeticClinics",
-  Fireworks = "Fireworks",
-  Extra = "Extra",
+  Perfume = "Perfume",
+  Shower = "Shower",
+  Clinic = "Clinic",
+  Firework = "Firework",
+  Miscellaneous = "Miscellaneous",
 }
 
 export enum CountryCode {
@@ -701,22 +704,25 @@ export class Api<
         category?:
           | "Host"
           | "Dress"
+          | "Suit"
           | "Photographer"
+          | "Car"
+          | "Dj"
+          | "MakeUpArtist"
+          | "Salon"
+          | "Florist"
           | "Decorator"
           | "Catering"
           | "DancingCourse"
-          | "Dj"
-          | "MakeUpArtist"
-          | "Car"
-          | "Giveaways"
-          | "Aarada"
-          | "MusiciansAndPerformers"
+          | "Giveaway"
+          | "Procession"
+          | "Performer"
           | "Jewelry"
-          | "Perfumes"
-          | "Hammam"
-          | "CosmeticClinics"
-          | "Fireworks"
-          | "Extra";
+          | "Perfume"
+          | "Shower"
+          | "Clinic"
+          | "Firework"
+          | "Miscellaneous";
         search?: string;
       },
       params: RequestParams = {},

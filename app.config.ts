@@ -115,7 +115,7 @@ export default ({config}: ConfigContext): ExpoConfig => {
             [
                 "expo-location",
                 {
-                    "locationAlwaysAndWhenInUsePermission": "$(PRODUCT_NAME) wants to use your location to help you find vendors in your country"
+                    "locationAlwaysAndWhenInUsePermission": "Share your location to see relevant local data and help nearby customers discover you"
                 }
             ],
             [

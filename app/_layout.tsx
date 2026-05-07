@@ -11,7 +11,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { LocationProvider } from '@/contexts/location-context';
 
 export default function RootLayout() {
-  const { isLoggedIn, hasCompletedOnboarding } = useAuthStore();
+  const { hasCompletedOnboarding } = useAuthStore();
 
   SplashScreen.preventAutoHideAsync();
 

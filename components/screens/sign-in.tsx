@@ -73,9 +73,9 @@ export default function SignIn() {
             Continue with Email
           </AppButton>
 
-          {/*<AppButton onPress={() => resetOnboarding()}>*/}
-          {/*  reset on boarding*/}
-          {/*</AppButton>*/}
+          <AppButton onPress={() => resetOnboarding()}>
+            reset on boarding
+          </AppButton>
         </Animated.View>
       )}
 

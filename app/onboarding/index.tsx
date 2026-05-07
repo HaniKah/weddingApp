@@ -9,7 +9,7 @@ import { ButtonType } from '@/styles/Button';
 const videoSource = require('../../assets/videos/ring.mp4');
 
 export default function Onboarding() {
-  const { completeOnboarding } = useAuthStore();
+  const { completeOnboarding, hasCompletedOnboarding } = useAuthStore();
   const player = useVideoPlayer(videoSource, (player) => {
     player.loop = true;
     player.play();
@@ -35,6 +35,7 @@ export default function Onboarding() {
           <Text style={styles.appTitle}>Ghamrah</Text>
           <Text style={styles.subtitle}>Plan your perfect day with ease</Text>
         </Animated.View>
+        <Text>{hasCompletedOnboarding + ''}</Text>
         <Animated.View style={styles.nextContainer} entering={FadeInDown.duration(600).delay(400)}>
           <AppButton extraStylesTxt={styles.nextButton} extraStylesBtn={styles.nextButton}
                      buttonType={ButtonType.OUTLINED} fullWidth

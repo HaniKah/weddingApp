@@ -6,7 +6,6 @@ import { StyleSheet, Text } from 'react-native';
 import { Theme } from '@/styles/Theme';
 import WelcomeText from '@/components/WelcomeText';
 import AppView from '@/components/appComponents/AppView';
-import { useAuthStore } from '@/utils/authStore';
 
 export default function SearchHeader({
 
@@ -23,13 +22,11 @@ export default function SearchHeader({
 
 
 }) {
-  const { hasCompletedOnboarding } = useAuthStore();
 
   return (
     <>
       <AppView withPadding>
         <WelcomeText />
-        <Text>{hasCompletedOnboarding + ''}</Text>
         <AppSearchBar searchText={searchText} setSearchText={setSearchText} />
         <CategoryList
 

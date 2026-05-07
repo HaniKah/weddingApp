@@ -35,7 +35,6 @@ export default function Onboarding() {
           <Text style={styles.appTitle}>Ghamrah</Text>
           <Text style={styles.subtitle}>Plan your perfect day with ease</Text>
         </Animated.View>
-        <Text>{hasCompletedOnboarding + ''}</Text>
         <Animated.View style={styles.nextContainer} entering={FadeInDown.duration(600).delay(400)}>
           <AppButton extraStylesTxt={styles.nextButton} extraStylesBtn={styles.nextButton}
                      buttonType={ButtonType.OUTLINED} fullWidth

@@ -116,12 +116,17 @@ export default function PlaceId() {
                   <IconButton onPress={toggleFavorites} removeBackground name="heart" />}
               </View>
               <LocationTag location={placeDetails?.city} />
-              <View style={styles.priceContainer}>
-                <Text
-                  style={styles.price}>{placeDetails?.minPrice === placeDetails?.maxPrice ? placeDetails?.minPrice : placeDetails?.minPrice + ' - ' + placeDetails?.maxPrice}</Text>
-                <Text
-                  style={styles.currency}>{COUNTRIES.get(placeDetails?.countryCode)?.currency} / {placeDetails?.priceType}</Text>
-              </View>
+              {placeDetails?.countryCode && placeDetails.minPrice && placeDetails.maxPrice ?
+                <View style={styles.priceContainer}>
+                  <Text
+                    style={styles.price}>{placeDetails?.minPrice === placeDetails?.maxPrice ? placeDetails?.minPrice : placeDetails?.minPrice + ' - ' + placeDetails?.maxPrice}</Text>
+                  <Text
+                    style={styles.currency}>{COUNTRIES.get(placeDetails?.countryCode)?.currency} / {placeDetails?.priceType}</Text>
+                </View> :
+                <Text style={styles.noPrice}>
+                  No price
+                </Text>
+              }
             </View>
 
             <AppIf value={placeDetails?.description}>
@@ -210,7 +215,10 @@ const styles = StyleSheet.create({
     fontSize: Theme.sizes.md,
     color: Theme.colors.primary,
     fontWeight: 'bold',
-
+  },
+  noPrice: {
+    color: Theme.colors.secondary,
+    marginTop: 5,
   },
   currency: {
     color: Theme.colors.secondary,

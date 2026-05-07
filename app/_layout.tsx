@@ -40,9 +40,7 @@ export default function RootLayout() {
           <LocationProvider>
             <Stack screenOptions={{ headerShown: false }}>
               <Stack.Screen name="(tabs)" />
-              <Stack.Protected guard={!isLoggedIn && !shouldCreateAccount}>
-                <Stack.Screen name="sign-in" />
-              </Stack.Protected>
+          
               <Stack.Protected guard={false}>
                 <Stack.Screen name="onboarding" />
               </Stack.Protected>

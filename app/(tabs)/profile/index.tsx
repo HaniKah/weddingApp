@@ -12,6 +12,7 @@ import { COUNTRIES } from '@/constants/countries';
 import AppSafeAreaView from '@/components/appComponents/AppSafeAreaView';
 
 import { useAuthStore } from '@/utils/authStore';
+import SignIn from '@/components/screens/sign-in';
 
 export default function Index() {
   const { signOut, deleteUser } = useAuth();
@@ -32,21 +33,7 @@ export default function Index() {
     return (
       <>
         <Stack.Screen options={{ headerShown: false, contentStyle: { backgroundColor: Theme.colors.background } }} />
-        <AppSafeAreaView>
-          <AppView withPadding extraStyles={styles.guestContainer}>
-            <IconSymbol name="person.circle" size={80} color={Theme.colors.gray.S300} />
-            <Text style={styles.guestTitle}>Welcome to Wedding Planner</Text>
-            <Text style={styles.guestSubtitle}>Sign in to manage your favorites, listings, and profile.</Text>
-            <AppButton
-              fullWidth
-              buttonType={ButtonType.PRIMARY}
-              onPress={() => router.push('/sign-in')}
-              extraStylesBtn={{ marginTop: 20 }}
-            >
-              Sign In
-            </AppButton>
-          </AppView>
-        </AppSafeAreaView>
+        <SignIn />
       </>
     );
   }

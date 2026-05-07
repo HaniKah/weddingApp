@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Categories, CountryCode, PlacesDto } from '@/types/open-api';
-import { Stack } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
 import AppView from '@/components/appComponents/AppView';
 import { useApi } from '@/utils/api';
 import SearchHeader from '@/components/SearchHeader';
@@ -31,6 +31,8 @@ export default function Index() {
   const [searchText, setSearchText] = useState<string>();
   const [debouncedSearchText, setDebouncedSearchText] = useState<string>();
 
+  const router = useRouter();
+
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearchText(searchText);
@@ -54,10 +56,12 @@ export default function Index() {
   const getPlaces: (offset: number) => Promise<PlacesDto[]> = async (offset) => {
 
     if (!isoCountry) return [];
-    if (!isCountryViable(isoCountry)) return [];
+    if (!isCountryViable(isoCountry)) {
+      router.dismissTo('/pick-location');
+      return [];
+    }
 
     let data: PlacesDto[] = [];
-    setLoading(true);
     try {
       const resp = await API.plannerControllerGetPlaces({
         search: debouncedSearchText,
@@ -70,7 +74,6 @@ export default function Index() {
     } catch (err) {
       console.log(err);
     } finally {
-      setLoading(false);
     }
     return data;
   };
@@ -79,8 +82,10 @@ export default function Index() {
   useEffect(() => {
     const fetch = async () => {
       setPagination(0);
+      setLoading(true);
       const resp = await getPlaces(0);
       setPlaces(resp);
+      setLoading(false);
     };
     fetch();
 
@@ -133,7 +138,7 @@ export default function Index() {
     <>
       <Stack.Screen options={{ headerShown: false }} />
       <AppSafeAreaView>
-        <AppView isLoading={isLoading}>
+        <AppView>
           {isoCountry ? <FlatList
               ListHeaderComponent={
                 <SearchHeader

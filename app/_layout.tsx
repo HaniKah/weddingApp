@@ -11,7 +11,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { LocationProvider } from '@/contexts/location-context';
 
 export default function RootLayout() {
-  const { isLoggedIn, shouldCreateAccount } = useAuthStore();
+  const { isLoggedIn, hasCompletedOnboarding } = useAuthStore();
 
   SplashScreen.preventAutoHideAsync();
 
@@ -39,12 +39,15 @@ export default function RootLayout() {
         <GestureHandlerRootView>
           <LocationProvider>
             <Stack screenOptions={{ headerShown: false }}>
-              <Stack.Screen name="(tabs)" />
-          
-              <Stack.Protected guard={false}>
+              <Stack.Protected guard={hasCompletedOnboarding}>
+                <Stack.Screen name="(tabs)" />
+              </Stack.Protected>
+              <Stack.Protected guard={hasCompletedOnboarding}>
+                <Stack.Screen name="pick-location" />
+              </Stack.Protected>
+              <Stack.Protected guard={!hasCompletedOnboarding}>
                 <Stack.Screen name="onboarding" />
               </Stack.Protected>
-              <Stack.Screen name="pick-location" />
               <Stack.Screen name="+not-found" />
             </Stack>
           </LocationProvider>

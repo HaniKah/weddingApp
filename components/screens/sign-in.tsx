@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useState } from 'react';
 import Animated, { FadeInDown, FadeOutDown } from 'react-native-reanimated';
 import { useAuth } from '@/contexts/auth-context';
@@ -9,182 +9,164 @@ import AppKeyboardAvoidingView from '@/components/appComponents/AppKeyboardAvoid
 import AuthForm from '@/components/auth/AuthForm';
 import { Theme } from '@/styles/Theme';
 import Google from '@/assets/icons/social-media/google.svg';
-
-// const videoSource =
-//     'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
-
-// const assetId = require('../assets/videos/ring.mp4');
-//
-// const videoSource: VideoSource = {
-//     assetId,
-//     metadata: {
-//         title: 'ring',
-//         artist: 'artist',
-//     },
-// };
-
-// const videoSource = process.env.EXPO_PUBLIC_VIDEO_URL as string
+import { useAuthStore } from '@/utils/authStore';
 
 
 export default function SignIn() {
   const { signInWithGoogle, signInWithApple } = useAuth();
+  const { resetOnboarding } = useAuthStore();
   const [showEmailForm, setShowEmailForm] = useState(false);
 
-  // const player = useVideoPlayer(videoSource, (player) => {
-  //     player.loop = true;
-  //     player.play();
-  // });
 
   function closeForm() {
-    // player.play()
     setShowEmailForm(false);
   }
 
-
   return (
 
-    <View style={styles.container}>
 
-      {/*<VideoView*/}
-      {/*    player={player}*/}
-      {/*    nativeControls={false}*/}
-      {/*    style={StyleSheet.absoluteFill}*/}
-      {/*    contentFit="cover"*/}
-      {/*/>*/}
-      <View style={styles.backgroundWhite}>
-        {!showEmailForm && (
-          <View style={styles.signInContainer}
+    <View style={styles.content}>
+      {!showEmailForm && (
+        <View
+          style={styles.welcomeContainer}
+        >
+          <Text style={styles.appTitle}>Welcome Back</Text>
+          <Text style={styles.subtitle}>Sign in in order to create listing, manage favorites and get more
+            features</Text>
+        </View>
+      )}
+
+      {!showEmailForm && (
+        <Animated.View
+          style={styles.signInContainer}
+        >
+          <AppButton
+            fullWidth
+            buttonType={ButtonType.PRIMARY}
+            extraStylesBtn={styles.googleButtonPrimary}
+            extraStylesTxt={styles.googleTextPrimary}
+            onPress={signInWithGoogle}
+            CustomIcon={Google}
           >
+            Sign In with Google
+          </AppButton>
 
-            <AppButton
-              fullWidth
-              buttonType={ButtonType.PRIMARY}
-              extraStylesBtn={styles.googleButtonPrimary}
-              extraStylesTxt={styles.googleTextPrimary}
-              onPress={signInWithGoogle}
-              CustomIcon={Google}
-            >
-              Sign In with Google
-            </AppButton>
+          <AppButton
+            icon="apple.logo"
+            fullWidth
+            buttonType={ButtonType.PRIMARY}
+            extraStylesBtn={styles.appleButtonPrimary}
+            extraStylesTxt={styles.appleTextPrimary}
+            onPress={signInWithApple}
+          >
+            Sign In with Apple
+          </AppButton>
 
-            <AppButton
-              icon="apple.logo"
-              fullWidth
-              buttonType={ButtonType.PRIMARY}
-              extraStylesBtn={styles.appleButtonPrimary}
-              extraStylesTxt={styles.appleTextPrimary}
-              onPress={signInWithApple}
-            >
-              Sign In with Apple
-            </AppButton>
+          <AppButton
+            fullWidth
+            extraStylesBtn={styles.emailSignInButton}
+            extraStylesTxt={styles.emailSignInText}
+            iconColor="black"
+            icon="mail"
+            onPress={() => setShowEmailForm(true)}
+            buttonType={ButtonType.OUTLINED}>
+            Continue with Email
+          </AppButton>
 
-            {/*<View style={styles.orContainer}>*/}
-            {/*    <View style={styles.line}/>*/}
-            {/*    <Text style={styles.orText}>or</Text>*/}
-            {/*    <View style={styles.line}/>*/}
-            {/*</View>*/}
+          {/*<AppButton onPress={() => resetOnboarding()}>*/}
+          {/*  reset on boarding*/}
+          {/*</AppButton>*/}
+        </Animated.View>
+      )}
 
-
-            <AppButton fullWidth
-                       extraStylesBtn={styles.emailSignInButton}
-                       extraStylesTxt={styles.emailSignInText}
-                       iconColor="black"
-                       icon="mail"
-                       onPress={() => setShowEmailForm(true)}
-                       buttonType={ButtonType.OUTLINED}>
-              Continue with Email
-            </AppButton>
-          </View>
-        )}
-
-        {showEmailForm && (
-          <AppSafeAreaView transparentBackground>
-            <Pressable onPress={closeForm} style={{ flex: 1 }}>
-              <AppKeyboardAvoidingView>
-                <Animated.View
-                  entering={FadeInDown.duration(400)}
-                  exiting={FadeOutDown.duration(300)}
-                  style={styles.signInFormContainer}>
-                  <AuthForm />
-                </Animated.View>
-              </AppKeyboardAvoidingView>
-            </Pressable>
-          </AppSafeAreaView>
-        )}
-      </View>
+      {showEmailForm && (
+        <AppSafeAreaView transparentBackground>
+          <Pressable onPress={closeForm} style={{ flex: 1 }}>
+            <AppKeyboardAvoidingView>
+              <Animated.View
+                entering={FadeInDown.duration(400)}
+                exiting={FadeOutDown.duration(300)}
+                style={styles.signInFormContainer}>
+                <AuthForm />
+              </Animated.View>
+            </AppKeyboardAvoidingView>
+          </Pressable>
+        </AppSafeAreaView>
+      )}
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-
-
+    backgroundColor: 'black',
   },
-  backgroundWhite: {
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0,0,0,0.4)',
+  },
+  content: {
     flex: 1,
-    backgroundColor: 'rgba(255,255,255,0.3)',
+    justifyContent: 'space-between',
+  },
+  welcomeContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    marginTop: 80,
+  },
+  appTitle: {
+    fontSize: Theme.sizes.xxl,
+    color: Theme.colors.primary,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 14,
+  },
+  subtitle: {
+    fontSize: Theme.sizes.md,
+    color: Theme.colors.secondary,
+    textAlign: 'center',
+    opacity: 0.9,
   },
   signInContainer: {
-    flex: 1,
-    gap: 10,
-    justifyContent: 'flex-end',
+    gap: 12,
     paddingBottom: 60,
     paddingHorizontal: 30,
-
   },
   signInFormContainer: {
     justifyContent: 'flex-end',
     flex: 1,
     paddingVertical: 60,
     paddingHorizontal: 30,
-
-
   },
-
   googleButtonPrimary: {
     backgroundColor: Theme.colors.white,
+    height: 56,
+    boxShadow: Theme.effects.boxShadow,
   },
   googleTextPrimary: {
     color: Theme.colors.black,
+    fontWeight: '600',
   },
   appleButtonPrimary: {
     backgroundColor: Theme.colors.black,
+    height: 56,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.2)',
   },
   appleTextPrimary: {
     color: Theme.colors.white,
+    fontWeight: '600',
   },
-  // googleButtonOutlined: {
-  //     borderColor: Theme.colors.black,
-  //     backgroundColor: 'transparent',
-  // },
-  // googleTxtOutlined: {
-  //     color: 'black',
-  // },
-
-
   emailSignInButton: {
     borderColor: 'black',
+    height: 56,
+    backgroundColor: 'transparent',
   },
   emailSignInText: {
     color: 'black',
+    fontWeight: '600',
   },
-  // orContainer: {
-  //     flexDirection: 'row',
-  //     alignItems: 'center',
-  //     marginVertical: 15,
-  //     paddingHorizontal: 10,
-  // },
-  // line: {
-  //     flex: 1,
-  //     height: 1,
-  //     backgroundColor: Theme.colors.gray.S700,
-  //     opacity: 0.5,
-  // },
-  // orText: {
-  //     marginHorizontal: 10,
-  //     fontSize: 14,
-  //     color: 'black',
-  //     fontWeight: '500',
-  // },
 });

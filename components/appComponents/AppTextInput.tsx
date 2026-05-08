@@ -112,7 +112,7 @@ export default function AppTextInput({
         />
         {unit && <Text style={styles.unit}>{unit}</Text>}
         {
-          value && value?.length > 0 &&
+          value && value?.length > 0 && inputRef.current?.isFocused() &&
           <IconButton onPress={() => preTextChange(undefined)} color={Theme.colors.backgroundDisabled} size={24}
                       name="x.circle.fill"
                       removeBackground />

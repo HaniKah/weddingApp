@@ -195,7 +195,7 @@ const design2: TextInputType = StyleSheet.create({
   input: {
     height: 45,
     color: Theme.colors.primary,
-    fontSize: Theme.sizes.md,
+    fontSize: Theme.sizes.sm,
     width: '100%',
     flex: 1,
     paddingLeft: 14,

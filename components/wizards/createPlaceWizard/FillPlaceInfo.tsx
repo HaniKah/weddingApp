@@ -195,7 +195,7 @@ export default function FillPlaceInfo({ data, setData }: {
                                 onChange={(s) => setPlaceName(s)}
                                 name="name"
                                 label="Business name"
-                                placeholder="name of your business"
+                                placeholder="e.g. Royal Wedding Hall"
                   />
                 </View>
 
@@ -216,7 +216,7 @@ export default function FillPlaceInfo({ data, setData }: {
                                 required
                                 design={2}
                                 label="Phone number"
-                                placeholder="Phone number"
+                                placeholder="e.g. +962xxxxxx"
                                 onChange={(s) => setPhoneNumber(s)}
                                 value={phoneNumber}
                   />

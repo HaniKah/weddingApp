@@ -6,12 +6,15 @@ import { Link } from 'expo-router';
 import CategoryTag from '@/components/CategoryTag';
 import { PlaceDetailsDto } from '@/types/open-api';
 import IconCategory from '@/components/symbols/IconCategory';
+import AppIf from '@/components/appComponents/AppIf';
+import { useTranslation } from 'react-i18next';
 
 type FavoriteItemProps = {
   data: PlaceDetailsDto;
 }
 
 export default function FavoriteItem({ data }: FavoriteItemProps) {
+  const { t } = useTranslation();
 
   return (
     <Link href={`/listing/${data.id}`}>
@@ -31,11 +34,20 @@ export default function FavoriteItem({ data }: FavoriteItemProps) {
           <Text style={styles.placeName}>{data.name}</Text>
           <CategoryTag category={data.category} />
           <View style={styles.priceContainer}>
-            {data.minPrice === data.maxPrice ?
-              <Text style={styles.priceText}>{data.minPrice}</Text> :
-              <Text style={styles.priceText}>{data.minPrice} - {data.maxPrice}</Text>
-            }
-            <Text style={styles.currency}>  {COUNTRIES.get(data.countryCode)?.currency}</Text>
+            <AppIf value={!data.maxPrice && !data.maxPrice}>
+              <Text style={styles.currency}>No price</Text>
+            </AppIf>
+            <AppIf value={data.maxPrice && data.minPrice}>
+              {
+                data.minPrice === data.maxPrice ?
+                  <Text style={styles.priceText}>{data.minPrice}</Text> :
+                  <Text style={styles.priceText}>{data.minPrice} - {data.maxPrice}</Text>
+              }
+              <Text
+                style={styles.currency}>  {COUNTRIES.get(data.countryCode)?.currency} / {t('priceType.' + data.priceType)}</Text>
+            </AppIf>
+
+
           </View>
         </View>
         <IconSymbol name="chevron.right" size={20} color={Theme.colors.border} />

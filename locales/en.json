@@ -24,11 +24,10 @@
     "Miscellaneous": "Miscellaneous"
   },
   "priceType": {
-    "None": "None",
-    "PerPerson": "per person",
-    "PerHour": "per hour",
-    "PerItem": "per item",
-    "PerEvent": "per event"
+    "PerPerson": "Person",
+    "PerHour": "Hour",
+    "PerItem": "Item",
+    "PerEvent": "Event"
   },
   "priceKind": {
     "NoPrice": "No price",

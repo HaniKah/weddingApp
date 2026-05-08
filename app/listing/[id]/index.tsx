@@ -100,7 +100,7 @@ export default function PlaceId() {
                   <IconButton onPress={() => toggleFavorite(id)} removeBackground name="heart.fill" /> :
                   <IconButton onPress={() => toggleFavorite(id)} removeBackground name="heart" />}
               </View>
-              <LocationTag location={placeDetails?.city} />
+              <LocationTag city={placeDetails?.city} />
               <PriceTag minPrice={placeDetails?.minPrice}
                         maxPrice={placeDetails?.maxPrice}
                         priceType={placeDetails?.priceType}

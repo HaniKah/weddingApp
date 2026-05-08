@@ -47,13 +47,8 @@ export default function PlaceItem({ item }: { item: PlacesDto }) {
             <Text numberOfLines={1} ellipsizeMode="tail" style={styles.name}>
               {item.name}
             </Text>
-            {/*<View style={styles.countryContainer}>*/}
-            {/*  <IconSymbol name="location" size={14} color={Theme.colors.secondary} />*/}
-            {/*  <Text style={styles.countryText}>*/}
-            {/*    {item.city}*/}
-            {/*  </Text>*/}
-            {/*</View>*/}
-            <LocationTag location={item.country} />
+
+            <LocationTag city={item.city} removeBackground textColor={Theme.colors.secondary} />
 
             <View style={styles.priceAndCallContainer}>
               <PriceTag maxPrice={item.maxPrice} minPrice={item.minPrice} priceType={item.priceType}
@@ -90,12 +85,13 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 10,
+
   },
   infoContainer: {
     display: 'flex',
     alignItems: 'flex-start',
     padding: 15,
+    gap: 10,
   },
   link: {
     marginBottom: 30,

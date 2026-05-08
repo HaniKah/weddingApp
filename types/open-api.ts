@@ -285,6 +285,7 @@ export interface UpdatePlaceRequest {
 }
 
 export interface VendorPlaceDto {
+  priceType: PriceType;
   country: CountryCode;
   category: Categories;
   id: number;

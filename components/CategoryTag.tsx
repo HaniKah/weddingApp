@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 5,
     borderRadius: Theme.radius.full,
-    marginVertical: 5,
   },
   text: {
     fontSize: Theme.sizes.xs,

@@ -9,11 +9,10 @@ import { Theme } from '@/styles/Theme';
 import { useApi } from '@/utils/api';
 import { useFavoritesStore } from '@/utils/favoritesStore';
 import { IconButton } from '@/components/symbols/IconButton';
-import { COUNTRIES } from '@/constants/countries';
 import LocationTag from '@/components/LocationTag';
 import IconCategory from '../../../components/symbols/IconCategory';
 import AppView from '@/components/appComponents/AppView';
-import { useTranslation } from 'react-i18next';
+import PriceTag from '@/components/PriceTag';
 
 
 export default function PlaceId() {
@@ -25,7 +24,6 @@ export default function PlaceId() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [placeDetails, setPlaceDetails] = useState<PlaceDetailsDto>();
 
-  const { t } = useTranslation();
 
   const params = useLocalSearchParams<{ id: string, step: Categories }>();
 
@@ -103,17 +101,10 @@ export default function PlaceId() {
                   <IconButton onPress={() => toggleFavorite(id)} removeBackground name="heart" />}
               </View>
               <LocationTag location={placeDetails?.city} />
-              {placeDetails?.countryCode && placeDetails.minPrice && placeDetails.maxPrice ?
-                <View style={styles.priceContainer}>
-                  <Text
-                    style={styles.price}>{placeDetails?.minPrice === placeDetails?.maxPrice ? placeDetails?.minPrice : placeDetails?.minPrice + ' - ' + placeDetails?.maxPrice}</Text>
-                  <Text
-                    style={styles.currency}>{COUNTRIES.get(placeDetails?.countryCode)?.currency} {t('priceType.' + placeDetails?.priceType)}</Text>
-                </View> :
-                <Text style={styles.noPrice}>
-                  No price
-                </Text>
-              }
+              <PriceTag minPrice={placeDetails?.minPrice}
+                        maxPrice={placeDetails?.maxPrice}
+                        priceType={placeDetails?.priceType}
+                        countryCode={placeDetails?.countryCode} />
             </View>
 
             <AppIf value={placeDetails?.description}>
@@ -177,7 +168,7 @@ const styles = StyleSheet.create({
   },
   infoHeaderContainer: {
     display: 'flex',
-    gap: 5,
+    gap: 10,
   },
   titleContainer: {
     display: 'flex',

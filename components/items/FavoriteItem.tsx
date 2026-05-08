@@ -1,13 +1,12 @@
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { Theme } from '@/styles/Theme';
 import { IconSymbol } from '@/components/symbols/IconSymbol';
-import { COUNTRIES } from '@/constants/countries';
 import { Link } from 'expo-router';
 import CategoryTag from '@/components/CategoryTag';
 import { PlaceDetailsDto } from '@/types/open-api';
 import IconCategory from '@/components/symbols/IconCategory';
-import AppIf from '@/components/appComponents/AppIf';
 import { useTranslation } from 'react-i18next';
+import PriceTag from '@/components/PriceTag';
 
 type FavoriteItemProps = {
   data: PlaceDetailsDto;
@@ -33,22 +32,8 @@ export default function FavoriteItem({ data }: FavoriteItemProps) {
         <View style={styles.infoContainer}>
           <Text style={styles.placeName}>{data.name}</Text>
           <CategoryTag category={data.category} />
-          <View style={styles.priceContainer}>
-            <AppIf value={!data.maxPrice && !data.maxPrice}>
-              <Text style={styles.currency}>No price</Text>
-            </AppIf>
-            <AppIf value={data.maxPrice && data.minPrice}>
-              {
-                data.minPrice === data.maxPrice ?
-                  <Text style={styles.priceText}>{data.minPrice}</Text> :
-                  <Text style={styles.priceText}>{data.minPrice} - {data.maxPrice}</Text>
-              }
-              <Text
-                style={styles.currency}>  {COUNTRIES.get(data.countryCode)?.currency} / {t('priceType.' + data.priceType)}</Text>
-            </AppIf>
-
-
-          </View>
+          <PriceTag minPrice={data.minPrice} maxPrice={data.maxPrice} priceType={data.priceType}
+                    countryCode={data.countryCode} />
         </View>
         <IconSymbol name="chevron.right" size={20} color={Theme.colors.border} />
       </View>
@@ -95,7 +80,7 @@ const styles = StyleSheet.create({
   },
   infoContainer: {
     display: 'flex',
-    gap: 5,
+    gap: 10,
     flex: 1,
     paddingVertical: 8,
   },

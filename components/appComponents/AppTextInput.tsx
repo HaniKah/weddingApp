@@ -12,6 +12,7 @@ import {
 import { Theme } from '@/styles/Theme';
 import { useFormContext } from '@/contexts/form-context';
 import { useEffect, useRef, useState } from 'react';
+import { IconButton } from '@/components/symbols/IconButton';
 
 export default function AppTextInput({
                                        onChange,
@@ -33,7 +34,7 @@ export default function AppTextInput({
 
   placeholder?: string,
   label?: string
-  onChange: (text: string) => void,
+  onChange: (text: string | undefined) => void,
   value: string | undefined,
   keyboardType?: KeyboardTypeOptions,
   required?: boolean,
@@ -59,7 +60,7 @@ export default function AppTextInput({
   const form = useFormContext();
 
 
-  function preTextChange(text: string) {
+  function preTextChange(text: string | undefined) {
     onChange(text);
     setError(undefined);
 
@@ -91,7 +92,6 @@ export default function AppTextInput({
 
   }, [form.submitting, value]);
 
-
   return (
     <View style={extraStyles}>
       {label && <Text style={[styles.label]}>{label}</Text>}
@@ -111,6 +111,12 @@ export default function AppTextInput({
 
         />
         {unit && <Text style={styles.unit}>{unit}</Text>}
+        {
+          value && value?.length > 0 &&
+          <IconButton onPress={() => preTextChange(undefined)} color={Theme.colors.backgroundDisabled} size={24}
+                      name="x.circle.fill"
+                      removeBackground />
+        }
       </View>
 
       {error &&
@@ -137,7 +143,7 @@ const design1: TextInputType = StyleSheet.create({
       flexDirection: 'row',
       alignItems: 'center',
       borderBottomWidth: 2,
-      borderColor: Theme.colors.backgroundDisabled,
+      borderColor: Theme.colors.border,
     },
     input: {
       paddingRight: 10,
@@ -179,7 +185,7 @@ const design2: TextInputType = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: Theme.colors.white,
     borderColor: Theme.colors.border,
-    borderRadius: Theme.radius.sm,
+    borderRadius: Theme.radius.md,
     overflow: 'hidden',
     paddingRight: 10,
     borderWidth: 1,
@@ -192,7 +198,7 @@ const design2: TextInputType = StyleSheet.create({
     fontSize: Theme.sizes.md,
     width: '100%',
     flex: 1,
-    paddingLeft: 10,
+    paddingLeft: 14,
     borderRadius: Theme.radius.sm,
 
 

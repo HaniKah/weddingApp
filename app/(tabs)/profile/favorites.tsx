@@ -7,6 +7,7 @@ import { Stack } from 'expo-router';
 import { Theme } from '@/styles/Theme';
 import FavoriteItem from '@/components/items/FavoriteItem';
 import { useFavoritesStore } from '@/utils/favoritesStore';
+import { CommonStyles } from '@/styles/Common';
 
 export default function Favorites() {
   const [favoritePlaces, setFavoritePlaces] = useState<PlaceDetailsDto[]>([]);
@@ -39,7 +40,7 @@ export default function Favorites() {
 
   function EmptyData() {
     return (
-      <Text style={styles.emptyDataText}>You don&#39;t have favorites yet</Text>
+      <Text style={CommonStyles.dataNotFound}>You don&#39;t have favorites yet</Text>
     );
   }
 

@@ -172,6 +172,7 @@ export default function FillPlaceInfo({ data, setData }: {
     if (priceKind === PriceKind.NoPrice) {
       setMinPrice(undefined);
       setMaxPrice(undefined);
+      setPriceType(undefined);
     }
     if (priceKind === PriceKind.Single) {
       setMaxPrice(minPrice);
@@ -294,7 +295,7 @@ export default function FillPlaceInfo({ data, setData }: {
                   </View>
                 }
 
-                {priceKind !== PriceKind.NoPrice &&
+                {minPrice !== undefined && maxPrice !== undefined &&
                   <View style={styles.input}>
                     <AppDropDown
                       label="Price type"

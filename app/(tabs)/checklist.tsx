@@ -4,13 +4,30 @@ import { Theme } from '@/styles/Theme';
 import { IconSymbol } from '@/components/symbols/IconSymbol';
 import AppTextInput from '@/components/appComponents/AppTextInput';
 import AppPressable from '@/components/appComponents/AppPressable';
-import { ChecklistDto, Timeframe } from '@/types/open-api';
 import { useChecklistStore } from '@/utils/checklistStore';
 import { IconButton } from '@/components/symbols/IconButton';
 import AppView from '@/components/appComponents/AppView';
 import { Stack } from 'expo-router';
 import AppSafeAreaView from '@/components/appComponents/AppSafeAreaView';
 import { useTranslation } from 'react-i18next';
+
+enum Timeframe {
+  Year = 'Year',
+  NineMonths = 'NineMonths',
+  SixMonths = 'SixMonths',
+  ThreeMonths = 'ThreeMonths',
+  OneMonth = 'OneMonth',
+  LastWeek = 'LastWeek',
+  LastDay = 'LastDay',
+  BigDay = 'BigDay',
+}
+
+interface ChecklistDto {
+  timeframe: Timeframe;
+  id: number;
+  task: string;
+  isChecked: boolean;
+}
 
 export default function Checklist() {
   const { todos, addTask, toggleTask, deleteTask } = useChecklistStore();

@@ -206,7 +206,7 @@ export interface PlaceInfo {
   phoneNumber: string;
   minPrice?: string;
   maxPrice?: string;
-  priceType: "PerPerson" | "PerHour" | "PerItem" | "PerEvent";
+  priceType?: "PerPerson" | "PerHour" | "PerItem" | "PerEvent";
 }
 
 export interface LocationInfo {

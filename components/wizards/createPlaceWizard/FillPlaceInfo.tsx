@@ -81,7 +81,7 @@ export default function FillPlaceInfo({ data, setData }: {
     setMaxPrice(price);
   }
 
-  const tsRequiredCheck = placeName && phoneNumber && priceType && category && countryCode && city;
+  const tsRequiredCheck = placeName && phoneNumber && category && countryCode && city;
 
   const createPlace = async () => {
     if (!tsRequiredCheck) return;//this is already checked through the from but just for the sake of ts

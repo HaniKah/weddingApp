@@ -82,7 +82,7 @@ export default function PlaceId() {
               </Pressable> :
               <View style={styles.imagePlaceHolder}>
                 <View style={styles.iconWrapper}>
-                  <IconCategory size={100} color={Theme.colors.primary}
+                  <IconCategory size={100} color={Theme.colors.secondary}
                                 category={placeDetails?.category} />
                 </View>
               </View>

@@ -10,17 +10,6 @@
  * ---------------------------------------------------------------
  */
 
-export enum Timeframe {
-  Year = "Year",
-  NineMonths = "NineMonths",
-  SixMonths = "SixMonths",
-  ThreeMonths = "ThreeMonths",
-  OneMonth = "OneMonth",
-  LastWeek = "LastWeek",
-  LastDay = "LastDay",
-  BigDay = "BigDay",
-}
-
 export enum UpdateStep {
   FillPlaceInfo = "FillPlaceInfo",
   AddDescription = "AddDescription",
@@ -31,6 +20,33 @@ export enum UpdateStep {
 export enum CoupleSide {
   Groom = "Groom",
   Bride = "Bride",
+}
+
+export enum CountryCode {
+  AE = "AE",
+  BH = "BH",
+  KW = "KW",
+  OM = "OM",
+  QA = "QA",
+  SA = "SA",
+  IQ = "IQ",
+  JO = "JO",
+  LB = "LB",
+  PS = "PS",
+  SY = "SY",
+  DZ = "DZ",
+  EG = "EG",
+  LY = "LY",
+  MA = "MA",
+  MR = "MR",
+  TN = "TN",
+  DJ = "DJ",
+  KM = "KM",
+  SO = "SO",
+  SD = "SD",
+  IR = "IR",
+  TR = "TR",
+  YE = "YE",
 }
 
 export enum PriceType {
@@ -65,47 +81,6 @@ export enum Categories {
   Miscellaneous = "Miscellaneous",
 }
 
-export enum CountryCode {
-  AE = "AE",
-  BH = "BH",
-  KW = "KW",
-  OM = "OM",
-  QA = "QA",
-  SA = "SA",
-  IQ = "IQ",
-  JO = "JO",
-  LB = "LB",
-  PS = "PS",
-  SY = "SY",
-  DZ = "DZ",
-  EG = "EG",
-  LY = "LY",
-  MA = "MA",
-  MR = "MR",
-  TN = "TN",
-  DJ = "DJ",
-  KM = "KM",
-  SO = "SO",
-  SD = "SD",
-  IR = "IR",
-  TR = "TR",
-  YE = "YE",
-}
-
-export interface FavouritePlacesDto {
-  country: CountryCode;
-  category: Categories;
-  id: number;
-  name: string;
-  minPrice: string;
-  maxPrice: string;
-  mainPhoto: string;
-}
-
-export interface FavouritePlacesViewModel {
-  result: FavouritePlacesDto[];
-}
-
 export interface PlacesDto {
   category: Categories;
   priceType: PriceType;
@@ -138,24 +113,11 @@ export interface PlaceDetailsDto {
   tiktok?: string;
   instagram?: string;
   phoneNumber: string;
-  picked: boolean;
-  favourite: boolean;
   mainPhoto: string;
   maxPrice: string;
   minPrice: string;
   description: string;
   city: string;
-}
-
-export interface ToggleFavoritePlaceFilterRequest {
-  placeId: number;
-  favorite: boolean;
-}
-
-export interface TogglePickedPlaceFilterRequest {
-  category: Categories;
-  placeId: number;
-  picked: boolean;
 }
 
 export interface PhotosDto {
@@ -420,31 +382,6 @@ export interface RevenueCatRequest {
   event: RevenueCatEvent;
 }
 
-export interface ChecklistDto {
-  timeframe: Timeframe;
-  id: number;
-  task: string;
-  isChecked: boolean;
-}
-
-export interface ChecklistViewModel {
-  result: ChecklistDto[];
-}
-
-export interface CreateTaskRequest {
-  timeframe: Timeframe;
-  task: string;
-}
-
-export interface DeleteTaskRequest {
-  taskId: number;
-}
-
-export interface ToggleTaskRequest {
-  taskId: number;
-  isChecked: boolean;
-}
-
 import type {
   AxiosInstance,
   AxiosRequestConfig,
@@ -650,21 +587,6 @@ export class Api<
      * No description
      *
      * @tags Planner
-     * @name PlannerControllerGetFavorites
-     * @request GET:/api/planner/getFavorites
-     */
-    plannerControllerGetFavorites: (params: RequestParams = {}) =>
-      this.request<FavouritePlacesViewModel, any>({
-        path: `/api/planner/getFavorites`,
-        method: "GET",
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Planner
      * @name PlannerControllerGetPlaces
      * @request GET:/api/planner/getPlaces
      */
@@ -748,44 +670,6 @@ export class Api<
         method: "GET",
         query: query,
         format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Planner
-     * @name PlannerControllerToggleFavoritePlaceFilter
-     * @request POST:/api/planner/toggleFavoritePlaceFilter
-     */
-    plannerControllerToggleFavoritePlaceFilter: (
-      data: ToggleFavoritePlaceFilterRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<void, any>({
-        path: `/api/planner/toggleFavoritePlaceFilter`,
-        method: "POST",
-        body: data,
-        type: ContentType.Json,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Planner
-     * @name PlannerControllerTogglePickedPlaceFilter
-     * @request POST:/api/planner/togglePickedPlaceFilter
-     */
-    plannerControllerTogglePickedPlaceFilter: (
-      data: TogglePickedPlaceFilterRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<void, any>({
-        path: `/api/planner/togglePickedPlaceFilter`,
-        method: "POST",
-        body: data,
-        type: ContentType.Json,
         ...params,
       }),
 
@@ -1226,78 +1110,6 @@ export class Api<
     ) =>
       this.request<void, any>({
         path: `/api/webhooks/revenue-cat`,
-        method: "POST",
-        body: data,
-        type: ContentType.Json,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Checklist
-     * @name ChecklistControllerGetAllTasks
-     * @request GET:/api/checklist/getAllTasks
-     */
-    checklistControllerGetAllTasks: (params: RequestParams = {}) =>
-      this.request<ChecklistViewModel, any>({
-        path: `/api/checklist/getAllTasks`,
-        method: "GET",
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Checklist
-     * @name ChecklistControllerCreateTask
-     * @request POST:/api/checklist/createTask
-     */
-    checklistControllerCreateTask: (
-      data: CreateTaskRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<void, any>({
-        path: `/api/checklist/createTask`,
-        method: "POST",
-        body: data,
-        type: ContentType.Json,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Checklist
-     * @name ChecklistControllerDeleteTask
-     * @request POST:/api/checklist/deleteTask
-     */
-    checklistControllerDeleteTask: (
-      data: DeleteTaskRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<void, any>({
-        path: `/api/checklist/deleteTask`,
-        method: "POST",
-        body: data,
-        type: ContentType.Json,
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Checklist
-     * @name ChecklistControllerToggleTask
-     * @request POST:/api/checklist/toggleTask
-     */
-    checklistControllerToggleTask: (
-      data: ToggleTaskRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<void, any>({
-        path: `/api/checklist/toggleTask`,
         method: "POST",
         body: data,
         type: ContentType.Json,

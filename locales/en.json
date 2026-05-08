@@ -30,6 +30,11 @@
     "PerItem": "per item",
     "PerEvent": "per event"
   },
+  "priceKind": {
+    "NoPrice": "No price",
+    "Range": "Range",
+    "Single": "Single"
+  },
   "timeframe": {
     "Year": "1 Year",
     "NineMonths": "9 Months",

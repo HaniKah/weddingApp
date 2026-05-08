@@ -24,7 +24,7 @@
     "Miscellaneous": "Miscellaneous"
   },
   "priceType": {
-    "None": "",
+    "None": "None",
     "PerPerson": "per person",
     "PerHour": "per hour",
     "PerItem": "per item",

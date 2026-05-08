@@ -15,9 +15,9 @@ import { PickerItem } from '@/components/appComponents/AppPicker';
 import { useTranslation } from 'react-i18next';
 
 enum PriceKind {
-  NoPrice = 'NoPrice',
+  Range = 'Range',
   Single = 'Single',
-  Range = 'Range'
+  NoPrice = 'NoPrice',
 }
 
 export default function FillPlaceInfo({ data, setData }: {
@@ -30,8 +30,8 @@ export default function FillPlaceInfo({ data, setData }: {
   const [phoneNumber, setPhoneNumber] = useState<string | undefined>(data?.phoneNumber);
   const [minPrice, setMinPrice] = useState<string | undefined>(data?.minPrice);
   const [maxPrice, setMaxPrice] = useState<string | undefined>(data?.maxPrice);
-  const [priceKind, setPriceKind] = useState<PriceKind>(PriceKind.NoPrice);
-  const [priceType, setPriceType] = useState<PriceType>(data?.priceType || PriceType.None);
+  const [priceKind, setPriceKind] = useState<PriceKind>(PriceKind.Range);
+  const [priceType, setPriceType] = useState<PriceType | undefined>(data?.priceType);
   const [city, setCity] = useState<string | undefined>(data?.city);
   const [category, setCategory] = useState<Categories | undefined>(data?.category);
   const [countryCode, setCountryCode] = useState<CountryCode | undefined>(data?.countryCode);
@@ -58,6 +58,10 @@ export default function FillPlaceInfo({ data, setData }: {
     value: p,
   }));
 
+  const priceTypeList: PickerItem<PriceType>[] = Object.values(PriceType).map((v) => ({
+    name: t('priceType.' + v),
+    value: v,
+  }));
 
   const citiesPickerItem: PickerItem<string>[] | undefined = useMemo(() => {
     if (!countryCode) return;
@@ -145,11 +149,6 @@ export default function FillPlaceInfo({ data, setData }: {
   });
 
 
-  const priceTypeList: PickerItem<PriceType>[] = Object.values(PriceType).map((v) => ({
-    name: v.toString(), // needs to be translated here
-    value: v,
-  }));
-
   const formRef = useRef<FormRef>(null);
 
   useEffect(() => {
@@ -157,7 +156,7 @@ export default function FillPlaceInfo({ data, setData }: {
     setPhoneNumber(data?.phoneNumber ?? undefined);
     setMinPrice(data?.minPrice ?? undefined);
     setMaxPrice(data?.maxPrice ?? undefined);
-    setPriceType(data?.priceType ?? PriceType.None);
+    setPriceType(data?.priceType ?? undefined);
     setCity(data?.city ?? undefined);
     setCategory(data?.category ?? undefined);
     setCountryCode(data?.countryCode ?? undefined);
@@ -165,9 +164,20 @@ export default function FillPlaceInfo({ data, setData }: {
     if (data?.minPrice && data?.maxPrice) {
       setPriceKind(data.minPrice === data.maxPrice ? PriceKind.Single : PriceKind.Range);
     } else {
-      setPriceKind(PriceKind.NoPrice);
+      setPriceKind(PriceKind.Range);
     }
   }, [data]);
+
+  function onPriceKindChange(priceKind: PriceKind) {
+    if (priceKind === PriceKind.NoPrice) {
+      setMinPrice(undefined);
+      setMaxPrice(undefined);
+    }
+    if (priceKind === PriceKind.Single) {
+      setMaxPrice(minPrice);
+    }
+    setPriceKind(priceKind);
+  }
 
 
   return isLoading ? (<ActivityIndicator size="large" style={{ flex: 1 }} />) :
@@ -238,7 +248,7 @@ export default function FillPlaceInfo({ data, setData }: {
                     list={priceKindPickerItems}
                     label="Price"
                     value={priceKind}
-                    onChange={setPriceKind}
+                    onChange={onPriceKindChange}
                     borders="rectangle"
                     disabled={!data?.countryCode && !countryCode}
                     required

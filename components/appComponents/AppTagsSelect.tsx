@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
 
   },
   rectangleItem: {
-    borderRadius: Theme.radius.sm,
+    borderRadius: Theme.radius.md,
   },
 
   activeText: {

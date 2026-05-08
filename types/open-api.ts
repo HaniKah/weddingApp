@@ -50,7 +50,6 @@ export enum CountryCode {
 }
 
 export enum PriceType {
-  None = "None",
   PerPerson = "PerPerson",
   PerHour = "PerHour",
   PerItem = "PerItem",
@@ -207,7 +206,7 @@ export interface PlaceInfo {
   phoneNumber: string;
   minPrice?: string;
   maxPrice?: string;
-  priceType: "None" | "PerPerson" | "PerHour" | "PerItem" | "PerEvent";
+  priceType: "PerPerson" | "PerHour" | "PerItem" | "PerEvent";
 }
 
 export interface LocationInfo {

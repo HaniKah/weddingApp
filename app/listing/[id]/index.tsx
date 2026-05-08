@@ -1,4 +1,4 @@
-import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useCallback, useEffect, useState } from 'react';
 import { Link, Stack, useLocalSearchParams } from 'expo-router';
 import { Categories, PlaceDetailsDto } from '@/types/open-api';
@@ -13,15 +13,19 @@ import { COUNTRIES } from '@/constants/countries';
 import LocationTag from '@/components/LocationTag';
 import IconCategory from '../../../components/symbols/IconCategory';
 import AppView from '@/components/appComponents/AppView';
+import { useTranslation } from 'react-i18next';
 
 
 export default function PlaceId() {
   const API = useApi().api;
-  const { id } = useLocalSearchParams<{ id: string }>();
-  const { favorites, toggleFavorite, isFavorite } = useFavoritesStore();
+  const id = Number(useLocalSearchParams<{ id: string }>().id);
+
+  const { hydratingFavorite, toggleFavorite, isFavorite } = useFavoritesStore();
+
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [placeDetails, setPlaceDetails] = useState<PlaceDetailsDto>();
 
+  const { t } = useTranslation();
 
   const params = useLocalSearchParams<{ id: string, step: Categories }>();
 
@@ -42,28 +46,10 @@ export default function PlaceId() {
   }, [getPlaceDetails]);
 
 
-  async function togglePicked() {
-    if (!placeDetails) return;
-    try {
-      setIsLoading(true);
-      await API.plannerControllerTogglePickedPlaceFilter({
-        placeId: placeDetails?.id,
-        picked: !placeDetails.picked,
-        category: placeDetails.category,
-      });
-      await getPlaceDetails();
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
-
-  async function toggleFavorites() {
-    if (!placeDetails) return;
-    toggleFavorite(placeDetails.id);
-  }
+  // async function toggleFavorites() {
+  //   if (!placeDetails) return;
+  //   toggleFavorite(placeDetails.id);
+  // }
 
 
   return (
@@ -111,9 +97,11 @@ export default function PlaceId() {
             <View style={styles.infoHeaderContainer}>
               <View style={styles.titleContainer}>
                 <Text style={styles.title}>{placeDetails?.name}</Text>
-                {isFavorite(Number(id)) ?
-                  <IconButton onPress={toggleFavorites} removeBackground name="heart.fill" /> :
-                  <IconButton onPress={toggleFavorites} removeBackground name="heart" />}
+                {hydratingFavorite ?
+                  <ActivityIndicator /> :
+                  isFavorite(id) ?
+                    <IconButton onPress={() => toggleFavorite(id)} removeBackground name="heart.fill" /> :
+                    <IconButton onPress={() => toggleFavorite(id)} removeBackground name="heart" />}
               </View>
               <LocationTag location={placeDetails?.city} />
               {placeDetails?.countryCode && placeDetails.minPrice && placeDetails.maxPrice ?
@@ -121,7 +109,7 @@ export default function PlaceId() {
                   <Text
                     style={styles.price}>{placeDetails?.minPrice === placeDetails?.maxPrice ? placeDetails?.minPrice : placeDetails?.minPrice + ' - ' + placeDetails?.maxPrice}</Text>
                   <Text
-                    style={styles.currency}>{COUNTRIES.get(placeDetails?.countryCode)?.currency} / {placeDetails?.priceType}</Text>
+                    style={styles.currency}>{COUNTRIES.get(placeDetails?.countryCode)?.currency} {t('priceType.' + placeDetails?.priceType)}</Text>
                 </View> :
                 <Text style={styles.noPrice}>
                   No price

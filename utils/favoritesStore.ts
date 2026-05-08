@@ -6,6 +6,10 @@ interface FavoritesState {
   favorites: number[]; // Array of placeIds
   toggleFavorite: (placeId: number) => void;
   isFavorite: (placeId: number) => boolean;
+  hydratingFavorite: boolean;
+  setHydratingFavorite: (value: boolean) => void;
+
+
 }
 
 export const useFavoritesStore = create<FavoritesState>()(
@@ -23,10 +27,20 @@ export const useFavoritesStore = create<FavoritesState>()(
       isFavorite: (placeId) => {
         return get().favorites.includes(placeId);
       },
+      setHydratingFavorite: (value) => set({ hydratingFavorite: value }),
+      hydratingFavorite: true,
     }),
     {
       name: 'favorites-storage',
       storage: createJSONStorage(() => AsyncStorage),
+      partialize: (state) => ({
+        favorites: state.favorites,
+      }),
+      onRehydrateStorage: () => (state, error) => {
+        if (!error) {
+          state?.setHydratingFavorite(false);
+        }
+      },
     },
   ),
 );

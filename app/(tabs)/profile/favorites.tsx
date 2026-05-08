@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useApi } from '@/utils/api';
 import { PlaceDetailsDto } from '@/types/open-api';
-import { FlatList, StyleSheet, Text } from 'react-native';
+import { FlatList, Text } from 'react-native';
 import AppView from '@/components/appComponents/AppView';
 import { Stack } from 'expo-router';
 import { Theme } from '@/styles/Theme';
@@ -62,17 +62,10 @@ export default function Favorites() {
           refreshing={isLoading}
           onRefresh={getFavoritesData}
           ListEmptyComponent={EmptyData}
+          contentContainerStyle={{ gap: 10 }}
         />
       </AppView>
     </>
   );
 }
-const styles = StyleSheet.create({
-  emptyDataText: {
-    fontSize: Theme.sizes.md,
-    marginVertical: 'auto',
-    textAlign: 'center',
-    color: Theme.colors.secondary,
-    fontStyle: 'italic',
-  },
-});
+

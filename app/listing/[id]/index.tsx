@@ -1,4 +1,4 @@
-import { ActivityIndicator, Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useCallback, useEffect, useState } from 'react';
 import { Link, Stack, useLocalSearchParams } from 'expo-router';
 import { Categories, PlaceDetailsDto } from '@/types/open-api';
@@ -97,11 +97,10 @@ export default function PlaceId() {
             <View style={styles.infoHeaderContainer}>
               <View style={styles.titleContainer}>
                 <Text style={styles.title}>{placeDetails?.name}</Text>
-                {hydratingFavorite ?
-                  <ActivityIndicator /> :
-                  isFavorite(id) ?
-                    <IconButton onPress={() => toggleFavorite(id)} removeBackground name="heart.fill" /> :
-                    <IconButton onPress={() => toggleFavorite(id)} removeBackground name="heart" />}
+                {!hydratingFavorite &&
+                isFavorite(id) ?
+                  <IconButton onPress={() => toggleFavorite(id)} removeBackground name="heart.fill" /> :
+                  <IconButton onPress={() => toggleFavorite(id)} removeBackground name="heart" />}
               </View>
               <LocationTag location={placeDetails?.city} />
               {placeDetails?.countryCode && placeDetails.minPrice && placeDetails.maxPrice ?

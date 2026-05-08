@@ -4,6 +4,8 @@ import { IconSymbol } from '@/components/symbols/IconSymbol';
 import { COUNTRIES } from '@/constants/countries';
 import { Link } from 'expo-router';
 import CategoryTag from '@/components/CategoryTag';
+import { PlaceDetailsDto } from '@/types/open-api';
+import IconCategory from '@/components/symbols/IconCategory';
 
 type FavoriteItemProps = {
   data: PlaceDetailsDto;
@@ -15,7 +17,14 @@ export default function FavoriteItem({ data }: FavoriteItemProps) {
     <Link href={`/listing/${data.id}`}>
       <View style={styles.container}>
         <View style={styles.imageContainer}>
-          <Image style={styles.image} source={{ uri: data.mainPhoto }} />
+          {data.mainPhoto ?
+            <Image style={styles.image} source={{ uri: data.mainPhoto }} /> :
+            <View style={styles.placeHolderWrapper}>
+              <View style={styles.placeHolderContainer}>
+                <IconCategory category={data.category} size={50} color={Theme.colors.secondary} />
+              </View>
+            </View>
+          }
         </View>
 
         <View style={styles.infoContainer}>
@@ -60,6 +69,17 @@ const styles = StyleSheet.create({
   image: {
     resizeMode: 'cover',
     height: '100%',
+  },
+  placeHolderWrapper: {
+    backgroundColor: Theme.colors.iconBackground,
+    height: '100%',
+  },
+  placeHolderContainer: {
+    opacity: 0.3,
+    height: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   infoContainer: {
     display: 'flex',

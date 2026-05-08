@@ -379,7 +379,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 35,
+    gap: 10,
   },
 
 

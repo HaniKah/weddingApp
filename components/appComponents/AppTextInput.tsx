@@ -169,7 +169,7 @@ const design1: TextInputType = StyleSheet.create({
       borderColor: Theme.colors.primary,
     },
     unit: {
-      color: Theme.colors.gray.S400,
+      color: Theme.colors.placeholder,
     },
     textArea: {
       padding: 10,
@@ -219,7 +219,7 @@ const design2: TextInputType = StyleSheet.create({
     borderColor: Theme.colors.primary,
   },
   unit: {
-    color: Theme.colors.gray.S400,
+    color: Theme.colors.placeholder,
   },
   textArea: {
     padding: 10,

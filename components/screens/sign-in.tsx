@@ -9,12 +9,11 @@ import AppKeyboardAvoidingView from '@/components/appComponents/AppKeyboardAvoid
 import AuthForm from '@/components/auth/AuthForm';
 import { Theme } from '@/styles/Theme';
 import Google from '@/assets/icons/social-media/google.svg';
-import { useAuthStore } from '@/utils/authStore';
 
 
 export default function SignIn() {
   const { signInWithGoogle, signInWithApple } = useAuth();
-  const { resetOnboarding } = useAuthStore();
+  // const { resetOnboarding } = useAuthStore();
   const [showEmailForm, setShowEmailForm] = useState(false);
 
 
@@ -72,9 +71,9 @@ export default function SignIn() {
             buttonType={ButtonType.OUTLINED}>
             Continue with Email
           </AppButton>
-          <AppButton onPress={resetOnboarding}>
-            reset on boarding
-          </AppButton>
+          {/*<AppButton onPress={resetOnboarding}>*/}
+          {/*  reset on boarding*/}
+          {/*</AppButton>*/}
 
         </Animated.View>
       )}

@@ -21,6 +21,8 @@ type userState = {
   userType: UserType
   switchRole: (role: UserType) => void
   user: UserInfo
+  isHydrating: boolean
+  setHydrating: (value: boolean) => void
 }
 
 export const useAuthStore = create(persist<userState>((set) => ({
@@ -33,6 +35,8 @@ export const useAuthStore = create(persist<userState>((set) => ({
     lastName: null,
     email: null,
   },
+  isHydrating: true,
+  setHydrating: (value) => set({ isHydrating: true }),
 
   logIn: (accessToken: string, refreshToken: string, firstName?: string, lastName?: string, email?: string) => set((state) => {
     setItem('accessToken', accessToken);
@@ -89,4 +93,9 @@ export const useAuthStore = create(persist<userState>((set) => ({
   storage: createJSONStorage(() => ({
     setItem, getItem, removeItem: deleteItemAsync,
   })),
+  onRehydrateStorage: () => (state, error) => {
+    if (!error) {
+      state?.setHydrating(false);
+    }
+  },
 }));

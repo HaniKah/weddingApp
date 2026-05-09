@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { Theme } from '@/styles/Theme';
 import { useFormContext } from '@/contexts/form-context';
-import { useEffect, useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { IconButton } from '@/components/symbols/IconButton';
 
 export default function AppTextInput({
@@ -34,7 +34,7 @@ export default function AppTextInput({
 
   placeholder?: string,
   label?: string
-  onChange: (text: string | undefined) => void,
+  onChange: (text: string | undefined) => void | Dispatch<SetStateAction<string | undefined>>
   value: string | undefined,
   keyboardType?: KeyboardTypeOptions,
   required?: boolean,

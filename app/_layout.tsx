@@ -39,13 +39,13 @@ export default function RootLayout() {
         <GestureHandlerRootView>
           <LocationProvider>
             <Stack screenOptions={{ headerShown: false }}>
-              <Stack.Protected guard={hasCompletedOnboarding}>
+              <Stack.Protected guard={true}>
                 <Stack.Screen name="(tabs)" />
               </Stack.Protected>
-              <Stack.Protected guard={hasCompletedOnboarding}>
+              <Stack.Protected guard={true}>
                 <Stack.Screen name="pick-location" />
               </Stack.Protected>
-              <Stack.Protected guard={!hasCompletedOnboarding}>
+              <Stack.Protected guard={false}>
                 <Stack.Screen name="onboarding" />
               </Stack.Protected>
               <Stack.Screen name="+not-found" />

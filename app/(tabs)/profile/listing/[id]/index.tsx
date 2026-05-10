@@ -7,12 +7,14 @@ import { Theme } from '@/styles/Theme';
 import { AppModalRef } from '@/components/appComponents/AppModal';
 import AppButton from '@/components/appComponents/AppButton';
 import { ButtonType } from '@/styles/Button';
-import AppView from '@/components/appComponents/AppView';
 import CategoryTag from '@/components/CategoryTag';
 import { COUNTRIES } from '@/constants/countries';
 import { IconSymbol, IconSymbolName } from '@/components/symbols/IconSymbol';
 import CreatePlaceModal from '@/components/modals/CreatePlaceModal';
 import LineSeparator from '@/components/LineSeparator';
+import AppView from '@/components/appComponents/AppView';
+import AppPressable from '@/components/appComponents/AppPressable';
+import { useTranslation } from 'react-i18next';
 
 const IMAGE_GAP = 8;
 const COLUMN_PER_ROW = 3;
@@ -24,6 +26,7 @@ export default function Place() {
   const { api } = useApi();
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
+  const { t } = useTranslation();
 
   const [placeDetails, setPlaceDetails] = useState<VendorPlaceDetailsDto>();
   const [isLoading, setIsLoading] = useState(false);
@@ -161,74 +164,93 @@ export default function Place() {
 
         }}
       />
-      <AppView withPadding isLoading={isLoading}>
-        <ScrollView refreshControl={<RefreshControl refreshing={isLoading} onRefresh={handleRefresh} />}>
+      <ScrollView style={styles.scrollView}
+                  refreshControl={<RefreshControl refreshing={isLoading} onRefresh={handleRefresh} />}>
 
-          {placeDetails &&
-            <InfoCard label="LISTING DETAILS"
-                      rightElement={
-                        <AppButton onPress={() => editModalRef.current?.open()} fullRound
-                                   buttonSize="SM" buttonType={ButtonType.OUTLINED}
-                                   icon="pencil">
-                          Edit
-                        </AppButton>}>
-              <Text style={styles.placeName}>{placeDetails?.name}</Text>
-              <View style={styles.categoryTag}>
-                <CategoryTag category={placeDetails?.category} />
-              </View>
-              <SingleInfo icon="location"
-                          info={`${placeDetails?.city}, ${COUNTRIES.get(placeDetails?.countryCode)?.countryName}`} />
-              <SingleInfo icon="phone" info={placeDetails?.phoneNumber} />
-              <SingleInfo icon="tag"
-                          info={placeDetails?.minPrice === placeDetails?.maxPrice ? `${placeDetails?.minPrice} ${COUNTRIES.get(placeDetails?.countryCode)?.currency} / ${placeDetails?.priceType} ` : `${placeDetails?.minPrice} - ${placeDetails?.maxPrice} ${COUNTRIES.get(placeDetails?.countryCode)?.currency} / ${placeDetails?.priceType}`} />
-              {placeDetails.description &&
-                <SingleInfo icon="text.justify.left" info={placeDetails?.description} />
-              }
-            </InfoCard>
-          }
-          <InfoCard label="GALLERY">
-            <View style={styles.imageContainer} onLayout={(event) => {
-              const { width } = event.nativeEvent.layout;
-              setContainerWidth(width);
-            }}>
-              {photos.length > 0 ? photos.map((p, i) => {
-                return (
-                  <View style={styles.imageView} key={i}>
-                    <Image source={{ uri: p.uri }} width={itemWidth} height={itemWidth} />
-                  </View>
-                );
-              }) : <Text style={styles.notFoundText}>you haven&#39;t uploaded images yet</Text>}
+        {placeDetails &&
+          <InfoCard label="LISTING DETAILS">
+            <Text style={styles.placeName}>{placeDetails?.name}</Text>
+            <View style={styles.categoryTag}>
+              <CategoryTag category={placeDetails?.category} />
             </View>
-          </InfoCard>
-
-          <View style={styles.dangerZoneContainer}>
-            {placeDetails?.isPublished &&
-              <>
-                <AppButton onPress={confirmUnpublish}
-                           buttonType={ButtonType.PLAIN}
-                           extraStylesTxt={{ color: Theme.colors.secondary }}
-                           iconColor={Theme.colors.secondary}
-                           icon="square.and.arrow.down"
-                           fullWidth>
-                  Unpublish listing
-                </AppButton>
-                <LineSeparator />
-              </>
+            <SingleInfo icon="location"
+                        info={`${placeDetails?.city}, ${COUNTRIES.get(placeDetails?.countryCode)?.countryName}`} />
+            <SingleInfo icon="phone" info={placeDetails?.phoneNumber} />
+            <SingleInfo icon="tag"
+                        info={placeDetails?.minPrice === placeDetails?.maxPrice ? `${placeDetails?.minPrice} ${COUNTRIES.get(placeDetails?.countryCode)?.currency} / ${t('priceType.' + placeDetails?.priceType)} ` : `${placeDetails?.minPrice} - ${placeDetails?.maxPrice} ${COUNTRIES.get(placeDetails?.countryCode)?.currency} / ${t('priceType.' + placeDetails?.priceType)}`} />
+            {placeDetails.description &&
+              <SingleInfo icon="text.justify.left" info={placeDetails?.description} />
             }
-            <AppButton onPress={confirmDelete}
-                       buttonType={ButtonType.PLAIN}
-                       extraStylesTxt={{ color: Theme.colors.secondary }}
-                       iconColor={Theme.colors.secondary}
-                       icon="trash"
-                       fullWidth>
-              Delete listing
-            </AppButton>
+          </InfoCard>
+        }
+        <InfoCard label="GALLERY">
+          <View style={styles.imageContainer} onLayout={(event) => {
+            const { width } = event.nativeEvent.layout;
+            setContainerWidth(width);
+          }}>
+            {photos.length > 0 ? photos.map((p, i) => {
+              return (
+                <View style={styles.imageView} key={i}>
+                  <Image source={{ uri: p.uri }} width={itemWidth} height={itemWidth} />
+                </View>
+              );
+            }) : <Text style={styles.notFoundText}>you haven&#39;t uploaded images yet</Text>}
           </View>
-        </ScrollView>
-      </AppView>
+        </InfoCard>
+
+        <View style={styles.dangerZoneContainer}>
+          {placeDetails?.isPublished &&
+            <>
+              <AppButton onPress={confirmUnpublish}
+                         buttonType={ButtonType.PLAIN}
+                         extraStylesTxt={{ color: Theme.colors.secondary }}
+                         iconColor={Theme.colors.secondary}
+                         icon="square.and.arrow.down"
+                         fullWidth>
+                Unpublish listing
+              </AppButton>
+              <LineSeparator />
+            </>
+          }
+          <AppButton onPress={confirmDelete}
+                     buttonType={ButtonType.PLAIN}
+                     extraStylesTxt={{ color: Theme.colors.secondary }}
+                     iconColor={Theme.colors.secondary}
+                     icon="trash"
+                     fullWidth>
+            Delete listing
+          </AppButton>
+        </View>
+      </ScrollView>
 
       <CreatePlaceModal id={placeDetails?.id} ref={editModalRef} reloadPlaces={() => fetchPlace()} />
     </>
+  );
+}
+
+
+function InfoCard({ children, label, rightElement, destructive }: {
+  children: React.ReactNode,
+  label: string,
+  rightElement?: ReactNode
+  destructive?: boolean,
+}) {
+  return (
+    <AppView withPadding extraStyles={{ paddingVertical: 10 }}>
+      <View style={infoCardStyles.containerHeader}>
+        <Text style={infoCardStyles.containerText}>
+          {label}
+        </Text>
+        {rightElement}
+
+      </View>
+      <AppPressable>
+        <View style={infoCardStyles.cardContainer}>
+          {children}
+        </View>
+      </AppPressable>
+
+    </AppView>
   );
 }
 
@@ -242,6 +264,27 @@ function SingleInfo({ icon, info }: { icon: IconSymbolName, info: string }) {
     </View>
   );
 }
+
+const infoCardStyles = StyleSheet.create({
+  containerHeader: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 5,
+  },
+  containerText: {
+    color: Theme.colors.secondary,
+    fontSize: Theme.sizes.sm,
+  },
+  cardContainer: {
+    backgroundColor: Theme.colors.white,
+    padding: 18,
+    borderRadius: Theme.radius.lg,
+    boxShadow: Theme.effects.boxShadow,
+  },
+});
+
 
 const infoStyle = StyleSheet.create({
   container: {
@@ -259,70 +302,21 @@ const infoStyle = StyleSheet.create({
   infoText: {
     maxWidth: '85%',
   },
-
-
 });
 
-function InfoCard({ children, label, rightElement, destructive }: {
-  children: React.ReactNode,
-  label: string,
-  rightElement?: ReactNode
-  destructive?: boolean,
-}) {
-  return (
-    <View style={styles.container}>
-      <View style={styles.containerHeader}>
-        <Text style={[styles.containerText, destructive && styles.containerTextDestructive]}>
-          {label}
-        </Text>
-        {rightElement}
-
-      </View>
-      <View style={[styles.cardContainer, destructive && styles.cardContainerDestructive]}>
-        {children}
-      </View>
-
-    </View>
-  );
-}
-
 const styles = StyleSheet.create({
-  container: {
-    marginVertical: 10,
+  scrollView: {
+    paddingVertical: 15,
   },
-  containerHeader: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 5,
 
-  },
   categoryTag: {
-    marginTop: 5,
-    marginBottom: 10,
+    marginVertical: 15,
   },
   placeName: {
     fontWeight: 'bold',
     fontSize: Theme.sizes.lg,
   },
-  containerText: {
-    color: Theme.colors.secondary,
-    fontSize: Theme.sizes.sm,
-  },
-  containerTextDestructive: {
-    color: Theme.colors.red.S500,
-  },
-  cardContainer: {
-    backgroundColor: Theme.colors.white,
-    padding: 14,
-    borderRadius: Theme.radius.md,
-    borderWidth: 1,
-    borderColor: Theme.colors.border,
-  },
-  cardContainerDestructive: {
-    borderColor: Theme.colors.red.S500,
-  },
+
 
   headerRightBtn: {
     borderWidth: 1.5,

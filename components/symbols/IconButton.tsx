@@ -27,9 +27,7 @@ export function IconButton(
 
   const MyIcon = () => {
     return (
-      <View style={[styles.container, !removeBackground && {
-        backgroundColor: Theme.colors.iconBackground,
-      }]}>
+      <View style={[styles.container, removeBackground && styles.removeBackground]}>
         <IconSymbol weight={weight} color={color || Theme.colors.primary} name={name} size={size} />
       </View>
     );
@@ -57,5 +55,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 8,
+    backgroundColor: Theme.colors.iconBackground,
+  },
+  removeBackground: {
+    backgroundColor: 'transparent',
+    padding: 0,
   },
 });

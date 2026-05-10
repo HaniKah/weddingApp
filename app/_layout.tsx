@@ -5,13 +5,11 @@ import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useEffect } from 'react';
-import { useAuthStore } from '@/utils/authStore';
 import { AuthProvider } from '@/contexts/auth-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { LocationProvider } from '@/contexts/location-context';
 
 export default function RootLayout() {
-  const { hasCompletedOnboarding, isHydrating } = useAuthStore();
 
   SplashScreen.preventAutoHideAsync();
 
@@ -21,10 +19,10 @@ export default function RootLayout() {
   });
 
   useEffect(() => {
-    if (loaded || error || isHydrating) {
+    if (loaded || error) {
       SplashScreen.hideAsync();
     }
-  }, [loaded, error, isHydrating]);
+  }, [loaded, error]);
 
 
   if (!loaded) {
@@ -39,15 +37,8 @@ export default function RootLayout() {
         <GestureHandlerRootView>
           <LocationProvider>
             <Stack screenOptions={{ headerShown: false }}>
-              <Stack.Protected guard={hasCompletedOnboarding}>
-                <Stack.Screen name="(tabs)" />
-              </Stack.Protected>
-              <Stack.Protected guard={hasCompletedOnboarding}>
-                <Stack.Screen name="pick-location" />
-              </Stack.Protected>
-              <Stack.Protected guard={!hasCompletedOnboarding}>
-                <Stack.Screen name="onboarding" />
-              </Stack.Protected>
+              <Stack.Screen name="(tabs)" />
+              <Stack.Screen name="pick-location" />
               <Stack.Screen name="+not-found" />
             </Stack>
           </LocationProvider>

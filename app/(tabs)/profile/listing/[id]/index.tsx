@@ -105,7 +105,6 @@ export default function Place() {
       setIsLoading(true);
       await api.placesControllerToggleStatus({ placeId: placeId, isPublished: isPublished });
       router.dismissAll();
-      // fetchPlace();
     } catch (err) {
       console.error(err);
     } finally {

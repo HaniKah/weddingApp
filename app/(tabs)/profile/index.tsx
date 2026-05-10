@@ -38,6 +38,16 @@ export default function Index() {
     );
   }
 
+  function logOut() {
+    Alert.alert('Logout', 'Are you sure you want to logout ?', [{
+      text: 'Cancel', style: 'default',
+    }, {
+      text: 'Log out',
+      onPress: () => signOut(),
+    },
+    ]);
+  }
+
 
   return (
     <>
@@ -92,7 +102,7 @@ export default function Index() {
             </View>
 
             <AppButton extraStylesBtn={{ marginTop: 20 }} fullWidth destructive buttonType={ButtonType.PLAIN}
-                       buttonSize="MD" onPress={signOut}>
+                       buttonSize="MD" onPress={logOut}>
               Logout
             </AppButton>
           </AppView>

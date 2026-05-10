@@ -77,8 +77,11 @@ export default function Index() {
         headerBackButtonDisplayMode: 'minimal',
         contentStyle: { backgroundColor: Theme.colors.background },
         title: 'Listings',
-        headerRight: () => <IconButton removeBackground onPress={() => createPlaceModalRef.current?.open()}
-                                       name="plus" />,
+        headerRight: () => <View style={{ padding: 8 }}>
+          <IconButton removeBackground onPress={() => createPlaceModalRef.current?.open()}
+                      name="plus" />
+        </View>
+        ,
       }} />
 
       <AppView>

@@ -2,7 +2,7 @@ import { Alert, Dimensions, Image, RefreshControl, ScrollView, StyleSheet, Text,
 import { Link, Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import { useApi } from '@/utils/api';
 import { ReactNode, useCallback, useEffect, useRef, useState } from 'react';
-import { PhotosDto, VendorPlaceDetailsDto } from '@/types/open-api';
+import { PhotosDto, UpdateStep, VendorPlaceDetailsDto } from '@/types/open-api';
 import { Theme } from '@/styles/Theme';
 import { AppModalRef } from '@/components/appComponents/AppModal';
 import AppButton from '@/components/appComponents/AppButton';
@@ -31,6 +31,7 @@ export default function Place() {
   const [placeDetails, setPlaceDetails] = useState<VendorPlaceDetailsDto>();
   const [isLoading, setIsLoading] = useState(false);
   const [photos, setPhotos] = useState<PhotosDto[]>([]);
+  const [activeStep, setActiveStep] = useState<UpdateStep>();
 
 
   const editModalRef = useRef<AppModalRef>(null);
@@ -149,6 +150,11 @@ export default function Place() {
     fetchPhotos();
   }
 
+  function openModalOnStep(step: UpdateStep) {
+    setActiveStep(step);
+    editModalRef.current?.open();
+  }
+
   return (
     <>
       <Stack.Screen
@@ -168,7 +174,7 @@ export default function Place() {
                   refreshControl={<RefreshControl refreshing={isLoading} onRefresh={handleRefresh} />}>
 
         {placeDetails &&
-          <InfoCard label="LISTING DETAILS">
+          <InfoCard onPress={() => openModalOnStep(UpdateStep.FillPlaceInfo)} label="LISTING DETAILS">
             <Text style={styles.placeName}>{placeDetails?.name}</Text>
             <View style={styles.categoryTag}>
               <CategoryTag category={placeDetails?.category} />
@@ -183,7 +189,7 @@ export default function Place() {
             }
           </InfoCard>
         }
-        <InfoCard label="GALLERY">
+        <InfoCard onPress={() => openModalOnStep(UpdateStep.UploadImages)} label="GALLERY">
           <View style={styles.imageContainer} onLayout={(event) => {
             const { width } = event.nativeEvent.layout;
             setContainerWidth(width);
@@ -223,36 +229,40 @@ export default function Place() {
         </View>
       </ScrollView>
 
-      <CreatePlaceModal id={placeDetails?.id} ref={editModalRef} reloadPlaces={() => fetchPlace()} />
+      <CreatePlaceModal initalStep={activeStep}
+                        id={placeDetails?.id}
+                        ref={editModalRef}
+                        reloadPlaces={() => fetchPlace()} />
     </>
   );
-}
 
+  function InfoCard({ children, label, rightElement, onPress }: {
+    children: React.ReactNode,
+    label: string,
+    rightElement?: ReactNode
+    destructive?: boolean,
+    onPress?: () => void,
+  }) {
+    return (
+      <AppView withPadding extraStyles={{ paddingVertical: 10 }}>
+        <View style={infoCardStyles.containerHeader}>
+          <Text style={infoCardStyles.containerText}>
+            {label}
+          </Text>
+          {rightElement}
 
-function InfoCard({ children, label, rightElement, destructive }: {
-  children: React.ReactNode,
-  label: string,
-  rightElement?: ReactNode
-  destructive?: boolean,
-}) {
-  return (
-    <AppView withPadding extraStyles={{ paddingVertical: 10 }}>
-      <View style={infoCardStyles.containerHeader}>
-        <Text style={infoCardStyles.containerText}>
-          {label}
-        </Text>
-        {rightElement}
-
-      </View>
-      <AppPressable>
-        <View style={infoCardStyles.cardContainer}>
-          {children}
         </View>
-      </AppPressable>
+        <AppPressable onPress={onPress}>
+          <View style={infoCardStyles.cardContainer}>
+            {children}
+          </View>
+        </AppPressable>
 
-    </AppView>
-  );
+      </AppView>
+    );
+  }
 }
+
 
 function SingleInfo({ icon, info }: { icon: IconSymbolName, info: string }) {
   return (

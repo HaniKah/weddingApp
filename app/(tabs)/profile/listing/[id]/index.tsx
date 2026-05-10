@@ -1,4 +1,4 @@
-import { Alert, Dimensions, Image, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, Image, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Link, Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import { useApi } from '@/utils/api';
 import { ReactNode, useCallback, useEffect, useRef, useState } from 'react';
@@ -16,11 +16,6 @@ import AppView from '@/components/appComponents/AppView';
 import AppPressable from '@/components/appComponents/AppPressable';
 import { useTranslation } from 'react-i18next';
 
-const IMAGE_GAP = 8;
-const COLUMN_PER_ROW = 3;
-const IMAGE_SIZE =
-  (Dimensions.get('window').width - IMAGE_GAP * (COLUMN_PER_ROW - 1) - Theme.global.appPadding * 2) /
-  COLUMN_PER_ROW;
 
 export default function Place() {
   const { api } = useApi();
@@ -31,7 +26,7 @@ export default function Place() {
   const [placeDetails, setPlaceDetails] = useState<VendorPlaceDetailsDto>();
   const [isLoading, setIsLoading] = useState(false);
   const [photos, setPhotos] = useState<PhotosDto[]>([]);
-  const [activeStep, setActiveStep] = useState<UpdateStep>();
+  const [activeStep, setActiveStep] = useState<UpdateStep>(UpdateStep.FillPlaceInfo);
 
 
   const editModalRef = useRef<AppModalRef>(null);

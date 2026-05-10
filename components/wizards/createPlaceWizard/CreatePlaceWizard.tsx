@@ -17,7 +17,7 @@ export type ImageUploadModel = {
 export default function CreatePlaceWizard({ id, onFinish, initialStep }: {
   id?: number,
   onFinish: () => void
-  initialStep?: UpdateStep
+  initialStep: UpdateStep
 
 }) {
   const { api } = useApi();

@@ -20,32 +20,21 @@ interface WizardContextType<T> {
 }
 
 export function Wizard<T>({ children, initialStep }: {
-  initialStep?: T,
+  initialStep: T,
   children: React.ReactNode,
 }) {
 
   const [stepsList, setStepsList] = useState<T[]>([]);
 
-  //if you dont want to start from 0 always , then add ActiveStep to props , const [currentStep, setCurrentStep] = useState<T>(activeStep || stepsList[0])
   const [currentStep, setCurrentStep] = useState<T>(initialStep || stepsList[0]);
   const [progress, setProgress] = useState<number>(0);
 
   const registerStep = (step: T) => setStepsList((prev: T[]) => ([...prev, step]));
-  
+
   useEffect(() => {
     const percentage = Number(((stepsList.indexOf(currentStep) + 1) / stepsList.length).toFixed(2));
     setProgress(percentage);
   }, [currentStep]);
-
-
-  // useImperativeHandle(ref, () => ({
-  //     nextStep() {
-  //         onNext()
-  //     },
-  //     previousStep() {
-  //         onPrevious()
-  //     }
-  // }));
 
 
   function nextStep() {

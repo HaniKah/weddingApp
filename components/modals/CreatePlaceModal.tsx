@@ -8,7 +8,7 @@ export default function CreatePlaceModal({ id, ref, reloadPlaces, initalStep }: 
   id?: number
   ref: RefObject<AppModalRef | null>
   reloadPlaces: () => void
-  initalStep?: UpdateStep
+  initalStep: UpdateStep
 
 }) {
 

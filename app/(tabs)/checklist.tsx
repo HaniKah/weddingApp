@@ -6,6 +6,7 @@ import AppView from '@/components/appComponents/AppView';
 import { Stack } from 'expo-router';
 import AppSafeAreaView from '@/components/appComponents/AppSafeAreaView';
 import TodoItem from '@/components/items/TodoItem';
+import AppKeyboardAvoidingView from '@/components/appComponents/AppKeyboardAvoidingView';
 
 
 export interface GroupedTodos {
@@ -28,20 +29,22 @@ export default function Checklist() {
     <>
       <Stack.Screen options={{ headerShown: false }} />
       <AppSafeAreaView>
-        <AppView isLoading={todosHydrating} extraStyles={{ backgroundColor: Theme.colors.background }} withPadding>
-          <Text style={styles.header}>Wedding Checklist</Text>
-          <FlatList
-            refreshing={todosHydrating}
-            onRefresh={rehydrate}
-            data={groupedTodos}
-            keyExtractor={(item) => item.timeframe}
-            renderItem={({ item }) => (
-              <TodoItem item={item} />
-            )}
-            contentContainerStyle={styles.listContent}
-            showsVerticalScrollIndicator={false}
-          />
-        </AppView>
+        <AppKeyboardAvoidingView>
+          <AppView isLoading={todosHydrating} extraStyles={{ backgroundColor: Theme.colors.background }} withPadding>
+            <Text style={styles.header}>Wedding Checklist</Text>
+            <FlatList
+              refreshing={todosHydrating}
+              onRefresh={rehydrate}
+              data={groupedTodos}
+              keyExtractor={(item) => item.timeframe}
+              renderItem={({ item }) => (
+                <TodoItem item={item} />
+              )}
+              contentContainerStyle={styles.listContent}
+              showsVerticalScrollIndicator={false}
+            />
+          </AppView>
+        </AppKeyboardAvoidingView>
       </AppSafeAreaView>
     </>
   );

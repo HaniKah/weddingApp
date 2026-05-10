@@ -8,6 +8,7 @@ import { IconButton } from '@/components/symbols/IconButton';
 import AppTextInput from '@/components/appComponents/AppTextInput';
 import { useTranslation } from 'react-i18next';
 import { GroupedTodos } from '@/app/(tabs)/checklist';
+import Animated, { FadeInUp, FadeOutUp } from 'react-native-reanimated';
 
 export default function TodoItem({ item }: { item: GroupedTodos }) {
 
@@ -92,6 +93,7 @@ export default function TodoItem({ item }: { item: GroupedTodos }) {
             </Text>
           </View>
           <IconButton
+            removeBackground
             name="plus"
             size={18}
             onPress={() => {
@@ -107,7 +109,9 @@ export default function TodoItem({ item }: { item: GroupedTodos }) {
       </View>
 
       {addingToTimeFrame === item.timeframe && (
-        <View style={styles.inlineAddContainer}>
+        <Animated.View entering={FadeInUp.duration(300)}
+                       exiting={FadeOutUp.duration(150)}
+                       style={styles.inlineAddContainer}>
           <AppTextInput
             design={2}
             name="todoTitle"
@@ -126,7 +130,7 @@ export default function TodoItem({ item }: { item: GroupedTodos }) {
             color={Theme.colors.green.S700}
             onPress={() => handleAddTodo(item.timeframe as Timeframe)}
           />
-        </View>
+        </Animated.View>
       )}
 
       {item.data.length > 0 ? (
@@ -151,9 +155,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: Theme.colors.iconBackground,
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: Theme.radius.sm,
+    paddingHorizontal: 18,
+    paddingVertical: 14,
+    borderRadius: Theme.radius.md,
     marginBottom: 10,
   },
   sectionTitle: {

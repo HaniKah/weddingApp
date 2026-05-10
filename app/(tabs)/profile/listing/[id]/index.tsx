@@ -104,13 +104,8 @@ export default function Place() {
     try {
       setIsLoading(true);
       await api.placesControllerToggleStatus({ placeId: placeId, isPublished: isPublished });
-
-      if (!isPublished) {
-        router.replace({ pathname: '/(tabs)/profile/listing' });
-      } else {
-        fetchPlace();
-      }
-
+      router.dismissAll();
+      // fetchPlace();
     } catch (err) {
       console.error(err);
     } finally {

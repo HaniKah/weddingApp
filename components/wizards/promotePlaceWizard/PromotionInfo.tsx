@@ -1,11 +1,9 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Theme } from '@/styles/Theme';
-import Horn from '@/assets/icons/horn.svg';
 import AppView from '@/components/appComponents/AppView';
 import AppDropDown from '@/components/appComponents/AppDropDown';
-import { PickerItem } from '@/components/appComponents/AppPickerDepr';
-import AppPicker from '@/components/appComponents/AppPicker';
+import AppPicker, { PickerItem } from '@/components/appComponents/AppPicker';
 import { AppForm, FormRef } from '@/contexts/form-context';
 import AppFieldSet from '@/components/appComponents/AppFieldSet';
 import AppButton from '@/components/appComponents/AppButton';
@@ -100,7 +98,6 @@ export function PromotionInfo({ placeId, onFinish }: { placeId: number | undefin
   return (
     <>
       <ScrollView style={styles.scrollContainer}>
-        <Horn width={100} height={100} style={styles.image} />
         <Text style={styles.title}>Promotions</Text>
         <AppView extraStyles={styles.AppViewContainer} withPadding>
           <View>

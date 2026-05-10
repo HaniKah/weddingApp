@@ -335,12 +335,7 @@ const styles = StyleSheet.create({
     padding: 15,
     marginBottom: 100,
   },
-  title: {
-    fontSize: Theme.sizes.xl,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    width: '100%',
-  },
+
   subtitle: {
     fontSize: Theme.sizes.xl,
     fontWeight: 'bold',

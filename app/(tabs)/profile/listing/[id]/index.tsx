@@ -1,7 +1,7 @@
-import { Alert, Image, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Link, Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import { useApi } from '@/utils/api';
-import { ReactNode, useCallback, useEffect, useRef, useState } from 'react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 import { PhotosDto, UpdateStep, VendorPlaceDetailsDto } from '@/types/open-api';
 import { Theme } from '@/styles/Theme';
 import { AppModalRef } from '@/components/appComponents/AppModal';
@@ -127,19 +127,6 @@ export default function Place() {
     (containerWidth - spacing * (numColumns - 1)) / numColumns;
 
 
-  const HeaderRightElement = useCallback(() => {
-    return placeDetails?.isPublished ?
-      <Link asChild push href={`/listing/${placeDetails?.id}`}>
-        <AppButton extraStylesBtn={{ paddingHorizontal: 10 }}
-                   buttonType={ButtonType.PLAIN}>Preview</AppButton>
-
-      </Link> :
-      <AppButton extraStylesBtn={{ paddingHorizontal: 10 }} confirmative buttonType={ButtonType.PLAIN}
-                 onPress={() => handleTogglePublish(placeDetails?.id, true)}>
-        Publish
-      </AppButton>;
-  }, [placeDetails?.isPublished]);
-
   function handleRefresh() {
     fetchPlace();
     fetchPhotos();
@@ -159,14 +146,34 @@ export default function Place() {
           headerBackButtonDisplayMode: 'minimal',
           contentStyle: { backgroundColor: Theme.colors.background },
           headerStyle: { backgroundColor: Theme.colors.background },
-          headerRight: () => (
-            <HeaderRightElement />
-          ),
-
         }}
       />
-      <ScrollView style={styles.scrollView}
-                  refreshControl={<RefreshControl refreshing={isLoading} onRefresh={handleRefresh} />}>
+      <ScrollView>
+
+        <AppView extraStyles={styles.actionMenu} withPadding>
+
+
+          {!placeDetails?.isPublished ?
+            <View>
+              <AppButton onPress={() => handleTogglePublish(placeDetails?.id, true)}
+                         extraStylesBtn={styles.actionButtons}
+                         icon="square.and.arrow.up"
+                         buttonType={ButtonType.PLAIN}
+                         fullRound
+                         confirmative>
+                Publish
+              </AppButton>
+            </View> :
+            <Link asChild push href={`/listing/${placeDetails?.id}`}>
+              <AppButton
+                extraStylesBtn={styles.actionButtons}
+                icon="eye"
+                fullRound
+                buttonType={ButtonType.PLAIN}>Preview</AppButton>
+            </Link>
+          }
+        </AppView>
+
 
         {placeDetails &&
           <InfoCard onPress={() => openModalOnStep(UpdateStep.FillPlaceInfo)} label="LISTING DETAILS">
@@ -178,7 +185,7 @@ export default function Place() {
                         info={`${placeDetails?.city}, ${COUNTRIES.get(placeDetails?.countryCode)?.countryName}`} />
             <SingleInfo icon="phone" info={placeDetails?.phoneNumber} />
             <SingleInfo icon="tag"
-                        info={placeDetails?.minPrice === placeDetails?.maxPrice ? `${placeDetails?.minPrice} ${COUNTRIES.get(placeDetails?.countryCode)?.currency} / ${t('priceType.' + placeDetails?.priceType)} ` : `${placeDetails?.minPrice} - ${placeDetails?.maxPrice} ${COUNTRIES.get(placeDetails?.countryCode)?.currency} / ${t('priceType.' + placeDetails?.priceType)}`} />
+                        info={!placeDetails.minPrice ? 'No Price' : placeDetails?.minPrice === placeDetails?.maxPrice ? `${placeDetails?.minPrice} ${COUNTRIES.get(placeDetails?.countryCode)?.currency} / ${t('priceType.' + placeDetails?.priceType)} ` : `${placeDetails?.minPrice} - ${placeDetails?.maxPrice} ${COUNTRIES.get(placeDetails?.countryCode)?.currency} / ${t('priceType.' + placeDetails?.priceType)}`} />
             {placeDetails.description &&
               <SingleInfo icon="text.justify.left" info={placeDetails?.description} />
             }
@@ -227,7 +234,7 @@ export default function Place() {
       <CreatePlaceModal initalStep={activeStep}
                         id={placeDetails?.id}
                         ref={editModalRef}
-                        reloadPlaces={() => fetchPlace()} />
+                        reloadPlaces={handleRefresh} />
     </>
   );
 
@@ -310,10 +317,19 @@ const infoStyle = StyleSheet.create({
 });
 
 const styles = StyleSheet.create({
-  scrollView: {
-    paddingVertical: 15,
+  actionMenu: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 10,
   },
-
+  actionButtons: {
+    backgroundColor: 'white',
+    paddingVertical: 10,
+    paddingHorizontal: 14,
+    boxShadow: Theme.effects.boxShadow,
+  },
   categoryTag: {
     marginVertical: 15,
   },
@@ -346,7 +362,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   dangerZoneContainer: {
-    marginTop: 30,
+    marginVertical: 30,
     gap: 10,
   },
   notFoundText: {

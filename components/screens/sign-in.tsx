@@ -25,15 +25,15 @@ export default function SignIn() {
 
 
     <View style={styles.content}>
-      {!showEmailForm && (
-        <View
-          style={styles.welcomeContainer}
-        >
-          <Text style={styles.appTitle}>Welcome Back</Text>
-          <Text style={styles.subtitle}>Sign in in order to create listing, manage favorites and get more
-            features</Text>
-        </View>
-      )}
+
+      <View
+        style={[styles.welcomeContainer, !showEmailForm && { flex: 1 }]}
+      >
+        <Text style={styles.appTitle}>Ghamrah</Text>
+        <Text style={styles.subtitle}>Sign in in order to create listing, manage favorites and get more
+          features</Text>
+      </View>
+
 
       {!showEmailForm && (
         <Animated.View
@@ -110,18 +110,19 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   welcomeContainer: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
     marginTop: 80,
   },
   appTitle: {
-    fontSize: Theme.sizes.xxl,
+    fontSize: Theme.sizes.xxxxl,
     color: Theme.colors.primary,
-    fontWeight: 'bold',
+    fontWeight: 'black',
     textAlign: 'center',
     marginBottom: 14,
+    fontFamily: Theme.typographies.sendFlowers,
+    paddingHorizontal: 20,
   },
   subtitle: {
     fontSize: Theme.sizes.md,

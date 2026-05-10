@@ -65,6 +65,7 @@ export const Theme = {
   typographies: {
     meaCulpa: 'MeaCulpa-Regular',
     aboreto: 'Aboreto-Regular',
+    sendFlowers: 'SendFlowers-Regular',
   },
   sizes: {
     xxs: 10,

@@ -16,6 +16,7 @@ export default function RootLayout() {
   const [loaded, error] = useFonts({
     'MeaCulpa-Regular': require('../assets/fonts/MeaCulpa-Regular.ttf'),
     'Aboreto-Regular': require('../assets/fonts/Aboreto-Regular.ttf'),
+    'SendFlowers-Regular': require('../assets/fonts/SendFlowers-Regular.ttf'),
   });
 
   useEffect(() => {

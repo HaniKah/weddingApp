@@ -119,6 +119,18 @@ export interface PlaceDetailsDto {
   city: string;
 }
 
+export interface FavoritePlaceDto {
+  priceType?: PriceType;
+  country?: CountryCode;
+  category?: Categories;
+  id: number;
+  isFound: boolean;
+  name?: string;
+  thumbnail?: string;
+  minPrice?: string;
+  maxPrice?: string;
+}
+
 export interface PhotosDto {
   id: number;
   uri: string;
@@ -313,25 +325,6 @@ export interface VendorPlaceViewModel {
 export interface PublishPlaceRequest {
   placeId: number;
   isPublished: boolean;
-}
-
-export interface FavoritePlacesRequest {
-  favoriteIds: number[];
-}
-
-export interface FavoritePlaceDto {
-  priceType: PriceType;
-  country: CountryCode;
-  category: Categories;
-  id: number;
-  name: string;
-  thumbnail: string;
-  minPrice: string;
-  maxPrice: string;
-}
-
-export interface FavoritesViewModel {
-  result: FavoritePlaceDto[];
 }
 
 export interface SubscriberAttributesDto {
@@ -686,6 +679,27 @@ export class Api<
     ) =>
       this.request<PlaceDetailsDto, any>({
         path: `/api/planner/getPlaceById`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Planner
+     * @name PlannerControllerGetFavorites
+     * @request GET:/api/planner/getFavorites
+     */
+    plannerControllerGetFavorites: (
+      query: {
+        id: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<FavoritePlaceDto, any>({
+        path: `/api/planner/getFavorites`,
         method: "GET",
         query: query,
         format: "json",
@@ -1098,26 +1112,6 @@ export class Api<
         path: `/api/places/getPlaceDetails`,
         method: "GET",
         query: query,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Places
-     * @name PlacesControllerGetFavorites
-     * @request GET:/api/places/getFavorites
-     */
-    placesControllerGetFavorites: (
-      data: FavoritePlacesRequest,
-      params: RequestParams = {},
-    ) =>
-      this.request<FavoritesViewModel, any>({
-        path: `/api/places/getFavorites`,
-        method: "GET",
-        body: data,
-        type: ContentType.Json,
         format: "json",
         ...params,
       }),

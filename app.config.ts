@@ -119,6 +119,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         'expo-location',
         {
           'locationAlwaysAndWhenInUsePermission': 'Share your location to see relevant local data and help nearby customers discover you',
+          'locationWhenInUsePermission': 'Share your location to see relevant local data and help nearby customers discover you',
         },
       ],
       [

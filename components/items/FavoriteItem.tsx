@@ -3,24 +3,22 @@ import { Theme } from '@/styles/Theme';
 import { IconSymbol } from '@/components/symbols/IconSymbol';
 import { Link } from 'expo-router';
 import CategoryTag from '@/components/CategoryTag';
-import { PlaceDetailsDto } from '@/types/open-api';
+import { FavoritePlaceDto } from '@/types/open-api';
 import IconCategory from '@/components/symbols/IconCategory';
-import { useTranslation } from 'react-i18next';
 import PriceTag from '@/components/PriceTag';
 
 type FavoriteItemProps = {
-  data: PlaceDetailsDto;
+  data: FavoritePlaceDto;
 }
 
 export default function FavoriteItem({ data }: FavoriteItemProps) {
-  const { t } = useTranslation();
 
   return (
     <Link href={`/listing/${data.id}`}>
       <View style={styles.container}>
         <View style={styles.imageContainer}>
-          {data.mainPhoto ?
-            <Image style={styles.image} source={{ uri: data.mainPhoto }} /> :
+          {data.thumbnail ?
+            <Image style={styles.image} source={{ uri: data.thumbnail }} /> :
             <View style={styles.placeHolderWrapper}>
               <View style={styles.placeHolderContainer}>
                 <IconCategory category={data.category} size={50} color={Theme.colors.secondary} />
@@ -33,7 +31,7 @@ export default function FavoriteItem({ data }: FavoriteItemProps) {
           <Text style={styles.placeName}>{data.name}</Text>
           <CategoryTag category={data.category} />
           <PriceTag minPrice={data.minPrice} maxPrice={data.maxPrice} priceType={data.priceType}
-                    countryCode={data.countryCode} />
+                    countryCode={data.country} />
         </View>
         <IconSymbol name="chevron.right" size={20} color={Theme.colors.border} />
       </View>

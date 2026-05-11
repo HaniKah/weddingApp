@@ -194,7 +194,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const exchangeToken = async () => {
       if (responseIOS?.type === 'success') {
-        console.log(responseIOS);
+     
         await exchangeWithToken(responseIOS.params.exchangeToken);
       }
       if (responseIOS?.type === 'error') {

@@ -20,6 +20,8 @@ export default function FavoriteItem({data}: FavoriteItemProps) {
                 <View style={styles.imageContainer}>
                     {data.thumbnail ?
                         <Image style={styles.image} source={{uri: data.thumbnail}} transition={200}
+                               placeholder={data.thumbnailBlurhash}
+                               cachePolicy="memory-disk"
                                contentFit="cover"/> :
                         <View style={styles.placeHolderWrapper}>
                             <View style={styles.placeHolderContainer}>

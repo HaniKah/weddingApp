@@ -36,6 +36,8 @@ export default function Gallery({placeId}: { placeId: number }) {
 
                 <Pressable onPress={() => viewImage(index)}>
                     <Image style={{height: IMAGE_WIDTH, width: IMAGE_WIDTH}} source={{uri: item.uri}} transition={200}
+                           placeholder={item.blurhash}
+                           cachePolicy="disk"
                            contentFit="cover"/>
                 </Pressable>
             </>

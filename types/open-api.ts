@@ -88,6 +88,7 @@ export interface PlacesDto {
   name?: string | null;
   formattedAddress?: string | null;
   mainPhoto: string;
+  mainPhotoBlurhash?: string;
   minPrice: string;
   maxPrice: string;
   isPromoted: boolean;
@@ -113,6 +114,7 @@ export interface PlaceDetailsDto {
   instagram?: string;
   phoneNumber: string;
   mainPhoto: string;
+  mainPhotoBlurhash?: string;
   maxPrice: string;
   minPrice: string;
   description: string;
@@ -127,6 +129,7 @@ export interface FavoritePlaceDto {
   isFound: boolean;
   name?: string;
   thumbnail?: string;
+  thumbnailBlurhash?: string;
   minPrice?: string;
   maxPrice?: string;
 }
@@ -135,6 +138,7 @@ export interface PhotosDto {
   id: number;
   uri: string;
   ratio: number;
+  blurhash: string;
 }
 
 export interface PhotosViewModel {
@@ -274,7 +278,6 @@ export interface VendorPlaceDetailsDto {
   website?: string;
   isPublished: boolean;
   description?: string;
-  mainPhoto: string;
   minPrice: string;
   maxPrice: string;
   city: string;
@@ -304,6 +307,7 @@ export interface VendorPlaceDto {
   name: string;
   streetName?: string;
   thumbnail: string;
+  thumbnailBlurhash?: string;
   isPublished: boolean;
   isPromoted: boolean;
   minPrice: string;

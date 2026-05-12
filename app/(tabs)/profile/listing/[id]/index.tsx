@@ -195,6 +195,8 @@ export default function Place() {
                             return (
                                 <View style={styles.imageView} key={i}>
                                     <Image source={{uri: p.uri}} style={{width: itemWidth, height: itemWidth}}
+                                           placeholder={p.blurhash}
+                                           cachePolicy="disk"
                                            transition={200}/>
                                 </View>
                             );

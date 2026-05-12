@@ -80,6 +80,8 @@ export default function PlaceId() {
                         {placeDetails?.mainPhoto ?
                             <Pressable style={styles.imageContainer}>
                                 <Image style={styles.image} source={{uri: placeDetails.mainPhoto}} transition={200}
+                                       placeholder={placeDetails.mainPhotoBlurhash}
+                                       cachePolicy="memory-disk"
                                        contentFit="cover"/>
                             </Pressable> :
                             <View style={styles.imagePlaceHolder}>

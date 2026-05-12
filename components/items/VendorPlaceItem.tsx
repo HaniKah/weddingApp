@@ -25,6 +25,8 @@ export default function VendorPlaceItem({data, setTrigger}: VendorPlaceItemProps
                         <View style={[styles.imageContainer]}>
                             <AppIf value={data.thumbnail}>
                                 <Image style={styles.image} source={{uri: data.thumbnail}} transition={200}
+                                       placeholder={data.thumbnailBlurhash}
+                                       cachePolicy="memory-disk"
                                        contentFit="cover"/>
                             </AppIf>
                             <AppIf value={!data.thumbnail}>

@@ -32,7 +32,10 @@ export default function PlaceItem({item}: { item: PlacesDto }) {
                         }
                         {item.mainPhoto ?
                             <Image style={styles.image}
-                                   source={{uri: item.mainPhoto}} transition={200} contentFit="cover"/>
+                                   source={{uri: item.mainPhoto}} transition={200}
+                                   placeholder={item.mainPhotoBlurhash}
+                                   cachePolicy="memory-disk"
+                                   contentFit="cover"/>
                             :
                             <View style={styles.imagePlaceHolder}>
                                 <View style={styles.iconWrapper}>

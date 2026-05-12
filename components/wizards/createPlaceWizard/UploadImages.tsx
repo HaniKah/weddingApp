@@ -153,6 +153,8 @@ export default function UploadImages({onFinish, placeId}: {
                         <IconButton onPress={() => deleteImage(item.id)} size={10} name="xmark" color="black"/>
                     </View>
                     <Image source={{uri: item.uri}} style={[styles.image, {width: IMAGE_SIZE, height: IMAGE_SIZE}]}
+                           placeholder={item.blurhash}
+                           cachePolicy="memory-disk"
                            transition={200} contentFit="cover"/>
                 </View>
             </>

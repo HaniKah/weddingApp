@@ -43,7 +43,7 @@ export default function RootLayout() {
               <Stack.Screen name="+not-found" />
             </Stack>
           </LocationProvider>
-          <StatusBar style="auto" />
+          <StatusBar style="dark" />
         </GestureHandlerRootView>
       </SafeAreaProvider>
     </AuthProvider>

@@ -217,6 +217,7 @@ export default function FillPlaceInfo({ data, setData }: {
                                 design={2}
                                 label="Phone number"
                                 placeholder="e.g. +962xxxxxx"
+                                keyboardType="phone-pad"
                                 onChange={(s) => setPhoneNumber(s)}
                                 value={phoneNumber}
                   />

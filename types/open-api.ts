@@ -718,11 +718,12 @@ export class Api<
      * @request POST:/api/photos/upload
      */
     photosControllerUploadFile: (data: any, params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<PhotosDto, any>({
         path: `/api/photos/upload`,
         method: "POST",
         body: data,
         type: ContentType.FormData,
+        format: "json",
         ...params,
       }),
 

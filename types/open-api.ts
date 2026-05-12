@@ -746,6 +746,21 @@ export class Api<
      * No description
      *
      * @tags Photos
+     * @name PhotosControllerGetPhoto
+     * @request GET:/api/photos/getPhoto/{id}
+     */
+    photosControllerGetPhoto: (id: number, params: RequestParams = {}) =>
+      this.request<PhotosDto, any>({
+        path: `/api/photos/getPhoto/${id}`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Photos
      * @name PhotosControllerDeletePhoto
      * @request POST:/api/photos/delete
      */

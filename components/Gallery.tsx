@@ -9,7 +9,7 @@ import AppImageViewer from "@/components/appComponents/AppImageViewer";
 export default function Gallery({placeId}: { placeId: number }) {
     const API = useApi().api
     const [images, setImages] = useState<PhotosDto[]>([])
-    const [selectedImage, setSelectedImage] = useState<number>(0)
+    const [selectedImage, setSelectedImage] = useState<number>()
     const [imageView, setImageView] = useState(false)
     const IMAGE_WIDTH = Dimensions.get("window").width / 3;
 
@@ -30,11 +30,11 @@ export default function Gallery({placeId}: { placeId: number }) {
         setSelectedImage(index)
     }
 
-    function ImageThumbnail({item, index}: { item: PhotosDto, index: number }) {
+    function ImageThumbnail({item}: { item: PhotosDto }) {
         return (
             <>
 
-                <Pressable onPress={() => viewImage(index)}>
+                <Pressable onPress={() => viewImage(item.id)}>
                     <Image style={{height: IMAGE_WIDTH, width: IMAGE_WIDTH}} source={{uri: item.uri}} transition={200}
                            placeholder={item.blurhash}
                            cachePolicy="disk"
@@ -53,12 +53,15 @@ export default function Gallery({placeId}: { placeId: number }) {
                       getItemLayout={(data, index) => (
                           {length: IMAGE_WIDTH, offset: IMAGE_WIDTH * index, index}
                       )}
-                      renderItem={({item, index}) => (<ImageThumbnail item={item} index={index}/>)}/>
+                      renderItem={({item, index}) => (<ImageThumbnail item={item}/>)}/>
 
-            <AppImageViewer activeIndex={selectedImage}
-                            images={images}
-                            isVisible={imageView}
-                            onClose={() => setImageView(false)}/>
+            {selectedImage &&
+                <AppImageViewer activeId={selectedImage}
+                                ids={images.map(id => id.id)}
+                                isVisible={imageView}
+                                onClose={() => setImageView(false)}/>
+            }
+
         </>
     )
 }

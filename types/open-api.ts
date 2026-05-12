@@ -732,11 +732,11 @@ export class Api<
      *
      * @tags Photos
      * @name PhotosControllerGetPhotos
-     * @request GET:/api/photos/{id}
+     * @request GET:/api/photos/getAll/{id}
      */
     photosControllerGetPhotos: (id: number, params: RequestParams = {}) =>
       this.request<PhotosViewModel, any>({
-        path: `/api/photos/${id}`,
+        path: `/api/photos/getAll/${id}`,
         method: "GET",
         format: "json",
         ...params,

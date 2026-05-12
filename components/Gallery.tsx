@@ -1,7 +1,8 @@
 import {useApi} from "@/utils/api";
 import {PhotosDto} from "@/types/open-api";
 import {useEffect, useState} from "react";
-import {Dimensions, FlatList, Image, Pressable} from "react-native";
+import {Dimensions, FlatList, Pressable} from "react-native";
+import {Image} from "expo-image";
 import AppImageViewer from "@/components/appComponents/AppImageViewer";
 
 
@@ -34,7 +35,8 @@ export default function Gallery({placeId}: { placeId: number }) {
             <>
 
                 <Pressable onPress={() => viewImage(index)}>
-                    <Image height={IMAGE_WIDTH} width={IMAGE_WIDTH} source={{uri: item.uri}}/>
+                    <Image style={{height: IMAGE_WIDTH, width: IMAGE_WIDTH}} source={{uri: item.uri}} transition={200}
+                           contentFit="cover"/>
                 </Pressable>
             </>
         )

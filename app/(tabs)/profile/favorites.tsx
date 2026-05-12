@@ -16,7 +16,7 @@ export default function Favorites() {
   const [notFoundFavorites, setNotFoundFavorites] = useState<number[]>([]);
   const [isLoading, setLoading] = useState(false);
   const { api } = useApi();
-  const { favorites, hydratingFavorite, toggleFavorite } = useFavoritesStore();
+  const { favorites, toggleFavorite } = useFavoritesStore();
 
   const getFavoritesData = useCallback(async () => {
     if (favorites.length === 0) {
@@ -79,7 +79,7 @@ export default function Favorites() {
           headerTitle: 'Favorites',
         }}
       />
-      <AppView withPadding isLoading={hydratingFavorite}>
+      <AppView withPadding>
         <FlatList
           data={favoritePlaces}
           renderItem={({ item }) => <FavoriteItem data={item} />}

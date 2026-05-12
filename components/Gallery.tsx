@@ -1,6 +1,6 @@
 import {useApi} from "@/utils/api";
 import {PhotosDto} from "@/types/open-api";
-import {useEffect, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {Dimensions, FlatList, Pressable} from "react-native";
 import {Image} from "expo-image";
 import AppImageViewer from "@/components/appComponents/AppImageViewer";
@@ -44,7 +44,7 @@ export default function Gallery({placeId}: { placeId: number }) {
         )
     }
 
-
+    const imageIds = useMemo(() => images.map(image => image.id), [images]);
     return (
         <>
             <FlatList numColumns={3}
@@ -57,7 +57,7 @@ export default function Gallery({placeId}: { placeId: number }) {
 
             {selectedImage &&
                 <AppImageViewer activeId={selectedImage}
-                                ids={images.map(id => id.id)}
+                                ids={imageIds}
                                 isVisible={imageView}
                                 onClose={() => setImageView(false)}/>
             }

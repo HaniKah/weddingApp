@@ -45,7 +45,7 @@ export default function AddDescription({data, setData}: {
                 <ScrollView>
                     <Text style={styles.title}>Add Description</Text>
                     <AppTextInput name="description"
-                                  value={data?.description}
+                                  value={description}
                                   onChange={(text) => setDescription(text)}
                                   design={1}
                                   textArea

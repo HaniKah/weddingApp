@@ -1,4 +1,4 @@
-import {Alert, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {Alert, RefreshControl, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {Image} from 'expo-image';
 import {Link, Stack, useLocalSearchParams, useRouter} from 'expo-router';
 import {useApi} from '@/utils/api';
@@ -26,6 +26,7 @@ export default function Place() {
 
     const [placeDetails, setPlaceDetails] = useState<VendorPlaceDetailsDto>();
     const [isLoading, setIsLoading] = useState(false);
+    const [isRefreshing, setIsRefreshing] = useState(false);
     const [photos, setPhotos] = useState<PhotosDto[]>([]);
     const [activeStep, setActiveStep] = useState<UpdateStep>(UpdateStep.FillPlaceInfo);
 
@@ -33,31 +34,29 @@ export default function Place() {
     const editModalRef = useRef<AppModalRef>(null);
 
     useEffect(() => {
+        setIsLoading(true);
         fetchPlace();
         fetchPhotos();
+        setIsLoading(false);
     }, [id]);
 
     async function fetchPlace() {
         try {
-            setIsLoading(true);
             const data = await api.placesControllerGetPlaceDetails({id: Number(id)});
             setPlaceDetails(data.data);
         } catch (err) {
             console.error(err);
         } finally {
-            setIsLoading(false);
         }
     }
 
     async function fetchPhotos() {
         try {
-            setIsLoading(true);
             const res = await api.photosControllerGetPhotos(Number(id));
             setPhotos(res.data.result);
         } catch (err) {
             console.error(err);
         } finally {
-            setIsLoading(false);
         }
     }
 
@@ -123,8 +122,10 @@ export default function Place() {
 
 
     function handleRefresh() {
+        setIsRefreshing(true);
         fetchPlace();
         fetchPhotos();
+        setIsRefreshing(false)
     }
 
     function openModalOnStep(step: UpdateStep) {
@@ -143,7 +144,7 @@ export default function Place() {
                     headerStyle: {backgroundColor: Theme.colors.background},
                 }}
             />
-            <ScrollView>
+            <ScrollView refreshControl={<RefreshControl onRefresh={handleRefresh} refreshing={isRefreshing}/>}>
 
                 <AppView extraStyles={styles.actionMenu} withPadding>
 
@@ -232,7 +233,7 @@ export default function Place() {
             <CreatePlaceModal initalStep={activeStep}
                               id={placeDetails?.id}
                               ref={editModalRef}
-                              reloadPlaces={handleRefresh}/>
+                              reloadPlaces={fetchPlace}/>
         </>
     );
 

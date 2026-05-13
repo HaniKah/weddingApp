@@ -220,9 +220,9 @@ export interface PlaceInfo {
   category: Categories;
   name: string;
   phoneNumber: string;
-  minPrice?: string;
-  maxPrice?: string;
-  priceType?: "PerPerson" | "PerHour" | "PerItem" | "PerEvent";
+  minPrice?: string | null;
+  maxPrice?: string | null;
+  priceType?: "PerPerson" | "PerHour" | "PerItem" | "PerEvent" | null;
 }
 
 export interface LocationInfo {

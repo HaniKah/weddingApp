@@ -92,7 +92,9 @@ export default function Favorites() {
 
                 {notFoundFavorites.length > 0 &&
                     <View style={styles.notFoundContainer}>
-                        <Text style={styles.notFound}>{notFoundFavorites.length} favorites are not available
+                        <Text
+                            style={styles.notFound}>{notFoundFavorites.length} favorite{notFoundFavorites.length > 1 && "s"} {notFoundFavorites.length > 1 ? "are" : "is"}
+                            not available
                             anymore</Text>
                         <AppButton onPress={clearNotFoundFavorites} extraStylesTxt={{color: Theme.colors.secondary}}
                                    buttonType={ButtonType.PLAIN}

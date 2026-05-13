@@ -76,6 +76,7 @@ export enum Categories {
   Perfume = "Perfume",
   Shower = "Shower",
   Clinic = "Clinic",
+  Cosmetic = "Cosmetic",
   Firework = "Firework",
   Miscellaneous = "Miscellaneous",
 }
@@ -654,6 +655,7 @@ export class Api<
           | "Perfume"
           | "Shower"
           | "Clinic"
+          | "Cosmetic"
           | "Firework"
           | "Miscellaneous";
         search?: string;

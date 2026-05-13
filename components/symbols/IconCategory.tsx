@@ -23,7 +23,7 @@ export default function IconCategory({category, size, color}: {
         case Categories.Salon:
             return <MaterialCommunityIcons name="hair-dryer" color={color} size={size}/>;
         case Categories.MakeUpArtist:
-            return <MaterialCommunityIcons name="lipstick" color={color} size={size}/>;
+            return <MaterialCommunityIcons name="account-heart" color={color} size={size}/>;
         case Categories.Florist:
             return <MaterialCommunityIcons name="flower" color={color} size={size}/>;
         case Categories.Decorator:
@@ -42,6 +42,8 @@ export default function IconCategory({category, size, color}: {
             return <MaterialCommunityIcons name="ring" color={color} size={size}/>;
         case Categories.Perfume:
             return <MaterialCommunityIcons name="bottle-tonic" color={color} size={size}/>;
+        case Categories.Cosmetic:
+            return <MaterialCommunityIcons name="lipstick" color={color} size={size}/>;
         case Categories.Shower:
             return <MaterialCommunityIcons name="bathtub" color={color} size={size}/>;
         case Categories.Clinic:

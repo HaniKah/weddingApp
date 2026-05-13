@@ -37,8 +37,8 @@ export default function VendorPlaceItem({data, setTrigger}: VendorPlaceItemProps
                         </View>
 
                         <View style={styles.infoContainer}>
-                            <Text
-                                style={styles.placeName}>{data.name}
+                            <Text numberOfLines={1} ellipsizeMode="tail"
+                                  style={styles.placeName}>{data.name}
                             </Text>
                             <CategoryTag category={data.category}/>
                             <PriceTag minPrice={data.minPrice}
@@ -98,10 +98,12 @@ const styles = StyleSheet.create({
         gap: 10,
         flex: 1,
         paddingVertical: 8,
+        overflow: 'hidden',
     },
     placeName: {
         fontWeight: 'bold',
         fontSize: Theme.sizes.md,
+
     },
     // placeNameUncompleted: {
     //     color: Theme.colors.gray.S400

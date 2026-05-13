@@ -37,7 +37,7 @@ export default function AppImageViewer({isVisible, onClose, ids, activeId}: {
             return {
                 url: photo?.uri || '',
                 width,
-                height: photo ? width / photo.ratio : width,
+                height: width / photo?.ratio || width,
                 props: {
                     cachePolicy: 'disk',
                 },

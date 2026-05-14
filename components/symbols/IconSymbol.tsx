@@ -42,7 +42,8 @@ const MAPPING = {
     'heart': 'favorite-outline',
     'heart.fill': 'favorite',
     'briefcase': 'work',
-    "xmark": "close"
+    "xmark": "close",
+    "x.circle.fill": "close"
 } as IconMapping;
 
 /**

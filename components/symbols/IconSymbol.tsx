@@ -39,7 +39,8 @@ const MAPPING = {
     'tag': 'sell',
     'pencil': 'edit',
     'exclamationmark.square': 'warning',
-    'heart': 'favorite',
+    'heart': 'favorite-outline',
+    'heart.fill': 'favorite',
     'briefcase': 'work',
     "xmark": "close"
 } as IconMapping;

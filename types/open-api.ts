@@ -114,6 +114,7 @@ export interface PlaceDetailsDto {
   tiktok?: string;
   instagram?: string;
   phoneNumber: string;
+  photosCount: number;
   mainPhoto: string;
   mainPhotoBlurhash?: string;
   maxPrice: string;

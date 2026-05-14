@@ -43,7 +43,8 @@ const MAPPING = {
     'heart.fill': 'favorite',
     'briefcase': 'work',
     "xmark": "close",
-    "x.circle.fill": "close"
+    "x.circle.fill": "close",
+    "photo.on.rectangle": "filter"
 } as IconMapping;
 
 /**

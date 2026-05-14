@@ -6,7 +6,7 @@ import AppButton from '@/components/appComponents/AppButton';
 import {ButtonType} from '@/styles/Button';
 import {Theme} from '@/styles/Theme';
 import MenuItem from '@/components/items/MenuItem';
-import {router, Stack} from 'expo-router';
+import {Stack, useRouter} from 'expo-router';
 import {IconSymbol} from '@/components/symbols/IconSymbol';
 import {COUNTRIES} from '@/constants/countries';
 import AppSafeAreaView from '@/components/appComponents/AppSafeAreaView';
@@ -18,6 +18,7 @@ export default function Index() {
     const {signOut, deleteUser} = useAuth();
     const {isoCountry} = useLocationContext();
     const {isLoggedIn} = useAuthStore();
+    const router = useRouter();
 
     function deleteAccount() {
         Alert.alert('Delete account', 'Are you sure you want to delete your account? All related data for this account will be deleted as well.', [{
@@ -92,11 +93,16 @@ export default function Index() {
                             {/* ACCOUNT */}
                             <View style={styles.section}>
                                 <Text style={styles.sectionTitle}>Account</Text>
-                                <MenuItem
-                                    icon="exclamationmark.square"
-                                    label="Delete my account"
-                                    onPress={deleteAccount}
-                                />
+                                <View style={styles.menuItemContainer}>
+                                    <MenuItem icon={"mappin"} label={"Change my location"}
+                                              onPress={() => router.dismissTo("/pick-location")}/>
+                                    <MenuItem
+                                        icon="exclamationmark.square"
+                                        label="Delete my account"
+                                        onPress={deleteAccount}
+                                    />
+                                </View>
+
                             </View>
 
                         </View>
@@ -170,5 +176,8 @@ const styles = StyleSheet.create({
         marginBottom: 8,
         paddingHorizontal: 4,
     },
+    menuItemContainer: {
+        gap: 15
+    }
 
 });

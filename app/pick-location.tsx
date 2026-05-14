@@ -23,7 +23,7 @@ export default function PickLocation() {
         } catch (err) {
             console.error(err);
         }
-        router.push("/(tabs)/(planner)");
+        router.dismissTo("/(tabs)/(planner)");
     };
 
     return (

@@ -94,7 +94,7 @@ export default function Index() {
                             <View style={styles.section}>
                                 <Text style={styles.sectionTitle}>Account</Text>
                                 <View style={styles.menuItemContainer}>
-                                    <MenuItem icon={"mappin"} label={"Change my location"}
+                                    <MenuItem icon={"mappin.and.ellipse"} label={"Change my location"}
                                               onPress={() => router.dismissTo("/pick-location")}/>
                                     <MenuItem
                                         icon="exclamationmark.square"

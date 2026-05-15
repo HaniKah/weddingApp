@@ -1,17 +1,17 @@
 import {
-  InputModeOptions,
-  KeyboardTypeOptions,
-  StyleProp,
-  StyleSheet,
-  Text,
-  TextInput,
-  TextStyle,
-  View,
-  ViewStyle,
+    InputModeOptions,
+    KeyboardTypeOptions,
+    StyleProp,
+    StyleSheet,
+    Text,
+    TextInput,
+    TextStyle,
+    View,
+    ViewStyle,
 } from 'react-native';
 import {Theme} from '@/styles/Theme';
 import {useFormContext} from '@/contexts/form-context';
-import {Dispatch, SetStateAction, useEffect, useRef, useState} from 'react';
+import {Dispatch, SetStateAction, useEffect, useMemo, useRef, useState} from 'react';
 import {IconButton} from '@/components/symbols/IconButton';
 
 export default function AppTextInput({
@@ -92,6 +92,11 @@ export default function AppTextInput({
 
     }, [form.submitting, value]);
 
+    const isArabic = useMemo(() => {
+        if (!value) return
+        return /[\u0600-\u06FF]/.test(value);
+    }, [value])
+
     return (
         <View style={extraStyles}>
             {label && <Text style={[styles.label]}>{label}</Text>}
@@ -108,6 +113,8 @@ export default function AppTextInput({
                            onBlur={onBlur}
                            secureTextEntry={secureTextEntry}
                            inputMode={inputMode}
+                           textAlign={isArabic ? 'right' : 'left'}
+
 
                 />
                 {unit && <Text style={styles.unit}>{unit}</Text>}

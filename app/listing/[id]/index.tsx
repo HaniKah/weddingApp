@@ -1,6 +1,6 @@
 import {Pressable, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {Image} from 'expo-image';
-import {useCallback, useEffect, useState} from 'react';
+import {useCallback, useEffect, useMemo, useState} from 'react';
 import {Link, Stack, useLocalSearchParams} from 'expo-router';
 import {Categories, PlaceDetailsDto} from '@/types/open-api';
 import AppButton from '@/components/appComponents/AppButton';
@@ -50,6 +50,11 @@ export default function PlaceId() {
     //   if (!placeDetails) return;
     //   toggleFavorite(placeDetails.id);
     // }
+
+    const isArabic = useMemo(() => {
+        if (!placeDetails?.description) return
+        return /[\u0600-\u06FF]/.test(placeDetails?.description);
+    }, [placeDetails?.description])
 
 
     return (
@@ -123,7 +128,8 @@ export default function PlaceId() {
 
                         <AppIf value={placeDetails?.description}>
                             <View style={styles.descriptionContainer}>
-                                <Text style={styles.description}>{placeDetails?.description}</Text>
+                                <Text
+                                    style={[styles.description, isArabic && styles.arabicText]}>{placeDetails?.description}</Text>
                             </View>
                         </AppIf>
 
@@ -233,6 +239,7 @@ const styles = StyleSheet.create({
     },
     descriptionContainer: {
         marginTop: 20,
+
     },
     description: {
         fontSize: Theme.sizes.md,
@@ -245,5 +252,8 @@ const styles = StyleSheet.create({
         textDecorationLine: 'underline',
         marginBottom: 20,
     },
+    arabicText: {
+        textAlign: 'right',
+    }
 
 });

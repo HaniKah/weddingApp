@@ -129,7 +129,6 @@ export default function FillPlaceInfo({data, setData}: {
                 },
             });
             setData(res.data);
-            console.log(res.data);
 
         } catch (error) {
             console.error(error);
@@ -298,7 +297,7 @@ export default function FillPlaceInfo({data, setData}: {
                                     </View>
                                 }
 
-                                {minPrice !== null && maxPrice !== null &&
+                                {minPrice !== null && minPrice !== undefined && maxPrice !== null && maxPrice !== undefined &&
                                     <View style={styles.input}>
                                         <AppDropDown
                                             label="Price type"

@@ -111,7 +111,6 @@ export default function UploadImages({onFinish, placeId}: {
         if (!placeId) return;
 
         const file = constructRequest(placeId, newImage);
-        console.log('uploading images :', file);
         try {
             const res = await api.photosControllerUploadFile(file);
             setImages(prev => [...prev, res.data]);
@@ -146,11 +145,7 @@ export default function UploadImages({onFinish, placeId}: {
 
         return formData;
     }
-
-
-    function handleFinishPress() {
-        onFinish();
-    }
+    
 
     function ImageItem({item}: { item: PhotosDto }) {
         return (
@@ -193,7 +188,7 @@ export default function UploadImages({onFinish, placeId}: {
 
                 />
 
-                <WizardController onNext={handleFinishPress}
+                <WizardController onNext={onFinish}
                                   isFirstStep={false}
                                   isLastStep={true}/>
                 {/*<AppButton extraStylesBtn={styles.addButton} icon="plus"*/}

@@ -13,6 +13,7 @@ import AppSafeAreaView from '@/components/appComponents/AppSafeAreaView';
 
 import {useAuthStore} from '@/utils/authStore';
 import SignIn from '@/components/screens/sign-in';
+import {showSnackbar} from "@/components/Snackbar";
 
 export default function Index() {
     const {signOut, deleteUser} = useAuth();
@@ -49,6 +50,21 @@ export default function Index() {
         ]);
     }
 
+    function showSnackBars() {
+        const snackbars = [
+            {message: "This is a success snackbar", type: "success"},
+            {message: "This is an error snackbar", type: "error"},
+            {message: "This is a warning snackbar", type: "warning"},
+            {message: "This is an info snackbar", type: "info"},
+        ] as const;
+
+        snackbars.forEach((snackbar, index) => {
+            setTimeout(() => {
+                showSnackbar(snackbar.message, snackbar.type);
+            }, index * 1000);
+        });
+    }
+
 
     return (
         <>
@@ -69,6 +85,9 @@ export default function Index() {
 
 
                         <View style={styles.sectionContainer}>
+                            <AppButton onPress={showSnackBars}>
+                                show snack bar
+                            </AppButton>
 
                             {/* PERSONAL */}
                             <View style={styles.section}>
@@ -111,6 +130,7 @@ export default function Index() {
                                    buttonSize="MD" onPress={logOut}>
                             Logout
                         </AppButton>
+
                     </AppView>
                 </ScrollView>
             </AppSafeAreaView>

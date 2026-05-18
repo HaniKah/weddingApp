@@ -48,5 +48,11 @@
   "coupleSide": {
     "Groom": "Groom's Side",
     "Bride": "Bride's Side"
+  },
+  "snackbar": {
+    "error": "Error",
+    "success": "Success",
+    "warning": "Warning",
+    "info": "Info"
   }
 }

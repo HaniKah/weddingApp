@@ -13,7 +13,6 @@ import {IconButton} from '@/components/symbols/IconButton';
 import AppView from '@/components/appComponents/AppView';
 import {CommonStyles} from '@/styles/Common';
 import {showSnackbar} from "@/components/Snackbar";
-import AppButton from "@/components/appComponents/AppButton";
 
 export default function UploadImages({onFinish, placeId}: {
     onFinish: () => void,
@@ -116,9 +115,9 @@ export default function UploadImages({onFinish, placeId}: {
         try {
             const res = await api.photosControllerUploadFile(file);
             setImages(prev => [...prev, res.data]);
+            showSnackbar("Image uploaded successfully", "success")
         } catch (err) {
-            console.error(err);
-            showSnackbar("Failed to upload image: ", "error")
+            showSnackbar("Failed to upload image: " + err.response?.data?.message, "error")
         }
     }
 
@@ -168,28 +167,25 @@ export default function UploadImages({onFinish, placeId}: {
         );
     }
 
-    function showSnackBars() {
-        const snackbars = [
-            {message: "This is a success snackbar", type: "success"},
-            {message: "This is an error snackbar", type: "error"},
-            {message: "This is a warning snackbar", type: "warning"},
-            {message: "This is an info snackbar", type: "info"},
-        ] as const;
-
-        snackbars.forEach((snackbar, index) => {
-            setTimeout(() => {
-                showSnackbar(snackbar.message, snackbar.type);
-            }, index * 1000);
-        });
-    }
+    // function showSnackBars() {
+    //     const snackbars = [
+    //         {message: "This is a success snackbar", type: "success"},
+    //         {message: "This is an error snackbar", type: "error"},
+    //         {message: "This is a warning snackbar", type: "warning"},
+    //         {message: "This is an info snackbar", type: "info"},
+    //     ] as const;
+    //
+    //     snackbars.forEach((snackbar, index) => {
+    //         setTimeout(() => {
+    //             showSnackbar(snackbar.message, snackbar.type);
+    //         }, index * 1000);
+    //     });
+    // }
 
 
     return (
         <>
             <AppView withPadding extraStyles={{position: 'relative'}}>
-                <AppButton onPress={showSnackBars}>
-                    show snakbar
-                </AppButton>
                 <Text style={styles.title}>Upload photos</Text>
                 {
                     isLoading && <ActivityIndicator

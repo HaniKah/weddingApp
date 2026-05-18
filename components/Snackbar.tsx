@@ -1,9 +1,10 @@
-import {RefObject, useImperativeHandle, useState} from "react";
-import Animated, {FadeInDown, LinearTransition} from "react-native-reanimated";
-import {Modal, ScrollView, StyleSheet, Text, View} from "react-native";
+import {RefObject, useCallback, useImperativeHandle, useState} from "react";
+import {Modal, Platform, StyleSheet, Text, View} from "react-native";
 import {Theme} from "@/styles/Theme";
 import {IconButton} from "@/components/symbols/IconButton";
 import {useTranslation} from "react-i18next";
+import {FullWindowOverlay} from "react-native-screens";
+import Animated, {FadeInDown, LinearTransition} from "react-native-reanimated";
 
 type SnackbarType = "error" | "success" | "warning" | "info"
 
@@ -37,25 +38,24 @@ export const Snackbar = ({ref}: { ref: RefObject<SnackbarRef> }) => {
     const {t} = useTranslation()
     const [list, setList] = useState<SnackbarProps[]>([])
 
-    function removeItem(id: number) {
+    const removeItem = useCallback((id: number) => {
         setList(prev => prev.filter(item => item.id !== id))
-    }
+    }, []);
 
     useImperativeHandle(ref, () => ({
         show(value: SnackbarProps) {
             setList(prev => [...prev, value])
-            // setVisible(true);
             setTimeout(() => {
                 removeItem(value.id)
-            }, 3000);
+            }, 5000);
 
         },
         hide(id: number) {
             removeItem(id)
         },
-    }));
+    }), [removeItem]);
 
-    const renderItem = ({item}: { item: SnackbarProps }) => {
+    const renderItem = (item: SnackbarProps) => {
 
         let stylesByType: { backgroundColor: string | undefined, color: string | undefined }
 
@@ -91,9 +91,7 @@ export const Snackbar = ({ref}: { ref: RefObject<SnackbarRef> }) => {
 
         return (
             <Animated.View key={item.id}
-                           layout={LinearTransition.duration(200)}
-                           entering={FadeInDown.duration(200)}
-                           exiting={FadeInDown.duration(200)}
+                           entering={FadeInDown.duration(300)}
                            style={[styles.container, {backgroundColor: stylesByType.backgroundColor}]}>
                 <View style={styles.closeButton}>
                     <IconButton onPress={() => hideSnackbar(item.id)}
@@ -110,20 +108,33 @@ export const Snackbar = ({ref}: { ref: RefObject<SnackbarRef> }) => {
     }
 
     const visible = list.length > 0;
+    if (!visible) return null;
+
+    const content = (
+        <Animated.View layout={LinearTransition.duration(300)} style={styles.wrapper} pointerEvents="box-none">
+            <View style={styles.listContainer} pointerEvents="box-none">
+                {list.map(item => renderItem(item))}
+            </View>
+        </Animated.View>
+    );
+
+    if (Platform.OS === 'ios' && FullWindowOverlay) {
+        return (
+            <FullWindowOverlay>
+                {content}
+            </FullWindowOverlay>
+        );
+    }
+
     return (
         <Modal visible={visible}
                transparent={true}
-               animationType="slide"
+               animationType="none"
                statusBarTranslucent={true}   // covers status bar on Android
                hardwareAccelerated={true}
+               onRequestClose={() => setList([])}
         >
-            <View style={styles.wrapper} pointerEvents="box-none">
-                <ScrollView>
-                    {list.map(item => renderItem({item}))}
-                </ScrollView>
-                {/*<FlatList data={list} renderItem={renderItem}/>*/}
-            </View>
-
+            {content}
         </Modal>
     );
 }
@@ -141,9 +152,11 @@ const styles = StyleSheet.create({
         bottom: 0,
         left: 0,
         width: "100%",
-        marginBottom: 20,
-        pointerEvents: "none",
-
+        pointerEvents: "box-none",
+    },
+    listContainer: {
+        width: '100%',
+        paddingTop: 40, // Avoid overlapping with status bar
     },
     container: {
         padding: 20,

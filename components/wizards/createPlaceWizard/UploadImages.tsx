@@ -167,21 +167,6 @@ export default function UploadImages({onFinish, placeId}: {
         );
     }
 
-    // function showSnackBars() {
-    //     const snackbars = [
-    //         {message: "This is a success snackbar", type: "success"},
-    //         {message: "This is an error snackbar", type: "error"},
-    //         {message: "This is a warning snackbar", type: "warning"},
-    //         {message: "This is an info snackbar", type: "info"},
-    //     ] as const;
-    //
-    //     snackbars.forEach((snackbar, index) => {
-    //         setTimeout(() => {
-    //             showSnackbar(snackbar.message, snackbar.type);
-    //         }, index * 1000);
-    //     });
-    // }
-
 
     return (
         <>

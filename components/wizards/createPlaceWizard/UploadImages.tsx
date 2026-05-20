@@ -115,7 +115,7 @@ export default function UploadImages({onFinish, placeId}: {
 
         const file = constructRequest(placeId, newImage);
         try {
-            const res = await api.photosControllerUploadFile(file);
+            const res = await api.photosControllerUploadFile(placeId, file);
             setImages(prev => [...prev, res.data]);
             showSnackbar("Image uploaded successfully", "success")
         } catch (err) {

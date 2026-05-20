@@ -718,11 +718,15 @@ export class Api<
      *
      * @tags Photos
      * @name PhotosControllerUploadFile
-     * @request POST:/api/photos/upload
+     * @request POST:/api/photos/upload/{placeId}
      */
-    photosControllerUploadFile: (data: any, params: RequestParams = {}) =>
+    photosControllerUploadFile: (
+      placeId: number,
+      data: any,
+      params: RequestParams = {},
+    ) =>
       this.request<PhotosDto, any>({
-        path: `/api/photos/upload`,
+        path: `/api/photos/upload/${placeId}`,
         method: "POST",
         body: data,
         type: ContentType.FormData,

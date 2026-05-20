@@ -112,7 +112,7 @@ export const Snackbar = ({ref}: { ref: RefObject<SnackbarRef | null> }) => {
     if (!visible) return null;
 
     const content = (
-        <Animated.View layout={LinearTransition.duration(300)} style={styles.wrapper} pointerEvents="box-none">
+        <Animated.View layout={LinearTransition.duration(400)} style={styles.wrapper} pointerEvents="box-none">
             <View style={styles.listContainer} pointerEvents="box-none">
                 {list.map(item => renderItem(item))}
             </View>

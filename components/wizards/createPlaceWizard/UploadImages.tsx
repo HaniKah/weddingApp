@@ -13,6 +13,8 @@ import {IconButton} from '@/components/symbols/IconButton';
 import AppView from '@/components/appComponents/AppView';
 import {CommonStyles} from '@/styles/Common';
 import {showSnackbar} from "@/components/Snackbar";
+import {NestError} from "@/types/errors";
+import {isAxiosError} from "axios";
 
 export default function UploadImages({onFinish, placeId}: {
     onFinish: () => void,
@@ -117,7 +119,9 @@ export default function UploadImages({onFinish, placeId}: {
             setImages(prev => [...prev, res.data]);
             showSnackbar("Image uploaded successfully", "success")
         } catch (err) {
-            showSnackbar("Failed to upload image: " + err.response?.data?.message, "error")
+            if (isAxiosError<NestError>(err)) {
+                showSnackbar("Failed to upload image: " + err.response?.data?.message, "error")
+            }
         }
     }
 

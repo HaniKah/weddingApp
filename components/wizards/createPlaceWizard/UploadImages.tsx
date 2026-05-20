@@ -177,6 +177,9 @@ export default function UploadImages({onFinish, placeId}: {
                         style={styles.loadingOverlay}
                         size={'large'}/>
                 }
+                {/*<AppButton onPress={() => showSnackbar("hello", "success")}>*/}
+                {/*    hello*/}
+                {/*</AppButton>*/}
                 <FlatList
                     numColumns={3}
                     columnWrapperStyle={{gap: IMAGE_GAP}}
@@ -190,11 +193,11 @@ export default function UploadImages({onFinish, placeId}: {
 
                 />
 
+
                 <WizardController onNext={onFinish}
                                   isFirstStep={false}
                                   isLastStep={true}/>
-                {/*<AppButton extraStylesBtn={styles.addButton} icon="plus"*/}
-                {/*           onPress={pickImage} fullRound/>*/}
+
                 <IconButton color={Theme.colors.white}
                             extraStylesBtn={styles.addButton}
                             onPress={pickImage}

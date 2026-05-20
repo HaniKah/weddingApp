@@ -1,10 +1,10 @@
-import {RefObject, useCallback, useImperativeHandle, useState} from "react";
+import React, {RefObject, useCallback, useImperativeHandle, useState} from "react";
 import {Modal, Platform, StyleSheet, Text, View} from "react-native";
 import {Theme} from "@/styles/Theme";
 import {IconButton} from "@/components/symbols/IconButton";
 import {useTranslation} from "react-i18next";
 import {FullWindowOverlay} from "react-native-screens";
-import Animated, {FadeInDown, LinearTransition} from "react-native-reanimated";
+import Animated, {FadeInDown, FadeOutDown, LinearTransition} from "react-native-reanimated";
 
 type SnackbarType = "error" | "success" | "warning" | "info"
 
@@ -21,8 +21,7 @@ export interface SnackbarRef {
     hide: (id: number) => void
 }
 
-//todo what is actually a RefObject ?
-let snackbarRef: RefObject<SnackbarRef> | null = null
+let snackbarRef: RefObject<SnackbarRef | null>
 
 //we are using id as a timestamp to map to the correct snackbar if the user decides to delete it within the list
 export function showSnackbar(message: string, type: SnackbarType) {
@@ -34,7 +33,7 @@ export function hideSnackbar(id: number) {
 }
 
 
-export const Snackbar = ({ref}: { ref: RefObject<SnackbarRef> }) => {
+export const Snackbar = ({ref}: { ref: RefObject<SnackbarRef | null> }) => {
     const {t} = useTranslation()
     const [list, setList] = useState<SnackbarProps[]>([])
 
@@ -93,6 +92,7 @@ export const Snackbar = ({ref}: { ref: RefObject<SnackbarRef> }) => {
         return (
             <Animated.View key={item.id}
                            entering={FadeInDown.duration(300)}
+                           exiting={FadeOutDown.duration(300)}
                            style={[styles.container, {backgroundColor: stylesByType.backgroundColor}]}>
                 <View style={styles.closeButton}>
                     <IconButton onPress={() => hideSnackbar(item.id)}
@@ -142,7 +142,7 @@ export const Snackbar = ({ref}: { ref: RefObject<SnackbarRef> }) => {
 
 
 // Call this once during app boot to wire up the ref
-export function registerSnackBar(ref: React.RefObject<SnackbarRef>) {
+export function registerSnackBar(ref: React.RefObject<SnackbarRef | null>) {
     snackbarRef = ref;
 }
 

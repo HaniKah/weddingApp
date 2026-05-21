@@ -4,7 +4,7 @@ import * as ImagePicker from 'expo-image-picker';
 import {ImagePickerAsset} from 'expo-image-picker';
 import {ImageUploadModel} from '@/components/wizards/createPlaceWizard/CreatePlaceWizard';
 import {ImageManipulator, SaveFormat} from 'expo-image-manipulator';
-import {useCallback, useEffect, useState} from 'react';
+import {Dispatch, SetStateAction, useState} from 'react';
 import {useApi} from '@/utils/api';
 import {PhotosDto} from '@/types/open-api';
 import WizardController from '@/components/wizards/WizardController';
@@ -15,39 +15,26 @@ import {CommonStyles} from '@/styles/Common';
 import {showSnackbar} from "@/components/Snackbar";
 import {NestError} from "@/types/errors";
 import {isAxiosError} from "axios";
+import AppPressable from "@/components/appComponents/AppPressable";
+import AppImageViewer from "@/components/appComponents/AppImageViewer";
 
-export default function UploadImages({onFinish, placeId}: {
+export default function UploadImages({images, setImages, onFinish, placeId}: {
+    images: PhotosDto[]
+    setImages: Dispatch<SetStateAction<PhotosDto[]>>
     onFinish: () => void,
     placeId: number | undefined,
 }) {
     const {api} = useApi();
-    const [images, setImages] = useState<PhotosDto[]>([]);
     const [refresh, setRefresh] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+
+    const [activeId, setActiveId] = useState<number>();
+
 
     const IMAGE_GAP = 10;
     const COLUMN_PER_ROW = 3;
     const IMAGE_SIZE = (Dimensions.get('window').width - IMAGE_GAP * (COLUMN_PER_ROW - 1) - (Theme.global.appPadding * 2)) / COLUMN_PER_ROW;
-
-    const getPhotos = useCallback(async () => {
-        if (!placeId) return;
-        try {
-            setIsLoading(true);
-            const res = await api.photosControllerGetPhotos(placeId);
-            setImages(res.data.result);
-        } catch (err) {
-            console.error(err);
-        } finally {
-            setIsLoading(false);
-        }
-
-    }, [placeId, refresh]);
-
-    useEffect(() => {
-        getPhotos();
-    }, [getPhotos]);
-
-
+    
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -70,7 +57,6 @@ export default function UploadImages({onFinish, placeId}: {
             }));
 
             setIsLoading(false);
-
             setRefresh((prev) => !prev);
         }
     };
@@ -110,9 +96,19 @@ export default function UploadImages({onFinish, placeId}: {
         });
     }
 
+    function constructRequest(placeId: number, newImage: ImageUploadModel): FormData | undefined {
+        const formData = new FormData();
+        formData.append('placeId', placeId.toString());
+        formData.append('file', {
+            uri: newImage.uri,
+            type: newImage.type,
+            name: newImage.name,
+        } as any);
+        return formData;
+    }
+
     async function uploadImages(newImage: ImageUploadModel) {
         if (!placeId) return;
-
         const file = constructRequest(placeId, newImage);
         try {
             const res = await api.photosControllerUploadFile(placeId, file);
@@ -140,32 +136,27 @@ export default function UploadImages({onFinish, placeId}: {
         }
     }
 
-    function constructRequest(placeId: number, newImage: ImageUploadModel): FormData | undefined {
-        const formData = new FormData();
-        formData.append('placeId', placeId.toString());
-        formData.append('file', {
-            uri: newImage.uri,
-            type: newImage.type,
-            name: newImage.name,
-        } as any);
 
-        return formData;
-    }
+    // const imageIds: number [] = useMemo(() => {
+    //     return images.map(i => i.id);
+    // }, [images])
 
 
     function ImageItem({item}: { item: PhotosDto }) {
         return (
             <>
-                <View style={styles.imageContainer}>
-                    <View style={styles.xButton}>
-                        <IconButton onPress={() => deleteImage(item.id)} size={10} name="xmark" color="black"/>
+                <AppPressable onPress={() => setActiveId(item.id)}>
+                    <View style={styles.imageContainer}>
+                        <View style={styles.xButton}>
+                            <IconButton onPress={() => deleteImage(item.id)} size={10} name="xmark" color="black"/>
+                        </View>
+                        <Image source={{uri: item.uri}} style={[styles.image, {width: IMAGE_SIZE, height: IMAGE_SIZE}]}
+                               placeholder={item.blurhash}
+                               cachePolicy="memory-disk"
+                               transition={200}
+                               contentFit="cover"/>
                     </View>
-                    <Image source={{uri: item.uri}} style={[styles.image, {width: IMAGE_SIZE, height: IMAGE_SIZE}]}
-                           placeholder={item.blurhash}
-                           cachePolicy="memory-disk"
-                           transition={200}
-                           contentFit="cover"/>
-                </View>
+                </AppPressable>
             </>
 
         );
@@ -181,9 +172,7 @@ export default function UploadImages({onFinish, placeId}: {
                         style={styles.loadingOverlay}
                         size={'large'}/>
                 }
-                {/*<AppButton onPress={() => showSnackbar("hello", "success")}>*/}
-                {/*    hello*/}
-                {/*</AppButton>*/}
+
                 <FlatList
                     numColumns={3}
                     columnWrapperStyle={{gap: IMAGE_GAP}}
@@ -206,6 +195,14 @@ export default function UploadImages({onFinish, placeId}: {
                             extraStylesBtn={styles.addButton}
                             onPress={pickImage}
                             name="plus"></IconButton>
+                {activeId && placeId &&
+                    <AppImageViewer activeImageId={activeId}
+                                    setActiveImageId={setActiveId}
+                                    onDeleteImage={deleteImage}
+                                    placeId={placeId}
+                    />
+                }
+
             </AppView>
         </>
     );
@@ -240,7 +237,7 @@ const styles = StyleSheet.create({
         fontSize: Theme.sizes.xl,
         fontWeight: 'bold',
         textAlign: 'center',
-        marginVertical: 20,
+        marginBottom: 20,
         width: '100%',
     },
     addButton: {

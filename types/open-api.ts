@@ -22,6 +22,12 @@ export enum CoupleSide {
   Bride = "Bride",
 }
 
+export enum PhotoSize {
+  Thumbnail = "Thumbnail",
+  Medium = "Medium",
+  Image = "Image",
+}
+
 export enum CountryCode {
   AE = "AE",
   BH = "BH",
@@ -137,6 +143,7 @@ export interface FavoritePlaceDto {
 }
 
 export interface PhotosDto {
+  photoSize: PhotoSize;
   id: number;
   uri: string;
   ratio: number;
@@ -738,12 +745,16 @@ export class Api<
      * No description
      *
      * @tags Photos
-     * @name PhotosControllerGetPhotos
-     * @request GET:/api/photos/getAll/{id}
+     * @name PhotosControllerGetAllPhotos
+     * @request GET:/api/photos/getAll/{placeId}/{photoSize}
      */
-    photosControllerGetPhotos: (id: number, params: RequestParams = {}) =>
+    photosControllerGetAllPhotos: (
+      placeId: number,
+      photoSize: string,
+      params: RequestParams = {},
+    ) =>
       this.request<PhotosViewModel, any>({
-        path: `/api/photos/getAll/${id}`,
+        path: `/api/photos/getAll/${placeId}/${photoSize}`,
         method: "GET",
         format: "json",
         ...params,

@@ -2,93 +2,54 @@ import {ActivityIndicator, Dimensions, Modal, Pressable, StyleSheet, View} from 
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {IconSymbol} from '@/components/symbols/IconSymbol';
 import ImageViewer from 'react-native-image-zoom-viewer';
-import {useCallback, useEffect, useMemo, useRef, useState} from "react";
-import {PhotosDto} from "@/types/open-api";
+import {useCallback, useEffect, useMemo, useState} from "react";
+import {PhotosDto, PhotoSize} from "@/types/open-api";
 import {useApi} from "@/utils/api";
+import {IconButton} from "@/components/symbols/IconButton";
+import {Theme} from "@/styles/Theme";
 
-export default function AppImageViewer({isVisible, onClose, ids, activeId}: {
-    isVisible: boolean,
-    onClose: () => void,
-    ids: number[],
-    activeId: number
+export default function AppImageViewer({activeImageId, setActiveImageId, onDeleteImage, placeId}: {
+    onDeleteImage?: (id: number) => void,
+    activeImageId: number
+    setActiveImageId: (id: number | undefined) => void,
+    placeId: number
 
 }) {
     const {width} = Dimensions.get('window');
     const insets = useSafeAreaInsets();
     const {api} = useApi()
+    const [images, setImages] = useState<PhotosDto[]>([])
 
-    const [images, setImages] = useState<Record<number, PhotosDto>>({})
-    const [currentActiveId, setCurrentActiveId] = useState(activeId)
-    const isFetching = useRef<Record<number, boolean>>({})
 
-    const idToIndex = useMemo(() => {
-        return ids.reduce<Record<number, number>>((acc, id, index) => {
-            acc[id] = index;
-            return acc;
-        }, {});
-    }, [ids]);
+    const fetchPhotos = useCallback(async () => {
+        try {
+            const res = await api.photosControllerGetAllPhotos(placeId, PhotoSize.Image);
+            setImages(res.data.result)
+        } catch (error) {
+            console.error(`Failed to fetch photos`, error);
+        }
+    }, []);
 
-    const activeIndex = idToIndex[activeId] ?? 0;
+    useEffect(() => {
+        fetchPhotos()
+    }, [fetchPhotos])
 
     const imageUrls = useMemo(() => {
-        return ids.map((id) => {
-            const photo = images[id];
-
+        return images.map((i) => {
             return {
-                url: photo?.uri || '',
+                url: i?.uri || '',
                 width,
-                height: width / photo?.ratio || width,
-                props: {
-                    cachePolicy: 'disk',
-                },
+                height: width / i?.ratio || width,
+
             };
         });
-    }, [ids, images, width]);
+    }, [images]);
 
-    const fetchPhotos = useCallback(async (targetId: number) => {
-        const currentIndex = idToIndex[targetId];
-        if (currentIndex === undefined) return;
+    const onClose = useCallback(() => {
+        setActiveImageId(undefined)
+    }, []);
 
-        const start = Math.max(0, currentIndex - 2);
-        const end = Math.min(ids.length - 1, currentIndex + 2);
-        const idsToFetch = ids.slice(start, end + 1);
-
-        const fetchedPhotos: Record<number, PhotosDto> = {};
-
-        await Promise.all(idsToFetch.map(async (id) => {
-            if (!images[id] && !isFetching.current[id]) {
-                isFetching.current[id] = true;
-
-                try {
-                    const res = await api.photosControllerGetPhoto(id);
-                    fetchedPhotos[id] = res.data;
-                } catch (error) {
-                    console.error(`Failed to fetch photo ${id}`, error);
-                } finally {
-                    delete isFetching.current[id];
-                }
-            }
-        }));
-
-        if (Object.keys(fetchedPhotos).length > 0) {
-            setImages((prevImages) => ({
-                ...prevImages,
-                ...fetchedPhotos,
-            }));
-        }
-    }, [api, idToIndex, ids, images]);
-
-    useEffect(() => {
-        setCurrentActiveId(activeId)
-    }, [activeId])
-
-    useEffect(() => {
-        if (!isVisible) return;
-
-        fetchPhotos(currentActiveId)
-    }, [currentActiveId, fetchPhotos, isVisible])
-
-    const renderHeader = useCallback(() => {
+    const HeaderMenu = useCallback(() => {
         return (
             <View style={styles.headerContainer}>
                 <Pressable onPress={onClose}>
@@ -98,36 +59,57 @@ export default function AppImageViewer({isVisible, onClose, ids, activeId}: {
         );
     }, [onClose]);
 
-    const handleSwipeDown = useCallback(() => {
-        onClose();
-    }, [onClose]);
 
     const handleChange = useCallback((index?: number) => {
         if (index !== undefined) {
-            setCurrentActiveId(ids[index]);
+            setActiveImageId(images[index].id);
         }
-    }, [ids]);
+    }, [images]);
 
     const renderLoading = useCallback(() => {
         return <ActivityIndicator color="white" size="large"/>;
     }, []);
 
+    function FooterMenu() {
+        return (
+            <View style={styles.footerContainer}>
+                {onDeleteImage && activeImageId &&
+                    <IconButton onPress={() => deleteImage(activeImageId)}
+                                extraStylesBtn={{backgroundColor: Theme.colors.gray.S700}}
+                                name="trash"
+                                color="white"
+                                weight="regular"
+                                size={30}/>
+                }
+            </View>
+        )
+    }
+
+    function deleteImage(id: number) {
+        if (!onDeleteImage) return;
+        // setActiveImageId(ids[Math.min(0, activeIndex + 1)])
+        onDeleteImage(id)
+    }
+
+    const currentIndex = useMemo(() => images.findIndex((img) => img.id === activeImageId), [images, activeImageId]);
+
+    if (images.length <= 0) return
     return (
         <Modal
             allowSwipeDismissal={true}
-            visible={isVisible}
             onRequestClose={onClose}
-            animationType="none">
+            animationType="fade">
             <View style={[styles.container, {paddingTop: insets.top, paddingBottom: insets.bottom}]}>
                 <ImageViewer
                     pageAnimateTime={300}
-                    renderHeader={renderHeader}
-                    onSwipeDown={handleSwipeDown}
-                    index={activeIndex}
+                    renderHeader={HeaderMenu}
+                    onSwipeDown={onClose}
+                    index={currentIndex}
                     enableSwipeDown={true}
                     onChange={handleChange}
                     loadingRender={renderLoading}
                     imageUrls={imageUrls}
+                    renderFooter={FooterMenu}
                 />
             </View>
         </Modal>
@@ -143,6 +125,12 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row-reverse',
         paddingTop: 20,
+        paddingHorizontal: 20,
+    },
+    footerContainer: {
+        display: 'flex',
+        justifyContent: 'flex-end',
+        paddingBottom: 70,
         paddingHorizontal: 20,
     },
 });

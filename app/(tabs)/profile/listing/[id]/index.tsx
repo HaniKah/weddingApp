@@ -3,7 +3,7 @@ import {Image} from 'expo-image';
 import {Link, Stack, useLocalSearchParams, useRouter} from 'expo-router';
 import {useApi} from '@/utils/api';
 import {ReactNode, useEffect, useRef, useState} from 'react';
-import {PhotosDto, UpdateStep, VendorPlaceDetailsDto} from '@/types/open-api';
+import {PhotosDto, PhotoSize, UpdateStep, VendorPlaceDetailsDto} from '@/types/open-api';
 import {Theme} from '@/styles/Theme';
 import {AppModalRef} from '@/components/appComponents/AppModal';
 import AppButton from '@/components/appComponents/AppButton';
@@ -52,7 +52,7 @@ export default function Place() {
 
     async function fetchPhotos() {
         try {
-            const res = await api.photosControllerGetPhotos(Number(id));
+            const res = await api.photosControllerGetAllPhotos(Number(id), PhotoSize.Thumbnail);
             setPhotos(res.data.result);
         } catch (err) {
             console.error(err);

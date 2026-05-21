@@ -1,6 +1,6 @@
 import {useApi} from "@/utils/api";
-import {PhotosDto} from "@/types/open-api";
-import {useEffect, useMemo, useState} from "react";
+import {PhotosDto, PhotoSize} from "@/types/open-api";
+import {useEffect, useState} from "react";
 import {Dimensions, FlatList, Pressable} from "react-native";
 import {Image} from "expo-image";
 import AppImageViewer from "@/components/appComponents/AppImageViewer";
@@ -16,7 +16,7 @@ export default function Gallery({placeId}: { placeId: number }) {
     useEffect(() => {
         const getPhotos = async () => {
             try {
-                const res = await API.photosControllerGetPhotos(placeId)
+                const res = await API.photosControllerGetAllPhotos(placeId, PhotoSize.Thumbnail)
                 setImages(res.data.result)
             } catch (err) {
                 console.error(err)
@@ -25,17 +25,18 @@ export default function Gallery({placeId}: { placeId: number }) {
         getPhotos()
     }, [placeId]);
 
-    function viewImage(index: number) {
-        setImageView(true)
-        setSelectedImage(index)
-    }
+    // function viewImage(imageId: number) {
+    //     // setImageView(true)
+    //     setSelectedImage(imageId)
+    // }
 
     function ImageThumbnail({item}: { item: PhotosDto }) {
         return (
             <>
-
-                <Pressable onPress={() => viewImage(item.id)}>
-                    <Image style={{height: IMAGE_WIDTH, width: IMAGE_WIDTH}} source={{uri: item.uri}} transition={200}
+                <Pressable onPress={() => setSelectedImage(item.id)}>
+                    <Image style={{height: IMAGE_WIDTH, width: IMAGE_WIDTH}}
+                           source={{uri: item.uri}}
+                           transition={200}
                            placeholder={item.blurhash}
                            cachePolicy="disk"
                            contentFit="cover"/>
@@ -44,7 +45,7 @@ export default function Gallery({placeId}: { placeId: number }) {
         )
     }
 
-    const imageIds = useMemo(() => images.map(image => image.id), [images]);
+    // const imageIds = useMemo(() => images.map(image => image.id), [images]);
     return (
         <>
             <FlatList numColumns={3}
@@ -56,12 +57,8 @@ export default function Gallery({placeId}: { placeId: number }) {
                       renderItem={({item, index}) => (<ImageThumbnail item={item}/>)}/>
 
             {selectedImage &&
-                <AppImageViewer activeId={selectedImage}
-                                ids={imageIds}
-                                isVisible={imageView}
-                                onClose={() => setImageView(false)}/>
+                <AppImageViewer activeImageId={selectedImage} setActiveImageId={setSelectedImage} placeId={placeId}/>
             }
-
         </>
     )
 }

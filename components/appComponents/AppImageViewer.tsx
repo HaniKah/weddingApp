@@ -8,8 +8,9 @@ import {useApi} from "@/utils/api";
 import {IconButton} from "@/components/symbols/IconButton";
 import {Theme} from "@/styles/Theme";
 
-export default function AppImageViewer({activeImageId, setActiveImageId, onDeleteImage, placeId}: {
-    onDeleteImage?: (id: number) => void,
+export default function AppImageViewer({activeImageId, setActiveImageId, onDeleteImage, onSetMainImage, placeId}: {
+    onDeleteImage?: (id: number) => Promise<void>,
+    onSetMainImage?: (id: number) => Promise<void>,
     activeImageId: number
     setActiveImageId: (id: number | undefined) => void,
     placeId: number
@@ -40,7 +41,6 @@ export default function AppImageViewer({activeImageId, setActiveImageId, onDelet
                 url: i?.uri || '',
                 width,
                 height: width / i?.ratio || width,
-
             };
         });
     }, [images]);
@@ -49,16 +49,6 @@ export default function AppImageViewer({activeImageId, setActiveImageId, onDelet
         setActiveImageId(undefined)
     }, []);
 
-    const HeaderMenu = useCallback(() => {
-        return (
-            <View style={styles.headerContainer}>
-                <Pressable onPress={onClose}>
-                    <IconSymbol color="white" size={25} name="xmark"/>
-                </Pressable>
-            </View>
-        );
-    }, [onClose]);
-
 
     const handleChange = useCallback((index?: number) => {
         if (index !== undefined) {
@@ -66,30 +56,58 @@ export default function AppImageViewer({activeImageId, setActiveImageId, onDelet
         }
     }, [images]);
 
-    const renderLoading = useCallback(() => {
-        return <ActivityIndicator color="white" size="large"/>;
-    }, []);
+    const deleteImage = useCallback(async () => {
+        if (activeImageId) {
+            await onDeleteImage?.(activeImageId)
+        }
+    }, [onDeleteImage, activeImageId])
+
+
+    function HeaderMenu() {
+        return (
+            <View style={styles.headerContainer}>
+                {images[currentIndex]?.isMain &&
+                    <IconSymbol color={Theme.colors.white} name="crown.fill"/>
+                }
+                <Pressable onPress={onClose}>
+                    <IconSymbol color="white" size={25} name="xmark"/>
+                </Pressable>
+            </View>
+        );
+    }
 
     function FooterMenu() {
+
         return (
             <View style={styles.footerContainer}>
-                {onDeleteImage && activeImageId &&
-                    <IconButton onPress={() => deleteImage(activeImageId)}
+                {
+                    onDeleteImage && activeImageId &&
+                    <IconButton onPress={deleteImage}
                                 extraStylesBtn={{backgroundColor: Theme.colors.gray.S700}}
                                 name="trash"
                                 color="white"
                                 weight="regular"
-                                size={30}/>
+                                size={25}/>
                 }
+                {
+                    onSetMainImage && !images[currentIndex]?.isMain &&
+                    <IconButton onPress={() => onSetMainImage(activeImageId)}
+                                name="crown"
+                                size={25}
+                                color="white"
+                                weight="regular"
+                                extraStylesBtn={{backgroundColor: Theme.colors.gray.S700}}
+                    />
+                }
+
             </View>
         )
     }
 
-    function deleteImage(id: number) {
-        if (!onDeleteImage) return;
-        // setActiveImageId(ids[Math.min(0, activeIndex + 1)])
-        onDeleteImage(id)
-    }
+    const renderLoading = useCallback(() => {
+        return <ActivityIndicator color="white" size="large"/>;
+    }, []);
+
 
     const currentIndex = useMemo(() => images.findIndex((img) => img.id === activeImageId), [images, activeImageId]);
 
@@ -128,9 +146,14 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
     },
     footerContainer: {
+        flex: 1,
+        width: '100%',
         display: 'flex',
-        justifyContent: 'flex-end',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
         paddingBottom: 70,
         paddingHorizontal: 20,
+        gap: 10
     },
 });

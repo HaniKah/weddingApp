@@ -148,6 +148,7 @@ export interface PhotosDto {
   uri: string;
   ratio: number;
   blurhash: string;
+  isMain: boolean;
 }
 
 export interface PhotosViewModel {
@@ -791,6 +792,24 @@ export class Api<
         method: "POST",
         body: data,
         type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Photos
+     * @name PhotosControllerSetMain
+     * @request POST:/api/photos/toggleMain/{placeId}/{photoId}
+     */
+    photosControllerSetMain: (
+      photoId: number,
+      placeId: number,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/photos/toggleMain/${placeId}/${photoId}`,
+        method: "POST",
         ...params,
       }),
 

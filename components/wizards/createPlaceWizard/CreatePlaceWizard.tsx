@@ -67,9 +67,12 @@ export default function CreatePlaceWizard({id, onFinish, initialStep}: {
                     />
                 </WizardStep>
 
-                <WizardStep step={UpdateStep.UploadImages}>
-                    <UploadImages setImages={setImages} images={images} onFinish={onFinish} placeId={data?.id}/>
-                </WizardStep>
+                {data?.id &&
+                    <WizardStep step={UpdateStep.UploadImages}>
+                        <UploadImages setImages={setImages} images={images} onFinish={onFinish} placeId={data?.id}/>
+                    </WizardStep>
+                }
+
             </Wizard>
         </>
     );

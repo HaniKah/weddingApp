@@ -1,9 +1,5 @@
 import {ActivityIndicator, Dimensions, FlatList, StyleSheet, Text, View} from 'react-native';
 import {Image} from 'expo-image';
-import * as ImagePicker from 'expo-image-picker';
-import {ImagePickerAsset} from 'expo-image-picker';
-import {ImageUploadModel} from '@/components/wizards/createPlaceWizard/CreatePlaceWizard';
-import {ImageManipulator, SaveFormat} from 'expo-image-manipulator';
 import {Dispatch, SetStateAction, useState} from 'react';
 import {useApi} from '@/utils/api';
 import {PhotosDto} from '@/types/open-api';
@@ -12,17 +8,18 @@ import {Theme} from '@/styles/Theme';
 import {IconButton} from '@/components/symbols/IconButton';
 import AppView from '@/components/appComponents/AppView';
 import {CommonStyles} from '@/styles/Common';
-import {showSnackbar} from "@/components/Snackbar";
-import {NestError} from "@/types/errors";
-import {isAxiosError} from "axios";
 import AppPressable from "@/components/appComponents/AppPressable";
 import AppImageViewer from "@/components/appComponents/AppImageViewer";
+import {useUploadImage} from "@/utils/uploadImages";
+import {showSnackbar} from "@/components/Snackbar";
+import {isAxiosError} from "axios";
+import {NestError} from "@/types/errors";
 
 export default function UploadImages({images, setImages, onFinish, placeId}: {
     images: PhotosDto[]
     setImages: Dispatch<SetStateAction<PhotosDto[]>>
     onFinish: () => void,
-    placeId: number | undefined,
+    placeId: number,
 }) {
     const {api} = useApi();
     const [refresh, setRefresh] = useState(false);
@@ -31,115 +28,25 @@ export default function UploadImages({images, setImages, onFinish, placeId}: {
     const [activeId, setActiveId] = useState<number>();
 
 
-    const IMAGE_GAP = 10;
+    const IMAGE_GAP = 5;
     const COLUMN_PER_ROW = 3;
     const IMAGE_SIZE = (Dimensions.get('window').width - IMAGE_GAP * (COLUMN_PER_ROW - 1) - (Theme.global.appPadding * 2)) / COLUMN_PER_ROW;
-    
-    const pickImage = async () => {
-        // No permissions request is necessary for launching the image library
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ['images'],
-            allowsEditing: false,
-            allowsMultipleSelection: true,
-            aspect: [4, 3],
-            quality: 1,
-        });
 
-        // const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
-        if (!result.canceled) {
-            setIsLoading(true);
-            const [other, heic] = splitByMimeType(result.assets); // special handle for heic files
-            const convertedImages: ImageUploadModel[] = await convertHeicToJPEGAndCreateUploadModel(heic);
-            const imagesFormdata: ImageUploadModel[] = [...createImageUploadModelForOther(other), ...convertedImages];
-            await Promise.all(imagesFormdata.map(async (image) => {
-                await uploadImages(image);
-            }));
-
-            setIsLoading(false);
-            setRefresh((prev) => !prev);
-        }
-    };
-
-    const splitByMimeType = (images: ImagePickerAsset[]) => {
-        return images.reduce(([pass, fail]: ImagePickerAsset[][], val) => {
-            if (val.mimeType !== 'image/heic') pass.push(val);
-            else fail.push(val);
-            return ([pass, fail]);
-        }, [[], []]);
-
-    };
-
-    function convertHeicToJPEGAndCreateUploadModel(images: ImagePickerAsset[]): Promise<ImageUploadModel[]> {
-        return Promise.all(images.map(async (asset, i) => {
-            const image = await ImageManipulator.manipulate(asset.uri).renderAsync();
-            const converted = await image.saveAsync({
-                format: SaveFormat.JPEG,
-            });
-            // const existingName = asset.fileName?.split(".").pop()
-            const newName = asset.fileName?.replace('heic', 'jpeg');
-            return {
-                uri: converted.uri,
-                type: 'image/jpeg',
-                name: newName,
-            };
-        }));
-    }
-
-    function createImageUploadModelForOther(images: ImagePickerAsset[]) {
-        return images.map(asset => {
-            return {
-                uri: asset.uri,
-                type: asset.mimeType,
-                name: 'places' + asset.fileName,
-            };
-        });
-    }
-
-    function constructRequest(placeId: number, newImage: ImageUploadModel): FormData | undefined {
-        const formData = new FormData();
-        formData.append('placeId', placeId.toString());
-        formData.append('file', {
-            uri: newImage.uri,
-            type: newImage.type,
-            name: newImage.name,
-        } as any);
-        return formData;
-    }
-
-    async function uploadImages(newImage: ImageUploadModel) {
-        if (!placeId) return;
-        const file = constructRequest(placeId, newImage);
-        try {
-            const res = await api.photosControllerUploadFile(placeId, file);
-            setImages(prev => [...prev, res.data]);
-            showSnackbar("Image uploaded successfully", "success")
-        } catch (err) {
-            if (isAxiosError<NestError>(err)) {
-                showSnackbar("Failed to upload image: " + err.response?.data?.message, "error")
-            }
-        }
-    }
 
     async function deleteImage(id: number) {
-        if (!placeId) return;
         try {
             setIsLoading(true);
-            console.log('deleting image :', id);
             await api.photosControllerDeletePhoto({id: id});
             setImages(prev => prev.filter(i => i.id !== id));
-            // await getPhotos();
+            showSnackbar("image deleted successfully", "success");
+
         } catch (err) {
-            console.error(err);
+            if (isAxiosError<NestError>(err))
+                showSnackbar("Error deleting image" + err?.response?.data.message, "error");
         } finally {
             setIsLoading(false);
         }
     }
-
-
-    // const imageIds: number [] = useMemo(() => {
-    //     return images.map(i => i.id);
-    // }, [images])
 
 
     function ImageItem({item}: { item: PhotosDto }) {
@@ -162,6 +69,25 @@ export default function UploadImages({images, setImages, onFinish, placeId}: {
         );
     }
 
+    const {pickImage} = useUploadImage()
+
+    async function uploadPhoto() {
+        setIsLoading(true);
+        const uploadedImages = await pickImage(placeId)
+        if (uploadedImages) {
+            // in case the user cancels the image selection it returns null
+            setImages(prev => [...prev, ...uploadedImages])
+        }
+        setIsLoading(false);
+    }
+
+    async function setMainImage(photoId: number) {
+        try {
+            await api.photosControllerSetMain(photoId, placeId)
+        } catch (err) {
+            console.error(err);
+        }
+    }
 
     return (
         <>
@@ -193,13 +119,14 @@ export default function UploadImages({images, setImages, onFinish, placeId}: {
 
                 <IconButton color={Theme.colors.white}
                             extraStylesBtn={styles.addButton}
-                            onPress={pickImage}
+                            onPress={uploadPhoto}
                             name="plus"></IconButton>
                 {activeId && placeId &&
                     <AppImageViewer activeImageId={activeId}
                                     setActiveImageId={setActiveId}
                                     onDeleteImage={deleteImage}
                                     placeId={placeId}
+                                    onSetMainImage={setMainImage}
                     />
                 }
 

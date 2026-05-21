@@ -47,7 +47,7 @@ export const Snackbar = ({ref}: { ref: RefObject<SnackbarRef | null> }) => {
             if (value.type === "success") {
                 setTimeout(() => {
                     removeItem(value.id)
-                }, 3000);
+                }, 1500);
             }
         },
         hide(id: number) {

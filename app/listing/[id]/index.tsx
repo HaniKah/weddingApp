@@ -162,9 +162,7 @@ const styles = StyleSheet.create({
     callForActionContainer: {
         padding: 20,
         paddingBottom: 30,
-        backgroundColor: Theme.colors.iconBackground,
-        borderTopWidth: 1,
-        borderTopColor: Theme.colors.border,
+
 
     },
     infosContainer: {

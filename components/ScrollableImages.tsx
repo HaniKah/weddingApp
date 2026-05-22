@@ -1,5 +1,5 @@
 import React, {useEffect, useRef} from "react";
-import {Dimensions, FlatList, StyleSheet, Text, View} from "react-native";
+import {Dimensions, FlatList, Pressable, StyleSheet, Text, View} from "react-native";
 import {Image} from "expo-image"
 import {PlaceDetailsPhotos} from "@/types/open-api";
 import {IconSymbol} from "@/components/symbols/IconSymbol";
@@ -37,7 +37,7 @@ function Footer({count, activeIndex}: { count: number, activeIndex: number }) {
             });
         }
     }, [activeIndex, count]);
-    
+
     if (count === 0) return null;
 
     return (
@@ -66,9 +66,10 @@ function Footer({count, activeIndex}: { count: number, activeIndex: number }) {
     )
 }
 
-export default function ScrollableImages({images}: { images: PlaceDetailsPhotos[] }) {
+export default function ScrollableImages({images, onPress}: { images: PlaceDetailsPhotos[], onPress: () => void }) {
     const DEVICE_WIDTH = Dimensions.get('window').width
     const [activeIndex, setActiveIndex] = React.useState(0);
+    const isDragging = useRef(false);
 
     const onScroll = (event: any) => {
         const contentOffset = event.nativeEvent.contentOffset.x;
@@ -77,6 +78,11 @@ export default function ScrollableImages({images}: { images: PlaceDetailsPhotos[
             setActiveIndex(index);
         }
     };
+
+    function handlePress() {
+        if (isDragging.current) return;
+        onPress?.();
+    }
 
     return (
         <>
@@ -89,13 +95,28 @@ export default function ScrollableImages({images}: { images: PlaceDetailsPhotos[
                           snapToAlignment={"center"}
                           snapToInterval={DEVICE_WIDTH}
                           decelerationRate="fast"
-                          renderItem={({item}) => <Image
-                              style={[styles.image, {width: DEVICE_WIDTH}]} source={item.url}
-                              contentFit="cover"
-                              placeholder={item.blurhash}/>}
+                          renderItem={({item}) =>
+                              <Pressable onPress={handlePress}>
+                                  <Image
+                                      cachePolicy="memory-disk"
+                                      style={[styles.image, {width: DEVICE_WIDTH}]} source={item.url}
+                                      contentFit="cover"
+                                      placeholder={item.blurhash}/>
+                              </Pressable>}
                           getItemLayout={(data, index) => ({length: DEVICE_WIDTH, offset: index * DEVICE_WIDTH, index})}
                           scrollEventThrottle={16}
                           onScroll={onScroll}
+                          onScrollBeginDrag={() => {
+                              isDragging.current = true;
+                          }}
+                          onMomentumScrollEnd={() => {
+                              isDragging.current = false;
+                          }}
+                          onScrollEndDrag={() => {
+                              setTimeout(() => {
+                                  isDragging.current = false;
+                              }, 100);
+                          }}
                 />
                 <Footer count={images.length} activeIndex={activeIndex}/>
             </View>

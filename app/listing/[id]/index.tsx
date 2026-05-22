@@ -1,6 +1,6 @@
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {useCallback, useEffect, useMemo, useState} from 'react';
-import {Link, Stack, useLocalSearchParams} from 'expo-router';
+import {Link, router, Stack, useLocalSearchParams} from 'expo-router';
 import {Categories, PlaceDetailsDto} from '@/types/open-api';
 import AppButton from '@/components/appComponents/AppButton';
 import {ButtonType} from '@/styles/Button';
@@ -76,14 +76,17 @@ export default function PlaceId() {
                 >
                     <Link
                         push
-                        asChild
                         href={{
                             pathname: '/listing/[id]/images',
                             params: {id: params.id, step: params.step},
                         }}
                     >
                         {placeDetails?.photos && placeDetails?.photos?.length > 0 ?
-                            <ScrollableImages images={placeDetails.photos}/>
+                            <ScrollableImages
+                                onPress={() => router.push({
+                                    pathname: '/listing/[id]/images',
+                                    params: {id: params.id, step: params.step},
+                                })} images={placeDetails.photos}/>
                             :
                             <View style={styles.imagePlaceHolder}>
                                 <View style={styles.iconWrapper}>

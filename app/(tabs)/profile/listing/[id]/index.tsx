@@ -233,7 +233,7 @@ export default function Place() {
             <CreatePlaceModal initalStep={activeStep}
                               id={placeDetails?.id}
                               ref={editModalRef}
-                              reloadPlaces={fetchPlace}/>
+                              reloadPlaces={handleRefresh}/>
         </>
     );
 

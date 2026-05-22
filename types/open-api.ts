@@ -108,6 +108,11 @@ export interface PlacesViewModel {
   places: PlacesDto[];
 }
 
+export interface PlaceDetailsPhotos {
+  url: string;
+  blurhash: string;
+}
+
 export interface PlaceDetailsDto {
   category: Categories;
   countryCode: CountryCode;
@@ -120,9 +125,7 @@ export interface PlaceDetailsDto {
   tiktok?: string;
   instagram?: string;
   phoneNumber: string;
-  photosCount: number;
-  mainPhoto: string;
-  mainPhotoBlurhash?: string;
+  photos: PlaceDetailsPhotos[];
   maxPrice: string;
   minPrice: string;
   description: string;

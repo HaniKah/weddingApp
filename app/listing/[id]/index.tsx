@@ -1,5 +1,4 @@
-import {Pressable, ScrollView, StyleSheet, Text, View} from 'react-native';
-import {Image} from 'expo-image';
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {useCallback, useEffect, useMemo, useState} from 'react';
 import {Link, Stack, useLocalSearchParams} from 'expo-router';
 import {Categories, PlaceDetailsDto} from '@/types/open-api';
@@ -14,7 +13,7 @@ import LocationTag from '@/components/LocationTag';
 import IconCategory from '../../../components/symbols/IconCategory';
 import AppView from '@/components/appComponents/AppView';
 import PriceTag from '@/components/PriceTag';
-import {IconSymbol} from "@/components/symbols/IconSymbol";
+import ScrollableImages from "@/components/ScrollableImages";
 
 
 export default function PlaceId() {
@@ -83,21 +82,9 @@ export default function PlaceId() {
                             params: {id: params.id, step: params.step},
                         }}
                     >
-                        {placeDetails?.mainPhoto ?
-                            <Pressable style={styles.imageContainer}>
-                                {placeDetails.photosCount > 1 &&
-                                    <View style={styles.photosFound}>
-                                        <IconSymbol color={Theme.colors.black} name="photo.on.rectangle"/>
-                                        <Text>
-                                            {placeDetails.photosCount} Photos
-                                        </Text>
-                                    </View>
-                                }
-                                <Image style={styles.image} source={{uri: placeDetails.mainPhoto}} transition={200}
-                                       placeholder={placeDetails.mainPhotoBlurhash}
-                                       cachePolicy="memory-disk"
-                                       contentFit="cover"/>
-                            </Pressable> :
+                        {placeDetails?.photos && placeDetails?.photos?.length > 0 ?
+                            <ScrollableImages images={placeDetails.photos}/>
+                            :
                             <View style={styles.imagePlaceHolder}>
                                 <View style={styles.iconWrapper}>
                                     <IconCategory size={100} color={Theme.colors.secondary}
@@ -169,23 +156,10 @@ const styles = StyleSheet.create({
         padding: 20,
     },
     imageContainer: {
-        height: 300,
+        // height: 350,
         position: 'relative',
     },
-    photosFound: {
-        display: "flex",
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 5,
-        backgroundColor: "rgba(255,255,255,0.8)",
-        position: 'absolute',
-        top: 10,
-        right: 10,
-        zIndex: 20,
-        paddingHorizontal: 10,
-        paddingVertical: 5,
-        borderRadius: Theme.radius.full
-    },
+
     imagePlaceHolder: {
         height: '100%',
         backgroundColor: Theme.colors.iconBackground,

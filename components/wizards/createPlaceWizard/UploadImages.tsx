@@ -14,6 +14,7 @@ import {useUploadImage} from "@/utils/uploadImages";
 import {showSnackbar} from "@/components/Snackbar";
 import {isAxiosError} from "axios";
 import {NestError} from "@/types/errors";
+import {IconSymbol} from "@/components/symbols/IconSymbol";
 
 export default function UploadImages({images, setImages, onFinish, placeId}: {
     images: PhotosDto[]
@@ -54,10 +55,19 @@ export default function UploadImages({images, setImages, onFinish, placeId}: {
             <>
                 <AppPressable onPress={() => setActiveId(item.id)}>
                     <View style={styles.imageContainer}>
+                        {item.isMain &&
+                            <IconSymbol style={styles.mainSymbol}
+                                        name="crown.fill"
+                                        size={25}
+                                        color={Theme.colors.white}
+                            />}
                         <View style={styles.xButton}>
                             <IconButton onPress={() => deleteImage(item.id)} size={10} name="xmark" color="black"/>
                         </View>
-                        <Image source={{uri: item.uri}} style={[styles.image, {width: IMAGE_SIZE, height: IMAGE_SIZE}]}
+                        <Image source={{uri: item.uri}} style={[styles.image, {
+                            width: IMAGE_SIZE,
+                            height: IMAGE_SIZE
+                        }]}
                                placeholder={item.blurhash}
                                cachePolicy="memory-disk"
                                transition={200}
@@ -84,6 +94,7 @@ export default function UploadImages({images, setImages, onFinish, placeId}: {
     async function setMainImage(photoId: number) {
         try {
             await api.photosControllerSetMain(photoId, placeId)
+            setImages((prev) => prev.map((i) => ({...i, isMain: i.id === photoId})))
         } catch (err) {
             console.error(err);
         }
@@ -158,6 +169,12 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 5,
         right: 5,
+        zIndex: 10,
+    },
+    mainSymbol: {
+        position: 'absolute',
+        top: 5,
+        left: 5,
         zIndex: 10,
     },
     title: {

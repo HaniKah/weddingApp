@@ -1,4 +1,4 @@
-import {ActivityIndicator, Dimensions, Modal, Pressable, StyleSheet, View} from 'react-native';
+import {ActivityIndicator, Dimensions, Modal, Pressable, StyleSheet, Text, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {IconSymbol} from '@/components/symbols/IconSymbol';
 import ImageViewer from 'react-native-image-zoom-viewer';
@@ -66,14 +66,25 @@ export default function AppImageViewer({activeImageId, setActiveImageId, onDelet
     function HeaderMenu() {
         return (
             <View style={styles.headerContainer}>
-                {images[currentIndex]?.isMain &&
-                    <IconSymbol color={Theme.colors.white} name="crown.fill"/>
-                }
                 <Pressable onPress={onClose}>
                     <IconSymbol color="white" size={25} name="xmark"/>
                 </Pressable>
+                {images[currentIndex]?.isMain &&
+                    <View style={styles.mainImageContainer}>
+                        <IconSymbol color={Theme.colors.white} name="crown.fill"/>
+                        <Text style={styles.mainImageText}>Main photo</Text>
+                    </View>
+
+                }
+
             </View>
         );
+    }
+
+    async function handleMainImage() {
+        if (!onSetMainImage || !activeImageId) return
+        await onSetMainImage(activeImageId)
+        setImages((prev) => prev.map((i) => ({...i, isMain: i.id === activeImageId})))
     }
 
     function FooterMenu() {
@@ -89,9 +100,10 @@ export default function AppImageViewer({activeImageId, setActiveImageId, onDelet
                                 weight="regular"
                                 size={25}/>
                 }
+
                 {
                     onSetMainImage && !images[currentIndex]?.isMain &&
-                    <IconButton onPress={() => onSetMainImage(activeImageId)}
+                    <IconButton onPress={handleMainImage}
                                 name="crown"
                                 size={25}
                                 color="white"
@@ -99,6 +111,7 @@ export default function AppImageViewer({activeImageId, setActiveImageId, onDelet
                                 extraStylesBtn={{backgroundColor: Theme.colors.gray.S700}}
                     />
                 }
+
 
             </View>
         )
@@ -144,6 +157,18 @@ const styles = StyleSheet.create({
         flexDirection: 'row-reverse',
         paddingTop: 20,
         paddingHorizontal: 20,
+        justifyContent: 'space-between',
+
+    },
+    mainImageContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'flex-end',
+        gap: 5,
+    },
+    mainImageText: {
+        color: 'white',
+        fontWeight: 'semibold',
     },
     footerContainer: {
         flex: 1,
@@ -154,6 +179,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingBottom: 70,
         paddingHorizontal: 20,
-        gap: 10
+        gap: 10,
+
     },
 });

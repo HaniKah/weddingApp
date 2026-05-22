@@ -54,5 +54,100 @@
     "success": "Success",
     "warning": "Warning",
     "info": "Info"
+  },
+  "planner": {
+    "noVendorsFound": "No vendors found",
+    "tryDifferentSearch": "Try different search or category"
+  },
+  "profile": {
+    "publish": "Publish",
+    "preview": "Preview",
+    "noImagesYet": "you haven't uploaded images yet",
+    "unpublishListing": "Unpublish listing",
+    "deleteListing": "Delete listing",
+    "deleteAlertTitle": "Delete listing",
+    "deleteAlertMessage": "This will permanently delete your listing and all its photos. This cannot be undone.",
+    "delete": "Delete",
+    "unpublishAlertTitle": "Unpublish listing",
+    "unpublishAlertMessage": "This will unpublish your listing. Users will not be able see your listing anymore. You can publish it again anytime you want to make it visible to the public.",
+    "unpublish": "Unpublish",
+    "manageListing": "Manage listing",
+    "listingDetails": "LISTING DETAILS",
+    "gallery": "GALLERY",
+    "mainPhoto": "Main photo",
+    "welcomeBack": "Welcome back",
+    "personal": "Personal",
+    "myFavorites": "My Favorites",
+    "business": "Business",
+    "myListings": "My Listings",
+    "yourPlaces": "Your Places",
+    "account": "Account",
+    "changeLocation": "Change my location",
+    "deleteAccount": "Delete my account",
+    "logout": "Logout",
+    "logoutTitle": "Logout",
+    "logoutMessage": "Are you sure you want to logout ?",
+    "deleteAccountTitle": "Delete account",
+    "deleteAccountMessage": "Are you sure you want to delete your account? All related data for this account will be deleted as well.",
+    "noFavoritesYet": "You don't have favorites yet",
+    "favorites": "Favorites",
+    "favoritesNotAvailable_one": "{{count}} favorite is not available anymore",
+    "favoritesNotAvailable_other": "{{count}} favorites are not available anymore"
+  },
+  "location": {
+    "pickTitle": "Where are you planning your wedding?",
+    "pickSubtitle": "Please select a country to see available vendors and services."
+  },
+  "checklist": {
+    "header": "Wedding Checklist",
+    "noTasksYet": "No tasks yet",
+    "deleteTodoTitle": "Delete Todo",
+    "deleteTodoMessage": "Are you sure you want to delete this item?",
+    "todoPlaceholder": "What needs to be done?"
+  },
+  "guests": {
+    "title": "Guest list"
+  },
+  "promotion": {
+    "months": "months",
+    "promotions": "Promotions",
+    "selectDuration": "Select promotion duration",
+    "addSaleLabel": "Add sale label",
+    "choosePercentage": "Choose a percentage",
+    "bullet1": "Add your place to the top-search result",
+    "bullet2": "Get x2 more viewers on your page",
+    "bullet3": "Add sale label",
+    "checkout": "Checkout",
+    "footerText": "Cancel anytime • Secure payment • Instant access",
+    "saleLabels": {
+      "Sale": "Sale",
+      "Buy1Get1Free": "Buy 1 Get 1 Free",
+      "None": "None"
+    }
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "firstName": "First name",
+    "firstNamePlaceholder": "Enter your first name",
+    "lastName": "Last name",
+    "lastNamePlaceholder": "Enter your last name",
+    "email": "Email",
+    "emailPlaceholder": "Enter your email",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "confirmPassword": "Confirm Password",
+    "confirmPasswordPlaceholder": "Confirm your password",
+    "signInButton": "Sign in",
+    "signUpButton": "Sign up",
+    "passwordsDontMatch": "Passwords don't match",
+    "welcomeSubtitle": "Sign in in order to create listing, manage favorites and get more features",
+    "signInWithGoogle": "Sign In with Google",
+    "signInWithApple": "Sign In with Apple",
+    "continueWithEmail": "Continue with Email"
+  },
+  "common": {
+    "cancel": "Cancel",
+    "clear": "clear"
   }
 }

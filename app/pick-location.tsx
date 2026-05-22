@@ -9,8 +9,12 @@ import {CountryCode} from "@/types/open-api";
 import AppSafeAreaView from "@/components/appComponents/AppSafeAreaView";
 import {useLocationStore} from "@/utils/locationStore";
 
+import {useTranslation} from "react-i18next";
+
+
 export default function PickLocation() {
     const {setIsoCountry, setErrorMsg} = useLocationContext();
+    const {t} = useTranslation();
 
     const countriesList = Array.from(COUNTRIES.values());
     const {setLocation} = useLocationStore()
@@ -36,9 +40,8 @@ export default function PickLocation() {
             <AppSafeAreaView>
                 <AppView withPadding>
                     <View style={styles.header}>
-                        <Text style={styles.title}>Where are you planning your wedding?</Text>
-                        <Text style={styles.subtitle}>Please select a country to see available vendors and
-                            services.</Text>
+                        <Text style={styles.title}>{t('location.pickTitle')}</Text>
+                        <Text style={styles.subtitle}>{t('location.pickSubtitle')}</Text>
                     </View>
                     <FlatList
                         data={countriesList}

@@ -11,12 +11,16 @@ import {CommonStyles} from '@/styles/Common';
 import AppButton from '@/components/appComponents/AppButton';
 import {ButtonSize, ButtonType} from '@/styles/Button';
 
+import {useTranslation} from 'react-i18next';
+
+
 export default function Favorites() {
     const [favoritePlaces, setFavoritePlaces] = useState<FavoritePlaceDto[]>([]);
     const [notFoundFavorites, setNotFoundFavorites] = useState<number[]>([]);
     const [isLoading, setLoading] = useState(false);
     const {api} = useApi();
     const {favorites, toggleFavorite} = useFavoritesStore();
+    const {t} = useTranslation();
 
     const getFavoritesData = useCallback(async () => {
         if (favorites.length === 0) {
@@ -58,7 +62,7 @@ export default function Favorites() {
 
     function EmptyData() {
         return (
-            <Text style={CommonStyles.dataNotFound}>You don&#39;t have favorites yet</Text>
+            <Text style={CommonStyles.dataNotFound}>{t('profile.noFavoritesYet')}</Text>
         );
     }
 
@@ -75,7 +79,7 @@ export default function Favorites() {
                 options={{
                     headerBackButtonDisplayMode: 'minimal',
                     contentStyle: {backgroundColor: Theme.colors.background},
-                    headerTitle: 'Favorites',
+                    headerTitle: t('profile.favorites'),
                 }}
             />
             <AppView withPadding>
@@ -93,12 +97,12 @@ export default function Favorites() {
                 {notFoundFavorites.length > 0 &&
                     <View style={styles.notFoundContainer}>
                         <Text
-                            style={styles.notFound}>{notFoundFavorites.length} favorite{notFoundFavorites.length > 1 && "s"} {notFoundFavorites.length > 1 ? "are" : "is"}
-                            not available
-                            anymore</Text>
+                            style={styles.notFound}>
+                            {t('profile.favoritesNotAvailable', {count: notFoundFavorites.length})}
+                        </Text>
                         <AppButton onPress={clearNotFoundFavorites} extraStylesTxt={{color: Theme.colors.secondary}}
                                    buttonType={ButtonType.PLAIN}
-                                   buttonSize={ButtonSize.SM}>clear</AppButton>
+                                   buttonSize={ButtonSize.SM}>{t('common.clear')}</AppButton>
                     </View>
                 }
 

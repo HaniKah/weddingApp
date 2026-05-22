@@ -14,17 +14,21 @@ import AppSafeAreaView from '@/components/appComponents/AppSafeAreaView';
 import {useAuthStore} from '@/utils/authStore';
 import SignIn from '@/components/screens/sign-in';
 
+import {useTranslation} from 'react-i18next';
+
+
 export default function Index() {
     const {signOut, deleteUser} = useAuth();
     const {isoCountry} = useLocationContext();
     const {isLoggedIn} = useAuthStore();
     const router = useRouter();
+    const {t} = useTranslation();
 
     function deleteAccount() {
-        Alert.alert('Delete account', 'Are you sure you want to delete your account? All related data for this account will be deleted as well.', [{
-            text: 'Cancel', style: 'default',
+        Alert.alert(t('profile.deleteAccountTitle'), t('profile.deleteAccountMessage'), [{
+            text: t('common.cancel'), style: 'default',
         }, {
-            text: 'Delete',
+            text: t('profile.delete'),
             onPress: () => deleteUser(),
             style: 'destructive',
         }]);
@@ -40,10 +44,10 @@ export default function Index() {
     }
 
     function logOut() {
-        Alert.alert('Logout', 'Are you sure you want to logout ?', [{
-            text: 'Cancel', style: 'default',
+        Alert.alert(t('profile.logoutTitle'), t('profile.logoutMessage'), [{
+            text: t('common.cancel'), style: 'default',
         }, {
-            text: 'Log out', style: 'destructive',
+            text: t('profile.logout'), style: 'destructive',
             onPress: () => signOut(),
         },
         ]);
@@ -58,7 +62,7 @@ export default function Index() {
                     <AppView withPadding>
 
                         <View style={styles.info}>
-                            <Text style={styles.name}>Welcome back</Text>
+                            <Text style={styles.name}>{t('profile.welcomeBack')}</Text>
                             <View style={styles.location}>
                                 <IconSymbol name="location" size={14} color={Theme.colors.secondary}/>
                                 {isoCountry &&
@@ -69,37 +73,37 @@ export default function Index() {
 
 
                         <View style={styles.sectionContainer}>
-                            
+
 
                             {/* PERSONAL */}
                             <View style={styles.section}>
-                                <Text style={styles.sectionTitle}>Personal</Text>
+                                <Text style={styles.sectionTitle}>{t('profile.personal')}</Text>
                                 <MenuItem
                                     icon="heart"
-                                    label="My Favorites"
+                                    label={t('profile.myFavorites')}
                                     onPress={() => router.push('/(tabs)/profile/favorites')}
                                 />
                             </View>
 
                             {/* BUSINESS */}
                             <View style={styles.section}>
-                                <Text style={styles.sectionTitle}>Business</Text>
+                                <Text style={styles.sectionTitle}>{t('profile.business')}</Text>
                                 <MenuItem
                                     icon="briefcase"
-                                    label="My Listings"
+                                    label={t('profile.myListings')}
                                     onPress={() => router.push('/(tabs)/profile/listing')}
                                 />
                             </View>
 
                             {/* ACCOUNT */}
                             <View style={styles.section}>
-                                <Text style={styles.sectionTitle}>Account</Text>
+                                <Text style={styles.sectionTitle}>{t('profile.account')}</Text>
                                 <View style={styles.menuItemContainer}>
-                                    <MenuItem icon={"mappin.and.ellipse"} label={"Change my location"}
+                                    <MenuItem icon={"mappin.and.ellipse"} label={t('profile.changeLocation')}
                                               onPress={() => router.dismissTo("/pick-location")}/>
                                     <MenuItem
                                         icon="exclamationmark.square"
-                                        label="Delete my account"
+                                        label={t('profile.deleteAccount')}
                                         onPress={deleteAccount}
                                     />
                                 </View>
@@ -110,7 +114,7 @@ export default function Index() {
 
                         <AppButton extraStylesBtn={{marginTop: 20}} fullWidth destructive buttonType={ButtonType.PLAIN}
                                    buttonSize="MD" onPress={logOut}>
-                            Logout
+                            {t('profile.logout')}
                         </AppButton>
 
                     </AppView>

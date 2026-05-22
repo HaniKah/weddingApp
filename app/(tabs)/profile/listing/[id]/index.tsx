@@ -63,12 +63,12 @@ export default function Place() {
 
     function confirmDelete() {
         Alert.alert(
-            'Delete listing',
-            'This will permanently delete your listing and all its photos. This cannot be undone.',
+            t('profile.deleteAlertTitle'),
+            t('profile.deleteAlertMessage'),
             [
-                {text: 'Cancel', style: 'cancel'},
+                {text: t('common.cancel'), style: 'cancel'},
                 {
-                    text: 'Delete',
+                    text: t('profile.delete'),
                     style: 'destructive',
                     onPress: async () => {
                         try {
@@ -86,12 +86,12 @@ export default function Place() {
     function confirmUnpublish() {
         if (!placeDetails?.id) return;
         Alert.alert(
-            'Unpublish listing',
-            'This will unpublish your listing. Users will not be able see your listing anymore. You can publish it again anytime you want to make it visible to the public.',
+            t('profile.unpublishAlertTitle'),
+            t('profile.unpublishAlertMessage'),
             [
-                {text: 'Cancel', style: 'cancel'},
+                {text: t('common.cancel'), style: 'cancel'},
                 {
-                    text: 'Unpublish',
+                    text: t('profile.unpublish'),
                     style: 'destructive',
                     onPress: () => handleTogglePublish(placeDetails?.id, false),
                 },
@@ -137,7 +137,7 @@ export default function Place() {
         <>
             <Stack.Screen
                 options={{
-                    title: 'Manage listing',
+                    title: t('profile.manageListing'),
                     headerShown: true,
                     headerBackButtonDisplayMode: 'minimal',
                     contentStyle: {backgroundColor: Theme.colors.background},
@@ -157,7 +157,7 @@ export default function Place() {
                                        buttonType={ButtonType.PLAIN}
                                        fullRound
                                        confirmative>
-                                Publish
+                                {t('profile.publish')}
                             </AppButton>
                         </View> :
                         <Link asChild push href={`/listing/${placeDetails?.id}`}>
@@ -165,14 +165,15 @@ export default function Place() {
                                 extraStylesBtn={styles.actionButtons}
                                 icon="eye"
                                 fullRound
-                                buttonType={ButtonType.PLAIN}>Preview</AppButton>
+                                buttonType={ButtonType.PLAIN}>{t('profile.preview')}</AppButton>
                         </Link>
                     }
                 </AppView>
 
 
                 {placeDetails &&
-                    <InfoCard onPress={() => openModalOnStep(UpdateStep.FillPlaceInfo)} label="LISTING DETAILS">
+                    <InfoCard onPress={() => openModalOnStep(UpdateStep.FillPlaceInfo)}
+                              label={t('profile.listingDetails')}>
                         <Text style={styles.placeName}>{placeDetails?.name}</Text>
                         <View style={styles.categoryTag}>
                             <CategoryTag category={placeDetails?.category}/>
@@ -181,13 +182,13 @@ export default function Place() {
                                     info={`${placeDetails?.city}, ${COUNTRIES.get(placeDetails?.countryCode)?.countryName}`}/>
                         <SingleInfo icon="phone" info={placeDetails?.phoneNumber}/>
                         <SingleInfo icon="tag"
-                                    info={!placeDetails.minPrice ? 'No Price' : placeDetails?.minPrice === placeDetails?.maxPrice ? `${placeDetails?.minPrice} ${COUNTRIES.get(placeDetails?.countryCode)?.currency} / ${t('priceType.' + placeDetails?.priceType)} ` : `${placeDetails?.minPrice} - ${placeDetails?.maxPrice} ${COUNTRIES.get(placeDetails?.countryCode)?.currency} / ${t('priceType.' + placeDetails?.priceType)}`}/>
+                                    info={!placeDetails.minPrice ? t('priceKind.NoPrice') : placeDetails?.minPrice === placeDetails?.maxPrice ? `${placeDetails?.minPrice} ${COUNTRIES.get(placeDetails?.countryCode)?.currency} / ${t('priceType.' + placeDetails?.priceType)} ` : `${placeDetails?.minPrice} - ${placeDetails?.maxPrice} ${COUNTRIES.get(placeDetails?.countryCode)?.currency} / ${t('priceType.' + placeDetails?.priceType)}`}/>
                         {placeDetails.description &&
                             <SingleInfo icon="text.justify.left" info={placeDetails?.description}/>
                         }
                     </InfoCard>
                 }
-                <InfoCard onPress={() => openModalOnStep(UpdateStep.UploadImages)} label="GALLERY">
+                <InfoCard onPress={() => openModalOnStep(UpdateStep.UploadImages)} label={t('profile.gallery')}>
                     <View style={styles.imageContainer} onLayout={(event) => {
                         const {width} = event.nativeEvent.layout;
                         setContainerWidth(width);
@@ -201,7 +202,7 @@ export default function Place() {
                                            transition={200}/>
                                 </View>
                             );
-                        }) : <Text style={styles.notFoundText}>you haven&#39;t uploaded images yet</Text>}
+                        }) : <Text style={styles.notFoundText}>{t('profile.noImagesYet')}</Text>}
                     </View>
                 </InfoCard>
 
@@ -214,7 +215,7 @@ export default function Place() {
                                        iconColor={Theme.colors.secondary}
                                        icon="square.and.arrow.down"
                                        fullWidth>
-                                Unpublish listing
+                                {t('profile.unpublishListing')}
                             </AppButton>
                             <LineSeparator/>
                         </>
@@ -225,7 +226,7 @@ export default function Place() {
                                iconColor={Theme.colors.secondary}
                                icon="trash"
                                fullWidth>
-                        Delete listing
+                        {t('profile.deleteListing')}
                     </AppButton>
                 </View>
             </ScrollView>

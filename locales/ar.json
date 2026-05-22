@@ -1,0 +1,157 @@
+{
+  "categories": {
+    "All": "الكل",
+    "Host": "قاعات ومناسبات",
+    "Dress": "فساتين",
+    "Suit": "بدلات",
+    "Photographer": "مصورون",
+    "Car": "سيارات",
+    "Salon": "صالونات",
+    "Dj": "دي جي",
+    "MakeUpArtist": "خبراء مكياج",
+    "Florist": "منسقو زهور",
+    "Decorator": "مصممو ديكور",
+    "Catering": "خدمات طعام",
+    "DancingCourse": "دورات رقص",
+    "Giveaway": "توزيعات",
+    "Procession": "زفة",
+    "Performer": "موسيقيون وفنانون",
+    "Jewelry": "مجوهرات",
+    "Perfume": "عطور",
+    "Shower": "استحمام",
+    "Clinic": "عيادات",
+    "Cosmetic": "تجميل",
+    "Firework": "ألعاب نارية",
+    "Miscellaneous": "متنوع"
+  },
+  "priceType": {
+    "PerPerson": "شخص",
+    "PerHour": "ساعة",
+    "PerItem": "قطعة",
+    "PerEvent": "مناسبة"
+  },
+  "priceKind": {
+    "NoPrice": "بدون سعر",
+    "Range": "نطاق",
+    "Single": "فردي"
+  },
+  "timeframe": {
+    "Year": "سنة واحدة",
+    "NineMonths": "9 أشهر",
+    "SixMonths": "6 أشهر",
+    "ThreeMonths": "3 أشهر",
+    "OneMonth": "شهر واحد",
+    "LastWeek": "الأسبوع الماضي",
+    "LastDay": "اليوم الماضي",
+    "BigDay": "اليوم الكبير"
+  },
+  "coupleSide": {
+    "Groom": "جهة العريس",
+    "Bride": "جهة العروس"
+  },
+  "snackbar": {
+    "error": "خطأ",
+    "success": "نجاح",
+    "warning": "تحذير",
+    "info": "معلومات"
+  },
+  "planner": {
+    "noVendorsFound": "لم يتم العثور على موردين",
+    "tryDifferentSearch": "حاول البحث بكلمات أخرى أو اختيار فئة مختلفة"
+  },
+  "profile": {
+    "publish": "نشر",
+    "preview": "معاينة",
+    "noImagesYet": "لم تقم بتحميل صور بعد",
+    "unpublishListing": "إلغاء نشر القائمة",
+    "deleteListing": "حذف القائمة",
+    "deleteAlertTitle": "حذف القائمة",
+    "deleteAlertMessage": "سيؤدي هذا إلى حذف قائمتك وجميع صورها بشكل دائم. لا يمكن التراجع عن هذا الإجراء.",
+    "delete": "حذف",
+    "unpublishAlertTitle": "إلغاء نشر القائمة",
+    "unpublishAlertMessage": "سيؤدي هذا إلى إلغاء نشر قائمتك. لن يتمكن المستخدمون من رؤية قائمتك بعد الآن. يمكنك نشرها مرة أخرى في أي وقت تريد فيه جعلها مرئية للجمهور.",
+    "unpublish": "إلغاء النشر",
+    "manageListing": "إدارة القائمة",
+    "listingDetails": "تفاصيل القائمة",
+    "gallery": "المعرض",
+    "mainPhoto": "الصورة الرئيسية",
+    "welcomeBack": "مرحباً بعودتك",
+    "personal": "شخصي",
+    "myFavorites": "مفضلاتي",
+    "business": "أعمال",
+    "myListings": "قوائمي",
+    "yourPlaces": "أماكنك",
+    "account": "الحساب",
+    "changeLocation": "تغيير موقعي",
+    "deleteAccount": "حذف حسابي",
+    "logout": "تسجيل الخروج",
+    "logoutTitle": "تسجيل الخروج",
+    "logoutMessage": "هل أنت متأكد أنك تريد تسجيل الخروج؟",
+    "deleteAccountTitle": "حذف الحساب",
+    "deleteAccountMessage": "هل أنت متأكد أنك تريد حذف حسابك؟ سيتم حذف جميع البيانات المتعلقة بهذا الحساب أيضاً.",
+    "noFavoritesYet": "ليس لديك مفضلات بعد",
+    "favorites": "المفضلات",
+    "favoritesNotAvailable_zero": "لا توجد مفضلات غير متوفرة",
+    "favoritesNotAvailable_one": "هناك عنصر مفضل واحد غير متوفر",
+    "favoritesNotAvailable_two": "هناك عنصران مفضلان غير متوفرين",
+    "favoritesNotAvailable_few": "هناك {{count}} عناصر مفضلة غير متوفرة",
+    "favoritesNotAvailable_many": "هناك {{count}} عنصراً مفضلاً غير متوفر",
+    "favoritesNotAvailable_other": "هناك {{count}} عنصر مفضل غير متوفر"
+  },
+  "location": {
+    "pickTitle": "أين تخطط لحفل زفافك؟",
+    "pickSubtitle": "يرجى اختيار دولة لرؤية البائعين والخدمات المتاحة."
+  },
+  "checklist": {
+    "header": "قائمة مهام الزفاف",
+    "noTasksYet": "لا توجد مهام بعد",
+    "deleteTodoTitle": "حذف المهمة",
+    "deleteTodoMessage": "هل أنت متأكد أنك تريد حذف هذا العنصر؟",
+    "todoPlaceholder": "ما الذي يجب القيام به؟"
+  },
+  "guests": {
+    "title": "قائمة الضيوف"
+  },
+  "promotion": {
+    "months": "أشهر",
+    "promotions": "العروض الترويجية",
+    "selectDuration": "اختر مدة العرض الترويجي",
+    "addSaleLabel": "إضافة ملصق تخفيض",
+    "choosePercentage": "اختر نسبة مئوية",
+    "bullet1": "أضف مكانك إلى أعلى نتائج البحث",
+    "bullet2": "احصل على ضعف المشاهدات لصفحتك",
+    "bullet3": "إضافة ملصق تخفيض",
+    "checkout": "الدفع",
+    "footerText": "إلغاء في أي وقت • دفع آمن • وصول فوري",
+    "saleLabels": {
+      "Sale": "تخفيض",
+      "Buy1Get1Free": "اشترِ 1 واحصل على 1 مجاناً",
+      "None": "لا يوجد"
+    }
+  },
+  "auth": {
+    "signIn": "تسجيل الدخول",
+    "signUp": "إنشاء حساب",
+    "firstName": "الاسم الأول",
+    "firstNamePlaceholder": "أدخل اسمك الأول",
+    "lastName": "اسم العائلة",
+    "lastNamePlaceholder": "أدخل اسم العائلة",
+    "email": "البريد الإلكتروني",
+    "emailPlaceholder": "أدخل بريدك الإلكتروني",
+    "password": "كلمة المرور",
+    "passwordPlaceholder": "أدخل كلمة المرور",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "confirmPasswordPlaceholder": "تأكيد كلمة المرور الخاصة بك",
+    "signInButton": "تسجيل الدخول",
+    "signUpButton": "إنشاء حساب",
+    "passwordsDontMatch": "كلمات المرور غير متطابقة",
+    "welcomeSubtitle": "سجل دخولك لإنشاء القوائم، وإدارة المفضلات والحصول على المزيد من المميزات",
+    "signInWithGoogle": "تسجيل الدخول بواسطة جوجل",
+    "signInWithApple": "تسجيل الدخول بواسطة أبل",
+    "continueWithEmail": "المتابعة بواسطة البريد الإلكتروني"
+  },
+  "common": {
+    "cancel": "إلغاء",
+    "clear": "مسح"
+  }
+}

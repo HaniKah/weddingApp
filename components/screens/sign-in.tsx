@@ -11,10 +11,14 @@ import {Theme} from '@/styles/Theme';
 import Google from '@/assets/icons/social-media/google.svg';
 
 
+import {useTranslation} from 'react-i18next';
+
+
 export default function SignIn() {
     const {signInWithGoogle, signInWithApple} = useAuth();
     // const { resetOnboarding } = useAuthStore();
     const [showEmailForm, setShowEmailForm] = useState(false);
+    const {t} = useTranslation();
 
 
     function closeForm() {
@@ -33,8 +37,7 @@ export default function SignIn() {
                         style={[styles.welcomeContainer]}
                     >
                         <Text style={styles.appTitle}>Ghamrah</Text>
-                        <Text style={styles.subtitle}>Sign in in order to create listing, manage favorites and get more
-                            features</Text>
+                        <Text style={styles.subtitle}>{t('auth.welcomeSubtitle')}</Text>
                     </View>
 
                     <Animated.View
@@ -48,7 +51,7 @@ export default function SignIn() {
                             onPress={signInWithGoogle}
                             CustomIcon={Google}
                         >
-                            Sign In with Google
+                            {t('auth.signInWithGoogle')}
                         </AppButton>
 
                         <AppButton
@@ -59,7 +62,7 @@ export default function SignIn() {
                             extraStylesTxt={styles.appleTextPrimary}
                             onPress={signInWithApple}
                         >
-                            Sign In with Apple
+                            {t('auth.signInWithApple')}
                         </AppButton>
 
                         <AppButton
@@ -70,7 +73,7 @@ export default function SignIn() {
                             icon="mail"
                             onPress={() => setShowEmailForm(true)}
                             buttonType={ButtonType.OUTLINED}>
-                            Continue with Email
+                            {t('auth.continueWithEmail')}
                         </AppButton>
                         {/*<AppButton onPress={resetOnboarding}>*/}
                         {/*  reset on boarding*/}

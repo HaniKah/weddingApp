@@ -1,65 +1,70 @@
 import React from 'react';
-import { FlatList, StyleSheet, Text } from 'react-native';
-import { Theme } from '@/styles/Theme';
-import { ChecklistDto, Timeframe, useChecklistStore } from '@/utils/checklistStore';
+import {FlatList, StyleSheet, Text} from 'react-native';
+import {Theme} from '@/styles/Theme';
+import {ChecklistDto, Timeframe, useChecklistStore} from '@/utils/checklistStore';
 import AppView from '@/components/appComponents/AppView';
-import { Stack } from 'expo-router';
+import {Stack} from 'expo-router';
 import AppSafeAreaView from '@/components/appComponents/AppSafeAreaView';
 import TodoItem from '@/components/items/TodoItem';
 import AppKeyboardAvoidingView from '@/components/appComponents/AppKeyboardAvoidingView';
 
 
+import {useTranslation} from 'react-i18next';
+
+
 export interface GroupedTodos {
-  timeframe: Timeframe,
-  data: ChecklistDto[]
+    timeframe: Timeframe,
+    data: ChecklistDto[]
 }
 
 export default function Checklist() {
-  const { todos, todosHydrating } = useChecklistStore();
+    const {todos, todosHydrating} = useChecklistStore();
+    const {t} = useTranslation();
 
-  const groupedTodos: GroupedTodos[] = Object.values(Timeframe).map(tf => ({
-    timeframe: tf,
-    data: todos.filter(todo => todo.timeframe === tf),
-  }));
+    const groupedTodos: GroupedTodos[] = Object.values(Timeframe).map(tf => ({
+        timeframe: tf,
+        data: todos.filter(todo => todo.timeframe === tf),
+    }));
 
-  const rehydrate = () => (useChecklistStore.persist.rehydrate());
+    const rehydrate = () => (useChecklistStore.persist.rehydrate());
 
 
-  return (
-    <>
-      <Stack.Screen options={{ headerShown: false }} />
-      <AppSafeAreaView>
-        <AppKeyboardAvoidingView>
-          <AppView isLoading={todosHydrating} extraStyles={{ backgroundColor: Theme.colors.background }} withPadding>
-            <Text style={styles.header}>Wedding Checklist</Text>
-            <FlatList
-              refreshing={todosHydrating}
-              onRefresh={rehydrate}
-              data={groupedTodos}
-              keyExtractor={(item) => item.timeframe}
-              renderItem={({ item }) => (
-                <TodoItem item={item} />
-              )}
-              contentContainerStyle={styles.listContent}
-              showsVerticalScrollIndicator={false}
-            />
-          </AppView>
-        </AppKeyboardAvoidingView>
-      </AppSafeAreaView>
-    </>
-  );
+    return (
+        <>
+            <Stack.Screen options={{headerShown: false}}/>
+            <AppSafeAreaView>
+                <AppKeyboardAvoidingView>
+                    <AppView isLoading={todosHydrating} extraStyles={{backgroundColor: Theme.colors.background}}
+                             withPadding>
+                        <Text style={styles.header}>{t('checklist.header')}</Text>
+                        <FlatList
+                            refreshing={todosHydrating}
+                            onRefresh={rehydrate}
+                            data={groupedTodos}
+                            keyExtractor={(item) => item.timeframe}
+                            renderItem={({item}) => (
+                                <TodoItem item={item}/>
+                            )}
+                            contentContainerStyle={styles.listContent}
+                            showsVerticalScrollIndicator={false}
+                        />
+                    </AppView>
+                </AppKeyboardAvoidingView>
+            </AppSafeAreaView>
+        </>
+    );
 }
 
 const styles = StyleSheet.create({
 
-  header: {
-    fontSize: Theme.sizes.xl,
-    fontWeight: 'bold',
-    color: Theme.colors.primary,
-    marginVertical: 15,
-  },
-  listContent: {
-    paddingBottom: 40,
-  },
+    header: {
+        fontSize: Theme.sizes.xl,
+        fontWeight: 'bold',
+        color: Theme.colors.primary,
+        marginVertical: 15,
+    },
+    listContent: {
+        paddingBottom: 40,
+    },
 
 });

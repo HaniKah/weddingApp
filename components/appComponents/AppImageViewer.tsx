@@ -8,6 +8,9 @@ import {useApi} from "@/utils/api";
 import {IconButton} from "@/components/symbols/IconButton";
 import {Theme} from "@/styles/Theme";
 
+import {useTranslation} from 'react-i18next';
+
+
 export default function AppImageViewer({activeImageId, setActiveImageId, onDeleteImage, onSetMainImage, placeId}: {
     onDeleteImage?: (id: number) => Promise<void>,
     onSetMainImage?: (id: number) => Promise<void>,
@@ -19,6 +22,7 @@ export default function AppImageViewer({activeImageId, setActiveImageId, onDelet
     const {width} = Dimensions.get('window');
     const insets = useSafeAreaInsets();
     const {api} = useApi()
+    const {t} = useTranslation();
     const [images, setImages] = useState<PhotosDto[]>([])
 
 
@@ -72,7 +76,7 @@ export default function AppImageViewer({activeImageId, setActiveImageId, onDelet
                 {images[currentIndex]?.isMain &&
                     <View style={styles.mainImageContainer}>
                         <IconSymbol color={Theme.colors.white} name="crown.fill"/>
-                        <Text style={styles.mainImageText}>Main photo</Text>
+                        <Text style={styles.mainImageText}>{t('profile.mainPhoto')}</Text>
                     </View>
 
                 }

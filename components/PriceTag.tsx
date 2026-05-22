@@ -15,7 +15,7 @@ export default function PriceTag({minPrice, maxPrice, countryCode, priceType}: {
     if (countryCode) return (
         <View style={styles.container}>
             <AppIf value={!maxPrice && !maxPrice}>
-                <Text numberOfLines={1} ellipsizeMode={"tail"} style={styles.currency}>No price</Text>
+                <Text numberOfLines={1} ellipsizeMode={"tail"} style={styles.currency}>{t('priceKind.NoPrice')}</Text>
             </AppIf>
             <AppIf value={maxPrice && minPrice}>
                 <View style={styles.priceContainer}>

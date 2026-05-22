@@ -32,7 +32,8 @@ export default function PlaceItem({item}: { item: PlacesDto }) {
                         }
                         {item.mainPhoto ?
                             <Image style={styles.image}
-                                   source={{uri: item.mainPhoto}} transition={200}
+                                   source={{uri: item.mainPhoto}}
+                                   transition={200}
                                    placeholder={item.mainPhotoBlurhash}
                                    cachePolicy="memory-disk"
                                    contentFit="cover"/>
@@ -94,14 +95,15 @@ const styles = StyleSheet.create({
     infoContainer: {
         display: 'flex',
         alignItems: 'flex-start',
-        padding: 15,
-        gap: 10,
+        paddingHorizontal: 15,
+        paddingVertical: 10,
+        gap: 5,
     },
     link: {
         marginBottom: 30,
     },
     imageContainer: {
-        height: 180,
+        height: 200,
         overflow: 'hidden',
         position: 'relative',
     },

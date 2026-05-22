@@ -95,8 +95,7 @@ const styles = StyleSheet.create({
     infoContainer: {
         display: 'flex',
         alignItems: 'flex-start',
-        paddingHorizontal: 15,
-        paddingVertical: 10,
+        padding: 15,
         gap: 5,
     },
     link: {

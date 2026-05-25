@@ -6,7 +6,7 @@ import {useWizardContext} from "@/components/wizards/Wizard";
 import Animated from "react-native-reanimated";
 
 
-export default function WizardController({isFirstStep, isLastStep, onNext}: {
+export default function WizardController({isFirstStep = false, isLastStep = false, onNext}: {
     isFirstStep?: boolean,
     isLastStep?: boolean,
     onNext?: () => void

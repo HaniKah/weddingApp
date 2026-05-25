@@ -14,6 +14,23 @@ import {useFormContext} from '@/contexts/form-context';
 import {Dispatch, SetStateAction, useEffect, useMemo, useRef, useState} from 'react';
 import {IconButton} from '@/components/symbols/IconButton';
 
+export type AppTextInputProps = {
+    placeholder?: string,
+    label?: string
+    onChange: (text: string | undefined) => void | Dispatch<SetStateAction<string | undefined>>
+    value: string | undefined | null,
+    keyboardType?: KeyboardTypeOptions,
+    required?: boolean,
+    name: string
+    design?: 1 | 2,
+    extraStyles?: StyleProp<ViewStyle>
+    unit?: string
+    textArea?: boolean
+    onBlur?: () => void
+    secureTextEntry?: boolean
+    inputMode?: InputModeOptions
+}
+
 export default function AppTextInput({
                                          onChange,
                                          value,
@@ -30,24 +47,7 @@ export default function AppTextInput({
                                          secureTextEntry,
                                          inputMode,
 
-                                     }: {
-
-    placeholder?: string,
-    label?: string
-    onChange: (text: string | undefined) => void | Dispatch<SetStateAction<string | undefined>>
-    value: string | undefined | null,
-    keyboardType?: KeyboardTypeOptions,
-    required?: boolean,
-    name: string
-    design?: 1 | 2,
-    extraStyles?: StyleProp<ViewStyle>
-    unit?: string
-    textArea?: boolean
-    onBlur?: () => void
-    secureTextEntry?: boolean
-    inputMode?: InputModeOptions
-
-}) {
+                                     }: AppTextInputProps) {
 
     let styles: TextInputType = design === 1 ? design1 : design2;
 

@@ -6,6 +6,7 @@ import AddDescription from '@/components/wizards/createPlaceWizard/AddDescriptio
 import {Wizard} from '@/components/wizards/Wizard';
 import FillPlaceInfo from '@/components/wizards/createPlaceWizard/FillPlaceInfo';
 import {useApi} from '@/utils/api';
+import AddFeatures from "@/components/wizards/createPlaceWizard/AddFeatures";
 
 
 export type ImageUploadModel = {
@@ -60,6 +61,12 @@ export default function CreatePlaceWizard({id, onFinish, initialStep}: {
                         data={data}
                     />
                 </WizardStep>
+
+                <WizardStep step={UpdateStep.AddFeatures}>
+                    <AddFeatures setData={setData}
+                                 data={data}/>
+                </WizardStep>
+                
                 <WizardStep step={UpdateStep.AddDescription}>
                     <AddDescription
                         setData={setData}

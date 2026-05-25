@@ -12,6 +12,7 @@
 
 export enum UpdateStep {
   FillPlaceInfo = "FillPlaceInfo",
+  AddFeatures = "AddFeatures",
   AddDescription = "AddDescription",
   PickPlaceLocation = "PickPlaceLocation",
   UploadImages = "UploadImages",
@@ -277,6 +278,12 @@ export interface CreatePlaceRequest {
   location: LocationInfo;
 }
 
+export interface PlacesFeatures {
+  rent?: boolean;
+  capacity?: number;
+  outdoor?: boolean;
+}
+
 export interface VendorPlaceDetailsDto {
   category: Categories;
   priceType: PriceType;
@@ -294,6 +301,12 @@ export interface VendorPlaceDetailsDto {
   minPrice: string;
   maxPrice: string;
   city: string;
+  features: PlacesFeatures;
+}
+
+export interface UpdateFeaturesRequest {
+  category: Categories;
+  features: PlacesFeatures;
 }
 
 export interface SocialMediaInfo {
@@ -309,6 +322,7 @@ export interface UpdatePlaceRequest {
   placeInfo?: PlaceInfo;
   description?: string;
   location?: LocationInfo;
+  features?: UpdateFeaturesRequest;
   socialMedia?: SocialMediaInfo;
 }
 

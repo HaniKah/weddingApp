@@ -149,5 +149,9 @@
   "common": {
     "cancel": "Cancel",
     "clear": "clear"
+  },
+  "feature": {
+    "capacity": "Capacity",
+    "outdoor": "Outdoor"
   }
 }

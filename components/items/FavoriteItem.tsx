@@ -3,10 +3,10 @@ import {Image} from 'expo-image';
 import {Theme} from '@/styles/Theme';
 import {IconSymbol} from '@/components/symbols/IconSymbol';
 import {Link} from 'expo-router';
-import CategoryTag from '@/components/CategoryTag';
+import CategoryTag from '@/components/tags/CategoryTag';
 import {FavoritePlaceDto} from '@/types/open-api';
 import IconCategory from '@/components/symbols/IconCategory';
-import PriceTag from '@/components/PriceTag';
+import PriceTag from '@/components/tags/PriceTag';
 
 type FavoriteItemProps = {
     data: FavoritePlaceDto;

@@ -6,9 +6,9 @@ import {Dispatch, SetStateAction} from 'react';
 import AppIf from '@/components/appComponents/AppIf';
 import {IconSymbol} from '@/components/symbols/IconSymbol';
 import {Link} from 'expo-router';
-import CategoryTag from '@/components/CategoryTag';
+import CategoryTag from '@/components/tags/CategoryTag';
 import AppPressable from '@/components/appComponents/AppPressable';
-import PriceTag from '@/components/PriceTag';
+import PriceTag from '@/components/tags/PriceTag';
 
 type VendorPlaceItemProps = {
     data: VendorPlaceDto;

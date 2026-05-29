@@ -8,7 +8,7 @@ import {Theme} from '@/styles/Theme';
 import {AppModalRef} from '@/components/appComponents/AppModal';
 import AppButton from '@/components/appComponents/AppButton';
 import {ButtonType} from '@/styles/Button';
-import CategoryTag from '@/components/CategoryTag';
+import CategoryTag from '@/components/tags/CategoryTag';
 import {COUNTRIES} from '@/constants/countries';
 import {IconSymbol, IconSymbolName} from '@/components/symbols/IconSymbol';
 import CreatePlaceModal from '@/components/modals/CreatePlaceModal';

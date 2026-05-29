@@ -9,10 +9,10 @@ import {Theme} from '@/styles/Theme';
 import {useApi} from '@/utils/api';
 import {useFavoritesStore} from '@/utils/favoritesStore';
 import {IconButton} from '@/components/symbols/IconButton';
-import LocationTag from '@/components/LocationTag';
+import LocationTag from '@/components/tags/LocationTag';
 import IconCategory from '../../../components/symbols/IconCategory';
 import AppView from '@/components/appComponents/AppView';
-import PriceTag from '@/components/PriceTag';
+import PriceTag from '@/components/tags/PriceTag';
 import ScrollableImages from "@/components/ScrollableImages";
 
 

@@ -1,6 +1,6 @@
 import {Categories} from '@/types/open-api';
 import {StyleSheet, Text, View} from 'react-native';
-import IconCategory from './symbols/IconCategory';
+import IconCategory from '../symbols/IconCategory';
 import {Theme} from '@/styles/Theme';
 import {useTranslation} from 'react-i18next';
 

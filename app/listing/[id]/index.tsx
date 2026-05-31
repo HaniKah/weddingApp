@@ -14,6 +14,7 @@ import IconCategory from '../../../components/symbols/IconCategory';
 import AppView from '@/components/appComponents/AppView';
 import PriceTag from '@/components/tags/PriceTag';
 import ScrollableImages from "@/components/ScrollableImages";
+import FeaturesTag from "@/components/tags/FeaturesTag";
 
 
 export default function PlaceId() {
@@ -110,6 +111,10 @@ export default function PlaceId() {
                                         <IconButton onPress={() => toggleFavorite(id)} removeBackground name="heart"/>}
                             </View>
                             <LocationTag city={placeDetails?.city}/>
+                            <AppIf value={placeDetails?.features}>
+                                <FeaturesTag features={placeDetails?.features}/>
+                            </AppIf>
+
                             <PriceTag minPrice={placeDetails?.minPrice}
                                       maxPrice={placeDetails?.maxPrice}
                                       priceType={placeDetails?.priceType}

@@ -4,7 +4,7 @@ import {Theme} from "@/styles/Theme";
 import React from "react";
 import {useTranslation} from "react-i18next";
 
-export default function FeaturesTag({features}: { features: PlacesFeatures }) {
+export default function FeaturesTag({features}: { features: PlacesFeatures | undefined }) {
     const {t} = useTranslation();
     // const list = useMemo(() => Object.entries(features).filter(([key, value]) => value), [features])
     if (!features) return null;

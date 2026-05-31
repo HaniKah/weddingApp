@@ -139,6 +139,7 @@ export interface PlaceDetailsDto {
   minPrice: string;
   description: string;
   city: string;
+  features: PlacesFeatures;
 }
 
 export interface FavoritePlaceDto {

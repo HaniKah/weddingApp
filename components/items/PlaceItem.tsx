@@ -1,14 +1,13 @@
-import {Linking, StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {Image} from 'expo-image';
 import {PlacesDto} from '@/types/open-api';
 import {Link} from 'expo-router';
 import {Theme} from '@/styles/Theme';
-import AppButton from '@/components/appComponents/AppButton';
-import {ButtonSize} from '@/styles/Button';
 import IconCategory from '../symbols/IconCategory';
 import AppPressable from '@/components/appComponents/AppPressable';
-import PriceTag from '@/components/PriceTag';
-import LocationTag from '@/components/LocationTag';
+import LocationTag from "@/components/tags/LocationTag";
+import PriceTag from "@/components/tags/PriceTag";
+import FeaturesTag from "@/components/tags/FeaturesTag";
 
 
 export default function PlaceItem({item}: { item: PlacesDto }) {
@@ -55,13 +54,15 @@ export default function PlaceItem({item}: { item: PlacesDto }) {
 
                         <LocationTag city={item.city} removeBackground textColor={Theme.colors.secondary}/>
 
+                        <FeaturesTag features={item.features}/>
+
                         <View style={styles.priceAndCallContainer}>
                             <PriceTag maxPrice={item.maxPrice} minPrice={item.minPrice} priceType={item.priceType}
                                       countryCode={item.country}/>
-                            <AppButton buttonSize={ButtonSize.SM}
-                                       onPress={() => Linking.openURL(`tel:${item.phoneNumber}`)}>
-                                Call now
-                            </AppButton>
+                            {/*<AppButton buttonSize={ButtonSize.SM}*/}
+                            {/*           onPress={() => Linking.openURL(`tel:${item.phoneNumber}`)}>*/}
+                            {/*    Call now*/}
+                            {/*</AppButton>*/}
                         </View>
 
                     </View>

@@ -88,6 +88,12 @@ export enum Categories {
   Miscellaneous = "Miscellaneous",
 }
 
+export interface PlacesFeatures {
+  rent?: boolean;
+  capacity?: number;
+  outdoor?: boolean;
+}
+
 export interface PlacesDto {
   category: Categories;
   priceType: PriceType;
@@ -103,6 +109,7 @@ export interface PlacesDto {
   label: string | null;
   phoneNumber: string;
   city: string;
+  features: PlacesFeatures;
 }
 
 export interface PlacesViewModel {
@@ -276,12 +283,6 @@ export interface LocationInfo {
 export interface CreatePlaceRequest {
   placeInfo: PlaceInfo;
   location: LocationInfo;
-}
-
-export interface PlacesFeatures {
-  rent?: boolean;
-  capacity?: number;
-  outdoor?: boolean;
 }
 
 export interface VendorPlaceDetailsDto {

@@ -7,13 +7,15 @@ import {UpdateStep, VendorPlaceDetailsDto} from "@/types/open-api";
 import {useWizardContext} from "@/components/wizards/Wizard";
 import {StyleSheet, Text, View} from "react-native";
 import {Theme} from "@/styles/Theme";
+import AppCheckbox from "@/components/appComponents/AppCheckbox";
 
 export default function AddFeaturesHost({data, setData}: {
     data: VendorPlaceDetailsDto,
     setData: Dispatch<SetStateAction<VendorPlaceDetailsDto | undefined>>
 }) {
     const [capacity, setCapacity] = useState<number | undefined>(data.features?.capacity)
-    const [outdoor, setOutdoor] = useState<boolean>(false)
+    const [outdoor, setOutdoor] = useState<boolean | undefined>(data.features?.outdoor)
+    const [indoor, setIndoor] = useState<boolean | undefined>(data.features?.indoor)
     const refForm = useRef<FormRef>(null)
     const {api} = useApi()
     const wizard = useWizardContext();
@@ -28,6 +30,7 @@ export default function AddFeaturesHost({data, setData}: {
                     features: {
                         capacity: capacity,
                         outdoor: outdoor,
+                        indoor: indoor,
                     }
                 }
             })
@@ -43,7 +46,7 @@ export default function AddFeaturesHost({data, setData}: {
         <>
             <View style={styles.container}>
                 <AppForm onSubmit={updateFeatures} ref={refForm}>
-                    <Text style={styles.labelCapacity}>How many people can your venue fit?</Text>
+                    <Text style={styles.labelCapacity}>How many guests can your venue accommodate ?</Text>
                     <AppNumberInput design={2}
                                     name="capacity"
                                     value={capacity}
@@ -51,13 +54,12 @@ export default function AddFeaturesHost({data, setData}: {
                                     required
                                     onTextChange={setCapacity}/>
 
-                    <Text style={styles.labelCapacity}>How many people can your venue fit?</Text>
-                    <AppNumberInput design={2}
-                                    name="capacity"
-                                    value={capacity}
-                                    placeholder="e.g. 500"
-                                    required
-                                    onTextChange={setCapacity}/>
+                    <Text style={styles.labelCapacity}>Venue setup?</Text>
+                    <View style={styles.setup}>
+                        <AppCheckbox label={"Outdoor"} value={outdoor} onChange={setOutdoor}/>
+                        <AppCheckbox label={"Indoor"} value={indoor} onChange={setIndoor}/>
+                    </View>
+
                 </AppForm>
             </View>
             <WizardController onNext={refForm.current?.submit}/>
@@ -76,5 +78,11 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         marginTop: 20,
         color: Theme.colors.primary
-    }
+    },
+    setup: {
+        flexDirection: "row",
+        gap: 50,
+        alignItems: "center",
+    },
+
 })

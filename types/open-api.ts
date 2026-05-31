@@ -92,6 +92,7 @@ export interface PlacesFeatures {
   rent?: boolean;
   capacity?: number;
   outdoor?: boolean;
+  indoor?: boolean;
 }
 
 export interface PlacesDto {

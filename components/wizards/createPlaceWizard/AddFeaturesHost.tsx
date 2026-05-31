@@ -8,6 +8,7 @@ import {useWizardContext} from "@/components/wizards/Wizard";
 import {StyleSheet, Text, View} from "react-native";
 import {Theme} from "@/styles/Theme";
 import AppCheckbox from "@/components/appComponents/AppCheckbox";
+import {useTranslation} from "react-i18next";
 
 export default function AddFeaturesHost({data, setData}: {
     data: VendorPlaceDetailsDto,
@@ -19,6 +20,7 @@ export default function AddFeaturesHost({data, setData}: {
     const refForm = useRef<FormRef>(null)
     const {api} = useApi()
     const wizard = useWizardContext();
+    const {t} = useTranslation()
 
     async function updateFeatures() {
         try {
@@ -56,8 +58,8 @@ export default function AddFeaturesHost({data, setData}: {
 
                     <Text style={styles.labelCapacity}>Venue setup?</Text>
                     <View style={styles.setup}>
-                        <AppCheckbox label={"Outdoor"} value={outdoor} onChange={setOutdoor}/>
-                        <AppCheckbox label={"Indoor"} value={indoor} onChange={setIndoor}/>
+                        <AppCheckbox label={t("feature.outdoor")} value={outdoor} onChange={setOutdoor}/>
+                        <AppCheckbox label={t("feature.indoor")} value={indoor} onChange={setIndoor}/>
                     </View>
 
                 </AppForm>

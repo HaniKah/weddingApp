@@ -153,5 +153,10 @@
   "common": {
     "cancel": "إلغاء",
     "clear": "مسح"
+  },
+  "feature": {
+    "capacity": "الاستيعاب",
+    "outdoor": "خارجي",
+    "indoor": "داخلي"
   }
 }

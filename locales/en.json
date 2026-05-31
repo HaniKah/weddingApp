@@ -152,6 +152,7 @@
   },
   "feature": {
     "capacity": "Capacity",
-    "outdoor": "Outdoor"
+    "outdoor": "Outdoor",
+    "indoor": "Indoor"
   }
 }

@@ -157,6 +157,8 @@
   "feature": {
     "capacity": "الاستيعاب",
     "outdoor": "خارجي",
-    "indoor": "داخلي"
-  }
+    "indoor": "داخلي",
+    "rent": "التأجير متاح"
+  },
+  "Do you rent dresses ?": "هل تاجير الفساتين متاح ؟"
 }

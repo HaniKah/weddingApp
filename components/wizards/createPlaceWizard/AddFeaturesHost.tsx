@@ -48,7 +48,7 @@ export default function AddFeaturesHost({data, setData}: {
         <>
             <View style={styles.container}>
                 <AppForm onSubmit={updateFeatures} ref={refForm}>
-                    <Text style={styles.labelCapacity}>How many guests can your venue accommodate ?</Text>
+                    <Text style={styles.label}>How many guests can your venue accommodate ?</Text>
                     <AppNumberInput design={2}
                                     name="capacity"
                                     value={capacity}
@@ -56,7 +56,7 @@ export default function AddFeaturesHost({data, setData}: {
                                     required
                                     onTextChange={setCapacity}/>
 
-                    <Text style={styles.labelCapacity}>Venue setup?</Text>
+                    <Text style={styles.label}>Venue setup?</Text>
                     <View style={styles.setup}>
                         <AppCheckbox label={t("feature.outdoor")} value={outdoor} onChange={setOutdoor}/>
                         <AppCheckbox label={t("feature.indoor")} value={indoor} onChange={setIndoor}/>
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
         padding: 15,
         marginBottom: 100,
     },
-    labelCapacity: {
+    label: {
         fontSize: Theme.sizes.xl,
         fontWeight: 'bold',
         marginBottom: 10,

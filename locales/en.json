@@ -153,6 +153,7 @@
   "feature": {
     "capacity": "Capacity",
     "outdoor": "Outdoor",
-    "indoor": "Indoor"
+    "indoor": "Indoor",
+    "rent": "Rent available"
   }
 }

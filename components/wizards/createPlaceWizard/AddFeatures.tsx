@@ -13,7 +13,7 @@ export default function AddFeatures({data, setData}: {
         case Categories.Host:
             return <AddFeaturesHost data={data} setData={setData}/>
         case Categories.Dress:
-            return <AddFeaturesDress/>
+            return <AddFeaturesDress data={data} setData={setData}/>
         default:
             return null
     }

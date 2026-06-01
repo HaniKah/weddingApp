@@ -44,7 +44,8 @@ const MAPPING = {
     'briefcase': 'work',
     "xmark": "close",
     "x.circle.fill": "close",
-    "photo.on.rectangle": "filter"
+    "photo.on.rectangle": "filter",
+    "text.justify.left": "notes"
 } as IconMapping;
 
 /**

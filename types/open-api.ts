@@ -14,7 +14,6 @@ export enum UpdateStep {
   FillPlaceInfo = "FillPlaceInfo",
   AddFeatures = "AddFeatures",
   AddDescription = "AddDescription",
-  PickPlaceLocation = "PickPlaceLocation",
   UploadImages = "UploadImages",
 }
 
@@ -246,9 +245,6 @@ export interface PlaceInfo {
   minPrice?: string | null;
   maxPrice?: string | null;
   priceType?: "PerPerson" | "PerHour" | "PerItem" | "PerEvent" | null;
-}
-
-export interface LocationInfo {
   city: string;
   countryCode:
     | "AE"
@@ -284,7 +280,6 @@ export interface LocationInfo {
 
 export interface CreatePlaceRequest {
   placeInfo: PlaceInfo;
-  location: LocationInfo;
 }
 
 export interface VendorPlaceDetailsDto {
@@ -324,7 +319,6 @@ export interface UpdatePlaceRequest {
   id: number;
   placeInfo?: PlaceInfo;
   description?: string;
-  location?: LocationInfo;
   features?: UpdateFeaturesRequest;
   socialMedia?: SocialMediaInfo;
 }

@@ -66,6 +66,9 @@ export default function FillPlaceInfo({data, setData}: {
     const citiesPickerItem: PickerItem<string>[] | undefined = useMemo(() => {
         if (!countryCode) return;
         const cities = COUNTRIES.get(countryCode)?.cities;
+        if (city && !cities?.includes(city)) {
+            setCity(undefined)
+        }
         return cities?.map((c: string) => ({value: c, name: c}));
     }, [countryCode]);
 
@@ -95,11 +98,9 @@ export default function FillPlaceInfo({data, setData}: {
                     maxPrice: maxPrice,
                     priceType: priceType,
                     category: category,
-                },
-                location: {
                     countryCode: countryCode,
                     city: city,
-                },
+                }
             });
             setData(res.data);
         } catch (error) {
@@ -123,10 +124,9 @@ export default function FillPlaceInfo({data, setData}: {
                     maxPrice: maxPrice,
                     priceType: priceType,
                     category: category,
-                }, location: {
                     countryCode: countryCode,
                     city: city,
-                },
+                }
             });
             setData(res.data);
 

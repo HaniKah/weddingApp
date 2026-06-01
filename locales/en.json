@@ -22,6 +22,9 @@
     "Clinic": "Clinics",
     "Cosmetic": "Cosmetics",
     "Firework": "Fireworks",
+    "Honeymoon": "Honeymoon",
+    "HennaSpecialist": "Henna Specialist",
+    "AvEquipment": "Audio-Visual Equipment",
     "Miscellaneous": "Miscellaneous"
   },
   "priceType": {

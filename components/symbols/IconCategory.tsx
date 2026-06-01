@@ -24,6 +24,9 @@ export const categoryIcons: Record<Categories | 'All', keyof typeof MaterialComm
     [Categories.Clinic]: 'hospital-box',
     [Categories.Firework]: 'firework',
     [Categories.Car]: 'car-convertible',
+    [Categories.Honeymoon]: 'sail-boat',
+    [Categories.HennaSpecialist]: 'flower-pollen',
+    [Categories.AvEquipment]: 'spotlight',
     [Categories.Miscellaneous]: "star"
 };
 

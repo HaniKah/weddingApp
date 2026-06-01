@@ -70,11 +70,14 @@ export enum Categories {
   Car = "Car",
   Dj = "Dj",
   MakeUpArtist = "MakeUpArtist",
+  HennaSpecialist = "HennaSpecialist",
+  AvEquipment = "AvEquipment",
   Salon = "Salon",
   Florist = "Florist",
   Decorator = "Decorator",
   Catering = "Catering",
   DancingCourse = "DancingCourse",
+  Honeymoon = "Honeymoon",
   Giveaway = "Giveaway",
   Procession = "Procession",
   Performer = "Performer",
@@ -666,11 +669,14 @@ export class Api<
           | "Car"
           | "Dj"
           | "MakeUpArtist"
+          | "HennaSpecialist"
+          | "AvEquipment"
           | "Salon"
           | "Florist"
           | "Decorator"
           | "Catering"
           | "DancingCourse"
+          | "Honeymoon"
           | "Giveaway"
           | "Procession"
           | "Performer"

@@ -9,6 +9,7 @@ import {StyleSheet, Text, View} from "react-native";
 import {Theme} from "@/styles/Theme";
 import AppCheckbox from "@/components/appComponents/AppCheckbox";
 import {useTranslation} from "react-i18next";
+import FeaturesHero from "@/components/wizards/createPlaceWizard/FeaturesHero";
 
 export default function AddFeaturesHost({data, setData}: {
     data: VendorPlaceDetailsDto,
@@ -47,21 +48,25 @@ export default function AddFeaturesHost({data, setData}: {
     return (
         <>
             <View style={styles.container}>
+                <FeaturesHero category={data?.category}/>
                 <AppForm onSubmit={updateFeatures} ref={refForm}>
-
-                    <Text style={styles.label}>How many guests can your venue accommodate ?</Text>
-                    <AppNumberInput design={2}
-                                    name="capacity"
-                                    value={capacity}
-                                    placeholder="e.g. 500"
-                                    required
-                                    onTextChange={setCapacity}/>
-
-                    <Text style={styles.label}>Venue setup?</Text>
-                    <View style={styles.setup}>
-                        <AppCheckbox label={t("feature.outdoor")} value={outdoor} onChange={setOutdoor}/>
-                        <AppCheckbox label={t("feature.indoor")} value={indoor} onChange={setIndoor}/>
+                    <View>
+                        <Text style={styles.question}>How many guests can your venue accommodate ?</Text>
+                        <AppNumberInput design={2}
+                                        name="capacity"
+                                        value={capacity}
+                                        placeholder="e.g. 500"
+                                        required
+                                        onTextChange={setCapacity}/>
                     </View>
+                    <View style={styles.questionContainer}>
+                        <Text style={styles.question}>Venue setup?</Text>
+                        <View style={styles.setup}>
+                            <AppCheckbox label={t("feature.outdoor")} value={outdoor} onChange={setOutdoor}/>
+                            <AppCheckbox label={t("feature.indoor")} value={indoor} onChange={setIndoor}/>
+                        </View>
+                    </View>
+
 
                 </AppForm>
             </View>
@@ -72,20 +77,40 @@ export default function AddFeaturesHost({data, setData}: {
 }
 const styles = StyleSheet.create({
     container: {
-        padding: 15,
-        marginVertical: "auto",
+        paddingHorizontal: 40,
+        marginTop: 40,
+        display: "flex",
+        flexDirection: "column",
+        gap: 40
     },
-    label: {
+    questionContainer: {
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        gap: 10,
+    },
+    question: {
         fontSize: Theme.sizes.xl,
         fontWeight: 'bold',
-        marginBottom: 10,
-        marginTop: 20,
-        color: Theme.colors.primary
+        color: Theme.colors.primary,
+        marginBottom: 15,
+        textAlign: "center",
+    },
+    description: {
+        color: Theme.colors.secondary,
+        fontStyle: "italic",
+        alignSelf: "center",
+        marginBottom: 50,
+        textAlign: "center",
+        paddingHorizontal: 20
     },
     setup: {
+        display: "flex",
         flexDirection: "row",
-        gap: 50,
+        justifyContent: "center",
         alignItems: "center",
+        gap: 20,
+        width: "100%",
     },
 
 })

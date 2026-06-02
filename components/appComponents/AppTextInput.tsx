@@ -11,17 +11,16 @@ import {
 } from 'react-native';
 import {Theme} from '@/styles/Theme';
 import {useFormContext} from '@/contexts/form-context';
-import {Dispatch, SetStateAction, useEffect, useMemo, useRef, useState} from 'react';
+import {Dispatch, SetStateAction, useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {IconButton} from '@/components/symbols/IconButton';
 import {parsePhoneNumber} from "libphonenumber-js";
 import {useLocationContext} from "@/contexts/location-context";
-import {CountryCode} from "@/types/open-api";
 
 export type AppTextInputProps = {
     placeholder?: string,
     label?: string
     onChange: (text: string | undefined) => void | Dispatch<SetStateAction<string | undefined>>
-    value: string | undefined,
+    value: string | undefined | null,
     keyboardType?: KeyboardTypeOptions,
     required?: boolean,
     name: string
@@ -72,40 +71,40 @@ export default function AppTextInput({
 
     type CheckResult = { error: string | undefined }
 
-    function checkRequired(text: string | undefined): CheckResult {
+    const checkRequired = useCallback((text: string | undefined): CheckResult => {
         if (required && !text) {
             return {error: 'This field is required'}
         } else {
             return {error: undefined}
         }
-    }
+    }, [required])
 
-    function checkPhoneNumber(text: string | undefined, country: CountryCode): CheckResult {
-        if (keyboardType === "phone-pad" && text && isoCountry) {
-            const phoneNumber = parsePhoneNumber(text, country)
-            if (!phoneNumber.isValid() || phoneNumber.country !== country) {
-                return {error: 'Invalid phone number'}
+    const checkPhoneNumber = useCallback((text: string | undefined): CheckResult => {
+            if (keyboardType === "phone-pad" && text && isoCountry) {
+                const phoneNumber = parsePhoneNumber(text, isoCountry)
+                if (!phoneNumber.isValid() || phoneNumber.country !== isoCountry) {
+                    return {error: 'Invalid phone number'}
+                }
             }
+            return {error: undefined}
         }
-        return {error: undefined}
-    }
+        , [keyboardType, isoCountry])
 
-    function runChecks(text: string | undefined, country: CountryCode): CheckResult {
+    const runChecks = useCallback((text: string | undefined): CheckResult => {
         const checksToRun = [checkRequired, checkPhoneNumber]
         for (const check of checksToRun) {
-            const result: CheckResult = check(text, country)
+            const result: CheckResult = check(text)
             if (result.error) {
                 return result
             }
         }
         return {error: undefined}
-    }
+    }, [checkRequired, checkPhoneNumber])
 
     useEffect(() => {
-        if (!isoCountry) return
         if (form.submitting) {
             const text = value?.trim()
-            const result = runChecks(text, isoCountry)
+            const result = runChecks(text)
             if (result.error) {
                 setError(result.error)
                 form.setSubmitting(false)
@@ -114,7 +113,7 @@ export default function AppTextInput({
             }
         }
 
-    }, [form.submitting, value, isoCountry]);
+    }, [form.submitting, runChecks]);
 
     const isArabic = useMemo(() => {
         if (!value) return

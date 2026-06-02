@@ -158,5 +158,11 @@
     "outdoor": "Outdoor",
     "indoor": "Indoor",
     "rent": "Rent available"
+  },
+  "wizard": {
+    "FillPlaceInfo": "Fill Place Info",
+    "AddFeatures": "Add Features",
+    "AddDescription": "Add Description",
+    "UploadImages": "Upload Images"
   }
 }

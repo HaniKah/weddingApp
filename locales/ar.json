@@ -163,5 +163,11 @@
     "indoor": "داخلي",
     "rent": "التأجير متاح"
   },
+  "wizard": {
+    "FillPlaceInfo": "معلومات المكان",
+    "AddFeatures": "إضافة الميزات",
+    "AddDescription": "إضافة الوصف",
+    "UploadImages": "تحميل الصور"
+  },
   "Do you rent dresses ?": "هل تاجير الفساتين متاح ؟"
 }

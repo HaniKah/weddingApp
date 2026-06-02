@@ -1,9 +1,10 @@
-import {DimensionValue, StyleSheet, View} from "react-native";
+import {DimensionValue, StyleSheet, Text, View} from "react-native";
 import {Theme} from "@/styles/Theme";
 import AppButton from "@/components/appComponents/AppButton";
 import {ButtonType} from "@/styles/Button";
 import {useWizardContext} from "@/components/wizards/Wizard";
 import Animated from "react-native-reanimated";
+import {t} from "i18next";
 
 
 export default function WizardController({isFirstStep = false, isLastStep = false, onNext}: {
@@ -14,34 +15,40 @@ export default function WizardController({isFirstStep = false, isLastStep = fals
 
     const wizard = useWizardContext()
     return (
-        <><View style={styles.container}>
-            <View style={styles.progressContainer}>
-                <Animated.View
-                    style={[styles.progressBar, {
-                        width: wizard.progress * 100 + "%" as DimensionValue,
-                        animationDuration: 200,
-                        animationTimingFunction: 'ease-in-out',
-                    }]}></Animated.View>
-            </View>
-            <View style={styles.navigatorContainer}>
+        <>
+            <View style={styles.container}>
                 <View>
-                    <AppButton
-                        buttonType={ButtonType.PLAIN}
-                        onPress={wizard.previousStep}
-                        inactive={isFirstStep}>
-                        previous
-                    </AppButton>
+                    <Text
+                        style={styles.progressText}>{t("wizard." + wizard.currentStep)} - {wizard.stepsList.indexOf(wizard.currentStep) + 1} of {wizard.stepsList?.length}</Text>
+                    <View style={styles.progressContainer}>
+                        <Animated.View
+                            style={[styles.progressBar, {
+                                width: wizard.progress * 100 + "%" as DimensionValue,
+                                animationDuration: 200,
+                                animationTimingFunction: 'ease-in-out',
+                            }]}></Animated.View>
+                    </View>
                 </View>
-                <View>
-                    <AppButton
-                        fullRound
-                        onPress={onNext}
-                    >
-                        {isLastStep ? "Finish" : "Next"}
-                    </AppButton>
+
+                <View style={styles.navigatorContainer}>
+                    <View>
+                        <AppButton
+                            buttonType={ButtonType.PLAIN}
+                            onPress={wizard.previousStep}
+                            inactive={isFirstStep}>
+                            previous
+                        </AppButton>
+                    </View>
+                    <View>
+                        <AppButton
+                            fullRound
+                            onPress={onNext}
+                        >
+                            {isLastStep ? "Finish" : "Next"}
+                        </AppButton>
+                    </View>
                 </View>
             </View>
-        </View>
         </>
     )
 }
@@ -56,6 +63,13 @@ const styles = StyleSheet.create({
     progressContainer: {
         backgroundColor: Theme.colors.gray.S200,
 
+    },
+    progressText: {
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+        backgroundColor: Theme.colors.background,
+        color: Theme.colors.secondary,
+        fontSize: Theme.sizes.md
     },
 
     progressBar: {

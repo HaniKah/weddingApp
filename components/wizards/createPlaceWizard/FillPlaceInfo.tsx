@@ -212,17 +212,6 @@ export default function FillPlaceInfo({data, setData}: {
                                     />
                                 </View>
 
-                                <View style={styles.input}>
-                                    <AppTextInput name="phoneNumber"
-                                                  required
-                                                  design={2}
-                                                  label="Phone number"
-                                                  placeholder="e.g. +962xxxxxx"
-                                                  keyboardType="phone-pad"
-                                                  onChange={(s) => setPhoneNumber(s)}
-                                                  value={phoneNumber}
-                                    />
-                                </View>
 
                                 <View style={styles.input}>
                                     <AppDropDown name="country"
@@ -242,6 +231,18 @@ export default function FillPlaceInfo({data, setData}: {
                                                  value={city}
                                                  itemList={citiesPickerItem}
                                                  disabled={!countryCode}
+                                    />
+                                </View>
+
+                                <View style={styles.input}>
+                                    <AppTextInput name="phoneNumber"
+                                                  required
+                                                  design={2}
+                                                  label="Phone number"
+                                                  placeholder="e.g. +962xxxxxx"
+                                                  keyboardType="phone-pad"
+                                                  onChange={(s) => setPhoneNumber(s)}
+                                                  value={phoneNumber}
                                     />
                                 </View>
 

@@ -48,6 +48,7 @@ export default function AddFeaturesHost({data, setData}: {
         <>
             <View style={styles.container}>
                 <AppForm onSubmit={updateFeatures} ref={refForm}>
+
                     <Text style={styles.label}>How many guests can your venue accommodate ?</Text>
                     <AppNumberInput design={2}
                                     name="capacity"
@@ -72,7 +73,7 @@ export default function AddFeaturesHost({data, setData}: {
 const styles = StyleSheet.create({
     container: {
         padding: 15,
-        marginBottom: 100,
+        marginVertical: "auto",
     },
     label: {
         fontSize: Theme.sizes.xl,

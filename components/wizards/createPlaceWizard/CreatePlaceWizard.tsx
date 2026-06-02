@@ -1,6 +1,6 @@
 import {useCallback, useEffect, useState} from 'react';
 import WizardStep from '@/components/wizards/WizardStep';
-import {PhotosDto, PhotoSize, UpdateStep, VendorPlaceDetailsDto} from '@/types/open-api';
+import {Categories, PhotosDto, PhotoSize, UpdateStep, VendorPlaceDetailsDto} from '@/types/open-api';
 import UploadImages from '@/components/wizards/createPlaceWizard/UploadImages';
 import AddDescription from '@/components/wizards/createPlaceWizard/AddDescription';
 import {Wizard} from '@/components/wizards/Wizard';
@@ -52,6 +52,8 @@ export default function CreatePlaceWizard({id, onFinish, initialStep}: {
 
     }, [getPlace, getPhotos]);
 
+    const categoryFeatures = [Categories.Host, Categories.Dress]
+
     return (
         <>
             <Wizard initialStep={initialStep}>
@@ -62,11 +64,15 @@ export default function CreatePlaceWizard({id, onFinish, initialStep}: {
                     />
                 </WizardStep>
 
-                <WizardStep step={UpdateStep.AddFeatures}>
-                    <AddFeatures setData={setData}
-                                 data={data}/>
-                </WizardStep>
-                
+                {data?.category && categoryFeatures.includes(data?.category) &&
+                    <WizardStep
+
+                        step={UpdateStep.AddFeatures}>
+                        <AddFeatures setData={setData}
+                                     data={data}/>
+                    </WizardStep>
+                }
+
                 <WizardStep step={UpdateStep.AddDescription}>
                     <AddDescription
                         setData={setData}

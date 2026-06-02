@@ -4,7 +4,7 @@ import {useEffect} from "react";
 
 export default function WizardStep<T>({children, step}: {
     children: React.ReactNode,
-    step: T
+    step: T,
 }) {
 
 

@@ -36,9 +36,9 @@ export function Wizard<T>({children, initialStep}: {
     const registerStep = (step: T) => setStepsList((prev: T[]) => ([...prev, step]));
 
     useEffect(() => {
-        const percentage = Number(((stepsList.indexOf(currentStep) + 1) / stepsList.length).toFixed(2));
+        const percentage = parseFloat(((stepsList.indexOf(currentStep) + 1) / stepsList.length).toFixed(2));
         setProgress(percentage);
-    }, [currentStep]);
+    }, [currentStep, stepsList]);
 
 
     function nextStep() {

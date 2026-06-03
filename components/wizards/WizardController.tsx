@@ -21,6 +21,7 @@ export default function WizardController({isFirstStep = false, isLastStep = fals
                     <Text
                         style={styles.progressText}>{t("wizard." + wizard.currentStep)} - {wizard.stepsList.indexOf(wizard.currentStep) + 1} of {wizard.stepsList?.length}</Text>
                     <View style={styles.progressContainer}>
+                        {/*animations is not working because we are rerendering the whole component each time the stepList or current step changes, need to be optimized*/}
                         <Animated.View
                             style={[styles.progressBar, {
                                 width: wizard.progress * 100 + "%" as DimensionValue,

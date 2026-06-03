@@ -118,7 +118,9 @@ export default function ScrollableImages({images, onPress}: { images: PlaceDetai
                               }, 100);
                           }}
                 />
-                <Footer count={images.length} activeIndex={activeIndex}/>
+                {images.length > 1 &&
+                    <Footer count={images.length} activeIndex={activeIndex}/>
+                }
             </View>
 
         </>

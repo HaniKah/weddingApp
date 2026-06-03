@@ -3,7 +3,7 @@ import {AppForm, FormRef} from '@/contexts/form-context';
 import AppTextInput from '@/components/appComponents/AppTextInput';
 import {Dispatch, SetStateAction, useEffect, useMemo, useRef, useState} from 'react';
 import {Theme} from '@/styles/Theme';
-import {Categories, CountryCode, PriceType, UpdateStep, VendorPlaceDetailsDto} from '@/types/open-api';
+import {Categories, PriceType, UpdateStep, VendorPlaceDetailsDto} from '@/types/open-api';
 import {useApi} from '@/utils/api';
 import WizardController from '@/components/wizards/WizardController';
 import {useWizardContext} from '@/components/wizards/Wizard';
@@ -13,6 +13,7 @@ import AppTagsSelect from '@/components/appComponents/AppTagsSelect';
 import AppKeyboardAvoidingView from '@/components/appComponents/AppKeyboardAvoidingView';
 import {PickerItem} from '@/components/appComponents/AppPicker';
 import {useTranslation} from 'react-i18next';
+import {useLocationContext} from "@/contexts/location-context";
 
 enum PriceKind {
     Range = 'Range',
@@ -34,19 +35,20 @@ export default function FillPlaceInfo({data, setData}: {
     const [priceType, setPriceType] = useState<PriceType | undefined | null>(data?.priceType);
     const [city, setCity] = useState<string | undefined>(data?.city);
     const [category, setCategory] = useState<Categories | undefined>(data?.category);
-    const [countryCode, setCountryCode] = useState<CountryCode | undefined>(data?.countryCode);
+    // const [countryCode, setCountryCode] = useState<CountryCode | undefined>(data?.countryCode);
 
     const [isLoading, setIsLoading] = useState(false);
 
-    const countries = Array.from(COUNTRIES.keys());
+    // const countries = Array.from(COUNTRIES.keys());
 
     const {t} = useTranslation();
+    const {isoCountry} = useLocationContext()
 
 
-    const countriesPickerItems: PickerItem<CountryCode>[] = countries.map(c => ({
-        value: c,
-        name: COUNTRIES.get(c)?.countryName ?? '',
-    }));
+    // const countriesPickerItems: PickerItem<CountryCode>[] = countries.map(c => ({
+    //     value: c,
+    //     name: COUNTRIES.get(c)?.countryName ?? '',
+    // }));
 
     const categoriesPickerItems: PickerItem<Categories>[] = Object.values(Categories).map((c) => ({
             name: t('categories.' + c),
@@ -64,13 +66,13 @@ export default function FillPlaceInfo({data, setData}: {
     }));
 
     const citiesPickerItem: PickerItem<string>[] | undefined = useMemo(() => {
-        if (!countryCode) return;
-        const cities = COUNTRIES.get(countryCode)?.cities;
+        if (!isoCountry) return;
+        const cities = COUNTRIES.get(isoCountry)?.cities;
         if (city && !cities?.includes(city)) {
             setCity(undefined)
         }
         return cities?.map((c: string) => ({value: c, name: c}));
-    }, [countryCode]);
+    }, [isoCountry]);
 
 
     const API = useApi().api;
@@ -84,7 +86,7 @@ export default function FillPlaceInfo({data, setData}: {
         setMaxPrice(price);
     }
 
-    const tsRequiredCheck = placeName && phoneNumber && category && countryCode && city;
+    const tsRequiredCheck = placeName && phoneNumber && category && isoCountry && city;
 
     const createPlace = async () => {
         if (!tsRequiredCheck) return;//this is already checked through the from but just for the sake of ts
@@ -98,7 +100,7 @@ export default function FillPlaceInfo({data, setData}: {
                     maxPrice: maxPrice,
                     priceType: priceType,
                     category: category,
-                    countryCode: countryCode,
+                    countryCode: isoCountry,
                     city: city,
                 }
             });
@@ -124,7 +126,7 @@ export default function FillPlaceInfo({data, setData}: {
                     maxPrice: maxPrice,
                     priceType: priceType,
                     category: category,
-                    countryCode: countryCode,
+                    countryCode: isoCountry,
                     city: city,
                 }
             });
@@ -159,7 +161,7 @@ export default function FillPlaceInfo({data, setData}: {
         setPriceType(data?.priceType ?? undefined);
         setCity(data?.city ?? undefined);
         setCategory(data?.category ?? undefined);
-        setCountryCode(data?.countryCode ?? undefined);
+        // setCountryCode(data?.countryCode ?? undefined);
 
         if (data?.minPrice && data?.maxPrice) {
             setPriceKind(data.minPrice === data.maxPrice ? PriceKind.Single : PriceKind.Range);
@@ -213,15 +215,15 @@ export default function FillPlaceInfo({data, setData}: {
                                 </View>
 
 
-                                <View style={styles.input}>
-                                    <AppDropDown name="country"
-                                                 required
-                                                 label="Country"
-                                                 onChange={setCountryCode}
-                                                 value={countryCode}
-                                                 itemList={countriesPickerItems}
-                                    />
-                                </View>
+                                {/*<View style={styles.input}>*/}
+                                {/*    <AppDropDown name="country"*/}
+                                {/*                 required*/}
+                                {/*                 label="Country"*/}
+                                {/*                 onChange={setCountryCode}*/}
+                                {/*                 value={countryCode}*/}
+                                {/*                 itemList={countriesPickerItems}*/}
+                                {/*    />*/}
+                                {/*</View>*/}
 
                                 <View style={styles.input}>
                                     <AppDropDown name="city"
@@ -230,7 +232,7 @@ export default function FillPlaceInfo({data, setData}: {
                                                  onChange={setCity}
                                                  value={city}
                                                  itemList={citiesPickerItem}
-                                                 disabled={!countryCode}
+                                                 disabled={!isoCountry}
                                     />
                                 </View>
 
@@ -254,26 +256,26 @@ export default function FillPlaceInfo({data, setData}: {
                                         value={priceKind}
                                         onChange={onPriceKindChange}
                                         borders="rectangle"
-                                        disabled={!data?.countryCode && !countryCode}
+                                        disabled={!data?.countryCode && !isoCountry}
                                         required
                                     />
                                 </View>
 
-                                {priceKind === PriceKind.Single && countryCode &&
+                                {priceKind === PriceKind.Single && isoCountry &&
                                     <View style={styles.input}>
                                         <AppTextInput onChange={(s) => enterFixedPrice(s)} name="singlePrice"
                                                       label="Single price"
                                                       placeholder="Add your price here"
                                                       value={minPrice}
                                                       keyboardType={'decimal-pad'}
-                                                      unit={COUNTRIES.get(countryCode)?.currency}
+                                                      unit={COUNTRIES.get(isoCountry)?.currency}
                                                       required
                                                       design={2}
                                         />
                                     </View>
                                 }
 
-                                {priceKind === PriceKind.Range && countryCode &&
+                                {priceKind === PriceKind.Range && isoCountry &&
                                     <View style={[styles.input, styles.priceRangeContainer]}>
                                         <AppTextInput onChange={(s) => setMinPrice(s)} name="minPrice"
                                                       label="Min. price"
@@ -282,7 +284,7 @@ export default function FillPlaceInfo({data, setData}: {
                                                       placeholder="Minimum price"
                                                       value={minPrice}
                                                       keyboardType={'decimal-pad'}
-                                                      unit={COUNTRIES.get(countryCode)?.currency}
+                                                      unit={COUNTRIES.get(isoCountry)?.currency}
                                                       required
                                         />
                                         <AppTextInput onChange={(s) => setMaxPrice(s)} name="minPrice"
@@ -292,7 +294,7 @@ export default function FillPlaceInfo({data, setData}: {
                                                       placeholder="Maximum price"
                                                       value={maxPrice}
                                                       keyboardType={'decimal-pad'}
-                                                      unit={COUNTRIES.get(countryCode)?.currency}
+                                                      unit={COUNTRIES.get(isoCountry)?.currency}
                                                       required
                                         />
                                     </View>

@@ -16,6 +16,7 @@ import LineSeparator from '@/components/LineSeparator';
 import AppView from '@/components/appComponents/AppView';
 import AppPressable from '@/components/appComponents/AppPressable';
 import {useTranslation} from 'react-i18next';
+import {IconButton} from "@/components/symbols/IconButton";
 
 
 export default function Place() {
@@ -147,8 +148,6 @@ export default function Place() {
             <ScrollView refreshControl={<RefreshControl onRefresh={handleRefresh} refreshing={isRefreshing}/>}>
 
                 <AppView extraStyles={styles.actionMenu} withPadding>
-
-
                     {!placeDetails?.isPublished ?
                         <View>
                             <AppButton onPress={() => handleTogglePublish(placeDetails?.id, true)}
@@ -168,6 +167,11 @@ export default function Place() {
                                 buttonType={ButtonType.PLAIN}>{t('profile.preview')}</AppButton>
                         </Link>
                     }
+                    <IconButton
+                        extraStylesBtn={styles.settingsButton}
+                        name="gearshape.fill"
+                        onPress={() => editModalRef.current?.open()}
+                    />
                 </AppView>
 
 
@@ -328,6 +332,10 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         paddingVertical: 10,
         paddingHorizontal: 14,
+        boxShadow: Theme.effects.boxShadow,
+    },
+    settingsButton: {
+        backgroundColor: 'white',
         boxShadow: Theme.effects.boxShadow,
     },
     categoryTag: {

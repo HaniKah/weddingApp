@@ -35,12 +35,19 @@ export default function AppNumberInput({
 
     function convertToNumber(text: string | undefined) {
 
-        // removes anything that is not a number, dot or comma
-        if (!text) return
+        if (!text) {
+            onTextChange(undefined);
+            return;
+        }
 
         let clean = text.replace(/[^0-9.,]/g, '');
         // replace comma with dot
         clean = clean.replace(',', '.');
+
+        if (clean === "") {
+            onTextChange(undefined);
+            return;
+        }
 
         const convert = parseFloat(clean);
 

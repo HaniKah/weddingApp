@@ -22,6 +22,6 @@ export default function AppView({isLoading, withPadding, children, extraStyles}:
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
     }
 })

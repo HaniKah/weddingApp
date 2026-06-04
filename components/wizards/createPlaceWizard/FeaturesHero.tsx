@@ -11,7 +11,7 @@ export default function FeaturesHero({category,}: { category: Categories }) {
 
         <View>
             <View style={styles.iconContainer}>
-                <IconCategory color={Theme.colors.primary} size={100} category={category}/>
+                <IconCategory color={Theme.colors.primary} size={50} category={category}/>
             </View>
             <Text style={styles.description}>{t("Quick question about your listing.")}</Text>
         </View>

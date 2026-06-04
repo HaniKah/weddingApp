@@ -67,7 +67,6 @@ export default function AddFeaturesHost({data, setData}: {
                         </View>
                     </View>
 
-
                 </AppForm>
             </View>
             <WizardController onNext={refForm.current?.submit}/>
@@ -79,9 +78,7 @@ const styles = StyleSheet.create({
     container: {
         paddingHorizontal: 40,
         marginTop: 40,
-        display: "flex",
-        flexDirection: "column",
-        gap: 40
+
     },
     questionContainer: {
         display: "flex",

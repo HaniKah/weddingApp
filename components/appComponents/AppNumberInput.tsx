@@ -28,7 +28,7 @@ export default function AppNumberInput({
 }) {
 
 
-//if the coming value wasn't number ( from database ) which possible is not happening
+//if the coming value wasn't number ( from database )
     function checkValue() {
         return value && isNaN(value) ? undefined : value?.toString();
     }
@@ -57,7 +57,7 @@ export default function AppNumberInput({
                       placeholder={placeholder}
                       label={label}
                       name={name}
-                      keyboardType="numeric"
+                      keyboardType="number-pad"
                       unit={unit}
                       value={checkValue()}
                       onChange={convertToNumber}

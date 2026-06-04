@@ -23,16 +23,7 @@ export default function TabsLayout() {
                                  tabBarIcon: ({color}) => <IconSymbol size={28} name="checklist"
                                                                       color={color}/>,
                              }}/>
-
-                <Tabs.Screen name="guests"
-                             options={{
-                                 href: null,
-                                 title: 'Guestlist',
-                                 tabBarIcon: ({color}) => <IconSymbol size={28} name="person.3"
-                                                                      color={color}/>,
-
-                             }}/>
-
+                
                 <Tabs.Screen name="profile"
                              options={{
                                  title: 'profile',

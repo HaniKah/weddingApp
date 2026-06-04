@@ -1,7 +1,6 @@
 import {
     InputModeOptions,
     KeyboardTypeOptions,
-    StyleProp,
     StyleSheet,
     Text,
     TextInput,
@@ -25,12 +24,12 @@ export type AppTextInputProps = {
     required?: boolean,
     name: string
     design?: 1 | 2,
-    extraStyles?: StyleProp<ViewStyle>
     unit?: string
     textArea?: boolean
     onBlur?: () => void
     secureTextEntry?: boolean
     inputMode?: InputModeOptions
+    extraStyles?: ViewStyle
 }
 
 export default function AppTextInput({
@@ -42,13 +41,12 @@ export default function AppTextInput({
                                          required,
                                          name,
                                          design = 1,
-                                         extraStyles,
                                          unit,
                                          textArea,
                                          onBlur,
                                          secureTextEntry,
                                          inputMode,
-
+                                         extraStyles,
                                      }: AppTextInputProps) {
 
     let styles: TextInputType = design === 1 ? design1 : design2;
@@ -121,9 +119,9 @@ export default function AppTextInput({
     }, [value])
 
     return (
-        <View style={extraStyles}>
+        <View style={{flex: 1}}>
             {label && <Text style={[styles.label]}>{label}</Text>}
-            <View style={styles.inputContainer}>
+            <View style={[styles.inputContainer, extraStyles]}>
                 <TextInput value={value || undefined}
                            autoCorrect={false}
                            keyboardType={keyboardType}
@@ -175,6 +173,7 @@ const design1: TextInputType = StyleSheet.create({
             alignItems: 'center',
             borderBottomWidth: 2,
             borderColor: Theme.colors.border,
+
         },
         input: {
             paddingRight: 10,
@@ -220,8 +219,6 @@ const design2: TextInputType = StyleSheet.create({
         overflow: 'hidden',
         paddingRight: 10,
         borderWidth: 1,
-
-
     },
     input: {
         height: 45,

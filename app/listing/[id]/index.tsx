@@ -169,7 +169,8 @@ const styles = StyleSheet.create({
     },
 
     imagePlaceHolder: {
-        height: '100%',
+        height: 250,
+        width: "100%",
         backgroundColor: Theme.colors.iconBackground,
 
     },

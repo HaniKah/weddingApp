@@ -13,7 +13,7 @@ export default function AppCheckbox({label, value, onChange}: {
             <View style={[styles.checkbox, value && styles.isChecked]}>
                 <IconSymbol name="checkmark" size={16} color={Theme.colors.white}/>
             </View>
-            <Text style={styles.label}>{label}</Text>
+            <Text style={[styles.label, value && styles.labelIsChecked]}>{label}</Text>
 
         </Pressable>
     )
@@ -32,15 +32,19 @@ const styles = StyleSheet.create({
         height: 20,
         borderWidth: 2,
         borderRadius: 5,
-        borderColor: Theme.colors.primary,
+        borderColor: Theme.colors.secondary,
         backgroundColor: Theme.colors.white,
     },
     isChecked: {
         backgroundColor: Theme.colors.primary,
+        borderColor: Theme.colors.primary,
     },
     label: {
-        color: Theme.colors.primary,
+        color: Theme.colors.secondary,
         fontSize: Theme.sizes.md
+    },
+    labelIsChecked: {
+        color: Theme.colors.primary,
     },
     pressable: {
         backgroundColor: Theme.colors.primary,

@@ -46,31 +46,32 @@ export default function AddFeaturesHost({data, setData}: {
 
 
     return (
-        <View style={{flex: 1}}>
+        <>
             <View style={styles.container}>
                 <FeaturesHero category={data?.category}/>
                 <AppForm onSubmit={updateFeatures} ref={refForm}>
-                    <View>
-                        <Text style={styles.question}>How many guests can your venue accommodate ?</Text>
-                        <AppNumberInput design={2}
-                                        name="capacity"
-                                        value={capacity}
-                                        placeholder="e.g. 500"
-                                        required
-                                        onTextChange={setCapacity}/>
-                    </View>
-                    <View style={styles.questionContainer}>
-                        <Text style={styles.question}>Venue setup?</Text>
-                        <View style={styles.setup}>
-                            <AppCheckbox label={t("feature.outdoor")} value={outdoor} onChange={setOutdoor}/>
-                            <AppCheckbox label={t("feature.indoor")} value={indoor} onChange={setIndoor}/>
+                    <View style={styles.formContainer}>
+                        <View>
+                            <Text style={styles.question}>How many guests can your venue accommodate ?</Text>
+                            <AppNumberInput design={2}
+                                            name="capacity"
+                                            value={capacity}
+                                            placeholder="e.g. 500"
+                                            required
+                                            onTextChange={setCapacity}/>
+                        </View>
+                        <View style={styles.questionContainer}>
+                            <Text style={styles.question}>Venue setup?</Text>
+                            <View style={styles.checkboxesContainer}>
+                                <AppCheckbox label={t("feature.outdoor")} value={outdoor} onChange={setOutdoor}/>
+                                <AppCheckbox label={t("feature.indoor")} value={indoor} onChange={setIndoor}/>
+                            </View>
                         </View>
                     </View>
-
                 </AppForm>
             </View>
             <WizardController onNext={refForm.current?.submit}/>
-        </View>
+        </>
     )
 }
 const styles = StyleSheet.create({
@@ -78,6 +79,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: 40,
         marginTop: 40,
         flex: 1,
+    },
+    formContainer: {
+        gap: 40
     },
     questionContainer: {
         display: "flex",
@@ -100,12 +104,12 @@ const styles = StyleSheet.create({
         textAlign: "center",
         paddingHorizontal: 20
     },
-    setup: {
+    checkboxesContainer: {
         display: "flex",
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
-        gap: 20,
+        gap: 40,
         width: "100%",
     },
 

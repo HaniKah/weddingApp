@@ -168,8 +168,11 @@ export default function Place() {
                         </Link>
                     }
                     <IconButton
+                        color={Theme.colors.secondary}
+                        size={24}
+                        weight="regular"
                         extraStylesBtn={styles.settingsButton}
-                        name="gearshape.fill"
+                        name="gearshape"
                         onPress={() => editModalRef.current?.open()}
                     />
                 </AppView>
@@ -335,8 +338,7 @@ const styles = StyleSheet.create({
         boxShadow: Theme.effects.boxShadow,
     },
     settingsButton: {
-        backgroundColor: 'white',
-        boxShadow: Theme.effects.boxShadow,
+        backgroundColor: 'transparent',
     },
     categoryTag: {
         marginVertical: 15,

@@ -45,7 +45,8 @@ const MAPPING = {
     "xmark": "close",
     "x.circle.fill": "close",
     "photo.on.rectangle": "filter",
-    "text.justify.left": "notes"
+    "text.justify.left": "notes",
+    "gearshape": "settings",
 } as IconMapping;
 
 /**

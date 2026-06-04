@@ -38,30 +38,32 @@ function Footer({count, activeIndex}: { count: number, activeIndex: number }) {
         }
     }, [activeIndex, count]);
 
-    if (count === 0) return null;
+    if (count <= 1) return null;
 
     return (
         <View style={[styles.footerContainer, {width: CONTAINER_WIDTH}]}>
-            <FlatList
-                ref={flatListRef}
-                data={Array.from({length: count})}
-                renderItem={({index}) => (
-                    <View style={{width: DOT_SIZE, height: DOT_SIZE, justifyContent: 'center', alignItems: 'center'}}>
+            <View>
+                <FlatList
+                    ref={flatListRef}
+                    data={Array.from({length: count})}
+                    renderItem={({index}) => (
                         <View
-                            style={[
-                                styles.footerDot,
-                                activeIndex === index && styles.footerDotActive
-                            ]}
-                        />
-                    </View>
-                )}
-                horizontal
-                keyExtractor={(_, index) => index.toString()}
-                showsHorizontalScrollIndicator={false}
-                scrollEnabled={false}
-                contentContainerStyle={{alignItems: 'center'}}
-                ItemSeparatorComponent={() => <View style={{width: DOT_GAP}}/>}
-            />
+                            style={{width: DOT_SIZE, height: DOT_SIZE, justifyContent: 'center', alignItems: 'center'}}>
+                            <View
+                                style={[
+                                    styles.footerDot,
+                                    activeIndex === index && styles.footerDotActive
+                                ]}
+                            />
+                        </View>
+                    )}
+                    horizontal
+                    keyExtractor={(_, index) => index.toString()}
+                    showsHorizontalScrollIndicator={false}
+                    scrollEnabled={false}
+                    ItemSeparatorComponent={() => <View style={{width: DOT_GAP}}/>}
+                />
+            </View>
         </View>
     )
 }
@@ -118,9 +120,7 @@ export default function ScrollableImages({images, onPress}: { images: PlaceDetai
                               }, 100);
                           }}
                 />
-                {images.length > 1 &&
-                    <Footer count={images.length} activeIndex={activeIndex}/>
-                }
+                <Footer count={images.length} activeIndex={activeIndex}/>
             </View>
 
         </>
@@ -156,6 +156,7 @@ const styles = StyleSheet.create({
         zIndex: 20,
         height: 10,
         alignItems: 'center',
+        justifyContent: 'center',
         overflow: 'hidden',
     },
     footerDot: {

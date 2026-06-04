@@ -73,7 +73,7 @@ export default function AppImageViewer({activeImageId, setActiveImageId, onDelet
                 <Pressable onPress={onClose}>
                     <IconSymbol color="white" size={25} name="xmark"/>
                 </Pressable>
-                {images[currentIndex]?.isMain &&
+                {onSetMainImage && images[currentIndex]?.isMain &&
                     <View style={styles.mainImageContainer}>
                         <IconSymbol color={Theme.colors.white} name="crown.fill"/>
                         <Text style={styles.mainImageText}>{t('profile.mainPhoto')}</Text>

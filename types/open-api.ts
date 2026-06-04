@@ -70,23 +70,23 @@ export enum Categories {
   Car = "Car",
   Dj = "Dj",
   MakeUpArtist = "MakeUpArtist",
-  HennaSpecialist = "HennaSpecialist",
-  AvEquipment = "AvEquipment",
   Salon = "Salon",
+  HennaSpecialist = "HennaSpecialist",
   Florist = "Florist",
   Decorator = "Decorator",
   Catering = "Catering",
+  Procession = "Procession",
+  Performer = "Performer",
   DancingCourse = "DancingCourse",
   Honeymoon = "Honeymoon",
   Giveaway = "Giveaway",
-  Procession = "Procession",
-  Performer = "Performer",
   Jewelry = "Jewelry",
   Perfume = "Perfume",
   Shower = "Shower",
-  Clinic = "Clinic",
   Cosmetic = "Cosmetic",
   Firework = "Firework",
+  Clinic = "Clinic",
+  AvEquipment = "AvEquipment",
   Miscellaneous = "Miscellaneous",
 }
 
@@ -669,23 +669,23 @@ export class Api<
           | "Car"
           | "Dj"
           | "MakeUpArtist"
-          | "HennaSpecialist"
-          | "AvEquipment"
           | "Salon"
+          | "HennaSpecialist"
           | "Florist"
           | "Decorator"
           | "Catering"
+          | "Procession"
+          | "Performer"
           | "DancingCourse"
           | "Honeymoon"
           | "Giveaway"
-          | "Procession"
-          | "Performer"
           | "Jewelry"
           | "Perfume"
           | "Shower"
-          | "Clinic"
           | "Cosmetic"
           | "Firework"
+          | "Clinic"
+          | "AvEquipment"
           | "Miscellaneous";
         search?: string;
       },

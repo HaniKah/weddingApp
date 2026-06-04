@@ -96,14 +96,14 @@ const styles = StyleSheet.create({
         gap: 10,
         position: 'absolute',
         alignSelf: 'center',
-        bottom: 10,
-        backgroundColor: Theme.colors.background,
+        bottom: 15,
         paddingTop: 10,
     },
     input: {
         borderRadius: Theme.radius.full,
         paddingLeft: 10,
         borderWidth: 0,
+        height: 55,
         boxShadow: Theme.effects.boxShadow,
     },
     addButton: {

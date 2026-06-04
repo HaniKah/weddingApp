@@ -11,7 +11,8 @@ export default function Gallery({placeId}: { placeId: number }) {
     const [images, setImages] = useState<PhotosDto[]>([])
     const [selectedImage, setSelectedImage] = useState<number>()
     const [imageView, setImageView] = useState(false)
-    const IMAGE_WIDTH = Dimensions.get("window").width / 3;
+    const GAP = 5;
+    const IMAGE_WIDTH = (Dimensions.get("window").width - (GAP * 4)) / 3;
 
     useEffect(() => {
         const getPhotos = async () => {
@@ -51,8 +52,10 @@ export default function Gallery({placeId}: { placeId: number }) {
             <FlatList numColumns={3}
                       data={images}
                       keyExtractor={(item, index) => index.toString()}
+                      contentContainerStyle={{padding: GAP, gap: GAP}}
+                      columnWrapperStyle={{gap: GAP}}
                       getItemLayout={(data, index) => (
-                          {length: IMAGE_WIDTH, offset: IMAGE_WIDTH * index, index}
+                          {length: IMAGE_WIDTH + GAP, offset: (IMAGE_WIDTH + GAP) * index, index}
                       )}
                       renderItem={({item, index}) => (<ImageThumbnail item={item}/>)}/>
 

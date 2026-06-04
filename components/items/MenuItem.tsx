@@ -1,49 +1,49 @@
-import { StyleSheet, Text, View } from 'react-native';
-import { Theme } from '@/styles/Theme';
-import { IconSymbol, IconSymbolName } from '@/components/symbols/IconSymbol';
+import {StyleSheet, Text, View} from 'react-native';
+import {Theme} from '@/styles/Theme';
+import {IconSymbol, IconSymbolName} from '@/components/symbols/IconSymbol';
 import AppPressable from '@/components/appComponents/AppPressable';
 
 export default function MenuItem({
-                                   icon,
-                                   label,
-                                   onPress,
+                                     icon,
+                                     label,
+                                     onPress,
                                  }: {
-  icon: IconSymbolName;
-  label: string;
-  onPress: () => void;
+    icon: IconSymbolName;
+    label: string;
+    onPress: () => void;
 }) {
-  return (
-    <AppPressable
-      onPress={onPress}
-    >
-      <View style={styles.container}>
-        <IconSymbol name={icon} size={18} color={Theme.colors.primary} />
-        <Text
-          style={styles.text}
+    return (
+        <AppPressable
+            onPress={onPress}
         >
-          {label}
-        </Text>
-        <IconSymbol name="chevron.right" size={16} color={Theme.colors.primary} />
-      </View>
-    </AppPressable>
-  );
+            <View style={styles.container}>
+                <IconSymbol name={icon} size={18} color={Theme.colors.primary}/>
+                <Text
+                    style={styles.text}
+                >
+                    {label}
+                </Text>
+                <IconSymbol name="chevron.right" size={16} color={Theme.colors.primary}/>
+            </View>
+        </AppPressable>
+    );
 }
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 14,
-    paddingVertical: 22,
-    gap: 12,
-    backgroundColor: Theme.colors.white,
-    borderRadius: Theme.radius.md,
-    overflow: 'hidden',
-    boxShadow: Theme.effects.boxShadow,
-  },
-  text: {
-    flex: 1,
-    fontSize: 15,
-    color: Theme.colors.primary,
-  },
-  menuCard: {},
+    container: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 14,
+        paddingVertical: 22,
+        gap: 12,
+        backgroundColor: Theme.colors.white,
+        borderRadius: Theme.radius.lg,
+        overflow: 'hidden',
+        boxShadow: Theme.effects.boxShadow,
+    },
+    text: {
+        flex: 1,
+        fontSize: 15,
+        color: Theme.colors.primary,
+    },
+    menuCard: {},
 });

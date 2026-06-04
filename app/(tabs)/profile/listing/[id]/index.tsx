@@ -290,16 +290,18 @@ const infoCardStyles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: 5,
+        marginBottom: 7,
+        paddingLeft: 15,
     },
     containerText: {
-        color: Theme.colors.secondary,
-        fontSize: Theme.sizes.sm,
+        color: Theme.colors.border,
+        fontSize: Theme.sizes.md,
+        fontWeight: "bold",
     },
     cardContainer: {
         backgroundColor: Theme.colors.white,
         padding: 18,
-        borderRadius: Theme.radius.lg,
+        borderRadius: Theme.radius.xl,
         boxShadow: Theme.effects.boxShadow,
     },
 });

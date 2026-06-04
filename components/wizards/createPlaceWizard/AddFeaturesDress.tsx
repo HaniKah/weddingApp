@@ -45,7 +45,7 @@ export default function AddFeaturesDress({data, setData}: {
     return (
         <>
             <View style={styles.container}>
-                <FeaturesHero category={data.category}/>
+                <FeaturesHero category={data?.category}/>
                 <Text style={styles.question}>{t("Do you offer dress rentals ?")}</Text>
                 <Text
                     style={styles.description}>{t("Customers love knowing what’s available before they visit your boutique.")}</Text>
@@ -60,7 +60,7 @@ export default function AddFeaturesDress({data, setData}: {
 
                     <RadioButtonElement
                         icon="xmark"
-                        value={data.features.rent}
+                        value={data?.features?.rent}
                         item={{value: false, name: "No, not yet"}}
                         onChange={setRent}/>
                 </View>

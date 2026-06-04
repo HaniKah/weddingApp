@@ -1,4 +1,4 @@
-import {Modal, StyleSheet, View} from 'react-native';
+import {Keyboard, Modal, StyleSheet, TouchableWithoutFeedback, View} from 'react-native';
 import AppButton from '@/components/appComponents/AppButton';
 import {ButtonType} from '@/styles/Button';
 import {Theme} from '@/styles/Theme';
@@ -55,22 +55,24 @@ export default function AppModal({
 
 
         >
-            <View style={styles.wrapper}>
-                <View
-                    style={[styles.header, isFullScreen && styles.headerFullScreen]}>
-                    <AppButton
-                        extraStylesBtn={{justifyContent: 'flex-start'}}
-                        extraStylesTxt={{color: Theme.colors.secondary}}
-                        buttonType={ButtonType.PLAIN}
-                        onPress={handleCancel}>
-                        cancel
-                    </AppButton>
-                    <View style={[styles.handle, isFullScreen && styles.handleFullScreen]}></View>
-                    <View style={{flex: 1}}></View>
-                </View>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+                <View style={styles.wrapper}>
+                    <View
+                        style={[styles.header, isFullScreen && styles.headerFullScreen]}>
+                        <AppButton
+                            extraStylesBtn={{justifyContent: 'flex-start'}}
+                            extraStylesTxt={{color: Theme.colors.secondary}}
+                            buttonType={ButtonType.PLAIN}
+                            onPress={handleCancel}>
+                            cancel
+                        </AppButton>
+                        <View style={[styles.handle, isFullScreen && styles.handleFullScreen]}></View>
+                        <View style={{flex: 1}}></View>
+                    </View>
 
-                {children}
-            </View>
+                    {children}
+                </View>
+            </TouchableWithoutFeedback>
         </Modal>
     );
 }

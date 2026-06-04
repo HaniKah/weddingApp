@@ -46,7 +46,7 @@ export default function AddFeaturesHost({data, setData}: {
 
 
     return (
-        <>
+        <View style={{flex: 1}}>
             <View style={styles.container}>
                 <FeaturesHero category={data?.category}/>
                 <AppForm onSubmit={updateFeatures} ref={refForm}>
@@ -70,15 +70,14 @@ export default function AddFeaturesHost({data, setData}: {
                 </AppForm>
             </View>
             <WizardController onNext={refForm.current?.submit}/>
-
-        </>
+        </View>
     )
 }
 const styles = StyleSheet.create({
     container: {
         paddingHorizontal: 40,
         marginTop: 40,
-
+        flex: 1,
     },
     questionContainer: {
         display: "flex",

@@ -102,7 +102,9 @@ const styles = StyleSheet.create({
     },
     input: {
         borderRadius: Theme.radius.full,
-        paddingLeft: 10
+        paddingLeft: 10,
+        borderWidth: 0,
+        boxShadow: Theme.effects.boxShadow,
     },
     addButton: {
         backgroundColor: Theme.colors.primary,

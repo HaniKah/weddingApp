@@ -75,29 +75,31 @@ export default function PlaceId() {
                     contentContainerStyle={styles.scrollContent}
                     showsVerticalScrollIndicator
                 >
-                    <Link
-                        push
-                        href={{
-                            pathname: '/listing/[id]/images',
-                            params: {id: params.id, step: params.step},
-                        }}
-                    >
-                        {placeDetails?.photos && placeDetails?.photos?.length > 0 ?
+
+                    {placeDetails?.photos && placeDetails?.photos?.length > 0 ?
+                        <Link
+                            push
+                            href={{
+                                pathname: '/listing/[id]/images',
+                                params: {id: params.id, step: params.step},
+                            }}
+                        >
                             <ScrollableImages
                                 onPress={() => router.push({
                                     pathname: '/listing/[id]/images',
                                     params: {id: params.id, step: params.step},
                                 })} images={placeDetails.photos}/>
-                            :
-                            <View style={styles.imagePlaceHolder}>
-                                <View style={styles.iconWrapper}>
-                                    <IconCategory size={100} color={Theme.colors.secondary}
-                                                  category={placeDetails?.category}/>
-                                </View>
-                            </View>
-                        }
+                        </Link>
+                        :
 
-                    </Link>
+                        <View style={styles.imagePlaceHolder}>
+                            <View style={styles.iconWrapper}>
+                                <IconCategory size={100} color={Theme.colors.secondary}
+                                              category={placeDetails?.category}/>
+                            </View>
+                        </View>
+                    }
+
 
                     <View style={styles.infosContainer}>
 

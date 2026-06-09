@@ -38,7 +38,6 @@ export default function AppImageViewer({
         try {
             const res = await api.photosControllerGetAllPhotos(placeId, PhotoSize.Image);
             setImages(res.data.result)
-            console.log("images were fetched")
         } catch (error) {
             console.error(`Failed to fetch photos`, error);
         }

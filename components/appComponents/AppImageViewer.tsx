@@ -11,12 +11,20 @@ import {Theme} from "@/styles/Theme";
 import {useTranslation} from 'react-i18next';
 
 
-export default function AppImageViewer({activeImageId, setActiveImageId, onDeleteImage, onSetMainImage, placeId}: {
+export default function AppImageViewer({
+                                           activeImageId,
+                                           setActiveImageId,
+                                           onDeleteImage,
+                                           onSetMainImage,
+                                           placeId,
+                                           visible
+                                       }: {
     onDeleteImage?: (id: number) => Promise<void>,
     onSetMainImage?: (id: number) => Promise<void>,
-    activeImageId: number
+    activeImageId: number | undefined
     setActiveImageId: (id: number | undefined) => void,
     placeId: number
+    visible: boolean
 
 }) {
     const {width} = Dimensions.get('window');
@@ -30,6 +38,7 @@ export default function AppImageViewer({activeImageId, setActiveImageId, onDelet
         try {
             const res = await api.photosControllerGetAllPhotos(placeId, PhotoSize.Image);
             setImages(res.data.result)
+            console.log("images were fetched")
         } catch (error) {
             console.error(`Failed to fetch photos`, error);
         }
@@ -131,6 +140,7 @@ export default function AppImageViewer({activeImageId, setActiveImageId, onDelet
     if (images.length <= 0) return
     return (
         <Modal
+            visible={visible}
             allowSwipeDismissal={true}
             onRequestClose={onClose}
             animationType="fade">

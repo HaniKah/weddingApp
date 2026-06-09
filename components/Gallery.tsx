@@ -10,7 +10,6 @@ export default function Gallery({placeId}: { placeId: number }) {
     const API = useApi().api
     const [images, setImages] = useState<PhotosDto[]>([])
     const [selectedImage, setSelectedImage] = useState<number>()
-    const [imageView, setImageView] = useState(false)
     const GAP = 5;
     const IMAGE_WIDTH = (Dimensions.get("window").width - (GAP * 4)) / 3;
 
@@ -59,9 +58,9 @@ export default function Gallery({placeId}: { placeId: number }) {
                       )}
                       renderItem={({item, index}) => (<ImageThumbnail item={item}/>)}/>
 
-            {selectedImage &&
-                <AppImageViewer activeImageId={selectedImage} setActiveImageId={setSelectedImage} placeId={placeId}/>
-            }
+            <AppImageViewer visible={!!selectedImage} activeImageId={selectedImage} setActiveImageId={setSelectedImage}
+                            placeId={placeId}/>
+
         </>
     )
 }

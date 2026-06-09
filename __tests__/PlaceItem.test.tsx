@@ -1,7 +1,7 @@
 import React from 'react';
 import {render} from '@testing-library/react-native';
 import PlaceItem from '../components/items/PlaceItem';
-import {Categories, PlacesDto, SearchFilter} from '@/types/open-api';
+import {Categories, CountryCode, PlacesDto, PriceType} from '@/types/open-api';
 
 // Mock expo-router Link to avoid requiring full navigation context
 jest.mock('expo-router', () => {
@@ -17,18 +17,20 @@ jest.mock('expo-router', () => {
 
 describe('PlaceItem', () => {
     const baseMockItem: PlacesDto = {
+        city: "Amman",
+        country: CountryCode.JO,
+        features: {},
+        label: null,
+        phoneNumber: "",
+        priceType: PriceType.PerEvent,
         id: 1,
-        step: Categories.Catering,
-        mainPhoto: 'https://example.com/photo.jpg' as unknown as SearchFilter,
+        category: Categories.Catering,
+        mainPhoto: 'https://example.com/photo.jpg',
         name: 'Beautiful Catering',
         formattedAddress: '123 Test St',
-        picked: false,
-        favourite: false,
         minPrice: '100',
         maxPrice: '200',
-        currency: 'USD',
-        isPromoted: false,
-        question: null,
+        isPromoted: false
     };
 
     it('renders the generic place item correctly', () => {

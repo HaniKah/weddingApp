@@ -15,6 +15,7 @@ export function IconButton(
         href,
         removeBackground = false,
         extraStylesBtn,
+        testID
 
     }: {
         name: SFSymbols6_0,
@@ -25,6 +26,7 @@ export function IconButton(
         href?: Href
         removeBackground?: boolean
         extraStylesBtn?: StyleProp<ViewStyle>
+        testID?: string
 
     }) {
 
@@ -39,12 +41,12 @@ export function IconButton(
 
     if (href) {
         return (
-            <Link push href={href}>
+            <Link testID={testID} push href={href}>
                 <MyIcon/>
             </Link>
         );
     } else return (
-        <Pressable onPress={onPress}>
+        <Pressable testID={testID} onPress={onPress}>
             <MyIcon/>
         </Pressable>
     );

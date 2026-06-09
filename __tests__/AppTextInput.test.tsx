@@ -13,11 +13,16 @@ jest.mock('@/contexts/form-context', () => ({
 
 jest.mock('@/contexts/location-context', () => ({
     useLocationContext: () => ({
-        isoCountry: 'US',
+        isoCountry: 'JO',
     }),
 }));
 
 describe('AppTextInput', () => {
+
+    beforeEach(() => {
+        jest.clearAllMocks()
+    })
+
     it("should call onChange when text is typed", () => {
         const onChangeMock = jest.fn();
         const {getByPlaceholderText} = render(

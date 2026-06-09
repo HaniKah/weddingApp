@@ -10,7 +10,7 @@ export default function PromotePlaceWizard({placeId, onFinish}: { placeId: numbe
 
 
     return (
-        <Wizard>
+        <Wizard initialStep={PromotionSteps.PromotionInfo}>
             <WizardStep step={PromotionSteps.PromotionInfo}>
                 <PromotionInfo onFinish={onFinish} placeId={placeId}/>
             </WizardStep>

@@ -44,11 +44,9 @@ export const Snackbar = ({ref}: { ref: RefObject<SnackbarRef | null> }) => {
     useImperativeHandle(ref, () => ({
         show(value: SnackbarProps) {
             setList(prev => [...prev, value])
-            if (value.type === "success") {
-                setTimeout(() => {
-                    removeItem(value.id)
-                }, 1500);
-            }
+            setTimeout(() => {
+                removeItem(value.id)
+            }, 1500);
         },
         hide(id: number) {
             removeItem(id)

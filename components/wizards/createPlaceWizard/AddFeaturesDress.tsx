@@ -84,7 +84,6 @@ const styles = StyleSheet.create({
         color: Theme.colors.primary,
         textAlign: "center",
         marginBottom: 10,
-        textIndent: "center"
     },
     description: {
         color: Theme.colors.secondary,

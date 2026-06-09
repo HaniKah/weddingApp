@@ -54,6 +54,7 @@ export default function AppTextInput({
 
     const inputRef = useRef<TextInput>(null);
     const [error, setError] = useState<string | undefined>();
+    const [showPassword, setShowPassword] = useState<boolean>(false);
     // const [textInput, setTextInput] = useState<string | undefined>(value);
 
 
@@ -132,18 +133,24 @@ export default function AppTextInput({
                            onChangeText={preTextChange}
                            multiline={textArea}
                            onBlur={onBlur}
-                           secureTextEntry={secureTextEntry}
+                           secureTextEntry={!showPassword}
                            inputMode={inputMode}
                            textAlign={isArabic ? 'right' : 'left'}
 
 
                 />
                 {unit && <Text style={styles.unit}>{unit}</Text>}
+                {secureTextEntry &&
+                    <IconButton onPress={() => setShowPassword(!showPassword)} color={Theme.colors.backgroundDisabled}
+                                size={24}
+                                name={showPassword ? 'eye.fill' : 'eye.slash.fill'}
+                                removeBackground/>}
                 {
                     value && value?.length > 0 && inputRef.current?.isFocused() &&
                     <IconButton onPress={() => preTextChange(undefined)} color={Theme.colors.backgroundDisabled}
                                 size={24}
                                 name="x.circle.fill"
+                                extraStylesBtn={{marginLeft: 5}}
                                 removeBackground/>
                 }
             </View>

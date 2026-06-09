@@ -4,6 +4,7 @@ import {Image} from "expo-image"
 import {PlaceDetailsPhotos} from "@/types/open-api";
 import {IconSymbol} from "@/components/symbols/IconSymbol";
 import {Theme} from "@/styles/Theme";
+import {useSafeAreaInsets} from "react-native-safe-area-context";
 
 // interface ImageType {
 //     url: string
@@ -11,8 +12,9 @@ import {Theme} from "@/styles/Theme";
 // }
 
 function Header({count}: { count: number }) {
+    const insets = useSafeAreaInsets()
     return (
-        <View style={styles.HeaderPhotosFound}>
+        <View style={[{marginTop: insets.top}, styles.HeaderPhotosFound]}>
             <IconSymbol color={Theme.colors.black} name="photo.on.rectangle"/>
             <Text>
                 {count} Photos
@@ -131,7 +133,7 @@ const styles = StyleSheet.create({
         position: 'relative',
     },
     image: {
-        height: 350,
+        height: 500,
         // resizeMode: "cover",
     },
     HeaderPhotosFound: {

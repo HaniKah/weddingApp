@@ -62,16 +62,16 @@ export default function PlaceId() {
 
             <Stack.Screen
                 options={{
-                    title: placeDetails?.name,
                     headerShown: true,
-                    headerBackButtonDisplayMode: 'minimal',
-                    headerStyle: {backgroundColor: Theme.colors.background},
-                    contentStyle: {backgroundColor: Theme.colors.background},
+                    headerTransparent: true,      // header floats over content
+                    headerTitle: '',
+                    headerBackButtonDisplayMode: "minimal"
                 }}
             />
             <AppView isLoading={!placeDetails && isLoading}>
 
                 <ScrollView
+                    contentInsetAdjustmentBehavior="never"
                     contentContainerStyle={styles.scrollContent}
                     showsVerticalScrollIndicator
                 >

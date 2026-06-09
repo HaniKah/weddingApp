@@ -1,4 +1,4 @@
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {RefreshControl, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {useCallback, useEffect, useMemo, useState} from 'react';
 import {Link, router, Stack, useLocalSearchParams} from 'expo-router';
 import {Categories, PlaceDetailsDto} from '@/types/open-api';
@@ -23,7 +23,8 @@ export default function PlaceId() {
 
     const {toggleFavorite, isFavorite} = useFavoritesStore();
 
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
     const [placeDetails, setPlaceDetails] = useState<PlaceDetailsDto>();
 
 
@@ -31,6 +32,7 @@ export default function PlaceId() {
 
     const getPlaceDetails = useCallback(async () => {
         try {
+            setIsLoading(true)
             const response = await API.plannerControllerGetPlaceById({placeId: Number(id)});
             setPlaceDetails(response.data);
             // setPhotosOrder(response.data?.photos?.map((p) => p.photoRef))
@@ -74,6 +76,8 @@ export default function PlaceId() {
                     contentInsetAdjustmentBehavior="never"
                     contentContainerStyle={styles.scrollContent}
                     showsVerticalScrollIndicator
+                    refreshControl={<RefreshControl progressViewOffset={50} refreshing={isRefreshing}
+                                                    onRefresh={getPlaceDetails}/>}
                 >
 
                     {placeDetails?.photos && placeDetails?.photos?.length > 0 ?

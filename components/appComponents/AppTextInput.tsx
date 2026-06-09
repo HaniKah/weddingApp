@@ -1,6 +1,7 @@
 import {
     InputModeOptions,
     KeyboardTypeOptions,
+    StyleProp,
     StyleSheet,
     Text,
     TextInput,
@@ -26,10 +27,9 @@ export type AppTextInputProps = {
     design?: 1 | 2,
     unit?: string
     textArea?: boolean
-    onBlur?: () => void
     secureTextEntry?: boolean
     inputMode?: InputModeOptions
-    extraStyles?: ViewStyle
+    extraStyles?: StyleProp<ViewStyle>
 }
 
 export default function AppTextInput({
@@ -43,7 +43,6 @@ export default function AppTextInput({
                                          design = 1,
                                          unit,
                                          textArea,
-                                         onBlur,
                                          secureTextEntry,
                                          inputMode,
                                          extraStyles,
@@ -55,6 +54,7 @@ export default function AppTextInput({
     const inputRef = useRef<TextInput>(null);
     const [error, setError] = useState<string | undefined>();
     const [showPassword, setShowPassword] = useState<boolean>(false);
+    const [isFocused, setIsFocused] = useState<boolean>(false)
     // const [textInput, setTextInput] = useState<string | undefined>(value);
 
 
@@ -132,8 +132,9 @@ export default function AppTextInput({
                            style={[styles.input, textArea && styles.textArea]}
                            onChangeText={preTextChange}
                            multiline={textArea}
-                           onBlur={onBlur}
-                           secureTextEntry={!showPassword}
+                           onBlur={() => setIsFocused(false)}
+                           onFocus={() => setIsFocused(true)}
+                           secureTextEntry={secureTextEntry && !showPassword}
                            inputMode={inputMode}
                            textAlign={isArabic ? 'right' : 'left'}
 
@@ -141,13 +142,16 @@ export default function AppTextInput({
                 />
                 {unit && <Text style={styles.unit}>{unit}</Text>}
                 {secureTextEntry &&
-                    <IconButton onPress={() => setShowPassword(!showPassword)} color={Theme.colors.backgroundDisabled}
+                    <IconButton testID="visibility-icon"
+                                onPress={() => setShowPassword(!showPassword)}
+                                color={Theme.colors.backgroundDisabled}
                                 size={24}
                                 name={showPassword ? 'eye.fill' : 'eye.slash.fill'}
                                 removeBackground/>}
                 {
-                    value && value?.length > 0 && inputRef.current?.isFocused() &&
+                    value && value?.length > 0 && isFocused &&
                     <IconButton onPress={() => preTextChange(undefined)} color={Theme.colors.backgroundDisabled}
+                                testID="clear-icon"
                                 size={24}
                                 name="x.circle.fill"
                                 extraStylesBtn={{marginLeft: 5}}

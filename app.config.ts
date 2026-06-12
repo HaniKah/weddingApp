@@ -69,12 +69,11 @@ export default ({config}: ConfigContext): ExpoConfig => {
         ...config,
         'name': name,
         'slug': 'weddingApp',
-        'version': '1.0.0',
+        'version': '1.0.1',
         'orientation': 'portrait',
         'icon': icon,
         'scheme': scheme,
         'userInterfaceStyle': 'automatic',
-        'newArchEnabled': true,
 
         'updates': {
             'url': 'https://u.expo.dev/c2369dbe-f3a7-4a6f-a31d-0ed435547fd0',
@@ -101,7 +100,6 @@ export default ({config}: ConfigContext): ExpoConfig => {
                 'foregroundImage': adaptiveIcon,
                 'backgroundColor': '#ffffff',
             },
-            'edgeToEdgeEnabled': true,
             'package': packageName,
             'config': {
                 'googleMaps': {
@@ -115,6 +113,10 @@ export default ({config}: ConfigContext): ExpoConfig => {
             'favicon': icon,
         },
         'plugins': [
+            'expo-font',
+            'expo-image',
+            'expo-status-bar',
+            'expo-video',
             [
                 'expo-web-browser',
             ],

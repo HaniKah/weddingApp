@@ -71,7 +71,8 @@ export default function FilterModal({isVisible, setVisible, searchText, setSearc
                 <AppForm ref={formRef} onSubmit={() => {
                 }}>
                     <View style={styles.filtersContainer}>
-                        <Animated.View entering={SlideInDown.duration(450).easing(Easing.out(Easing.cubic))}>
+                        <Animated.View style={styles.searchBar}
+                                       entering={SlideInDown.duration(450).easing(Easing.out(Easing.cubic))}>
                             <AppTextInput
                                 name="search"
                                 placeholder="Search what you are looking for..."
@@ -87,9 +88,10 @@ export default function FilterModal({isVisible, setVisible, searchText, setSearc
                                 <Text style={styles.title}>Budget</Text>
                                 <View style={styles.priceInput}>
                                     <Text style={{color: Theme.colors.primary}}>Max. price: </Text>
-                                    <TextInput style={styles.input} value={priceInput}
-                                               keyboardType="numeric"
-                                               onChangeText={handleChangePrice}/>
+                                    <TextInput
+                                        style={styles.input} value={priceInput}
+                                        keyboardType="numeric"
+                                        onChangeText={handleChangePrice}/>
                                 </View>
 
 
@@ -161,6 +163,8 @@ const styles = StyleSheet.create({
     searchBar: {
         borderWidth: 0,
         boxShadow: Theme.effects.boxShadow,
+        height: 50,
+        borderRadius: Theme.radius.xl
     },
     header: {
         flexDirection: "row-reverse",
@@ -215,6 +219,8 @@ const styles = StyleSheet.create({
         boxShadow: Theme.effects.boxShadow,
         paddingVertical: 5,
         paddingHorizontal: 10,
+
+
     },
 
     sliderHost: {

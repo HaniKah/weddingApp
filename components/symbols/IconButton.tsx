@@ -30,24 +30,21 @@ export function IconButton(
 
     }) {
 
-    const MyIcon = () => {
-        return (
-            <View style={[styles.container, removeBackground && styles.removeBackground, extraStylesBtn]}>
-                <IconSymbol weight={weight} color={color || Theme.colors.primary} name={name} size={size}/>
-            </View>
-        );
-    };
-
+    const content = (
+        <View style={[styles.container, removeBackground && styles.removeBackground, extraStylesBtn]}>
+            <IconSymbol weight={weight} color={color || Theme.colors.primary} name={name} size={size}/>
+        </View>
+    );
 
     if (href) {
         return (
             <Link testID={testID} push href={href}>
-                <MyIcon/>
+                {content}
             </Link>
         );
     } else return (
         <Pressable testID={testID} onPress={onPress}>
-            <MyIcon/>
+            {content}
         </Pressable>
     );
 }

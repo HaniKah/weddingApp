@@ -187,7 +187,6 @@ const styles = StyleSheet.create({
         backgroundColor: Theme.colors.white,
         borderRadius: Theme.radius.xl,
         boxShadow: Theme.effects.boxShadow
-
     },
     label: {
         fontSize: 16,

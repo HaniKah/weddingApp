@@ -120,7 +120,7 @@ export default function AppTextInput({
     }, [value])
 
     return (
-        <View style={{flex: 1}}>
+        <View style={styles.container}>
             {label && <Text style={[styles.label]}>{label}</Text>}
             <View style={[styles.inputContainer, extraStyles]}>
                 <TextInput value={value || undefined}
@@ -167,6 +167,7 @@ export default function AppTextInput({
 }
 
 type TextInputType = {
+    container: ViewStyle,
     inputContainer: ViewStyle,
     input: TextStyle,
     label: TextStyle,
@@ -178,6 +179,9 @@ type TextInputType = {
 
 
 const design1: TextInputType = StyleSheet.create({
+        container: {
+            alignSelf: "stretch",
+        },
         inputContainer: {
             display: 'flex',
             flexDirection: 'row',
@@ -188,7 +192,7 @@ const design1: TextInputType = StyleSheet.create({
         },
         input: {
             paddingRight: 10,
-            height: 45,
+            height: 50,
             color: Theme.colors.primary,
             fontSize: Theme.sizes.md,
             width: '100%',
@@ -220,6 +224,9 @@ const design1: TextInputType = StyleSheet.create({
 );
 
 const design2: TextInputType = StyleSheet.create({
+    container: {
+        flex: 1
+    },
     inputContainer: {
         display: 'flex',
         flexDirection: 'row',
@@ -232,7 +239,7 @@ const design2: TextInputType = StyleSheet.create({
         borderWidth: 1,
     },
     input: {
-        height: 45,
+        height: 50,
         color: Theme.colors.primary,
         fontSize: Theme.sizes.sm,
         width: '100%',

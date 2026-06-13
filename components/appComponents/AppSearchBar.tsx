@@ -29,7 +29,8 @@ export default function AppSearchBar({searchText, setSearchText}: {
                             size={24}
                             name="line.3.horizontal.decrease"/>
             </View>
-            <FilterModal setVisible={setFilterVisible} isVisible={filterVisible}/>
+            <FilterModal setVisible={setFilterVisible} isVisible={filterVisible} searchText={searchText}
+                         setSearchText={setSearchText}/>
         </>
     );
 }

@@ -51,6 +51,8 @@ export default function FilterModal({isVisible, setVisible, searchText, setSearc
         setPrice(Number(price))
     }
 
+    const priceInput = useMemo(() => String(price), [price])
+
 
     return (
         <Modal animationType="fade" visible={isVisible} transparent>
@@ -85,7 +87,7 @@ export default function FilterModal({isVisible, setVisible, searchText, setSearc
                                 <Text style={styles.title}>Budget</Text>
                                 <View style={styles.priceInput}>
                                     <Text style={{color: Theme.colors.primary}}>Max. price: </Text>
-                                    <TextInput style={styles.input} value={String(price)}
+                                    <TextInput style={styles.input} value={priceInput}
                                                onChangeText={handleChangePrice}/>
                                 </View>
 
@@ -202,17 +204,20 @@ const styles = StyleSheet.create({
     priceInput: {
         borderRadius: Theme.radius.full,
         boxShadow: Theme.effects.boxShadow,
-        paddingHorizontal: 5,
         paddingVertical: 5,
+        paddingHorizontal: 10,
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",
-        width: 170,
+        maxWidth: 200
     },
     input: {
         color: Theme.colors.primary,
-        fontWeight: "bold"
+        fontWeight: "bold",
+        paddingHorizontal: 3,
+        alignSelf: "stretch",
+        backgroundColor: "red"
     },
 
     sliderHost: {

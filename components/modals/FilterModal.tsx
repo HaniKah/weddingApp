@@ -183,11 +183,11 @@ const styles = StyleSheet.create({
         boxShadow: Theme.effects.boxShadow,
         backgroundColor: Theme.colors.white,
     },
-
     collapsibleContainer: {
         backgroundColor: Theme.colors.white,
         borderRadius: Theme.radius.xl,
         boxShadow: Theme.effects.boxShadow
+
     },
     label: {
         fontSize: 16,

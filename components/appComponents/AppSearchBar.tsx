@@ -26,6 +26,7 @@ export default function AppSearchBar({searchText, setSearchText}: {
                            style={styles.input}/>
                 <IconButton onPress={() => setFilterVisible(true)}
                             extraStylesBtn={styles.filterButton}
+                            color={Theme.colors.secondary}
                             size={24}
                             name="line.3.horizontal.decrease"
 
@@ -57,6 +58,6 @@ const styles = StyleSheet.create({
     },
     filterButton: {
         backgroundColor: "white",
-        boxShadow: Theme.effects.boxShadow
-    }
+    },
+
 });

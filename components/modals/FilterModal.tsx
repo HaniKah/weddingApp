@@ -14,6 +14,7 @@ import AppDropDown from "@/components/appComponents/AppDropDown";
 import AppButton from "@/components/appComponents/AppButton";
 import {AppForm} from "@/contexts/form-context";
 import {ButtonType} from "@/styles/Button";
+import {AppCollapsible} from "@/components/appComponents/AppCollapsible";
 
 
 export default function FilterModal({isVisible, setVisible, searchText, setSearchText}: {
@@ -82,53 +83,58 @@ export default function FilterModal({isVisible, setVisible, searchText, setSearc
                                 extraStyles={styles.searchBar}
                             />
                         </Animated.View>
-                        <Animated.View style={styles.filterGroup}
-                                       entering={SlideInDown.duration(550).easing(Easing.out(Easing.cubic))}>
-                            <View style={styles.priceTextContainer}>
-                                <Text style={styles.title}>Budget</Text>
-                                <View style={styles.priceInput}>
-                                    <Text style={{color: Theme.colors.primary}}>Max. price: </Text>
-                                    <TextInput
-                                        style={styles.input} value={priceInput}
-                                        keyboardType="numeric"
-                                        onChangeText={handleChangePrice}/>
+                        
+                        <Animated.View entering={SlideInDown.duration(550).easing(Easing.out(Easing.cubic))}>
+                            <AppCollapsible containerStyle={styles.collapsibleContainer}
+                                            header={<Text style={styles.label}>Categories</Text>}>
+                                <View style={styles.priceTextContainer}>
+                                    <Text style={styles.title}>Budget</Text>
+                                    <View style={styles.priceInput}>
+                                        <Text style={{color: Theme.colors.primary}}>Max. price: </Text>
+                                        <TextInput
+                                            style={styles.input} value={priceInput}
+                                            keyboardType="numeric"
+                                            onChangeText={handleChangePrice}/>
+                                    </View>
+
+
                                 </View>
 
-
-                            </View>
-
-                            <Host style={styles.sliderHost}>
-                                <Slider
-                                    step={10}
-                                    min={0}
-                                    max={10000}
-                                    value={price || 0}
-                                    onValueChange={setPrice}/>
-                            </Host>
+                                <Host style={styles.sliderHost}>
+                                    <Slider
+                                        step={10}
+                                        min={0}
+                                        max={10000}
+                                        value={price || 0}
+                                        onValueChange={setPrice}/>
+                                </Host>
+                            </AppCollapsible>
                         </Animated.View>
 
-                        <Animated.View style={styles.filterGroup}
-                                       entering={SlideInDown.duration(650).easing(Easing.out(Easing.cubic))}>
-                            <Text style={styles.label}>Category</Text>
-                            <AppTagsSelect
-                                name="category"
-                                list={categoriesList}
-                                value={category}
-                                onChange={setCategory}
-                            />
+                        <Animated.View entering={SlideInDown.duration(650).easing(Easing.out(Easing.cubic))}>
+                            <AppCollapsible containerStyle={styles.collapsibleContainer}
+                                            header={<Text style={styles.label}>Categories</Text>}>
+                                <AppTagsSelect
+                                    name="category"
+                                    list={categoriesList}
+                                    value={category}
+                                    onChange={setCategory}
+                                />
+                            </AppCollapsible>
+                        </Animated.View>
+                        <Animated.View entering={SlideInDown.duration(750).easing(Easing.out(Easing.cubic))}>
+                            <AppCollapsible containerStyle={styles.collapsibleContainer}
+                                            header={<Text style={styles.label}>City</Text>}>
+                                <AppDropDown
+                                    name="city"
+                                    title="Select City"
+                                    itemList={citiesPickerItems}
+                                    value={city}
+                                    onChange={setCity}
+                                />
+                            </AppCollapsible>
                         </Animated.View>
 
-                        <Animated.View style={styles.filterGroup}
-                                       entering={SlideInDown.duration(750).easing(Easing.out(Easing.cubic))}>
-                            <Text style={styles.label}>City</Text>
-                            <AppDropDown
-                                name="city"
-                                title="Select City"
-                                itemList={citiesPickerItems}
-                                value={city}
-                                onChange={setCity}
-                            />
-                        </Animated.View>
 
                         <Animated.View style={styles.footer}
                                        entering={SlideInDown.duration(850).easing(Easing.out(Easing.cubic))}>
@@ -179,8 +185,7 @@ const styles = StyleSheet.create({
         backgroundColor: Theme.colors.white,
     },
 
-    filterGroup: {
-        padding: 20,
+    collapsibleContainer: {
         backgroundColor: Theme.colors.white,
         borderRadius: Theme.radius.xl,
         boxShadow: Theme.effects.boxShadow

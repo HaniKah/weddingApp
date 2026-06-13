@@ -85,7 +85,7 @@ export default function FilterModal({isVisible, setVisible, searchText, setSearc
                         </Animated.View>
 
                         <Animated.View entering={SlideInDown.duration(550).easing(Easing.out(Easing.cubic))}>
-                            <AppCollapsible containerStyle={styles.collapsibleContainer}
+                            <AppCollapsible defaultExpanded={true} containerStyle={styles.collapsibleContainer}
                                             header={<Text style={styles.label}>Budget</Text>}>
                                 <View style={styles.priceTextContainer}>
                                     <View style={styles.priceInput}>

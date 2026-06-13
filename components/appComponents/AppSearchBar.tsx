@@ -27,7 +27,9 @@ export default function AppSearchBar({searchText, setSearchText}: {
                 <IconButton onPress={() => setFilterVisible(true)}
                             extraStylesBtn={styles.filterButton}
                             size={24}
-                            name="line.3.horizontal.decrease"/>
+                            name="line.3.horizontal.decrease"
+
+                />
             </View>
             <FilterModal setVisible={setFilterVisible} isVisible={filterVisible} searchText={searchText}
                          setSearchText={setSearchText}/>
@@ -54,6 +56,7 @@ const styles = StyleSheet.create({
 
     },
     filterButton: {
-        backgroundColor: Theme.colors.background
+        backgroundColor: "white",
+        boxShadow: Theme.effects.boxShadow
     }
 });

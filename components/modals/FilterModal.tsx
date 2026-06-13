@@ -47,8 +47,8 @@ export default function FilterModal({isVisible, setVisible, searchText, setSearc
         setCity(undefined);
     }
 
-    function handleChangePrice() {
-        setPrice(Number(price))
+    function handleChangePrice(value: string) {
+        setPrice(Number(value))
     }
 
     const priceInput = useMemo(() => String(price), [price])
@@ -88,6 +88,7 @@ export default function FilterModal({isVisible, setVisible, searchText, setSearc
                                 <View style={styles.priceInput}>
                                     <Text style={{color: Theme.colors.primary}}>Max. price: </Text>
                                     <TextInput style={styles.input} value={priceInput}
+                                               keyboardType="numeric"
                                                onChangeText={handleChangePrice}/>
                                 </View>
 
@@ -202,22 +203,18 @@ const styles = StyleSheet.create({
         color: Theme.colors.primary
     },
     priceInput: {
-        borderRadius: Theme.radius.full,
-        boxShadow: Theme.effects.boxShadow,
-        paddingVertical: 5,
-        paddingHorizontal: 10,
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",
-        maxWidth: 200
     },
     input: {
         color: Theme.colors.primary,
         fontWeight: "bold",
-        paddingHorizontal: 3,
-        alignSelf: "stretch",
-        backgroundColor: "red"
+        borderRadius: Theme.radius.full,
+        boxShadow: Theme.effects.boxShadow,
+        paddingVertical: 5,
+        paddingHorizontal: 10,
     },
 
     sliderHost: {

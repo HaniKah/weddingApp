@@ -16,7 +16,7 @@ import {ButtonType} from "@/styles/Button";
 import {AppCollapsible} from "@/components/appComponents/AppCollapsible";
 import {CategoryTileList} from "@/components/CategoryTileList";
 
-
+export type CollapsibleFilters = "BUDGET" | "CATEGORIES" | "CITY"
 export default function FilterModal({isVisible, setVisible, searchText, setSearchText}: {
     isVisible: boolean,
     setVisible: (visible: boolean) => void,
@@ -29,6 +29,8 @@ export default function FilterModal({isVisible, setVisible, searchText, setSearc
     const [price, setPrice] = useState<number>(5000)
     const [category, setCategory] = useState<Categories | undefined>()
     const [city, setCity] = useState<string | undefined>()
+
+    const [activeCollapsible, setActiveCollapsible] = useState<CollapsibleFilters | undefined>()
 
     const citiesPickerItems = useMemo(() => {
         if (!isoCountry) return [];
@@ -49,6 +51,14 @@ export default function FilterModal({isVisible, setVisible, searchText, setSearc
     }
 
     const priceInput = useMemo(() => String(price), [price])
+
+    function handleToggle(name: CollapsibleFilters) {
+        if (name === activeCollapsible) {
+            setActiveCollapsible(undefined)
+        } else {
+            setActiveCollapsible(name)
+        }
+    }
 
 
     return (
@@ -78,7 +88,9 @@ export default function FilterModal({isVisible, setVisible, searchText, setSearc
                             />
                         </Animated.View>
                         <Animated.View entering={SlideInDown.duration(550).easing(Easing.out(Easing.cubic))}>
-                            <AppCollapsible containerStyle={styles.collapsibleContainer}
+                            <AppCollapsible onToggle={() => handleToggle("BUDGET")}
+                                            expanded={activeCollapsible === "BUDGET"}
+                                            containerStyle={styles.collapsibleContainer}
                                             header={<Text style={styles.label}>Budget</Text>}>
                                 <View style={styles.priceTextContainer}>
                                     <View style={styles.priceInput}>
@@ -104,19 +116,17 @@ export default function FilterModal({isVisible, setVisible, searchText, setSearc
                         </Animated.View>
 
                         <Animated.View entering={SlideInDown.duration(650).easing(Easing.out(Easing.cubic))}>
-                            <AppCollapsible containerStyle={[styles.collapsibleContainer, {maxHeight: 400}]}
+                            <AppCollapsible onToggle={() => handleToggle("CATEGORIES")}
+                                            expanded={activeCollapsible === "CATEGORIES"}
+                                            containerStyle={[styles.collapsibleContainer, {maxHeight: 400}]}
                                             header={<Text style={styles.label}>Categories</Text>}>
-                                {/*<AppTagsSelect*/}
-                                {/*    name="category"*/}
-                                {/*    list={categoriesList}*/}
-                                {/*    value={category}*/}
-                                {/*    onChange={setCategory}*/}
-                                {/*/>*/}
                                 <CategoryTileList/>
                             </AppCollapsible>
                         </Animated.View>
                         <Animated.View entering={SlideInDown.duration(750).easing(Easing.out(Easing.cubic))}>
-                            <AppCollapsible containerStyle={styles.collapsibleContainer}
+                            <AppCollapsible onToggle={() => handleToggle("CITY")}
+                                            expanded={activeCollapsible === "CITY"}
+                                            containerStyle={styles.collapsibleContainer}
                                             header={<Text style={styles.label}>City</Text>}>
                                 <AppDropDown
                                     name="city"

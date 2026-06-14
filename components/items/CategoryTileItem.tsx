@@ -1,9 +1,10 @@
-import {Pressable, StyleSheet, Text} from "react-native";
+import {StyleSheet, Text, View} from "react-native";
 import {Theme} from "@/styles/Theme";
 import {Categories} from "@/types/open-api";
 import IconCategory from "@/components/symbols/IconCategory";
 import {useTranslation} from "react-i18next";
 import {Dispatch, SetStateAction} from "react";
+import AppPressable from "@/components/appComponents/AppPressable";
 
 export default function CategoryTileItem({item, selected, setSelected}: {
     item: Categories,
@@ -12,12 +13,18 @@ export default function CategoryTileItem({item, selected, setSelected}: {
 }) {
     const {t} = useTranslation()
     return (
-        <Pressable style={[styles.container, selected === item && styles.containerSelected]}
-                   onPress={() => setSelected(item)}>
-            <IconCategory color={selected === item ? Theme.colors.white : Theme.colors.secondary} size={30}
-                          category={item}/>
-            <Text style={[styles.label, selected === item && styles.labelSelected]}>{t("categories." + item)}</Text>
-        </Pressable>
+        <AppPressable style={{
+            alignSelf: "stretch",
+            flexGrow: 1,
+        }}
+                      onPress={() => setSelected(item)}>
+            <View style={[styles.container, selected === item && styles.containerSelected]}>
+                <IconCategory color={selected === item ? Theme.colors.white : Theme.colors.secondary} size={30}
+                              category={item}/>
+                <Text style={[styles.label, selected === item && styles.labelSelected]}>{t("categories." + item)}</Text>
+            </View>
+
+        </AppPressable>
     )
 }
 const styles = StyleSheet.create({

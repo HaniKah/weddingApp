@@ -81,9 +81,9 @@ export function AppCollapsible({
 
         LayoutAnimation.configureNext({
             duration: animationDuration,
-            update: {type: 'easeInEaseOut', duration: animationDuration},
-            create: {type: 'easeInEaseOut', property: 'opacity', duration: animationDuration},
-            delete: {type: 'easeInEaseOut', property: 'opacity', duration: animationDuration},
+            update: {type: 'easeInEaseOut',},
+            create: {type: 'easeInEaseOut', property: 'opacity'},
+            delete: {type: 'easeInEaseOut', property: 'opacity'},
         });
 
         if (!isControlled) {

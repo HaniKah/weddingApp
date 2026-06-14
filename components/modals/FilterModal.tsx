@@ -22,7 +22,7 @@ export default function FilterModal({
                                         setVisible,
                                         searchText,
                                         setSearchText,
-                                        priceFilter = "500",
+                                        priceFilter = "0",
                                         setPriceFilter,
                                         cityFilter,
                                         setCityFilter,

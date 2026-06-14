@@ -85,7 +85,11 @@ export default function Index() {
         try {
             const resp = await API.plannerControllerGetPlaces({
                 search: debouncedSearchText,
-                category: categoryFilter,
+                filters: {
+                    category: categoryFilter,
+                    city: cityFilter,
+                    price: priceFilter,
+                },
                 offset: offset,
                 countryCode: isoCountry as CountryCode,
             });
@@ -155,6 +159,7 @@ export default function Index() {
                                     setActiveCategory={setCategoryFilter}
                                     searchText={searchText}
                                     setSearchText={setSearchText}
+                                    onShowResult={() => getPlaces(0)}
                                 />}
                             refreshing={isRefreshing}
                             onRefresh={handleRefresh}

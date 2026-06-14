@@ -90,6 +90,12 @@ export enum Categories {
   Miscellaneous = "Miscellaneous",
 }
 
+export interface SearchFilter {
+  category?: Categories;
+  city?: string;
+  price?: string;
+}
+
 export interface PlacesFeatures {
   rent?: boolean;
   capacity?: number;
@@ -661,32 +667,7 @@ export class Api<
           | "IR"
           | "TR"
           | "YE";
-        category?:
-          | "Host"
-          | "Dress"
-          | "Suit"
-          | "Photographer"
-          | "Car"
-          | "Dj"
-          | "MakeUpArtist"
-          | "Salon"
-          | "HennaSpecialist"
-          | "Florist"
-          | "Decorator"
-          | "Catering"
-          | "Procession"
-          | "Performer"
-          | "DancingCourse"
-          | "Honeymoon"
-          | "Giveaway"
-          | "Jewelry"
-          | "Perfume"
-          | "Shower"
-          | "Cosmetic"
-          | "Firework"
-          | "Clinic"
-          | "AvEquipment"
-          | "Miscellaneous";
+        filters?: SearchFilter;
         search?: string;
       },
       params: RequestParams = {},

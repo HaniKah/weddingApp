@@ -15,6 +15,7 @@ export default function SearchHeader({
                                          priceFilter, setPriceFilter, cityFilter, setCityFilter,
                                          searchText,
                                          setSearchText,
+                                         onShowResult
                                      }: {
 
     activeCategory: Categories | undefined,
@@ -25,6 +26,7 @@ export default function SearchHeader({
     setCityFilter: Dispatch<SetStateAction<string | undefined>>
     searchText: string | undefined,
     setSearchText: Dispatch<SetStateAction<string | undefined>>
+    onShowResult: () => void
 
 
 }) {
@@ -58,6 +60,7 @@ export default function SearchHeader({
                          setCityFilter={setCityFilter}
                          categoryFilter={activeCategory}
                          setCategoryFilter={setActiveCategory}
+                         onShowResult={onShowResult}
             />
 
         </>

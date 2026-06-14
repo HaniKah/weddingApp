@@ -52,7 +52,7 @@ export function AppCollapsible({
                                    expanded: controlledExpanded,
                                    onToggle,
                                    hideChevron = false,
-                                   animationDuration = 250,
+                                   animationDuration = 350,
                                    containerStyle,
                                    headerStyle,
                                    contentStyle,
@@ -81,9 +81,9 @@ export function AppCollapsible({
 
         LayoutAnimation.configureNext({
             duration: animationDuration,
-            update: {type: 'easeInEaseOut'},
-            create: {type: 'easeInEaseOut', property: 'opacity'},
-            delete: {type: 'easeInEaseOut', property: 'opacity'},
+            update: {type: 'easeInEaseOut', duration: animationDuration},
+            create: {type: 'easeInEaseOut', property: 'opacity', duration: animationDuration},
+            delete: {type: 'easeInEaseOut', property: 'opacity', duration: animationDuration},
         });
 
         if (!isControlled) {
@@ -118,7 +118,8 @@ export function AppCollapsible({
 
             {/* ── Collapsible body ── */}
             {isExpanded && (
-                <View style={[styles.content, contentStyle]}>{children}</View>
+                <Animated.View
+                    style={[styles.content, contentStyle]}>{children}</Animated.View>
             )}
         </View>
     );

@@ -13,13 +13,6 @@ export default function AppSearchBar({searchText, setSearchText}: {
     return (
         <>
             <View style={styles.container}>
-                {/*<AppTextInput design={2}*/}
-                {/*              placeholder="search"*/}
-                {/*              value={searchText}*/}
-                {/*              name="search"*/}
-                {/*              onChange={(text) => setSearchText(text)}*/}
-                {/*              extraStyles={styles.input}*/}
-                {/*/>*/}
                 <TextInput placeholder="Search"
                            value={searchText}
                            onChangeText={setSearchText}

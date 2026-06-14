@@ -16,11 +16,25 @@ import AppSafeAreaView from '@/components/appComponents/AppSafeAreaView';
 
 import {useTranslation} from 'react-i18next';
 
+function EmptyPlaceholder() {
+    const {t} = useTranslation();
+    return (
+        <View style={styles.emptyPlaceHolderContainer}>
+            <IconSymbol color={Theme.colors.gray.S300} name="magnifyingglass" size={35}/>
+            <Text style={styles.emptyPlaceholderTitle}>
+                {t('planner.noVendorsFound')}
+            </Text>
+            <Text style={styles.emptyPlaceholderText}>
+                {t('planner.tryDifferentSearch')}
+            </Text>
+        </View>
+
+    );
+}
 
 export default function Index() {
 
     const API = useApi().api;
-    const {t} = useTranslation();
 
 
     const [isLoading, setLoading] = useState<boolean>(false);
@@ -120,21 +134,6 @@ export default function Index() {
             setPlaces(resp);
             setRefreshing(false);
         }, REFRESH_DELAY);
-    }
-
-    function EmptyPlaceholder() {
-        return (
-            <View style={styles.emptyPlaceHolderContainer}>
-                <IconSymbol color={Theme.colors.gray.S300} name="magnifyingglass" size={35}/>
-                <Text style={styles.emptyPlaceholderTitle}>
-                    {t('planner.noVendorsFound')}
-                </Text>
-                <Text style={styles.emptyPlaceholderText}>
-                    {t('planner.tryDifferentSearch')}
-                </Text>
-            </View>
-
-        );
     }
 
 

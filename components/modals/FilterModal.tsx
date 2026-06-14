@@ -6,7 +6,6 @@ import {Host, Slider} from '@expo/ui';
 import {useMemo, useRef, useState} from "react";
 import Animated, {Easing, SlideInDown} from "react-native-reanimated";
 import AppTextInput from "@/components/appComponents/AppTextInput";
-import AppTagsSelect from "@/components/appComponents/AppTagsSelect";
 import {Categories} from "@/types/open-api";
 import {COUNTRIES} from "@/constants/countries";
 import {useLocationContext} from "@/contexts/location-context";
@@ -15,6 +14,7 @@ import AppButton from "@/components/appComponents/AppButton";
 import {AppForm} from "@/contexts/form-context";
 import {ButtonType} from "@/styles/Button";
 import {AppCollapsible} from "@/components/appComponents/AppCollapsible";
+import {CategoryTileList} from "@/components/CategoryTileList";
 
 
 export default function FilterModal({isVisible, setVisible, searchText, setSearchText}: {
@@ -35,10 +35,6 @@ export default function FilterModal({isVisible, setVisible, searchText, setSearc
         const cities = COUNTRIES.get(isoCountry)?.cities;
         return cities?.map(c => ({name: c, value: c})) || [];
     }, [isoCountry]);
-
-    const categoriesList = useMemo(() => {
-        return Object.values(Categories).map(c => ({name: c, value: c}));
-    }, []);
 
 
     const resetFilters = () => {
@@ -67,7 +63,6 @@ export default function FilterModal({isVisible, setVisible, searchText, setSearc
                                 name="xmark"/>
 
                 </Animated.View>
-
 
                 <AppForm ref={formRef} onSubmit={() => {
                 }}>
@@ -113,12 +108,13 @@ export default function FilterModal({isVisible, setVisible, searchText, setSearc
                         <Animated.View entering={SlideInDown.duration(650).easing(Easing.out(Easing.cubic))}>
                             <AppCollapsible containerStyle={styles.collapsibleContainer}
                                             header={<Text style={styles.label}>Categories</Text>}>
-                                <AppTagsSelect
-                                    name="category"
-                                    list={categoriesList}
-                                    value={category}
-                                    onChange={setCategory}
-                                />
+                                {/*<AppTagsSelect*/}
+                                {/*    name="category"*/}
+                                {/*    list={categoriesList}*/}
+                                {/*    value={category}*/}
+                                {/*    onChange={setCategory}*/}
+                                {/*/>*/}
+                                <CategoryTileList/>
                             </AppCollapsible>
                         </Animated.View>
                         <Animated.View entering={SlideInDown.duration(750).easing(Easing.out(Easing.cubic))}>
@@ -146,9 +142,7 @@ export default function FilterModal({isVisible, setVisible, searchText, setSearc
                             </AppButton>
                         </Animated.View>
                     </View>
-
                 </AppForm>
-
 
             </BlurView>
 

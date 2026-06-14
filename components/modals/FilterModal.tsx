@@ -80,7 +80,7 @@ export default function FilterModal({isVisible, setVisible, searchText, setSearc
                         </Animated.View>
 
                         <Animated.View entering={SlideInDown.duration(550).easing(Easing.out(Easing.cubic))}>
-                            <AppCollapsible defaultExpanded={true} containerStyle={styles.collapsibleContainer}
+                            <AppCollapsible containerStyle={styles.collapsibleContainer}
                                             header={<Text style={styles.label}>Budget</Text>}>
                                 <View style={styles.priceTextContainer}>
                                     <View style={styles.priceInput}>
@@ -106,7 +106,7 @@ export default function FilterModal({isVisible, setVisible, searchText, setSearc
                         </Animated.View>
 
                         <Animated.View entering={SlideInDown.duration(650).easing(Easing.out(Easing.cubic))}>
-                            <AppCollapsible containerStyle={styles.collapsibleContainer}
+                            <AppCollapsible containerStyle={[styles.collapsibleContainer, {maxHeight: 400}]}
                                             header={<Text style={styles.label}>Categories</Text>}>
                                 {/*<AppTagsSelect*/}
                                 {/*    name="category"*/}
@@ -233,11 +233,13 @@ const styles = StyleSheet.create({
         minWidth: 80,
     },
     footer: {
+        flex: 1,
+        alignSelf: "flex-end",
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "space-between",
         position: "absolute",
+        justifyContent: "space-between",
         width: "100%",
         padding: 20,
         bottom: 20,

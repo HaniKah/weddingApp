@@ -61,7 +61,6 @@ export default function FilterModal({isVisible, setVisible, searchText, setSearc
                                 size={18}
                                 onPress={() => setVisible(false)}
                                 name="xmark"/>
-
                 </Animated.View>
 
                 <AppForm ref={formRef} onSubmit={() => {
@@ -78,7 +77,6 @@ export default function FilterModal({isVisible, setVisible, searchText, setSearc
                                 extraStyles={styles.searchBar}
                             />
                         </Animated.View>
-
                         <Animated.View entering={SlideInDown.duration(550).easing(Easing.out(Easing.cubic))}>
                             <AppCollapsible containerStyle={styles.collapsibleContainer}
                                             header={<Text style={styles.label}>Budget</Text>}>

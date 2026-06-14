@@ -1,57 +1,75 @@
 import CategoryList from '@/components/CategoryList';
 import AppSearchBar from '@/components/appComponents/AppSearchBar';
-import { Categories } from '@/types/open-api';
-import { Dispatch, SetStateAction } from 'react';
-import { StyleSheet, Text } from 'react-native';
-import { Theme } from '@/styles/Theme';
+import {Categories} from '@/types/open-api';
+import {Dispatch, SetStateAction, useState} from 'react';
+import {StyleSheet, Text} from 'react-native';
+import {Theme} from '@/styles/Theme';
 import WelcomeText from '@/components/WelcomeText';
 import AppView from '@/components/appComponents/AppView';
+import FilterModal from "@/components/modals/FilterModal";
 
 export default function SearchHeader({
 
-                                       activeCategory,
-                                       setActiveCategory,
-                                       searchText,
-                                       setSearchText,
+                                         activeCategory,
+                                         setActiveCategory,
+                                         priceFilter, setPriceFilter, cityFilter, setCityFilter,
+                                         searchText,
+                                         setSearchText,
                                      }: {
 
-  activeCategory: Categories | undefined,
-  setActiveCategory: Dispatch<SetStateAction<Categories | undefined>>
-  searchText: string | undefined,
-  setSearchText: Dispatch<SetStateAction<string | undefined>>
+    activeCategory: Categories | undefined,
+    setActiveCategory: Dispatch<SetStateAction<Categories | undefined>>
+    priceFilter: string | undefined
+    setPriceFilter: Dispatch<SetStateAction<string | undefined>>
+    cityFilter: string | undefined
+    setCityFilter: Dispatch<SetStateAction<string | undefined>>
+    searchText: string | undefined,
+    setSearchText: Dispatch<SetStateAction<string | undefined>>
 
 
 }) {
+    const [filterVisible, setFilterVisible] = useState<boolean>(false);
 
-  return (
-    <>
-      <AppView withPadding>
-        <WelcomeText />
-        <AppSearchBar searchText={searchText} setSearchText={setSearchText} />
-        <CategoryList
+    return (
+        <>
+            <AppView withPadding>
+                <WelcomeText/>
+                <AppSearchBar filterVisible={filterVisible}
+                              setFilterVisible={setFilterVisible}
+                              searchText={searchText}
+                              setSearchText={setSearchText}/>
+                <CategoryList
 
-          activeStep={activeCategory}
-          setActiveStep={setActiveCategory} />
+                    activeStep={activeCategory}
+                    setActiveStep={setActiveCategory}/>
 
-        {/*<SearchFilters*/}
-        {/*  selectedFilter={selectedFilter}*/}
-        {/*  setSelectedFilter={setSelectedFilter} />*/}
 
-        <Text style={styles.allVendors}>
-          All Vendors
-        </Text>
-      </AppView>
+                <Text style={styles.allVendors}>
+                    All Vendors
+                </Text>
+            </AppView>
+            <FilterModal setVisible={setFilterVisible}
+                         isVisible={filterVisible}
+                         searchText={searchText}
+                         setSearchText={setSearchText}
+                         priceFilter={priceFilter}
+                         setPriceFilter={setPriceFilter}
+                         cityFilter={cityFilter}
+                         setCityFilter={setCityFilter}
+                         categoryFilter={activeCategory}
+                         setCategoryFilter={setActiveCategory}
+            />
 
-    </>
-  );
+        </>
+    );
 }
 
 const styles = StyleSheet.create({
-  allVendors: {
-    marginVertical: 10,
-    fontWeight: 'bold',
-    fontSize: Theme.sizes.md,
-    height: 'auto',
-  },
+    allVendors: {
+        marginVertical: 10,
+        fontWeight: 'bold',
+        fontSize: Theme.sizes.md,
+        height: 'auto',
+    },
 
 });

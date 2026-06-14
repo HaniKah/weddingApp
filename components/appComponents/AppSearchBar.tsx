@@ -1,14 +1,15 @@
 import {StyleSheet, TextInput, View} from 'react-native';
 import {Theme} from "@/styles/Theme";
 import {IconButton} from "@/components/symbols/IconButton";
-import FilterModal from "@/components/modals/FilterModal";
-import {useState} from "react";
+import {Dispatch, SetStateAction} from "react";
 
-export default function AppSearchBar({searchText, setSearchText}: {
+export default function AppSearchBar({searchText, setSearchText, filterVisible, setFilterVisible}: {
     searchText: string | undefined,
     setSearchText: (value: string | undefined) => void
+    filterVisible: boolean,
+    setFilterVisible: Dispatch<SetStateAction<boolean>>
 }) {
-    const [filterVisible, setFilterVisible] = useState<boolean>(false);
+    // const [filterVisible, setFilterVisible] = useState<boolean>(false);
 
     return (
         <>
@@ -25,8 +26,7 @@ export default function AppSearchBar({searchText, setSearchText}: {
 
                 />
             </View>
-            <FilterModal setVisible={setFilterVisible} isVisible={filterVisible} searchText={searchText}
-                         setSearchText={setSearchText}/>
+
         </>
     );
 }

@@ -41,7 +41,9 @@ export default function Index() {
     const [isRefreshing, setRefreshing] = useState<boolean>(false);
 
 
-    const [activeCategory, setActiveCategory] = useState<Categories | undefined>();
+    const [categoryFilter, setCategoryFilter] = useState<Categories | undefined>();
+    const [cityFilter, setCityFilter] = useState<string | undefined>();
+    const [priceFilter, setPriceFilter] = useState<string | undefined>();
 
 
     const [places, setPlaces] = useState<PlacesDto[]>([]);
@@ -83,7 +85,7 @@ export default function Index() {
         try {
             const resp = await API.plannerControllerGetPlaces({
                 search: debouncedSearchText,
-                category: activeCategory,
+                category: categoryFilter,
                 offset: offset,
                 countryCode: isoCountry as CountryCode,
             });
@@ -107,7 +109,7 @@ export default function Index() {
         };
         fetch();
 
-    }, [activeCategory, debouncedSearchText, isoCountry]);
+    }, [categoryFilter, debouncedSearchText, isoCountry]);
 
 
     useEffect(() => {
@@ -145,8 +147,12 @@ export default function Index() {
                     {isoCountry ? <FlatList
                             ListHeaderComponent={
                                 <SearchHeader
-                                    activeCategory={activeCategory}
-                                    setActiveCategory={setActiveCategory}
+                                    priceFilter={priceFilter}
+                                    setPriceFilter={setPriceFilter}
+                                    cityFilter={cityFilter}
+                                    setCityFilter={setCityFilter}
+                                    activeCategory={categoryFilter}
+                                    setActiveCategory={setCategoryFilter}
                                     searchText={searchText}
                                     setSearchText={setSearchText}
                                 />}

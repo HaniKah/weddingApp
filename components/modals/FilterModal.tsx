@@ -3,10 +3,9 @@ import {BlurView} from "expo-blur";
 import {Theme} from "@/styles/Theme";
 import {IconButton} from "@/components/symbols/IconButton";
 import {Host, Slider} from '@expo/ui';
-import {useMemo, useRef, useState} from "react";
+import {Dispatch, SetStateAction, useMemo, useRef, useState} from "react";
 import Animated, {Easing, SlideInDown} from "react-native-reanimated";
 import AppTextInput from "@/components/appComponents/AppTextInput";
-import {Categories} from "@/types/open-api";
 import {COUNTRIES} from "@/constants/countries";
 import {useLocationContext} from "@/contexts/location-context";
 import AppDropDown from "@/components/appComponents/AppDropDown";
@@ -15,20 +14,41 @@ import {AppForm} from "@/contexts/form-context";
 import {ButtonType} from "@/styles/Button";
 import {AppCollapsible} from "@/components/appComponents/AppCollapsible";
 import {CategoryTileList} from "@/components/CategoryTileList";
+import {Categories} from "@/types/open-api";
 
 export type CollapsibleFilters = "BUDGET" | "CATEGORIES" | "CITY"
-export default function FilterModal({isVisible, setVisible, searchText, setSearchText}: {
+export default function FilterModal({
+                                        isVisible,
+                                        setVisible,
+                                        searchText,
+                                        setSearchText,
+                                        priceFilter = "500",
+                                        setPriceFilter,
+                                        cityFilter,
+                                        setCityFilter,
+                                        categoryFilter,
+                                        setCategoryFilter,
+                                        onShowResult
+
+                                    }: {
     isVisible: boolean,
     setVisible: (visible: boolean) => void,
     searchText: string | undefined,
     setSearchText: (value: string | undefined) => void
+    priceFilter: string | undefined
+    setPriceFilter: Dispatch<SetStateAction<string | undefined>>
+    cityFilter: string | undefined
+    setCityFilter: Dispatch<SetStateAction<string | undefined>>
+    categoryFilter: Categories | undefined
+    setCategoryFilter: Dispatch<SetStateAction<Categories | undefined>>
+    onShowResult: () => void
 }) {
     const {isoCountry} = useLocationContext();
     const formRef = useRef<any>(null);
 
-    const [price, setPrice] = useState<number>(5000)
-    const [category, setCategory] = useState<Categories | undefined>()
-    const [city, setCity] = useState<string | undefined>()
+    // const [price, setPrice] = useState<number>(5000)
+    // const [category, setCategory] = useState<Categories | undefined>()
+    // const [city, setCity] = useState<string | undefined>()
 
     const [activeCollapsible, setActiveCollapsible] = useState<CollapsibleFilters | undefined>()
 
@@ -40,17 +60,17 @@ export default function FilterModal({isVisible, setVisible, searchText, setSearc
 
 
     const resetFilters = () => {
-        setSearchText("");
-        setPrice(0);
-        setCategory(undefined);
-        setCity(undefined);
+        setSearchText(undefined);
+        setPriceFilter("0");
+        setCategoryFilter(undefined);
+        setCityFilter(undefined);
     }
 
-    function handleChangePrice(value: string) {
-        setPrice(Number(value))
+    function handleChangePrice(value: number) {
+        setPriceFilter(String(value))
     }
 
-    const priceInput = useMemo(() => String(price), [price])
+    const priceInput = useMemo(() => String(priceFilter), [priceFilter])
 
     function handleToggle(name: CollapsibleFilters) {
         if (name === activeCollapsible) {
@@ -58,6 +78,11 @@ export default function FilterModal({isVisible, setVisible, searchText, setSearc
         } else {
             setActiveCollapsible(name)
         }
+    }
+
+    function handleShowResult() {
+        onShowResult()
+        setVisible(false)
     }
 
 
@@ -98,7 +123,7 @@ export default function FilterModal({isVisible, setVisible, searchText, setSearc
                                         <TextInput
                                             style={styles.input} value={priceInput}
                                             keyboardType="numeric"
-                                            onChangeText={handleChangePrice}/>
+                                            onChangeText={setPriceFilter}/>
                                     </View>
 
 
@@ -109,8 +134,8 @@ export default function FilterModal({isVisible, setVisible, searchText, setSearc
                                         step={10}
                                         min={0}
                                         max={10000}
-                                        value={price || 0}
-                                        onValueChange={setPrice}/>
+                                        value={Number(priceFilter) || 0}
+                                        onValueChange={handleChangePrice}/>
                                 </Host>
                             </AppCollapsible>
                         </Animated.View>
@@ -120,7 +145,9 @@ export default function FilterModal({isVisible, setVisible, searchText, setSearc
                                             expanded={activeCollapsible === "CATEGORIES"}
                                             containerStyle={[styles.collapsibleContainer, {maxHeight: 400}]}
                                             header={<Text style={styles.label}>Categories</Text>}>
-                                <CategoryTileList/>
+
+                                <CategoryTileList categoryFilter={categoryFilter}
+                                                  setCategoryFilter={setCategoryFilter}/>
                             </AppCollapsible>
                         </Animated.View>
                         <Animated.View entering={SlideInDown.duration(750).easing(Easing.out(Easing.cubic))}>
@@ -132,8 +159,8 @@ export default function FilterModal({isVisible, setVisible, searchText, setSearc
                                     name="city"
                                     title="Select City"
                                     itemList={citiesPickerItems}
-                                    value={city}
-                                    onChange={setCity}
+                                    value={cityFilter}
+                                    onChange={setCityFilter}
                                 />
                             </AppCollapsible>
                         </Animated.View>
@@ -145,7 +172,7 @@ export default function FilterModal({isVisible, setVisible, searchText, setSearc
                                        extraStylesTxt={{color: Theme.colors.primary}}>
                                 Reset
                             </AppButton>
-                            <AppButton fullWidth onPress={() => setVisible(false)} buttonType={ButtonType.PRIMARY}>
+                            <AppButton fullWidth onPress={handleShowResult} buttonType={ButtonType.PRIMARY}>
                                 Show Results
                             </AppButton>
                         </Animated.View>

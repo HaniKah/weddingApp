@@ -1,19 +1,23 @@
-import {useMemo, useState} from "react";
+import {Dispatch, SetStateAction, useMemo} from "react";
 import {Categories} from "@/types/open-api";
 import CategoryTileItem from "@/components/items/CategoryTileItem";
 import {ScrollView, StyleSheet} from "react-native";
 
-export function CategoryTileList() {
+export function CategoryTileList({categoryFilter, setCategoryFilter}: {
+    categoryFilter: Categories | undefined,
+    setCategoryFilter: Dispatch<SetStateAction<Categories | undefined>>
+}) {
     const categoriesList = useMemo(() => {
         return Object.values(Categories)
     }, []);
-    const [selected, setSelected] = useState<Categories>();
+
 
     return (
 
         <ScrollView contentContainerStyle={styles.container}>
             {
-                categoriesList.map((item) => <CategoryTileItem setSelected={setSelected} selected={selected} key={item}
+                categoriesList.map((item) => <CategoryTileItem setSelected={setCategoryFilter} selected={categoryFilter}
+                                                               key={item}
                                                                item={item}/>)
             }
         </ScrollView>

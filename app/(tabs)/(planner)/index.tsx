@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {Categories, CountryCode, PlacesDto, SearchFilter} from '@/types/open-api';
+import {CountryCode, PlacesDto, SearchFilter} from '@/types/open-api';
 import {Stack, useRouter} from 'expo-router';
 import AppView from '@/components/appComponents/AppView';
 import {useApi} from '@/utils/api';
@@ -35,11 +35,6 @@ function EmptyPlaceholder() {
     );
 }
 
-interface FiltersType {
-    category?: Categories;
-    city?: string;
-    price?: string;
-}
 
 export default function Index() {
 
@@ -49,14 +44,16 @@ export default function Index() {
     const [isLoading, setLoading] = useState<boolean>(false);
     const [isRefreshing, setRefreshing] = useState<boolean>(false);
 
-    
-    const [filters, setFilters] = useState<SearchFilter>({})
 
+    const [filters, setFilters] = useState<SearchFilter>({})
 
     const [places, setPlaces] = useState<PlacesDto[]>([]);
 
     const [searchText, setSearchText] = useState<string>();
     const [debouncedSearchText, setDebouncedSearchText] = useState<string>();
+
+    const [pagination, setPagination] = useState<number>(0);
+    const {errorMsg, isoCountry} = useLocationContext();
 
     const router = useRouter();
 
@@ -70,11 +67,7 @@ export default function Index() {
         };
     }, [searchText]);
 
-    const [pagination, setPagination] = useState<number>(0);
-
-    const {errorMsg, isoCountry} = useLocationContext();
-
-
+    
     function isCountryViable(country: string | null | undefined): boolean {
         if (!country) return false;
         return (country in CountryCode);

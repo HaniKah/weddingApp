@@ -225,7 +225,7 @@ const design1: TextInputType = StyleSheet.create({
 
 const design2: TextInputType = StyleSheet.create({
     container: {
-        flex: 1
+        alignSelf: "stretch"
     },
     inputContainer: {
         display: 'flex',

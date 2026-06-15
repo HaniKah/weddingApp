@@ -44,6 +44,10 @@ export default function AddFeaturesHost({data, setData}: {
         }
     }
 
+    function onNext() {
+        refForm.current?.submit()
+    }
+
 
     return (
         <>
@@ -70,7 +74,7 @@ export default function AddFeaturesHost({data, setData}: {
                     </View>
                 </AppForm>
             </View>
-            <WizardController onNext={refForm.current?.submit}/>
+            <WizardController onNext={onNext}/>
         </>
     )
 }

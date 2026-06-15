@@ -15,6 +15,9 @@ import AppSafeAreaView from '@/components/appComponents/AppSafeAreaView';
 
 
 import {useTranslation} from 'react-i18next';
+import {showSnackbar} from "@/components/Snackbar";
+import {isAxiosError} from "axios";
+import {NestError} from "@/types/errors";
 
 function EmptyPlaceholder() {
     const {t} = useTranslation();
@@ -96,7 +99,8 @@ export default function Index() {
             data = resp.data.places;
             // console.log(data)
         } catch (err) {
-            console.log(err);
+            if (isAxiosError<NestError>(err))
+                showSnackbar("Error loading places" + err?.response?.data.message, "error");
         } finally {
         }
         return data;

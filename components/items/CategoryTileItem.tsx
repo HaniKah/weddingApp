@@ -3,12 +3,11 @@ import {Theme} from "@/styles/Theme";
 import {Categories} from "@/types/open-api";
 import IconCategory from "@/components/symbols/IconCategory";
 import {useTranslation} from "react-i18next";
-import {Dispatch, SetStateAction} from "react";
 import AppPressable from "@/components/appComponents/AppPressable";
 
 export default function CategoryTileItem({item, selected, setSelected}: {
     item: Categories,
-    setSelected: Dispatch<SetStateAction<Categories | undefined>>,
+    setSelected: (value: Categories | undefined) => void
     selected: Categories | undefined
 }) {
     const {t} = useTranslation()

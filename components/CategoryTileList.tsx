@@ -1,11 +1,11 @@
-import {Dispatch, SetStateAction, useMemo} from "react";
+import {useMemo} from "react";
 import {Categories} from "@/types/open-api";
 import CategoryTileItem from "@/components/items/CategoryTileItem";
 import {ScrollView, StyleSheet} from "react-native";
 
 export function CategoryTileList({categoryFilter, setCategoryFilter}: {
     categoryFilter: Categories | undefined,
-    setCategoryFilter: Dispatch<SetStateAction<Categories | undefined>>
+    setCategoryFilter: (value: Categories | undefined) => void
 }) {
     const categoriesList = useMemo(() => {
         return Object.values(Categories)

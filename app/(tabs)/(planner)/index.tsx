@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {Categories, CountryCode, PlacesDto} from '@/types/open-api';
+import {Categories, CountryCode, PlacesDto, SearchFilter} from '@/types/open-api';
 import {Stack, useRouter} from 'expo-router';
 import AppView from '@/components/appComponents/AppView';
 import {useApi} from '@/utils/api';
@@ -35,6 +35,12 @@ function EmptyPlaceholder() {
     );
 }
 
+interface FiltersType {
+    category?: Categories;
+    city?: string;
+    price?: string;
+}
+
 export default function Index() {
 
     const API = useApi().api;
@@ -43,10 +49,8 @@ export default function Index() {
     const [isLoading, setLoading] = useState<boolean>(false);
     const [isRefreshing, setRefreshing] = useState<boolean>(false);
 
-
-    const [categoryFilter, setCategoryFilter] = useState<Categories | undefined>();
-    const [cityFilter, setCityFilter] = useState<string | undefined>();
-    const [priceFilter, setPriceFilter] = useState<string | undefined>();
+    
+    const [filters, setFilters] = useState<SearchFilter>({})
 
 
     const [places, setPlaces] = useState<PlacesDto[]>([]);
@@ -89,9 +93,9 @@ export default function Index() {
             const resp = await API.plannerControllerGetPlaces({
                 search: debouncedSearchText,
                 filters: {
-                    category: categoryFilter,
-                    city: cityFilter,
-                    price: priceFilter,
+                    category: filters?.category,
+                    city: filters?.city,
+                    price: filters?.price,
                 },
                 offset: offset,
                 countryCode: isoCountry as CountryCode,
@@ -122,7 +126,7 @@ export default function Index() {
             await getInitialPlaces();
         }
         fetchThem();
-    }, [categoryFilter, debouncedSearchText, isoCountry]);
+    }, [filters?.category, debouncedSearchText, isoCountry]);
 
 
     async function handleEndReached() {
@@ -151,12 +155,8 @@ export default function Index() {
                     {isoCountry ? <FlatList
                             ListHeaderComponent={
                                 <SearchHeader
-                                    priceFilter={priceFilter}
-                                    setPriceFilter={setPriceFilter}
-                                    cityFilter={cityFilter}
-                                    setCityFilter={setCityFilter}
-                                    activeCategory={categoryFilter}
-                                    setActiveCategory={setCategoryFilter}
+                                    filters={filters}
+                                    setFilters={setFilters}
                                     searchText={searchText}
                                     setSearchText={setSearchText}
                                     onShowResult={getInitialPlaces}

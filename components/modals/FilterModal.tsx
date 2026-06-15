@@ -14,7 +14,7 @@ import {AppForm} from "@/contexts/form-context";
 import {ButtonType} from "@/styles/Button";
 import {AppCollapsible} from "@/components/appComponents/AppCollapsible";
 import {CategoryTileList} from "@/components/CategoryTileList";
-import {Categories} from "@/types/open-api";
+import {Categories, SearchFilter} from "@/types/open-api";
 
 export type CollapsibleFilters = "BUDGET" | "CATEGORIES" | "CITY"
 export default function FilterModal({
@@ -22,12 +22,8 @@ export default function FilterModal({
                                         setVisible,
                                         searchText,
                                         setSearchText,
-                                        priceFilter = "0",
-                                        setPriceFilter,
-                                        cityFilter,
-                                        setCityFilter,
-                                        categoryFilter,
-                                        setCategoryFilter,
+                                        filters,
+                                        setFilters,
                                         onShowResult
 
                                     }: {
@@ -35,17 +31,13 @@ export default function FilterModal({
     setVisible: (visible: boolean) => void,
     searchText: string | undefined,
     setSearchText: (value: string | undefined) => void
-    priceFilter: string | undefined
-    setPriceFilter: Dispatch<SetStateAction<string | undefined>>
-    cityFilter: string | undefined
-    setCityFilter: Dispatch<SetStateAction<string | undefined>>
-    categoryFilter: Categories | undefined
-    setCategoryFilter: Dispatch<SetStateAction<Categories | undefined>>
+    filters: SearchFilter,
+    setFilters: Dispatch<SetStateAction<SearchFilter>>
     onShowResult: () => void
 }) {
     const {isoCountry} = useLocationContext();
     const formRef = useRef<any>(null);
-    
+
 
     const [activeCollapsible, setActiveCollapsible] = useState<CollapsibleFilters | undefined>()
 
@@ -58,16 +50,15 @@ export default function FilterModal({
 
     const resetFilters = () => {
         setSearchText(undefined);
-        setPriceFilter("0");
-        setCategoryFilter(undefined);
-        setCityFilter(undefined);
+        setFilters({
+            price: "0",
+            category: undefined,
+            city: undefined
+        });
     }
 
-    function handleChangePrice(value: number) {
-        setPriceFilter(String(value))
-    }
 
-    const priceInput = useMemo(() => String(priceFilter), [priceFilter])
+    const priceInput = useMemo(() => String(filters.price), [filters.price])
 
     function handleToggle(name: CollapsibleFilters) {
         if (name === activeCollapsible) {
@@ -80,6 +71,23 @@ export default function FilterModal({
     function handleShowResult() {
         onShowResult()
         setVisible(false)
+    }
+
+    function handleSliderPriceChange(value: number) {
+        // setPriceFilter(String(value))
+        setFilters(prev => ({...prev, price: String(value)}))
+    }
+
+    function handleInputPriceChange(value: string) {
+        setFilters(prev => ({...prev, price: value}))
+    }
+
+    function handleCategoryChange(value: Categories | undefined) {
+        setFilters(prev => ({...prev, category: value}))
+    }
+
+    function handleCityChange(value: string | undefined) {
+        setFilters(prev => ({...prev, city: value}))
     }
 
 
@@ -120,7 +128,7 @@ export default function FilterModal({
                                         <TextInput
                                             style={styles.input} value={priceInput}
                                             keyboardType="numeric"
-                                            onChangeText={setPriceFilter}/>
+                                            onChangeText={handleInputPriceChange}/>
                                     </View>
 
 
@@ -131,8 +139,8 @@ export default function FilterModal({
                                         step={10}
                                         min={0}
                                         max={10000}
-                                        value={Number(priceFilter) || 0}
-                                        onValueChange={handleChangePrice}/>
+                                        value={Number(filters.price) || 0}
+                                        onValueChange={handleSliderPriceChange}/>
                                 </Host>
                             </AppCollapsible>
                         </Animated.View>
@@ -143,8 +151,8 @@ export default function FilterModal({
                                             containerStyle={[styles.collapsibleContainer, {maxHeight: 400}]}
                                             header={<Text style={styles.label}>Categories</Text>}>
 
-                                <CategoryTileList categoryFilter={categoryFilter}
-                                                  setCategoryFilter={setCategoryFilter}/>
+                                <CategoryTileList categoryFilter={filters.category}
+                                                  setCategoryFilter={handleCategoryChange}/>
                             </AppCollapsible>
                         </Animated.View>
                         <Animated.View entering={SlideInDown.duration(750).easing(Easing.out(Easing.cubic))}>
@@ -156,8 +164,8 @@ export default function FilterModal({
                                     name="city"
                                     title="Select City"
                                     itemList={citiesPickerItems}
-                                    value={cityFilter}
-                                    onChange={setCityFilter}
+                                    value={filters.city}
+                                    onChange={handleCityChange}
                                 />
                             </AppCollapsible>
                         </Animated.View>

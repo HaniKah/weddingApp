@@ -45,10 +45,7 @@ export default function FilterModal({
 }) {
     const {isoCountry} = useLocationContext();
     const formRef = useRef<any>(null);
-
-    // const [price, setPrice] = useState<number>(5000)
-    // const [category, setCategory] = useState<Categories | undefined>()
-    // const [city, setCity] = useState<string | undefined>()
+    
 
     const [activeCollapsible, setActiveCollapsible] = useState<CollapsibleFilters | undefined>()
 

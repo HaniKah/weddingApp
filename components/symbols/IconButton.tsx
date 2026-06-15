@@ -4,6 +4,7 @@ import {SFSymbols6_0} from 'sf-symbols-typescript';
 import {Theme} from '@/styles/Theme';
 import {SymbolWeight} from 'expo-symbols';
 import {Href, Link} from 'expo-router';
+import Animated, {useAnimatedStyle, useSharedValue, withSpring} from "react-native-reanimated";
 
 export function IconButton(
     {
@@ -36,6 +37,12 @@ export function IconButton(
         </View>
     );
 
+    const scale = useSharedValue(1);
+    const scaleAnimated = useAnimatedStyle(() => ({
+        transform: [{scale: scale.value}],
+    }));
+
+
     if (href) {
         return (
             <Link testID={testID} push href={href}>
@@ -43,8 +50,15 @@ export function IconButton(
             </Link>
         );
     } else return (
-        <Pressable testID={testID} onPress={onPress}>
-            {content}
+        <Pressable onPressIn={(e) => {
+            scale.value = withSpring(0.90);
+        }}
+                   onPressOut={(e) => {
+                       scale.value = withSpring(1);
+                   }} testID={testID} onPress={onPress}>
+            <Animated.View style={scaleAnimated}>
+                {content}
+            </Animated.View>
         </Pressable>
     );
 }

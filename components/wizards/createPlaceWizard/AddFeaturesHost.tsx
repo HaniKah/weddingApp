@@ -61,8 +61,8 @@ export default function AddFeaturesHost({data, setData}: {
                                             name="capacity"
                                             value={capacity}
                                             placeholder="e.g. 500"
-                                            required
-                                            onTextChange={setCapacity}/>
+                                            onTextChange={setCapacity}
+                            />
                         </View>
                         <View style={styles.questionContainer}>
                             <Text style={styles.question}>Venue setup?</Text>
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     formContainer: {
-        gap: 40
+        gap: 60
     },
     questionContainer: {
         display: "flex",

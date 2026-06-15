@@ -77,7 +77,7 @@ export default function Index() {
     }
 
     const getPlaces: (offset: number) => Promise<PlacesDto[]> = async (offset) => {
-
+        console.log("getPlaces ....");
         if (!isoCountry) return [];
         if (!isCountryViable(isoCountry)) {
             router.dismissTo('/pick-location');
@@ -101,38 +101,34 @@ export default function Index() {
         } catch (err) {
             if (isAxiosError<NestError>(err))
                 showSnackbar("Error loading places" + err?.response?.data.message, "error");
+            console.error(err);
         } finally {
         }
         return data;
-    };
+    }
 
+
+    const getInitialPlaces = async () => {
+        console.log("getInitialPlaces ....");
+        setPagination(0);
+        setLoading(true);
+        const resp = await getPlaces(0);
+        setPlaces(resp);
+        setLoading(false);
+    }
 
     useEffect(() => {
-        const fetch = async () => {
-            setPagination(0);
-            setLoading(true);
-            const resp = await getPlaces(0);
-            setPlaces(resp);
-            setLoading(false);
-        };
-        fetch();
-
+        const fetchThem = async () => {
+            await getInitialPlaces();
+        }
+        fetchThem();
     }, [categoryFilter, debouncedSearchText, isoCountry]);
-
-
-    useEffect(() => {
-        if (pagination === 0) return;
-        const fetch = async () => {
-            const resp = await getPlaces(pagination);
-            setPlaces((prev) => [...prev, ...resp]);
-        };
-        fetch();
-
-    }, [pagination]);
 
 
     async function handleEndReached() {
         if (places.length === 0) return;
+        const resp = await getPlaces(pagination + 1);
+        setPlaces((prev) => [...prev, ...resp]);
         setPagination(prev => prev + 1);
     }
 
@@ -163,7 +159,7 @@ export default function Index() {
                                     setActiveCategory={setCategoryFilter}
                                     searchText={searchText}
                                     setSearchText={setSearchText}
-                                    onShowResult={() => getPlaces(0)}
+                                    onShowResult={getInitialPlaces}
                                 />}
                             refreshing={isRefreshing}
                             onRefresh={handleRefresh}

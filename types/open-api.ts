@@ -28,33 +28,6 @@ export enum PhotoSize {
   Image = "Image",
 }
 
-export enum CountryCode {
-  AE = "AE",
-  BH = "BH",
-  KW = "KW",
-  OM = "OM",
-  QA = "QA",
-  SA = "SA",
-  IQ = "IQ",
-  JO = "JO",
-  LB = "LB",
-  PS = "PS",
-  SY = "SY",
-  DZ = "DZ",
-  EG = "EG",
-  LY = "LY",
-  MA = "MA",
-  MR = "MR",
-  TN = "TN",
-  DJ = "DJ",
-  KM = "KM",
-  SO = "SO",
-  SD = "SD",
-  IR = "IR",
-  TR = "TR",
-  YE = "YE",
-}
-
 export enum PriceType {
   PerPerson = "PerPerson",
   PerHour = "PerHour",
@@ -90,10 +63,44 @@ export enum Categories {
   Miscellaneous = "Miscellaneous",
 }
 
+export enum CountryCode {
+  AE = "AE",
+  BH = "BH",
+  KW = "KW",
+  OM = "OM",
+  QA = "QA",
+  SA = "SA",
+  IQ = "IQ",
+  JO = "JO",
+  LB = "LB",
+  PS = "PS",
+  SY = "SY",
+  DZ = "DZ",
+  EG = "EG",
+  LY = "LY",
+  MA = "MA",
+  MR = "MR",
+  TN = "TN",
+  DJ = "DJ",
+  KM = "KM",
+  SO = "SO",
+  SD = "SD",
+  IR = "IR",
+  TR = "TR",
+  YE = "YE",
+}
+
 export interface SearchFilter {
   category?: Categories;
   city?: string;
   price?: string;
+}
+
+export interface GetPlacesRequest {
+  countryCode: CountryCode;
+  offset: number;
+  filters?: SearchFilter;
+  search?: string;
 }
 
 export interface PlacesFeatures {
@@ -637,45 +644,17 @@ export class Api<
      *
      * @tags Planner
      * @name PlannerControllerGetPlaces
-     * @request GET:/api/planner/getPlaces
+     * @request POST:/api/planner/getPlaces
      */
     plannerControllerGetPlaces: (
-      query: {
-        offset: number;
-        countryCode:
-          | "AE"
-          | "BH"
-          | "KW"
-          | "OM"
-          | "QA"
-          | "SA"
-          | "IQ"
-          | "JO"
-          | "LB"
-          | "PS"
-          | "SY"
-          | "DZ"
-          | "EG"
-          | "LY"
-          | "MA"
-          | "MR"
-          | "TN"
-          | "DJ"
-          | "KM"
-          | "SO"
-          | "SD"
-          | "IR"
-          | "TR"
-          | "YE";
-        filters?: SearchFilter;
-        search?: string;
-      },
+      data: GetPlacesRequest,
       params: RequestParams = {},
     ) =>
       this.request<PlacesViewModel, any>({
         path: `/api/planner/getPlaces`,
-        method: "GET",
-        query: query,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
         format: "json",
         ...params,
       }),

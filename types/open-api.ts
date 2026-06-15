@@ -99,7 +99,7 @@ export interface SearchFilter {
 export interface GetPlacesRequest {
   countryCode: CountryCode;
   offset: number;
-  filters?: SearchFilter;
+  filters: SearchFilter;
   search?: string;
 }
 

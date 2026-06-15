@@ -58,7 +58,10 @@ export default function FilterModal({
     }
 
 
-    const priceInput = useMemo(() => String(filters.price), [filters.price])
+    const priceInput = useMemo(() => {
+        if (!filters.price) return ""
+        return String(filters.price)
+    }, [filters.price])
 
     function handleToggle(name: CollapsibleFilters) {
         if (name === activeCollapsible) {
@@ -126,7 +129,8 @@ export default function FilterModal({
                                     <View style={styles.priceInput}>
                                         <Text style={{color: Theme.colors.primary}}>Max. price: </Text>
                                         <TextInput
-                                            style={styles.input} value={priceInput}
+                                            style={styles.input}
+                                            value={priceInput}
                                             keyboardType="numeric"
                                             onChangeText={handleInputPriceChange}/>
                                     </View>
@@ -137,7 +141,6 @@ export default function FilterModal({
                                 <Host style={styles.sliderHost}>
                                     <Slider
                                         step={10}
-                                        min={0}
                                         max={10000}
                                         value={Number(filters.price) || 0}
                                         onValueChange={handleSliderPriceChange}/>
@@ -256,6 +259,8 @@ const styles = StyleSheet.create({
         boxShadow: Theme.effects.boxShadow,
         paddingVertical: 5,
         paddingHorizontal: 10,
+        minWidth: 70,
+        textAlign: "center"
 
 
     },

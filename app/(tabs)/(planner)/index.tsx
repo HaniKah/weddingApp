@@ -45,7 +45,7 @@ export default function Index() {
     const [isRefreshing, setRefreshing] = useState<boolean>(false);
 
 
-    const [filters, setFilters] = useState<SearchFilter>({price: "0"})
+    const [filters, setFilters] = useState<SearchFilter>({})
 
     const [places, setPlaces] = useState<PlacesDto[]>([]);
 

@@ -1,4 +1,4 @@
-import {Dispatch, SetStateAction, useRef, useState} from "react";
+import {Dispatch, SetStateAction, useCallback, useRef, useState} from "react";
 import AppNumberInput from "@/components/appComponents/AppNumberInput";
 import {AppForm, FormRef} from "@/contexts/form-context";
 import WizardController from "@/components/wizards/WizardController";
@@ -44,9 +44,9 @@ export default function AddFeaturesHost({data, setData}: {
         }
     }
 
-    function onNext() {
+    const onNext = useCallback(() => {
         refForm.current?.submit()
-    }
+    }, [])
 
 
     return (

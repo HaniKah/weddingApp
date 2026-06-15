@@ -59,7 +59,6 @@ export default function FilterModal({
 
 
     const priceInput = useMemo(() => {
-        if (!filters.price) return ""
         return String(filters.price)
     }, [filters.price])
 

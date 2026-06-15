@@ -45,7 +45,7 @@ export default function Index() {
     const [isRefreshing, setRefreshing] = useState<boolean>(false);
 
 
-    const [filters, setFilters] = useState<SearchFilter>({})
+    const [filters, setFilters] = useState<SearchFilter>({price: "0"})
 
     const [places, setPlaces] = useState<PlacesDto[]>([]);
 
@@ -67,14 +67,13 @@ export default function Index() {
         };
     }, [searchText]);
 
-    
+
     function isCountryViable(country: string | null | undefined): boolean {
         if (!country) return false;
         return (country in CountryCode);
     }
 
     const getPlaces: (offset: number) => Promise<PlacesDto[]> = async (offset) => {
-        console.log("getPlaces ....");
         if (!isoCountry) return [];
         if (!isCountryViable(isoCountry)) {
             router.dismissTo('/pick-location');
@@ -106,7 +105,6 @@ export default function Index() {
 
 
     const getInitialPlaces = async () => {
-        console.log("getInitialPlaces ....");
         setPagination(0);
         setLoading(true);
         const resp = await getPlaces(0);

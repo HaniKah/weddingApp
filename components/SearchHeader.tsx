@@ -9,7 +9,7 @@ import FilterModal from "@/components/modals/FilterModal";
 import {SearchFilter} from "@/types/open-api";
 
 export default function SearchHeader({
-    
+
                                          filters,
                                          setFilters,
                                          searchText,
@@ -30,10 +30,12 @@ export default function SearchHeader({
         <>
             <AppView withPadding>
                 <WelcomeText/>
-                <AppSearchBar filterVisible={filterVisible}
-                              setFilterVisible={setFilterVisible}
-                              searchText={searchText}
-                              setSearchText={setSearchText}/>
+                <AppSearchBar
+                    filters={filters}
+                    filterVisible={filterVisible}
+                    setFilterVisible={setFilterVisible}
+                    searchText={searchText}
+                    setSearchText={setSearchText}/>
                 <CategoryList
                     activeStep={filters?.category}
                     setActiveStep={setFilters}/>

@@ -1,15 +1,20 @@
 import {StyleSheet, TextInput, View} from 'react-native';
 import {Theme} from "@/styles/Theme";
 import {IconButton} from "@/components/symbols/IconButton";
-import {Dispatch, SetStateAction} from "react";
+import {Dispatch, SetStateAction, useMemo} from "react";
+import {SearchFilter} from "@/types/open-api";
 
-export default function AppSearchBar({searchText, setSearchText, filterVisible, setFilterVisible}: {
+export default function AppSearchBar({searchText, setSearchText, setFilterVisible, filters}: {
     searchText: string | undefined,
     setSearchText: (value: string | undefined) => void
     filterVisible: boolean,
     setFilterVisible: Dispatch<SetStateAction<boolean>>
+    filters: SearchFilter
 }) {
-    // const [filterVisible, setFilterVisible] = useState<boolean>(false);
+
+    const hasFilters: boolean = useMemo(() => {
+        return filters.city !== undefined || (filters.price !== undefined && filters?.price !== "0")
+    }, [filters])
 
     return (
         <>
@@ -19,8 +24,8 @@ export default function AppSearchBar({searchText, setSearchText, filterVisible, 
                            onChangeText={setSearchText}
                            style={styles.input}/>
                 <IconButton onPress={() => setFilterVisible(true)}
-                            extraStylesBtn={styles.filterButton}
-                            color={Theme.colors.secondary}
+                            extraStylesBtn={[styles.filterButton, hasFilters && styles.filterButtonHasFilters]}
+                            color={hasFilters ? Theme.colors.white : Theme.colors.secondary}
                             size={24}
                             name="line.3.horizontal.decrease"
 
@@ -50,7 +55,10 @@ const styles = StyleSheet.create({
 
     },
     filterButton: {
-        backgroundColor: "white",
+        backgroundColor: Theme.colors.white
     },
+    filterButtonHasFilters: {
+        backgroundColor: Theme.colors.primary
+    }
 
 });

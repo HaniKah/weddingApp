@@ -13,7 +13,8 @@ export default function AppNumberInput({
                                            unit,
                                            required,
                                            fixedTo,
-                                           design = 1
+                                           design = 1,
+                                           containerStyle,
                                        }: {
     name: string,
     label?: string,
@@ -25,6 +26,7 @@ export default function AppNumberInput({
     required?: boolean
     fixedTo?: number
     design?: 1 | 2,
+    containerStyle?: StyleProp<ViewStyle>,
 }) {
 
 
@@ -61,6 +63,7 @@ export default function AppNumberInput({
     return (
 
         <AppTextInput extraStyles={extraStyles}
+                      containerStyle={containerStyle}
                       placeholder={placeholder}
                       label={label}
                       name={name}

@@ -30,6 +30,7 @@ export type AppTextInputProps = {
     secureTextEntry?: boolean
     inputMode?: InputModeOptions
     extraStyles?: StyleProp<ViewStyle>
+    containerStyle?: StyleProp<ViewStyle>
 }
 
 export default function AppTextInput({
@@ -46,6 +47,7 @@ export default function AppTextInput({
                                          secureTextEntry,
                                          inputMode,
                                          extraStyles,
+                                         containerStyle,
                                      }: AppTextInputProps) {
 
     let styles: TextInputType = design === 1 ? design1 : design2;
@@ -120,7 +122,7 @@ export default function AppTextInput({
     }, [value])
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, containerStyle]}>
             {label && <Text style={[styles.label]}>{label}</Text>}
             <View style={[styles.inputContainer, extraStyles]}>
                 <TextInput value={value || undefined}

@@ -61,6 +61,7 @@ export default function Checklist() {
                                 value={newTodoTitle}
                                 onChange={setNewTodoTitle}
                                 extraStyles={styles.input}
+                                containerStyle={{flex: 1}}
                             />
                             {newTodoTitle?.trim() &&
                                 <IconButton

@@ -280,7 +280,7 @@ export default function FillPlaceInfo({data, setData}: {
                                         <AppTextInput onChange={(s) => setMinPrice(s)} name="minPrice"
                                                       label="Min. price"
                                                       design={2}
-                                                      extraStyles={{flex: 1}}
+                                                      containerStyle={{flex: 1}}
                                                       placeholder="Minimum price"
                                                       value={minPrice}
                                                       keyboardType={'decimal-pad'}
@@ -290,7 +290,7 @@ export default function FillPlaceInfo({data, setData}: {
                                         <AppTextInput onChange={(s) => setMaxPrice(s)} name="minPrice"
                                                       label="Max. price"
                                                       design={2}
-                                                      extraStyles={{flex: 1}}
+                                                      containerStyle={{flex: 1}}
                                                       placeholder="Maximum price"
                                                       value={maxPrice}
                                                       keyboardType={'decimal-pad'}

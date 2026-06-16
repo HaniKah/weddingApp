@@ -100,6 +100,7 @@ const styles = StyleSheet.create({
         paddingTop: 10,
     },
     input: {
+        flex: 1,
         borderRadius: Theme.radius.full,
         paddingLeft: 10,
         borderWidth: 0,

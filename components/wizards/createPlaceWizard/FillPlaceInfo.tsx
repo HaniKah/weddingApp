@@ -1,7 +1,7 @@
 import {ActivityIndicator, ScrollView, StyleSheet, View} from 'react-native';
 import {AppForm, FormRef} from '@/contexts/form-context';
-import AppTextInput from '@/components/appComponents/AppTextInput';
-import {Dispatch, SetStateAction, useEffect, useMemo, useRef, useState} from 'react';
+import AppTextInput, {CheckResult} from '@/components/appComponents/AppTextInput';
+import {Dispatch, SetStateAction, useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {Theme} from '@/styles/Theme';
 import {Categories, PriceType, UpdateStep, VendorPlaceDetailsDto} from '@/types/open-api';
 import {useApi} from '@/utils/api';
@@ -183,6 +183,16 @@ export default function FillPlaceInfo({data, setData}: {
         setPriceKind(priceKind);
     }
 
+    const checkMaxPrice = useCallback((maximumPrice: string | undefined): CheckResult => {
+        if (!maximumPrice || !minPrice) {
+            return {error: undefined}
+        }
+        if (Number(maximumPrice) < Number(minPrice)) {
+            return {error: "Max price must be greater than min price"}
+        }
+        return {error: undefined}
+    }, [minPrice])
+
 
     return isLoading ? (<ActivityIndicator size="large" style={{flex: 1}}/>) :
         (
@@ -287,7 +297,7 @@ export default function FillPlaceInfo({data, setData}: {
                                                       unit={COUNTRIES.get(isoCountry)?.currency}
                                                       required
                                         />
-                                        <AppTextInput onChange={(s) => setMaxPrice(s)} name="minPrice"
+                                        <AppTextInput onChange={(s) => setMaxPrice(s)} name="maxPrice"
                                                       label="Max. price"
                                                       design={2}
                                                       containerStyle={{flex: 1}}
@@ -296,6 +306,7 @@ export default function FillPlaceInfo({data, setData}: {
                                                       keyboardType={'decimal-pad'}
                                                       unit={COUNTRIES.get(isoCountry)?.currency}
                                                       required
+                                                      customChecks={[checkMaxPrice]}
                                         />
                                     </View>
                                 }

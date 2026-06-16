@@ -16,6 +16,8 @@ import {IconButton} from '@/components/symbols/IconButton';
 import {parsePhoneNumber} from "libphonenumber-js";
 import {useLocationContext} from "@/contexts/location-context";
 
+export type CheckResult = { error: string | undefined }
+
 export type AppTextInputProps = {
     placeholder?: string,
     label?: string
@@ -31,6 +33,7 @@ export type AppTextInputProps = {
     inputMode?: InputModeOptions
     extraStyles?: StyleProp<ViewStyle>
     containerStyle?: StyleProp<ViewStyle>
+    customChecks?: ((text: string | undefined) => CheckResult)[]
 }
 
 export default function AppTextInput({
@@ -48,6 +51,8 @@ export default function AppTextInput({
                                          inputMode,
                                          extraStyles,
                                          containerStyle,
+                                         customChecks
+
                                      }: AppTextInputProps) {
 
     let styles: TextInputType = design === 1 ? design1 : design2;
@@ -66,11 +71,8 @@ export default function AppTextInput({
 
     function preTextChange(text: string | undefined) {
         onChange(text);
-        setError(undefined);
-
     }
 
-    type CheckResult = { error: string | undefined }
 
     const checkRequired = useCallback((text: string | undefined): CheckResult => {
         if (required && !text) {
@@ -92,7 +94,7 @@ export default function AppTextInput({
         , [keyboardType, isoCountry])
 
     const runChecks = useCallback((text: string | undefined): CheckResult => {
-        const checksToRun = [checkRequired, checkPhoneNumber]
+        const checksToRun = [checkRequired, checkPhoneNumber, ...(customChecks ?? [])]
         for (const check of checksToRun) {
             const result: CheckResult = check(text)
             if (result.error) {
@@ -100,7 +102,7 @@ export default function AppTextInput({
             }
         }
         return {error: undefined}
-    }, [checkRequired, checkPhoneNumber])
+    }, [checkRequired, checkPhoneNumber, customChecks])
 
     useEffect(() => {
         if (form.submitting) {
@@ -114,7 +116,7 @@ export default function AppTextInput({
             }
         }
 
-    }, [form.submitting, runChecks]);
+    }, [form.submitting, runChecks, value, name]);
 
     const isArabic = useMemo(() => {
         if (!value) return

@@ -133,11 +133,13 @@ export default function UploadImages({images, setImages, onFinish, placeId}: {
                             onPress={uploadPhoto}
                             name="plus"></IconButton>
                 {activeId && placeId &&
-                    <AppImageViewer activeImageId={activeId}
-                                    setActiveImageId={setActiveId}
-                                    onDeleteImage={deleteImage}
-                                    placeId={placeId}
-                                    onSetMainImage={setMainImage}
+                    <AppImageViewer
+                        visible={!!activeId}
+                        activeImageId={activeId}
+                        setActiveImageId={setActiveId}
+                        onDeleteImage={deleteImage}
+                        placeId={placeId}
+                        onSetMainImage={setMainImage}
                     />
                 }
 
@@ -194,7 +196,7 @@ const styles = StyleSheet.create({
         bottom: 120,
     },
     loadingOverlay: {
-        ...StyleSheet.absoluteFillObject,
+        ...StyleSheet.absoluteFill,
         backgroundColor: Theme.colors.background,
         opacity: .8,
         justifyContent: 'center',

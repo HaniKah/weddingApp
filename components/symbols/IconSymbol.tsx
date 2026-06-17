@@ -49,6 +49,7 @@ const MAPPING = {
     "photo.on.rectangle": "filter",
     "text.justify.left": "notes",
     "gearshape": "settings",
+    "rectangle.portrait.and.arrow.right": "logout",
 } as IconMapping;
 
 /**

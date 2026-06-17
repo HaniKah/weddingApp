@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         marginTop: 5,
         borderBottomWidth: 0,
-        boxShadow: Theme.effects.boxShadow,
+        boxShadow: Theme.shadow.lg,
         borderRadius: Theme.radius.xl,
         height: 50,
         flexDirection: 'row',

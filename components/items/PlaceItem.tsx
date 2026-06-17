@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
         borderRadius: Theme.radius.xl,
         backgroundColor: Theme.colors.white,
         overflow: 'hidden',
-        boxShadow: Theme.effects.boxShadow,
+        boxShadow: Theme.shadow.lg,
 
     },
     image: {

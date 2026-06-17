@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
     },
     searchBar: {
         borderWidth: 0,
-        boxShadow: Theme.effects.boxShadow,
+        boxShadow: Theme.shadow.lg,
         height: 50,
         borderRadius: Theme.radius.xl
     },
@@ -216,13 +216,13 @@ const styles = StyleSheet.create({
     },
     xIcon: {
         padding: 12,
-        boxShadow: Theme.effects.boxShadow,
+        boxShadow: Theme.shadow.lg,
         backgroundColor: Theme.colors.white,
     },
     collapsibleContainer: {
         backgroundColor: Theme.colors.white,
         borderRadius: Theme.radius.xl,
-        boxShadow: Theme.effects.boxShadow
+        boxShadow: Theme.shadow.lg
     },
     label: {
         fontSize: 16,
@@ -255,7 +255,7 @@ const styles = StyleSheet.create({
         color: Theme.colors.primary,
         fontWeight: "bold",
         borderRadius: Theme.radius.full,
-        boxShadow: Theme.effects.boxShadow,
+        boxShadow: Theme.shadow.lg,
         paddingVertical: 5,
         paddingHorizontal: 10,
         minWidth: 70,

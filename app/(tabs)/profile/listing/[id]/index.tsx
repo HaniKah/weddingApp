@@ -302,7 +302,7 @@ const infoCardStyles = StyleSheet.create({
         backgroundColor: Theme.colors.white,
         padding: 18,
         borderRadius: Theme.radius.xl,
-        boxShadow: Theme.effects.boxShadow,
+        boxShadow: Theme.shadow.lg,
     },
 });
 
@@ -337,7 +337,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         paddingVertical: 10,
         paddingHorizontal: 14,
-        boxShadow: Theme.effects.boxShadow,
+        boxShadow: Theme.shadow.lg,
     },
     settingsButton: {
         backgroundColor: 'transparent',

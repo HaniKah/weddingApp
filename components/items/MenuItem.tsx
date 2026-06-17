@@ -36,9 +36,7 @@ const styles = StyleSheet.create({
         paddingVertical: 22,
         gap: 12,
         backgroundColor: Theme.colors.white,
-        borderRadius: Theme.radius.lg,
         overflow: 'hidden',
-        boxShadow: Theme.effects.boxShadow,
     },
     text: {
         flex: 1,

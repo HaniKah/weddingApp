@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         borderWidth: 0,
         height: 55,
-        boxShadow: Theme.effects.boxShadow,
+        boxShadow: Theme.shadow.lg,
     },
     addButton: {
         backgroundColor: Theme.colors.primary,

@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     googleButtonPrimary: {
         backgroundColor: Theme.colors.white,
         height: 56,
-        boxShadow: Theme.effects.boxShadow,
+        boxShadow: Theme.shadow.lg,
     },
     googleTextPrimary: {
         color: Theme.colors.black,

@@ -2,8 +2,6 @@ import {useAuth} from '@/contexts/auth-context';
 import {useLocationContext} from '@/contexts/location-context';
 import AppView from '@/components/appComponents/AppView';
 import {Alert, ScrollView, StyleSheet, Text, View} from 'react-native';
-import AppButton from '@/components/appComponents/AppButton';
-import {ButtonType} from '@/styles/Button';
 import {Theme} from '@/styles/Theme';
 import MenuItem from '@/components/items/MenuItem';
 import {Stack, useRouter} from 'expo-router';
@@ -15,6 +13,7 @@ import {useAuthStore} from '@/utils/authStore';
 import SignIn from '@/components/screens/sign-in';
 
 import {useTranslation} from 'react-i18next';
+import LineSeparator from "@/components/LineSeparator";
 
 
 export default function Index() {
@@ -78,45 +77,60 @@ export default function Index() {
                             {/* PERSONAL */}
                             <View style={styles.section}>
                                 <Text style={styles.sectionTitle}>{t('profile.personal')}</Text>
-                                <MenuItem
-                                    icon="heart"
-                                    label={t('profile.myFavorites')}
-                                    onPress={() => router.push('/(tabs)/profile/favorites')}
-                                />
-                            </View>
-
-                            {/* BUSINESS */}
-                            <View style={styles.section}>
-                                <Text style={styles.sectionTitle}>{t('profile.business')}</Text>
-                                <MenuItem
-                                    icon="briefcase"
-                                    label={t('profile.myListings')}
-                                    onPress={() => router.push('/(tabs)/profile/listing')}
-                                />
-                            </View>
-
-                            {/* ACCOUNT */}
-                            <View style={styles.section}>
-                                <Text style={styles.sectionTitle}>{t('profile.account')}</Text>
                                 <View style={styles.menuItemContainer}>
-                                    <MenuItem icon={"mappin.and.ellipse"} label={t('profile.changeLocation')}
-                                              onPress={() => router.dismissTo("/pick-location")}/>
                                     <MenuItem
-                                        icon="exclamationmark.square"
-                                        label={t('profile.deleteAccount')}
-                                        onPress={deleteAccount}
+                                        icon="heart"
+                                        label={t('profile.myFavorites')}
+                                        onPress={() => router.push('/(tabs)/profile/favorites')}
                                     />
                                 </View>
 
                             </View>
 
+                            {/* BUSINESS */}
+                            <View style={styles.section}>
+                                <Text style={styles.sectionTitle}>{t('profile.business')}</Text>
+                                <View style={styles.menuItemContainer}>
+                                    <MenuItem
+                                        icon="plus"
+                                        label={t('profile.create')}
+                                        onPress={() => router.push('/(tabs)/profile/listing')}
+                                    />
+                                    <LineSeparator/>
+                                    <MenuItem
+                                        icon="briefcase"
+                                        label={t('profile.myListings')}
+                                        onPress={() => router.push('/(tabs)/profile/listing')}
+                                    />
+                                </View>
+                            </View>
+
+                            <View style={styles.section}>
+                                <Text style={styles.sectionTitle}>{t('profile.settings')}</Text>
+                                <View style={styles.menuItemContainer}>
+                                    <MenuItem icon={"mappin.and.ellipse"} label={t('profile.changeLocation')}
+                                              onPress={() => router.dismissTo("/pick-location")}/>
+                                </View>
+
+                            </View>
+
+
+                            <View style={styles.section}>
+                                <Text style={styles.sectionTitle}>{t('profile.account')}</Text>
+                                <View style={styles.menuItemContainer}>
+                                    <MenuItem
+                                        icon="exclamationmark.square"
+                                        label={t('profile.deleteAccount')}
+                                        onPress={deleteAccount}
+                                    />
+                                    <LineSeparator/>
+                                    <MenuItem icon={"rectangle.portrait.and.arrow.right"} label={t("profile.logout")}
+                                              onPress={logOut}/>
+                                </View>
+
+                            </View>
+
                         </View>
-
-                        <AppButton extraStylesBtn={{marginTop: 20}} fullWidth destructive buttonType={ButtonType.PLAIN}
-                                   buttonSize="MD" onPress={logOut}>
-                            {t('profile.logout')}
-                        </AppButton>
-
                     </AppView>
                 </ScrollView>
             </AppSafeAreaView>
@@ -183,7 +197,11 @@ const styles = StyleSheet.create({
         paddingHorizontal: 4,
     },
     menuItemContainer: {
-        gap: 15
+        backgroundColor: Theme.colors.white,
+        boxShadow: Theme.shadow.md,
+        borderRadius: Theme.radius.lg,
+        overflow: "hidden"
+
     }
 
 });

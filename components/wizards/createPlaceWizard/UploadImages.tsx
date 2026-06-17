@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
         width: 55,
         height: 55,
         backgroundColor: Theme.colors.primary,
-        boxShadow: Theme.effects.boxShadow,
+        boxShadow: Theme.shadow.lg,
         position: 'absolute',
         right: 10,
         bottom: 120,

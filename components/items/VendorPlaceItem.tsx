@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         padding: 5,
         position: 'relative',
-        boxShadow: Theme.effects.boxShadow,
+        boxShadow: Theme.shadow.lg,
         marginTop: 10,
     },
     // containerUncompleted: {

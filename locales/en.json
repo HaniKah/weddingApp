@@ -63,6 +63,8 @@
     "tryDifferentSearch": "Try different search or category"
   },
   "profile": {
+    "create": "Create new listing",
+    "settings": "Settings",
     "publish": "Publish",
     "preview": "Preview",
     "noImagesYet": "you haven't uploaded images yet",

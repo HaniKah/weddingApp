@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
         padding: 20,
 
         opacity: 0.85,
-        boxShadow: Theme.effects.boxShadow,
+        boxShadow: Theme.shadow.lg,
 
     },
     tabContainer: {

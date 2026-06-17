@@ -50,6 +50,7 @@ const MAPPING = {
     "text.justify.left": "notes",
     "gearshape": "settings",
     "rectangle.portrait.and.arrow.right": "logout",
+    "line.3.horizontal.decrease": "filter-list"
 } as IconMapping;
 
 /**

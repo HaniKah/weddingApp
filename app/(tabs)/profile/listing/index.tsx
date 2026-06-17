@@ -1,153 +1,162 @@
 import AppView from '@/components/appComponents/AppView';
-import { useApi } from '@/utils/api';
-import { RefreshControl, SectionList, StyleSheet, Text, View } from 'react-native';
-import { Theme } from '@/styles/Theme';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import {useApi} from '@/utils/api';
+import {RefreshControl, SectionList, StyleSheet, Text, View} from 'react-native';
+import {Theme} from '@/styles/Theme';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import CreatePlaceModal from '@/components/modals/CreatePlaceModal';
-import { UpdateStep, VendorPlaceViewModel } from '@/types/open-api';
+import {UpdateStep, VendorPlaceViewModel} from '@/types/open-api';
 import VendorPlaceItem from '@/components/items/VendorPlaceItem';
-import { CommonStyles } from '@/styles/Common';
-import { REFRESH_DELAY } from '@/constants/general';
-import { AppModalRef } from '@/components/appComponents/AppModal';
-import { IconButton } from '@/components/symbols/IconButton';
-import { Stack } from 'expo-router';
+import {CommonStyles} from '@/styles/Common';
+import {REFRESH_DELAY} from '@/constants/general';
+import {AppModalRef} from '@/components/appComponents/AppModal';
+import {IconButton} from '@/components/symbols/IconButton';
+import {Stack} from 'expo-router';
 
 export default function Index() {
 
-  const { api } = useApi();
-  const [places, setPlaces] = useState<VendorPlaceViewModel>();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
+    const {api} = useApi();
+    const [places, setPlaces] = useState<VendorPlaceViewModel>();
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
 
 
-  const createPlaceModalRef = useRef<AppModalRef>(null);
+    const createPlaceModalRef = useRef<AppModalRef>(null);
 
 
-  const getPlaces = useCallback(async () => {
-    try {
-      const res = await api.placesControllerGetPlaces();
-      setPlaces(res.data);
-    } catch (err) {
-      console.error(err);
-    } finally {
+    const getPlaces = useCallback(async () => {
+        try {
+            const res = await api.placesControllerGetPlaces();
+            setPlaces(res.data);
+        } catch (err) {
+            console.error(err);
+        } finally {
+        }
+    }, []);
+
+
+    const refreshPlaces = useCallback(() => {
+        setIsRefreshing(true);
+        setTimeout(async () => {
+            await getPlaces();
+            setIsRefreshing(false);
+        }, REFRESH_DELAY);
+    }, [getPlaces]);
+
+
+    const reloadPlaces = useCallback(() => {
+        setIsLoading(true);
+        setTimeout(async () => {
+            await getPlaces();
+            setIsLoading(false);
+        }, REFRESH_DELAY);
+    }, [getPlaces]);
+
+
+    useEffect(() => {
+        reloadPlaces();
+    }, []);
+
+
+    function SectionHeaderItem({title}: { title: string | null; }) {
+        return (
+            <View style={styles.sectionHeaderContainer}>
+                {title &&
+                    <Text
+                        style={[styles.sectionHeader, title === 'Published' ? styles.publishedSectionHeader : styles.unpublishedSectionHeader]}>{title}</Text>
+                }
+            </View>
+
+        );
+
     }
-  }, []);
 
-
-  const refreshPlaces = useCallback(() => {
-    setIsRefreshing(true);
-    setTimeout(async () => {
-      await getPlaces();
-      setIsRefreshing(false);
-    }, REFRESH_DELAY);
-  }, [getPlaces]);
-
-
-  const reloadPlaces = useCallback(() => {
-    setIsLoading(true);
-    setTimeout(async () => {
-      await getPlaces();
-      setIsLoading(false);
-    }, REFRESH_DELAY);
-  }, [getPlaces]);
-
-
-  useEffect(() => {
-    reloadPlaces();
-  }, []);
-
-
-  function SectionHeaderItem({ title }: { title: string | null; }) {
     return (
-      <View style={styles.sectionHeaderContainer}>
-        {title &&
-          <Text
-            style={[styles.sectionHeader, title === 'Published' ? styles.publishedSectionHeader : styles.unpublishedSectionHeader]}>{title}</Text>
-        }
-      </View>
+        <>
+            <Stack.Screen options={{
+                headerBackButtonMenuEnabled: true,
+                headerBackButtonDisplayMode: 'minimal',
+                contentStyle: {backgroundColor: Theme.colors.background},
+                title: 'Listings',
+            }}/>
 
+            <AppView extraStyles={styles.appView}>
+
+                {
+                    places && Object.values(places).flatMap(s => s.data).length > 0 ?
+                        <SectionList style={styles.sectionlist}
+                                     refreshControl={<RefreshControl refreshing={isRefreshing}
+                                                                     onRefresh={refreshPlaces}/>}
+                                     renderSectionHeader={({section}) => (
+                                         <SectionHeaderItem title={section.data.length > 0 ? section.title : null}
+                                         />)}
+                                     keyExtractor={(item) => item.id.toString()}
+                                     sections={[places.published, places.unpublished]}
+                                     renderItem={(item) => <VendorPlaceItem
+                                         setTrigger={setIsLoading} data={item.item}/>
+                                     }/>
+                        :
+                        <Text style={[{marginVertical: 'auto'}, CommonStyles.dataNotFound]}>You dont have places yet ,
+                            create one
+                            now</Text>
+
+                }
+            </AppView>
+            <IconButton color={Theme.colors.white}
+                        extraStylesBtn={styles.addButton}
+                        onPress={() => createPlaceModalRef.current?.open()}
+                        name="plus"></IconButton>
+
+
+            <CreatePlaceModal
+                initalStep={UpdateStep.FillPlaceInfo}
+                reloadPlaces={reloadPlaces}
+                ref={createPlaceModalRef}
+            />
+
+        </>
     );
-
-  }
-
-  return (
-    <>
-      <Stack.Screen options={{
-        headerBackButtonMenuEnabled: true,
-        headerBackButtonDisplayMode: 'minimal',
-        contentStyle: { backgroundColor: Theme.colors.background },
-        title: 'Listings',
-        headerRight: () => <View style={{ padding: 8 }}>
-          <IconButton removeBackground onPress={() => createPlaceModalRef.current?.open()}
-                      name="plus" />
-        </View>
-        ,
-      }} />
-
-      <AppView>
-
-        {
-          places && Object.values(places).flatMap(s => s.data).length > 0 ?
-            <SectionList style={styles.sectionlist}
-                         refreshControl={<RefreshControl refreshing={isRefreshing}
-                                                         onRefresh={refreshPlaces} />}
-                         renderSectionHeader={({ section }) => (
-                           <SectionHeaderItem title={section.data.length > 0 ? section.title : null}
-                           />)}
-                         keyExtractor={(item) => item.id.toString()}
-                         sections={[places.published, places.unpublished]}
-                         renderItem={(item) => <VendorPlaceItem
-                           setTrigger={setIsLoading} data={item.item} />
-                         } />
-            :
-            <Text style={[{ marginVertical: 'auto' }, CommonStyles.dataNotFound]}>You dont have places yet ,
-              create one
-              now</Text>
-
-        }
-
-
-      </AppView>
-
-
-      <CreatePlaceModal
-        initalStep={UpdateStep.FillPlaceInfo}
-        reloadPlaces={reloadPlaces}
-        ref={createPlaceModalRef}
-      />
-
-    </>
-  );
 }
 const styles = StyleSheet.create({
-  sectionlist: {
-    padding: Theme.global.appPadding,
-  },
-  title: {
-    fontSize: Theme.sizes.xl,
-    fontWeight: 'bold',
-    padding: 10,
-  },
-  publishBtn: {
-    paddingVertical: 20,
-    borderColor: Theme.colors.gray.S300,
-    borderStyle: 'dashed',
-    borderTopWidth: 1,
-  },
-  sectionHeaderContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    gap: 5,
-    alignItems: 'center',
-    marginTop: 10,
-  },
-  sectionHeader: {
-    fontWeight: 'bold',
-  },
-  publishedSectionHeader: {
-    color: Theme.colors.green.S700,
-  },
-  unpublishedSectionHeader: {
-    color: Theme.colors.gray.S500,
-  },
+    appView: {
+        paddingBottom: 100
+    },
+    addButton: {
+        width: 55,
+        height: 55,
+        backgroundColor: Theme.colors.primary,
+        boxShadow: Theme.shadow.lg,
+        position: 'absolute',
+        right: 20,
+        bottom: 20,
+    },
+    sectionlist: {
+        padding: Theme.global.appPadding,
+    },
+    title: {
+        fontSize: Theme.sizes.xl,
+        fontWeight: 'bold',
+        padding: 10,
+    },
+    publishBtn: {
+        paddingVertical: 20,
+        borderColor: Theme.colors.gray.S300,
+        borderStyle: 'dashed',
+        borderTopWidth: 1,
+    },
+    sectionHeaderContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        gap: 5,
+        alignItems: 'center',
+        marginTop: 10,
+    },
+    sectionHeader: {
+        fontWeight: 'bold',
+    },
+    publishedSectionHeader: {
+        color: Theme.colors.green.S700,
+    },
+    unpublishedSectionHeader: {
+        color: Theme.colors.gray.S500,
+    },
 });

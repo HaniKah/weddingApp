@@ -102,7 +102,7 @@ export default function UploadImages({images, setImages, onFinish, placeId}: {
 
     return (
         <>
-            <AppView withPadding extraStyles={{position: 'relative'}}>
+            <AppView withPadding extraStyles={styles.appView}>
                 <Text style={styles.title}>Upload photos</Text>
                 {
                     isLoading && <ActivityIndicator
@@ -148,6 +148,9 @@ export default function UploadImages({images, setImages, onFinish, placeId}: {
     );
 }
 const styles = StyleSheet.create({
+    appView: {
+        position: 'relative',
+    },
     container: {
         flex: 1,
         alignItems: 'center',

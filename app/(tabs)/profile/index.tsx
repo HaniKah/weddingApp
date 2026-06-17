@@ -92,12 +92,6 @@ export default function Index() {
                                 <Text style={styles.sectionTitle}>{t('profile.business')}</Text>
                                 <View style={styles.menuItemContainer}>
                                     <MenuItem
-                                        icon="plus"
-                                        label={t('profile.create')}
-                                        onPress={() => router.push('/(tabs)/profile/listing')}
-                                    />
-                                    <LineSeparator/>
-                                    <MenuItem
                                         icon="briefcase"
                                         label={t('profile.myListings')}
                                         onPress={() => router.push('/(tabs)/profile/listing')}

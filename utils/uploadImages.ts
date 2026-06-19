@@ -8,6 +8,11 @@ import {isAxiosError} from "axios";
 import {showSnackbar} from "@/components/Snackbar";
 import {NestError} from "@/types/errors";
 
+// Listing photos don't need full-resolution source images. Downscaling the
+// longest edge and re-encoding as JPEG shrinks a multi-MB photo to a few
+// hundred KB with no visible quality loss, which is the main upload speedup.
+const MAX_IMAGE_EDGE = 1920;
+const JPEG_COMPRESSION = 0.7;
 
 export function useUploadImage() {
     const {api} = useApi()
@@ -19,68 +24,70 @@ export function useUploadImage() {
             allowsEditing: false,
             allowsMultipleSelection: true,
             aspect: [4, 3],
-            quality: 1,
+            // The real compression happens in normalizeAsset; a lower picker
+            // quality just avoids decoding a needlessly huge source buffer.
+            quality: 0.8,
         });
 
-        // const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
-        if (!result.canceled) {
-            let uploadedImages: PhotosDto[] = []
-            const [other, heic] = splitByMimeType(result.assets); // special handle for heic files
-            const convertedImages: ImageUploadModel[] = await convertHeicToJPEGAndCreateUploadModel(heic);
-            const imagesFormdata: ImageUploadModel[] = [...createImageUploadModelForOther(other), ...convertedImages];
-
-            await Promise.all(imagesFormdata.map(async (image) => {
-                try {
-                    const res = await uploadImages(placeId, image);
-                    uploadedImages.push(res)
-                    showSnackbar("Image uploaded successfully", "success")
-                } catch (error) {
-                    if (isAxiosError<NestError>(error))
-                        showSnackbar("Failed to upload image" + error?.response?.data?.message, "error")
-                }
-            }));
-            return uploadedImages
-        } else {
-
+        if (result.canceled) {
             return null
         }
-    };
 
+        // Normalize every asset (resize + JPEG re-encode). This also handles
+        // HEIC for free since the manipulator always outputs JPEG.
+        const imagesFormdata: ImageUploadModel[] = await Promise.all(
+            result.assets.map(normalizeAsset)
+        );
 
-    const splitByMimeType = (images: ImagePickerAsset[]) => {
-        return images.reduce(([pass, fail]: ImagePickerAsset[][], val) => {
-            if (val.mimeType !== 'image/heic') pass.push(val);
-            else fail.push(val);
-            return ([pass, fail]);
-        }, [[], []]);
+        const uploadedImages: PhotosDto[] = []
+        let failed = 0;
 
-    };
-
-    function convertHeicToJPEGAndCreateUploadModel(images: ImagePickerAsset[]): Promise<ImageUploadModel[]> {
-        return Promise.all(images.map(async (asset, i) => {
-            const image = await ImageManipulator.manipulate(asset.uri).renderAsync();
-            const converted = await image.saveAsync({
-                format: SaveFormat.JPEG,
-            });
-            // const existingName = asset.fileName?.split(".").pop()
-            const newName = asset.fileName?.replace('heic', 'jpeg');
-            return {
-                uri: converted.uri,
-                type: 'image/jpeg',
-                name: newName,
-            };
+        await Promise.all(imagesFormdata.map(async (image) => {
+            try {
+                const res = await uploadImages(placeId, image);
+                uploadedImages.push(res)
+            } catch (error) {
+                failed++;
+                if (isAxiosError<NestError>(error))
+                    console.warn("Failed to upload image", error?.response?.data?.message)
+            }
         }));
-    }
 
-    function createImageUploadModelForOther(images: ImagePickerAsset[]) {
-        return images.map(asset => {
-            return {
-                uri: asset.uri,
-                type: asset.mimeType,
-                name: 'places' + asset.fileName,
-            };
+        if (uploadedImages.length > 0)
+            showSnackbar(`${uploadedImages.length} image(s) uploaded successfully`, "success")
+        if (failed > 0)
+            showSnackbar(`Failed to upload ${failed} image(s)`, "error")
+
+        return uploadedImages
+    };
+
+    // Resizes the image so its longest edge is at most MAX_IMAGE_EDGE (only
+    // when it exceeds it) and re-encodes to compressed JPEG.
+    async function normalizeAsset(asset: ImagePickerAsset): Promise<ImageUploadModel> {
+        let context = ImageManipulator.manipulate(asset.uri);
+
+        // resize() preserves the aspect ratio when only one dimension is
+        // given, so we constrain whichever edge is the longest.
+        const isLandscape = (asset.width ?? 0) >= (asset.height ?? 0);
+        const longestEdge = Math.max(asset.width ?? 0, asset.height ?? 0);
+        if (longestEdge > MAX_IMAGE_EDGE) {
+            context = context.resize(
+                isLandscape ? {width: MAX_IMAGE_EDGE} : {height: MAX_IMAGE_EDGE}
+            );
+        }
+
+        const image = await context.renderAsync();
+        const converted = await image.saveAsync({
+            format: SaveFormat.JPEG,
+            compress: JPEG_COMPRESSION,
         });
+
+        const baseName = asset.fileName?.replace(/\.[^.]+$/, '') ?? `image_${asset.assetId ?? ''}`;
+        return {
+            uri: converted.uri,
+            type: 'image/jpeg',
+            name: `places${baseName}.jpeg`,
+        };
     }
 
     function constructRequest(placeId: number, newImage: ImageUploadModel): FormData | undefined {

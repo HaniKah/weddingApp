@@ -224,7 +224,7 @@ export default function Place() {
                                        fullWidth>
                                 {t('profile.unpublishListing')}
                             </AppButton>
-                            <LineSeparator/>
+                            <LineSeparator verticalMargin={10}/>
                         </>
                     }
                     <AppButton onPress={confirmDelete}

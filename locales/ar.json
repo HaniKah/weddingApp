@@ -151,7 +151,15 @@
     "welcomeSubtitle": "سجل دخولك لإنشاء القوائم، وإدارة المفضلات والحصول على المزيد من المميزات",
     "signInWithGoogle": "تسجيل الدخول بواسطة جوجل",
     "signInWithApple": "تسجيل الدخول بواسطة أبل",
-    "continueWithEmail": "المتابعة بواسطة البريد الإلكتروني"
+    "continueWithEmail": "المتابعة بواسطة البريد الإلكتروني",
+    "verifyEmailTitle": "تأكيد بريدك الإلكتروني",
+    "verifyEmailSubtitle": "أدخل الرمز المكوّن من 6 أرقام الذي أرسلناه إلى {{email}}",
+    "verificationCode": "رمز التحقق",
+    "verificationCodePlaceholder": "أدخل الرمز المكوّن من 6 أرقام",
+    "verifyButton": "تأكيد",
+    "resendCode": "إعادة إرسال الرمز",
+    "resendCodeIn": "إعادة إرسال الرمز خلال {{seconds}} ثانية",
+    "backToSignIn": "العودة إلى تسجيل الدخول"
   },
   "common": {
     "cancel": "إلغاء",

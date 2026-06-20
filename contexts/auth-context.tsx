@@ -3,13 +3,17 @@ import React, {useEffect} from 'react';
 import * as WebBrowser from 'expo-web-browser';
 import {useApi} from '@/utils/api';
 import {useAuthStore} from '@/utils/authStore';
-import {SignInDto, SignUpDto} from '@/types/open-api';
+import {SignInDto, SignUpDto, VerifyEmailDto} from '@/types/open-api';
 
 interface AuthContextType {
     signInWithApple: () => void,
     signInWithGoogle: () => void,
     signInWithEmail: (data: SignInDto) => void,
     signUpWithEmail: (data: SignUpDto) => void,
+    verifyEmail: (data: VerifyEmailDto) => void,
+    resendVerification: (email: string) => void,
+    clearPendingVerification: () => void,
+    pendingVerificationEmail: string | null,
     signOut: () => void,
     deleteUser: () => void,
     isLoading: boolean,
@@ -27,6 +31,13 @@ const AuthContext = React.createContext<AuthContextType>({
     },
     signUpWithEmail: () => {
     },
+    verifyEmail: () => {
+    },
+    resendVerification: () => {
+    },
+    clearPendingVerification: () => {
+    },
+    pendingVerificationEmail: null,
     signOut: () => {
     },
     deleteUser: () => {
@@ -76,6 +87,9 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
     // const [user, setUser] = React.useState<AuthUser | null>(null);
     const [isLoading, setIsLoading] = React.useState(false);
     const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
+    // Email awaiting OTP verification. When set, the auth UI shows the OTP step
+    // instead of the sign-in/sign-up form.
+    const [pendingVerificationEmail, setPendingVerificationEmail] = React.useState<string | null>(null);
     const [request, response, promptAsync] = useAuthRequest(config, discovery);
     const [requestIOS, responseIOS, promptAsyncIOS] = useAuthRequest(configIOS, discoveryIOS);
 
@@ -93,6 +107,12 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
                 logIn(res.data.accessToken, res.data.refreshToken, res.data.user.firstName, res.data.user.lastName, res.data.user.email);
             }
         } catch (err: any) {
+            // The backend returns 403 + requiresVerification when the email isn't
+            // verified yet (and re-sends a fresh code). Move the UI to the OTP step.
+            if (err?.response?.data?.requiresVerification) {
+                setPendingVerificationEmail(err.response.data.email ?? data.email);
+                return;
+            }
             setErrorMessage(err?.response?.data?.message);
 
         } finally {
@@ -104,16 +124,45 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
     const signUpWithEmail = async (signUpData: SignUpDto) => {
         try {
             setIsLoading(true);
-            const res = await API.api.authControllerSignUp(signUpData);
-            if (res.data) {
-                logIn(res.data.accessToken, res.data.refreshToken, res.data.user.firstName, res.data.user.lastName, res.data.user.email);
-            }
-
+            // Signup no longer returns tokens — the user must verify their email
+            // first. A verification code has been emailed by the backend.
+            await API.api.authControllerSignUp(signUpData);
+            setPendingVerificationEmail(signUpData.email);
         } catch (err: any) {
-            setErrorMessage(err.response.data.message);
+            setErrorMessage(err?.response?.data?.message);
         } finally {
             setIsLoading(false);
         }
+    };
+
+    const verifyEmail = async (data: VerifyEmailDto) => {
+        try {
+            setIsLoading(true);
+            setErrorMessage(null);
+            const res = await API.api.authControllerVerifyEmail(data);
+            if (res.data) {
+                await logIn(res.data.accessToken, res.data.refreshToken, res.data.user.firstName, res.data.user.lastName, res.data.user.email);
+                setPendingVerificationEmail(null);
+            }
+        } catch (err: any) {
+            setErrorMessage(err?.response?.data?.message);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const resendVerification = async (email: string) => {
+        try {
+            setErrorMessage(null);
+            await API.api.authControllerResendVerification({email});
+        } catch (err: any) {
+            setErrorMessage(err?.response?.data?.message);
+        }
+    };
+
+    const clearPendingVerification = () => {
+        setPendingVerificationEmail(null);
+        setErrorMessage(null);
     };
 
 
@@ -208,6 +257,10 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
             signInWithGoogle,
             signInWithEmail,
             signUpWithEmail,
+            verifyEmail,
+            resendVerification,
+            clearPendingVerification,
+            pendingVerificationEmail,
             signOut,
             deleteUser,
             isLoading,

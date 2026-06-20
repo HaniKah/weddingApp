@@ -6,6 +6,7 @@ import AppButton from '@/components/appComponents/AppButton';
 import {ButtonType} from '@/styles/Button';
 import {Theme} from '@/styles/Theme';
 import {useAuth} from '@/contexts/auth-context';
+import OtpForm from '@/components/auth/OtpForm';
 
 import {useTranslation} from 'react-i18next';
 
@@ -27,7 +28,7 @@ export default function AuthForm() {
 
     const formRef = useRef<FormRef>(null);
 
-    const {signInWithEmail, signUpWithEmail, errorMessage, setErrorMessage} = useAuth();
+    const {signInWithEmail, signUpWithEmail, errorMessage, setErrorMessage, pendingVerificationEmail} = useAuth();
 
 
     const handleSubmit = async () => {
@@ -52,6 +53,12 @@ export default function AuthForm() {
         setConfirmPassword(undefined);
         setErrorMessage(null);
         setActiveTab(activeTab);
+    }
+
+    // Once signup/signin reports the email needs verifying, swap the form for
+    // the OTP step until the user verifies or backs out.
+    if (pendingVerificationEmail) {
+        return <OtpForm/>;
     }
 
     return (

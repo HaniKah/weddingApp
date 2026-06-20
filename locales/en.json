@@ -149,7 +149,15 @@
     "welcomeSubtitle": "Sign in in order to create listing, manage favorites and get more features",
     "signInWithGoogle": "Sign In with Google",
     "signInWithApple": "Sign In with Apple",
-    "continueWithEmail": "Continue with Email"
+    "continueWithEmail": "Continue with Email",
+    "verifyEmailTitle": "Verify your email",
+    "verifyEmailSubtitle": "Enter the 6-digit code we sent to {{email}}",
+    "verificationCode": "Verification code",
+    "verificationCodePlaceholder": "Enter the 6-digit code",
+    "verifyButton": "Verify",
+    "resendCode": "Resend code",
+    "resendCodeIn": "Resend code in {{seconds}}s",
+    "backToSignIn": "Back to sign in"
   },
   "common": {
     "cancel": "Cancel",

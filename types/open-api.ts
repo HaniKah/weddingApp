@@ -224,6 +224,12 @@ export interface SignUpDto {
   password: string;
 }
 
+export interface SignInDto {
+  /** @format email */
+  email: string;
+  password: string;
+}
+
 export interface UserInfo {
   firstName: string;
   lastName: string;
@@ -237,10 +243,19 @@ export interface ExchangeTokenDto {
   user: UserInfo;
 }
 
-export interface SignInDto {
+export interface VerifyEmailDto {
   /** @format email */
   email: string;
-  password: string;
+  /**
+   * @minLength 6
+   * @maxLength 6
+   */
+  code: string;
+}
+
+export interface ResendVerificationDto {
+  /** @format email */
+  email: string;
 }
 
 export interface CountryInfo {
@@ -901,12 +916,11 @@ export class Api<
      * @request POST:/api/auth/signup
      */
     authControllerSignUp: (data: SignUpDto, params: RequestParams = {}) =>
-      this.request<ExchangeTokenDto, any>({
+      this.request<void, any>({
         path: `/api/auth/signup`,
         method: "POST",
         body: data,
         type: ContentType.Json,
-        format: "json",
         ...params,
       }),
 
@@ -924,6 +938,45 @@ export class Api<
         body: data,
         type: ContentType.Json,
         format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Auth
+     * @name AuthControllerVerifyEmail
+     * @request POST:/api/auth/verify-email
+     */
+    authControllerVerifyEmail: (
+      data: VerifyEmailDto,
+      params: RequestParams = {},
+    ) =>
+      this.request<ExchangeTokenDto, any>({
+        path: `/api/auth/verify-email`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Auth
+     * @name AuthControllerResendVerification
+     * @request POST:/api/auth/resend-verification
+     */
+    authControllerResendVerification: (
+      data: ResendVerificationDto,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/auth/resend-verification`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
         ...params,
       }),
 

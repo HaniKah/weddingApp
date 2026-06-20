@@ -7,6 +7,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 **Ghamrah** — a React Native / Expo wedding planning app targeting Arabic-speaking markets (24 countries). Users can
 plan weddings and browse vendors; vendors can list their services. The backend is a separate NestJS + PostgreSQL API.
 
+## Tech Stack
+
+This project is used in combination with the backend server, which can be found in desktop/wedding-app-server
+
 ## Commands
 
 ```bash

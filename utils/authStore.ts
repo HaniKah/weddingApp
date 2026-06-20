@@ -1,67 +1,80 @@
-import { createJSONStorage, persist } from 'zustand/middleware';
-import { deleteItemAsync, getItem, setItem } from 'expo-secure-store';
-import { create } from 'zustand';
-import { UserType } from '@/types/user-type';
+import {createJSONStorage, persist} from 'zustand/middleware';
+import {deleteItemAsync, getItemAsync, setItemAsync} from 'expo-secure-store';
+import {create} from 'zustand';
+import {UserType} from '@/types/user-type';
 
 type UserInfo = {
-  firstName: string | null
-  lastName: string | null
-  email: string | null
+    firstName: string | null
+    lastName: string | null
+    email: string | null
 }
 
 type userState = {
-  isLoggedIn: boolean;
-  logIn: (accessToken: string, refreshToken: string, firstName?: string, lastName?: string, email?: string) => void;
-  logOut: () => void;
-  userType: UserType
-  user: UserInfo
+    isLoggedIn: boolean;
+    logIn: (accessToken: string, refreshToken: string, firstName?: string, lastName?: string, email?: string) => Promise<void>;
+    logOut: () => Promise<void>;
+    userType: UserType
+    user: UserInfo
 }
 
 export const useAuthStore = create(persist<userState>((set) => ({
-  isLoggedIn: false,
-  userType: UserType.User,
-  user: {
-    firstName: null,
-    lastName: null,
-    email: null,
-  },
+    isLoggedIn: false,
+    userType: UserType.User,
+    user: {
+        firstName: null,
+        lastName: null,
+        email: null,
+    },
 
+    logIn: async (accessToken: string, refreshToken: string, firstName?: string, lastName?: string, email?: string) => {
+        await setItemAsync('accessToken', accessToken);
+        await setItemAsync('refreshToken', refreshToken);
 
-  logIn: (accessToken: string, refreshToken: string, firstName?: string, lastName?: string, email?: string) => set((state) => {
-    setItem('accessToken', accessToken);
-    setItem('refreshToken', refreshToken);
-    if (firstName) {
-      setItem('firstName', firstName);
-    }
-    if (lastName) {
-      setItem('lastName', lastName);
-    }
-    if (email) {
-      setItem('email', email);
-    }
-    return {
-      ...state,
-      isLoggedIn: true,
-      user: {
-        firstName: firstName ?? null, lastName: lastName ?? null, email: email ?? null,
-      },
-    };
-  }),
-  logOut: () => {
-    deleteItemAsync('accessToken');
-    deleteItemAsync('refreshToken');
-    deleteItemAsync('firstName');
-    deleteItemAsync('lastName');
-    deleteItemAsync('email');
-    set((state) => ({
-      ...state,
-      isLoggedIn: false,
-    }));
-  },
+        if (firstName) {
+            await setItemAsync('firstName', firstName);
+        }
+
+        if (lastName) {
+            await setItemAsync('lastName', lastName);
+        }
+
+        if (email) {
+            await setItemAsync('email', email);
+        }
+
+        set((state) => ({
+            ...state,
+            isLoggedIn: true,
+            user: {
+                firstName: firstName ?? null,
+                lastName: lastName ?? null,
+                email: email ?? null,
+            },
+        }));
+    },
+
+    logOut: async () => {
+        await deleteItemAsync('accessToken');
+        await deleteItemAsync('refreshToken');
+        await deleteItemAsync('firstName');
+        await deleteItemAsync('lastName');
+        await deleteItemAsync('email');
+
+        set((state) => ({
+            ...state,
+            isLoggedIn: false,
+            user: {
+                firstName: null,
+                lastName: null,
+                email: null,
+            },
+        }));
+    },
 }), {
-  'name': 'auth-storage',
-  storage: createJSONStorage(() => ({
-    setItem, getItem, removeItem: deleteItemAsync,
-  })),
-
+    name: 'auth-storage',
+    storage: createJSONStorage(() => ({
+        setItem: setItemAsync,
+        getItem: getItemAsync,
+        removeItem: deleteItemAsync,
+    })),
 }));

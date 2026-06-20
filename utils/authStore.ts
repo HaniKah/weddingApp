@@ -11,6 +11,8 @@ type UserInfo = {
 
 type userState = {
     isLoggedIn: boolean;
+    hasHydrated: boolean;
+    setHasHydrated: (value: boolean) => void;
     logIn: (accessToken: string, refreshToken: string, firstName?: string, lastName?: string, email?: string) => Promise<void>;
     logOut: () => Promise<void>;
     userType: UserType
@@ -19,6 +21,8 @@ type userState = {
 
 export const useAuthStore = create(persist<userState>((set) => ({
     isLoggedIn: false,
+    hasHydrated: false,
+    setHasHydrated: (value: boolean) => set({hasHydrated: value}),
     userType: UserType.User,
     user: {
         firstName: null,
@@ -77,4 +81,9 @@ export const useAuthStore = create(persist<userState>((set) => ({
         getItem: getItemAsync,
         removeItem: deleteItemAsync,
     })),
+    onRehydrateStorage: () => () => {
+        // Mark hydration complete regardless of success/error so the UI never
+        // hangs waiting on a persisted value that will never arrive.
+        useAuthStore.getState().setHasHydrated(true);
+    },
 }));

@@ -19,7 +19,7 @@ import LineSeparator from "@/components/LineSeparator";
 export default function Index() {
     const {signOut, deleteUser} = useAuth();
     const {isoCountry} = useLocationContext();
-    const {isLoggedIn} = useAuthStore();
+    const {isLoggedIn, hasHydrated} = useAuthStore();
     const router = useRouter();
     const {t} = useTranslation();
 
@@ -31,6 +31,18 @@ export default function Index() {
             onPress: () => deleteUser(),
             style: 'destructive',
         }]);
+    }
+
+    // Wait for the persisted auth state to rehydrate before deciding what to
+    // render. Without this, the store's default `isLoggedIn: false` can be read
+    // before secure-store hydration finishes, briefly showing the wrong screen.
+    if (!hasHydrated) {
+        return (
+            <>
+                <Stack.Screen options={{headerShown: false, contentStyle: {backgroundColor: Theme.colors.background}}}/>
+                <View style={{flex: 1, backgroundColor: Theme.colors.background}}/>
+            </>
+        );
     }
 
     if (!isLoggedIn) {

@@ -1,5 +1,4 @@
 import {Api} from "@/types/open-api";
-import {getItem, setItem} from "expo-secure-store";
 import {useAuthStore} from "@/utils/authStore";
 import axios from "axios";
 import {Platform} from "react-native";
@@ -11,11 +10,11 @@ export function useApi() {
     })
 
 
-    const {logOut} = useAuthStore()
+    const {logOut, accessToken, refreshToken} = useAuthStore()
 
     //request interceptor to add access token to header
     api.instance.interceptors.request.use(config => {
-        const token = getItem("accessToken")
+        const token = accessToken
         if (token && !config.headers["Authorization"]) {
             config.headers["Authorization"] = `Bearer ${token}`
         }
@@ -33,12 +32,16 @@ export function useApi() {
             originalRequest._retry = true
             // attempt to refresh token
             try {
-                const oldRefreshToken = getItem("refreshToken")
+                const oldRefreshToken = refreshToken
                 const res = await axios.post(`${api.instance.getUri()}/api/auth/refresh`, null, {headers: {Authorization: `Bearer ${oldRefreshToken}`}})
-                const {accessToken, refreshToken} = res.data
-                setItem("accessToken", accessToken)
-                setItem("refreshToken", refreshToken)
-                originalRequest.headers["Authorization"] = `Bearer ${accessToken}`
+                const {accessToken: newAccessToken, refreshToken: newRefreshToken} = res.data
+
+                // Update the store with new tokens. Since we are in a hook, we can use the actions if we had one for just tokens, 
+                // but we can also use useAuthStore.setState or just call logIn if we have all info.
+                // Given the current store, let's use setState for a surgical update.
+                useAuthStore.setState({accessToken: newAccessToken, refreshToken: newRefreshToken});
+
+                originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`
                 return api.instance(originalRequest)
             } catch (err) {
                 logOut()

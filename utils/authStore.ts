@@ -12,17 +12,26 @@ type UserInfo = {
 type userState = {
     isLoggedIn: boolean;
     hasHydrated: boolean;
+    accessToken: string | null;
+    refreshToken: string | null;
+    userType: UserType;
+    user: UserInfo;
     setHasHydrated: (value: boolean) => void;
-    logIn: (accessToken: string, refreshToken: string, firstName?: string, lastName?: string, email?: string) => Promise<void>;
+    logIn: (accessToken: string, refreshToken: string, firstName?: string, lastName?: string, email?: string, userType?: UserType) => Promise<void>;
     logOut: () => Promise<void>;
-    userType: UserType
-    user: UserInfo
+    updateUser: (updates: Partial<UserInfo>) => void;
 }
 
-export const useAuthStore = create(persist<userState>((set) => ({
+// Only the tokens are persisted to secure storage. Keeping this type narrow
+// guarantees that no other state (names, email, flags) can leak into the
+// Keychain/Keystore blob, and keeps the value well under SecureStore's 2KB limit.
+type PersistedAuthState = Pick<userState, 'accessToken' | 'refreshToken'>;
+
+export const useAuthStore = create(persist<userState, [], [], PersistedAuthState>((set) => ({
     isLoggedIn: false,
     hasHydrated: false,
-    setHasHydrated: (value: boolean) => set({hasHydrated: value}),
+    accessToken: null,
+    refreshToken: null,
     userType: UserType.User,
     user: {
         firstName: null,
@@ -30,60 +39,65 @@ export const useAuthStore = create(persist<userState>((set) => ({
         email: null,
     },
 
-    logIn: async (accessToken: string, refreshToken: string, firstName?: string, lastName?: string, email?: string) => {
-        await setItemAsync('accessToken', accessToken);
-        await setItemAsync('refreshToken', refreshToken);
+    setHasHydrated: (value: boolean) => set({hasHydrated: value}),
 
-        if (firstName) {
-            await setItemAsync('firstName', firstName);
-        }
-
-        if (lastName) {
-            await setItemAsync('lastName', lastName);
-        }
-
-        if (email) {
-            await setItemAsync('email', email);
-        }
-
-        set((state) => ({
-            ...state,
+    logIn: async (accessToken: string, refreshToken: string, firstName?: string, lastName?: string, email?: string, userType?: UserType) => {
+        set({
             isLoggedIn: true,
+            accessToken,
+            refreshToken,
+            userType: userType ?? UserType.User,
             user: {
                 firstName: firstName ?? null,
                 lastName: lastName ?? null,
                 email: email ?? null,
             },
-        }));
+        });
     },
 
     logOut: async () => {
-        await deleteItemAsync('accessToken');
-        await deleteItemAsync('refreshToken');
-        await deleteItemAsync('firstName');
-        await deleteItemAsync('lastName');
-        await deleteItemAsync('email');
-
-        set((state) => ({
-            ...state,
+        set({
             isLoggedIn: false,
+            accessToken: null,
+            refreshToken: null,
             user: {
                 firstName: null,
                 lastName: null,
                 email: null,
             },
+        });
+    },
+
+    updateUser: (updates: Partial<UserInfo>) => {
+        set((state) => ({
+            user: {...state.user, ...updates}
         }));
     },
-}), {
+} satisfies userState), {
     name: 'auth-storage',
     storage: createJSONStorage(() => ({
         setItem: setItemAsync,
         getItem: getItemAsync,
         removeItem: deleteItemAsync,
     })),
-    onRehydrateStorage: () => () => {
-        // Mark hydration complete regardless of success/error so the UI never
-        // hangs waiting on a persisted value that will never arrive.
-        useAuthStore.getState().setHasHydrated(true);
+
+    onRehydrateStorage: () => {
+        return (rehydratedState, error) => {
+            if (error) {
+                console.error('Failed to rehydrate auth store:', error);
+            }
+            // Only the tokens are persisted, so `isLoggedIn` must be derived from
+            // the rehydrated token rather than read from storage. The token is the
+            // source of truth; the boolean is computed state.
+            useAuthStore.setState({
+                isLoggedIn: !!rehydratedState?.accessToken,
+                hasHydrated: true,
+            });
+        };
     },
+
+    partialize: (state): PersistedAuthState => ({
+        accessToken: state.accessToken,
+        refreshToken: state.refreshToken,
+    }),
 }));

@@ -104,7 +104,7 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
             setIsLoading(true);
             const res = await API.api.authControllerSignIn({email: data.email, password: data.password});
             if (res.data) {
-                logIn(res.data.accessToken, res.data.refreshToken, res.data.user.firstName, res.data.user.lastName, res.data.user.email, res.data.user.userType);
+                logIn(res.data.accessToken, res.data.refreshToken, res.data.user.firstName, res.data.user.lastName, res.data.user.email);
             }
         } catch (err: any) {
             // The backend returns 403 + requiresVerification when the email isn't
@@ -141,7 +141,7 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
             setErrorMessage(null);
             const res = await API.api.authControllerVerifyEmail(data);
             if (res.data) {
-                await logIn(res.data.accessToken, res.data.refreshToken, res.data.user.firstName, res.data.user.lastName, res.data.user.email, res.data.user.userType);
+                await logIn(res.data.accessToken, res.data.refreshToken, res.data.user.firstName, res.data.user.lastName, res.data.user.email);
                 setPendingVerificationEmail(null);
             }
         } catch (err: any) {
@@ -222,7 +222,7 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            logIn(res.data.accessToken, res.data.refreshToken, res.data.user.firstName, res.data.user.lastName, res.data.user.email, res.data.user.userType);
+            logIn(res.data.accessToken, res.data.refreshToken, res.data.user.firstName, res.data.user.lastName, res.data.user.email);
         } catch (err) {
             console.error(err);
         }

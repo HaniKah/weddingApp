@@ -27,6 +27,8 @@ const MAPPING = {
     'person': 'person',
     'plus': 'add',
     'eye': 'visibility',
+    'eye.fill': 'visibility',
+    'eye.slash.fill': 'visibility-off',
     'square.and.arrow.down': 'download',
     'square.and.arrow.up': 'publish',
     'trash': 'delete-outline',
@@ -50,7 +52,9 @@ const MAPPING = {
     "text.justify.left": "notes",
     "gearshape": "settings",
     "rectangle.portrait.and.arrow.right": "logout",
-    "line.3.horizontal.decrease": "filter-list"
+    "line.3.horizontal.decrease": "filter-list",
+    "mail": "mail-outline",
+    "apple.logo": "apple"
 } as IconMapping;
 
 /**

@@ -61,7 +61,7 @@ export default function AppTextInput({
     const inputRef = useRef<TextInput>(null);
     const [error, setError] = useState<string | undefined>();
     const [showPassword, setShowPassword] = useState<boolean>(false);
-    const [isFocused, setIsFocused] = useState<boolean>(false)
+    // const [isFocused, setIsFocused] = useState<boolean>(false)
     // const [textInput, setTextInput] = useState<string | undefined>(value);
 
 
@@ -136,8 +136,8 @@ export default function AppTextInput({
                            style={[styles.input, textArea && styles.textArea]}
                            onChangeText={preTextChange}
                            multiline={textArea}
-                           onBlur={() => setIsFocused(false)}
-                           onFocus={() => setIsFocused(true)}
+                    // onBlur={() => setIsFocused(false)}
+                    // onFocus={() => setIsFocused(true)}
                            secureTextEntry={secureTextEntry && !showPassword}
                            inputMode={inputMode}
                            textAlign={isArabic ? 'right' : 'left'}
@@ -150,10 +150,10 @@ export default function AppTextInput({
                                 onPress={() => setShowPassword(!showPassword)}
                                 color={Theme.colors.backgroundDisabled}
                                 size={24}
-                                name={showPassword ? 'eye.fill' : 'eye.slash.fill'}
+                                name={showPassword ? 'eye.slash.fill' : 'eye.fill'}
                                 removeBackground/>}
                 {
-                    value && value?.length > 0 && isFocused &&
+                    !secureTextEntry && value && value?.length > 0 &&
                     <IconButton onPress={() => preTextChange(undefined)} color={Theme.colors.backgroundDisabled}
                                 testID="clear-icon"
                                 size={24}

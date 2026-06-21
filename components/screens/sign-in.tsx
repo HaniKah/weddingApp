@@ -1,6 +1,6 @@
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {useState} from 'react';
-import Animated, {FadeInDown, FadeOutDown} from 'react-native-reanimated';
+import Animated, {FadeInDown} from 'react-native-reanimated';
 import {useAuth} from '@/contexts/auth-context';
 import AppButton from '@/components/appComponents/AppButton';
 import {ButtonType} from '@/styles/Button';
@@ -89,7 +89,6 @@ export default function SignIn() {
                         <AppKeyboardAvoidingView>
                             <Animated.View
                                 entering={FadeInDown.duration(400)}
-                                exiting={FadeOutDown.duration(300)}
                                 style={styles.signInFormContainer}>
                                 <AuthForm/>
                             </Animated.View>

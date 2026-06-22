@@ -20,6 +20,7 @@ export default function AppSearchBar({searchText, setSearchText, setFilterVisibl
         <>
             <View style={styles.container}>
                 <TextInput placeholder="Search"
+                           placeholderTextColor={Theme.colors.placeholder}
                            value={searchText}
                            onChangeText={setSearchText}
                            style={styles.input}/>

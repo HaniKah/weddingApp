@@ -1220,11 +1220,11 @@ export class Api<
      *
      * @tags AppVersion
      * @name AppVersionControllerGetConfig
-     * @request GET:/api/app-version
+     * @request GET:/api/app-version/getConfig
      */
     appVersionControllerGetConfig: (params: RequestParams = {}) =>
       this.request<VersionDto, any>({
-        path: `/api/app-version`,
+        path: `/api/app-version/getConfig`,
         method: "GET",
         format: "json",
         ...params,

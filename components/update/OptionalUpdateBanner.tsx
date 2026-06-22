@@ -1,60 +1,58 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
+import AppButton from "@/components/appComponents/AppButton";
+import {ButtonType} from "@/styles/Button";
+import {Theme} from "@/styles/Theme";
 
 interface OptionalUpdateBannerProps {
-  onDismiss: () => void;
-  onUpdate: () => void;
+    onDismiss: () => void;
+    onUpdate: () => void;
 }
 
-export const OptionalUpdateBanner: React.FC<OptionalUpdateBannerProps> = ({ onDismiss, onUpdate }) => {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.text}>A new version is available!</Text>
-      <View style={styles.actions}>
-        <TouchableOpacity onPress={onUpdate} style={styles.updateButton}>
-          <Text style={styles.updateButtonText}>Update</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={onDismiss} style={styles.dismissButton}>
-          <Text style={styles.dismissButtonText}>Later</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
+export const OptionalUpdateBanner: React.FC<OptionalUpdateBannerProps> = ({onDismiss, onUpdate}) => {
+    return (
+        <View style={styles.container}>
+            <Text style={styles.text}>A new version is available!</Text>
+            <View style={styles.actions}>
+                <AppButton extraStylesTxt={styles.buttonText} extraStylesBtn={styles.button} onPress={onUpdate}
+                           buttonSize={"SM"}>
+                    Update
+                </AppButton>
+                <AppButton extraStylesTxt={{color: Theme.colors.white}} buttonType={ButtonType.PLAIN}
+                           onPress={onDismiss} buttonSize={"SM"}>
+                    Later
+                </AppButton>
+            </View>
+        </View>
+    );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#007AFF',
-    padding: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    width: '100%',
-  },
-  text: {
-    color: '#fff',
-    fontWeight: '600',
-    flex: 1,
-  },
-  actions: {
-    flexDirection: 'row',
-  },
-  updateButton: {
-    marginRight: 10,
-    backgroundColor: '#fff',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 4,
-  },
-  updateButtonText: {
-    color: '#007AFF',
-    fontWeight: 'bold',
-  },
-  dismissButton: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-  },
-  dismissButtonText: {
-    color: '#fff',
-  },
+    container: {
+        backgroundColor: Theme.colors.primary,
+        padding: 10,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: '100%',
+    },
+    button: {
+        backgroundColor: Theme.colors.white
+    },
+    buttonText: {
+        color: Theme.colors.primary
+    },
+    text: {
+        color: '#fff',
+        fontWeight: '600',
+        flex: 1,
+    },
+    actions: {
+        flexDirection: 'row',
+        alignItems: "center",
+        gap: 20,
+        paddingHorizontal: 10
+    },
+
+
 });

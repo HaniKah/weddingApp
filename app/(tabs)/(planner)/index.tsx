@@ -4,7 +4,7 @@ import {Stack, useRouter} from 'expo-router';
 import AppView from '@/components/appComponents/AppView';
 import {useApi} from '@/utils/api';
 import SearchHeader from '@/components/SearchHeader';
-import {FlatList, StyleSheet, Text, View} from 'react-native';
+import {FlatList, Linking, Platform, StyleSheet, Text, View} from 'react-native';
 import PlaceItem from '@/components/items/PlaceItem';
 import {useLocationContext} from '@/contexts/location-context';
 import LocationAccessDenied from '@/components/errors/LocationAccessDenied';
@@ -148,8 +148,7 @@ export default function Index() {
             <AppSafeAreaView>
                 {config && isUpdateAvailable && <OptionalUpdateBanner
                     onDismiss={dismissOptionalUpdate}
-                    onUpdate={() => {
-                    }}
+                    onUpdate={() => Platform.OS === 'ios' ? Linking.openURL(config.storeUrls.ios) : Linking.openURL(config.storeUrls.android)}
                 />}
                 <AppView>
                     {isoCountry ? <FlatList

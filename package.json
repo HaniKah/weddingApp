@@ -26,6 +26,7 @@
     "@react-native-async-storage/async-storage": "2.2.0",
     "@react-native-picker/picker": "2.11.4",
     "axios": "^1.11.0",
+    "compare-versions": "^6.1.1",
     "expo": "~56.0.12",
     "expo-auth-session": "~56.0.14",
     "expo-blur": "~56.0.3",

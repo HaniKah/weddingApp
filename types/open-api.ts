@@ -386,6 +386,15 @@ export interface PublishPlaceRequest {
   isPublished: boolean;
 }
 
+export interface VersionDto {
+  minSupportedVersion: string;
+  latestVersion: string;
+  storeUrls: {
+    ios: string;
+    android: string;
+  };
+}
+
 export interface SubscriberAttributesDto {
   value: string;
   updated_at_ms: number;
@@ -1202,6 +1211,21 @@ export class Api<
         path: `/api/places/getPlaceDetails`,
         method: "GET",
         query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags AppVersion
+     * @name AppVersionControllerGetConfig
+     * @request GET:/api/app-version
+     */
+    appVersionControllerGetConfig: (params: RequestParams = {}) =>
+      this.request<VersionDto, any>({
+        path: `/api/app-version`,
+        method: "GET",
         format: "json",
         ...params,
       }),

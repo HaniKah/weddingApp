@@ -1,6 +1,8 @@
 import React from 'react';
-import {Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Platform, StyleSheet, Text, View} from 'react-native';
 import * as LinkingAPI from 'expo-linking';
+import {Theme} from "@/styles/Theme";
+import AppButton from "@/components/appComponents/AppButton";
 
 interface ForceUpdateScreenProps {
     storeUrls: {
@@ -24,9 +26,9 @@ export const ForceUpdateScreen: React.FC<ForceUpdateScreenProps> = ({storeUrls})
                     best
                     experience.
                 </Text>
-                <TouchableOpacity style={styles.button} onPress={handleUpdate}>
-                    <Text style={styles.buttonText}>Update Now</Text>
-                </TouchableOpacity>
+                <AppButton onPress={handleUpdate}>
+                    Update Now
+                </AppButton>
             </View>
         </View>
     );
@@ -35,7 +37,7 @@ export const ForceUpdateScreen: React.FC<ForceUpdateScreenProps> = ({storeUrls})
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: Theme.colors.background,
         alignItems: 'center',
         justifyContent: 'center',
         padding: 20,
@@ -54,22 +56,12 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginBottom: 20,
         textAlign: 'center',
+
     },
     message: {
         fontSize: 16,
         textAlign: 'center',
         marginBottom: 30,
-        color: '#666',
     },
-    button: {
-        backgroundColor: '#007AFF',
-        paddingHorizontal: 30,
-        paddingVertical: 15,
-        borderRadius: 10,
-    },
-    buttonText: {
-        color: '#fff',
-        fontSize: 18,
-        fontWeight: '600',
-    },
+
 });

@@ -18,6 +18,8 @@ import {useTranslation} from 'react-i18next';
 import {showSnackbar} from "@/components/Snackbar";
 import {isAxiosError} from "axios";
 import {NestError} from "@/types/errors";
+import {OptionalUpdateBanner} from "@/components/update/OptionalUpdateBanner";
+import {useAppUpdate} from "@/hooks/useAppUpdate";
 
 function EmptyPlaceholder() {
     const {t} = useTranslation();
@@ -137,11 +139,18 @@ export default function Index() {
         }, REFRESH_DELAY);
     }
 
+    const {dismissOptionalUpdate, config, isUpdateAvailable} = useAppUpdate()
+
 
     return (
         <>
             <Stack.Screen options={{headerShown: false}}/>
             <AppSafeAreaView>
+                {config && isUpdateAvailable && <OptionalUpdateBanner
+                    onDismiss={dismissOptionalUpdate}
+                    onUpdate={() => {
+                    }}
+                />}
                 <AppView>
                     {isoCountry ? <FlatList
                             ListHeaderComponent={

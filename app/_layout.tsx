@@ -11,9 +11,9 @@ import {LocationProvider} from '@/contexts/location-context';
 import {registerSnackBar, Snackbar, SnackbarRef} from '@/components/Snackbar';
 import {useAppUpdate} from '@/hooks/useAppUpdate';
 import {ForceUpdateScreen} from '@/components/update/ForceUpdateScreen';
-import {OptionalUpdateBanner} from '@/components/update/OptionalUpdateBanner';
 import {OTAUpdateScreen} from '@/components/update/OTAUpdateScreen';
-import {Linking, Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
+import AppButton from "@/components/appComponents/AppButton";
 
 export default function RootLayout() {
 
@@ -33,12 +33,10 @@ export default function RootLayout() {
         loading: configLoading,
         error: configError,
         isUpdateRequired,
-        isUpdateAvailable,
         isOtaUpdating,
         otaProgress,
         config,
         retry,
-        dismissOptionalUpdate,
     } = useAppUpdate();
 
     useEffect(() => {
@@ -68,9 +66,9 @@ export default function RootLayout() {
         return (
             <View style={styles.errorContainer}>
                 <Text style={styles.errorText}>{configError}</Text>
-                <TouchableOpacity onPress={retry} style={styles.retryButton}>
-                    <Text style={styles.retryText}>Retry</Text>
-                </TouchableOpacity>
+                <AppButton onPress={retry}>
+                    Retry
+                </AppButton>
             </View>
         );
     }
@@ -85,15 +83,6 @@ export default function RootLayout() {
             <SafeAreaProvider>
                 <GestureHandlerRootView>
                     <LocationProvider>
-                        {isUpdateAvailable && config && (
-                            <OptionalUpdateBanner
-                                onDismiss={dismissOptionalUpdate}
-                                onUpdate={() => {
-                                    const url = Platform.OS === 'ios' ? config.storeUrls.ios : config.storeUrls.android;
-                                    Linking.openURL(url);
-                                }}
-                            />
-                        )}
                         <Stack screenOptions={{headerShown: false}}>
                             <Stack.Screen name="(tabs)"/>
                             <Stack.Screen name="pick-location"/>
@@ -125,14 +114,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginBottom: 20,
     },
-    retryButton: {
-        backgroundColor: '#007AFF',
-        paddingHorizontal: 20,
-        paddingVertical: 10,
-        borderRadius: 5,
-    },
-    retryText: {
-        color: '#fff',
-        fontWeight: 'bold',
-    },
+
+
 });

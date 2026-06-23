@@ -69,7 +69,7 @@ export default ({config}: ConfigContext): ExpoConfig => {
         ...config,
         'name': name,
         'slug': 'weddingApp',
-        'version': '1.1.0',
+        'version': '1.1.1',
         'orientation': 'portrait',
         'icon': icon,
         'scheme': scheme,

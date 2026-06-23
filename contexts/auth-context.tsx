@@ -19,6 +19,7 @@ interface AuthContextType {
     isLoading: boolean,
     errorMessage: string | null
     setErrorMessage: React.Dispatch<React.SetStateAction<string | null>>
+    exchangeWithToken: (token: string) => Promise<void>
 }
 
 const AuthContext = React.createContext<AuthContextType>({
@@ -47,6 +48,8 @@ const AuthContext = React.createContext<AuthContextType>({
     },
     isLoading: false,
     errorMessage: null,
+    exchangeWithToken: async () => {
+    },
 });
 
 
@@ -71,8 +74,10 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
     };
     const config: AuthRequestConfig = {
         clientId: 'google',
-        redirectUri: makeRedirectUri(),
-        // scopes: ["openid", "profile", "email"], //defined in the backend
+        redirectUri: makeRedirectUri({
+            path: "complete-oauth"
+        }),
+        scopes: ["openid", "name", "email"], //defined in the backend
     };
 
     const discoveryIOS: DiscoveryDocument = {
@@ -81,7 +86,11 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
     };
     const configIOS: AuthRequestConfig = {
         clientId: 'apple',
-        redirectUri: makeRedirectUri(),
+        redirectUri: makeRedirectUri({
+            path: "complete-oauth"
+        }),
+        scopes: ["openid", "name", "email"], //defined in the backend
+
     };
 
     // const [user, setUser] = React.useState<AuthUser | null>(null);
@@ -228,28 +237,28 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
         }
     };
 
-
-    useEffect(() => {
-        const exchangeToken = async () => {
-            if (response?.type === 'success') {
-                await exchangeWithToken(response.params.exchangeToken);
-            }
-        };
-        exchangeToken();
-    }, [response]);
-
-    useEffect(() => {
-        const exchangeToken = async () => {
-            if (responseIOS?.type === 'success') {
-
-                await exchangeWithToken(responseIOS.params.exchangeToken);
-            }
-            if (responseIOS?.type === 'error') {
-                console.error(responseIOS?.errorCode);
-            }
-        };
-        exchangeToken();
-    }, [responseIOS]);
+    //
+    // useEffect(() => {
+    //     const exchangeToken = async () => {
+    //         if (response?.type === 'success') {
+    //             await exchangeWithToken(response.params.exchangeToken);
+    //         }
+    //     };
+    //     exchangeToken();
+    // }, [response]);
+    //
+    // useEffect(() => {
+    //     const exchangeToken = async () => {
+    //         if (responseIOS?.type === 'success') {
+    //
+    //             await exchangeWithToken(responseIOS.params.exchangeToken);
+    //         }
+    //         if (responseIOS?.type === 'error') {
+    //             console.error(responseIOS?.errorCode);
+    //         }
+    //     };
+    //     exchangeToken();
+    // }, [responseIOS]);
 
     return (
         <AuthContext.Provider value={{
@@ -266,6 +275,7 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
             isLoading,
             errorMessage,
             setErrorMessage,
+            exchangeWithToken
 
         }}>
             {children}

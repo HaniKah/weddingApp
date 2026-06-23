@@ -4,6 +4,7 @@ import * as WebBrowser from 'expo-web-browser';
 import {useApi} from '@/utils/api';
 import {useAuthStore} from '@/utils/authStore';
 import {SignInDto, SignUpDto, VerifyEmailDto} from '@/types/open-api';
+import {showSnackbar} from "@/components/Snackbar";
 
 interface AuthContextType {
     signInWithApple: () => void,
@@ -19,7 +20,7 @@ interface AuthContextType {
     isLoading: boolean,
     errorMessage: string | null
     setErrorMessage: React.Dispatch<React.SetStateAction<string | null>>
-    exchangeWithToken: (token: string) => Promise<void>
+    // exchangeWithToken: (token: string) => Promise<void>
 }
 
 const AuthContext = React.createContext<AuthContextType>({
@@ -48,8 +49,8 @@ const AuthContext = React.createContext<AuthContextType>({
     },
     isLoading: false,
     errorMessage: null,
-    exchangeWithToken: async () => {
-    },
+    // exchangeWithToken: async () => {
+    // },
 });
 
 
@@ -74,9 +75,7 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
     };
     const config: AuthRequestConfig = {
         clientId: 'google',
-        redirectUri: makeRedirectUri({
-            path: "complete-oauth"
-        }),
+        redirectUri: makeRedirectUri(),
         scopes: ["openid", "name", "email"], //defined in the backend
     };
 
@@ -86,24 +85,18 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
     };
     const configIOS: AuthRequestConfig = {
         clientId: 'apple',
-        redirectUri: makeRedirectUri({
-            path: "complete-oauth"
-        }),
+        redirectUri: makeRedirectUri(),
         scopes: ["openid", "name", "email"], //defined in the backend
 
     };
 
-    // const [user, setUser] = React.useState<AuthUser | null>(null);
     const [isLoading, setIsLoading] = React.useState(false);
     const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
-    // Email awaiting OTP verification. When set, the auth UI shows the OTP step
-    // instead of the sign-in/sign-up form.
+
     const [pendingVerificationEmail, setPendingVerificationEmail] = React.useState<string | null>(null);
     const [request, response, promptAsync] = useAuthRequest(config, discovery);
     const [requestIOS, responseIOS, promptAsyncIOS] = useAuthRequest(configIOS, discoveryIOS);
 
-    // we are not using useAuthRequest because we are implementing oAuth2.0 with passport in the backend
-    // const [request, response, promptAsync] = useAuthRequest(config, discovery)
 
     const {logIn, logOut} = useAuthStore();
 
@@ -181,9 +174,14 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
                 console.log('No request from google sign in');
                 return;
             }
-            await promptAsync();
-        } catch (e) {
-            console.error(e);
+            const result = await promptAsync();
+            if (result.type === "success") {
+                await exchangeWithToken(result.params.exchangeToken)
+            } else {
+                throw new Error("failure to authenticate")
+            }
+        } catch {
+            showSnackbar("login was not successful", "error")
         }
     };
 
@@ -193,9 +191,14 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
                 console.log('No request from Apple sign in');
                 return;
             }
-            await promptAsyncIOS();
-        } catch (e) {
-            console.error(e);
+            const result = await promptAsyncIOS();
+            if (result.type === "success") {
+                await exchangeWithToken(result.params.exchangeToken)
+            } else {
+                throw new Error("failure to authenticate")
+            }
+        } catch {
+            showSnackbar("login was not successful", "error")
         }
     };
 
@@ -275,7 +278,7 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
             isLoading,
             errorMessage,
             setErrorMessage,
-            exchangeWithToken
+            // exchangeWithToken
 
         }}>
             {children}

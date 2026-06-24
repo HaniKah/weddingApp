@@ -84,10 +84,9 @@ export default function RootLayout() {
                 <GestureHandlerRootView>
                     <LocationProvider>
                         <Stack screenOptions={{headerShown: false}}>
-                            {/*<Stack.Screen name="complete-oauth"/>*/}
+                            <Stack.Screen name="(tabs)"/>
                             <Stack.Screen name="pick-location"/>
                             <Stack.Screen name="+not-found"/>
-                            <Stack.Screen name="(tabs)"/>
                         </Stack>
                     </LocationProvider>
                     <StatusBar style="dark"/>

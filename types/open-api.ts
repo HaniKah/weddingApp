@@ -1028,6 +1028,7 @@ export class Api<
       query: {
         scope: string;
         state: string;
+        redirect_uri: string;
       },
       params: RequestParams = {},
     ) =>

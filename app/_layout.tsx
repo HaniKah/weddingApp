@@ -26,8 +26,9 @@ export default function RootLayout() {
 
     const snackbarRef = useRef<SnackbarRef>(null);
 
-    // Wire up the global ref as early as possible
-    registerSnackBar(snackbarRef);
+    useEffect(() => {
+        registerSnackBar(snackbarRef);
+    }, []);
 
     const {
         loading: configLoading,

@@ -12,7 +12,7 @@ export default function AppSafeAreaView({edges = ['top'], children, transparentB
     return (
         <>
             <SafeAreaView edges={edges}
-                          style={[styles.container, {backgroundColor: transparentBackground ? "transparen" : Theme.colors.background}]}>
+                          style={[styles.container, {backgroundColor: transparentBackground ? "transparent" : Theme.colors.background}]}>
                 {children}
             </SafeAreaView>
         </>

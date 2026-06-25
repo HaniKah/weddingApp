@@ -14,7 +14,9 @@ export function CategoryTileList({categoryFilter, setCategoryFilter}: {
 
     return (
 
-        <ScrollView contentContainerStyle={styles.container}>
+        <ScrollView showsVerticalScrollIndicator={false}
+                    showsHorizontalScrollIndicator={false}
+                    contentContainerStyle={styles.container}>
             {
                 categoriesList.map((item) => <CategoryTileItem setSelected={setCategoryFilter} selected={categoryFilter}
                                                                key={item}

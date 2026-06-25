@@ -1,7 +1,7 @@
 import {useAuth} from '@/contexts/auth-context';
 import {useLocationContext} from '@/contexts/location-context';
 import AppView from '@/components/appComponents/AppView';
-import {Alert, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {ActivityIndicator, Alert, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {Theme} from '@/styles/Theme';
 import MenuItem from '@/components/items/MenuItem';
 import {Stack, useRouter} from 'expo-router';
@@ -33,6 +33,17 @@ export default function Index() {
         }]);
     }
 
+    function logOut() {
+        Alert.alert(t('profile.logoutTitle'), t('profile.logoutMessage'), [{
+            text: t('common.cancel'), style: 'default',
+        }, {
+            text: t('profile.logout'), style: 'destructive',
+            onPress: () => signOut(),
+        },
+        ]);
+    }
+
+
     // Wait for the persisted auth state to rehydrate before deciding what to
     // render. Without this, the store's default `isLoggedIn: false` can be read
     // before secure-store hydration finishes, briefly showing the wrong screen.
@@ -40,7 +51,9 @@ export default function Index() {
         return (
             <>
                 <Stack.Screen options={{headerShown: false, contentStyle: {backgroundColor: Theme.colors.background}}}/>
-                <View style={{flex: 1, backgroundColor: Theme.colors.background}}/>
+                <View style={styles.blankScreen}>
+                    <ActivityIndicator/>
+                </View>
             </>
         );
     }
@@ -53,17 +66,6 @@ export default function Index() {
             </>
         );
     }
-
-    function logOut() {
-        Alert.alert(t('profile.logoutTitle'), t('profile.logoutMessage'), [{
-            text: t('common.cancel'), style: 'default',
-        }, {
-            text: t('profile.logout'), style: 'destructive',
-            onPress: () => signOut(),
-        },
-        ]);
-    }
-
 
     return (
         <>
@@ -144,6 +146,12 @@ export default function Index() {
     );
 }
 const styles = StyleSheet.create({
+    blankScreen: {
+        flex: 1,
+        backgroundColor: Theme.colors.background,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     container: {
         flex: 1,
         paddingTop: 20,

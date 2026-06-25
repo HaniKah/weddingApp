@@ -5,6 +5,8 @@ import {useApi} from '@/utils/api';
 import {useAuthStore} from '@/utils/authStore';
 import {SignInDto, SignUpDto, VerifyEmailDto} from '@/types/open-api';
 import {showSnackbar} from "@/components/Snackbar";
+import {AxiosError} from "axios";
+import {router} from "expo-router";
 
 interface AuthContextType {
     signInWithApple: () => void,
@@ -20,7 +22,6 @@ interface AuthContextType {
     isLoading: boolean,
     errorMessage: string | null
     setErrorMessage: React.Dispatch<React.SetStateAction<string | null>>
-    // exchangeWithToken: (token: string) => Promise<void>
 }
 
 const AuthContext = React.createContext<AuthContextType>({
@@ -49,8 +50,6 @@ const AuthContext = React.createContext<AuthContextType>({
     },
     isLoading: false,
     errorMessage: null,
-    // exchangeWithToken: async () => {
-    // },
 });
 
 
@@ -75,7 +74,9 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
     };
     const config: AuthRequestConfig = {
         clientId: 'google',
-        redirectUri: makeRedirectUri(),
+        redirectUri: makeRedirectUri({
+            path: "complete-oauth"
+        }),
         scopes: ["openid", "name", "email"], //defined in the backend
     };
 
@@ -85,7 +86,9 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
     };
     const configIOS: AuthRequestConfig = {
         clientId: 'apple',
-        redirectUri: makeRedirectUri(),
+        redirectUri: makeRedirectUri({
+            path: "complete-oauth"
+        }),
         scopes: ["openid", "name", "email"], //defined in the backend
 
     };
@@ -178,12 +181,16 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
             if (result.type === "success") {
                 await exchangeWithToken(result.params.exchangeToken)
             } else {
-                throw new Error("failure to authenticate")
+                throw new AxiosError()
             }
         } catch {
-            showSnackbar("login was not successful", "error")
+            setTimeout(() => {
+                router.dismissTo("/profile")
+                showSnackbar("login was not successful, please try again later", "error")
+            }, 3000)
+
         }
-    };
+    }
 
     const signInWithApple = async () => {
         try {
@@ -195,10 +202,13 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
             if (result.type === "success") {
                 await exchangeWithToken(result.params.exchangeToken)
             } else {
-                throw new Error("failure to authenticate")
+                throw new AxiosError()
             }
         } catch {
-            showSnackbar("login was not successful", "error")
+            setTimeout(() => {
+                router.dismissTo("/profile")
+                showSnackbar("login was not successful", "error")
+            }, 3000)
         }
     };
 
@@ -234,9 +244,16 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            logIn(res.data.accessToken, res.data.refreshToken, res.data.user.firstName, res.data.user.lastName, res.data.user.email);
-        } catch (err) {
-            console.error(err);
+            await logIn(res.data.accessToken, res.data.refreshToken, res.data.user.firstName, res.data.user.lastName, res.data.user.email);
+            setTimeout(() => {
+                router.dismissTo("/profile")
+                showSnackbar("Logged in successfully", "success")
+            }, 3000)
+        } catch {
+            setTimeout(() => {
+                router.dismissTo("/profile")
+                showSnackbar("couldn't login, please try again later", "error")
+            }, 3000)
         }
     };
 
@@ -278,8 +295,6 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
             isLoading,
             errorMessage,
             setErrorMessage,
-            // exchangeWithToken
-
         }}>
             {children}
         </AuthContext.Provider>

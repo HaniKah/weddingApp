@@ -79,32 +79,37 @@ export default function Index() {
                 title: 'Listings',
             }}/>
 
-            <AppView extraStyles={styles.appView}>
+            <AppView>
 
                 {
                     places && Object.values(places).flatMap(s => s.data).length > 0 ?
-                        <SectionList style={styles.sectionlist}
-                                     refreshControl={<RefreshControl refreshing={isRefreshing}
-                                                                     onRefresh={refreshPlaces}/>}
-                                     renderSectionHeader={({section}) => (
-                                         <SectionHeaderItem title={section.data.length > 0 ? section.title : null}
-                                         />)}
-                                     keyExtractor={(item) => item.id.toString()}
-                                     sections={[places.published, places.unpublished]}
-                                     renderItem={(item) => <VendorPlaceItem
-                                         setTrigger={setIsLoading} data={item.item}/>
-                                     }/>
+                        <SectionList
+                            contentContainerStyle={styles.sectionlist}
+                            refreshControl={<RefreshControl refreshing={isRefreshing}
+                                                            onRefresh={refreshPlaces}/>}
+                            renderSectionHeader={({section}) => (
+                                <SectionHeaderItem title={section.data.length > 0 ? section.title : null}
+                                />)}
+                            keyExtractor={(item) => item.id.toString()}
+                            sections={[places.published, places.unpublished]}
+                            renderItem={(item) => <VendorPlaceItem
+                                setTrigger={setIsLoading} data={item.item}/>
+                            }/>
                         :
                         <Text style={[{marginVertical: 'auto'}, CommonStyles.dataNotFound]}>You dont have places yet ,
                             create one
                             now</Text>
 
                 }
+                <View style={styles.addButtonContainer}>
+                    <IconButton color={Theme.colors.white}
+                                extraStylesBtn={styles.addButton}
+                                onPress={() => createPlaceModalRef.current?.open()}
+                                name="plus">
+
+                    </IconButton>
+                </View>
             </AppView>
-            <IconButton color={Theme.colors.white}
-                        extraStylesBtn={styles.addButton}
-                        onPress={() => createPlaceModalRef.current?.open()}
-                        name="plus"></IconButton>
 
 
             <CreatePlaceModal
@@ -117,32 +122,38 @@ export default function Index() {
     );
 }
 const styles = StyleSheet.create({
-    appView: {
-        paddingBottom: 100
+
+    addButtonContainer: {
+        position: 'absolute',
+        right: 20,
+        bottom: 20,
     },
+
     addButton: {
         width: 55,
         height: 55,
         backgroundColor: Theme.colors.primary,
         boxShadow: Theme.shadow.lg,
-        position: 'absolute',
-        right: 20,
-        bottom: 20,
     },
+
     sectionlist: {
         padding: Theme.global.appPadding,
+        paddingBottom: 10
     },
+
     title: {
         fontSize: Theme.sizes.xl,
         fontWeight: 'bold',
         padding: 10,
     },
+
     publishBtn: {
         paddingVertical: 20,
         borderColor: Theme.colors.gray.S300,
         borderStyle: 'dashed',
         borderTopWidth: 1,
     },
+
     sectionHeaderContainer: {
         display: 'flex',
         flexDirection: 'row',

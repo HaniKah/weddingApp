@@ -54,10 +54,11 @@ const AuthContext = React.createContext<AuthContextType>({
 
 
 export const AuthProvider = ({children}: { children: React.ReactNode }) => {
-    WebBrowser.maybeCompleteAuthSession();
 
     // this is just for performance
     useEffect(() => {
+        WebBrowser.maybeCompleteAuthSession();
+        
         WebBrowser.warmUpAsync();
 
         return () => {

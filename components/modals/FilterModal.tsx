@@ -176,7 +176,7 @@ export default function FilterModal({
                         </Animated.View>
 
 
-                        <Animated.View style={styles.footer}
+                        <Animated.View style={styles.footerContainer}
                                        entering={SlideInDown.duration(850).easing(Easing.out(Easing.cubic))}>
                             <AppButton buttonType={ButtonType.PLAIN}
                                        onPress={resetFilters}>
@@ -220,7 +220,8 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: Theme.global.appPadding,
         marginTop: 50,
-        backgroundColor: "transparent"
+        backgroundColor: "transparent",
+        position: "relative"
     },
     filtersContainer: {
         gap: 10,
@@ -305,14 +306,18 @@ const styles = StyleSheet.create({
     featureButton: {
         minWidth: 80,
     },
-    footer: {
+    footerContainer: {
+        display: "flex",
         flexDirection: "row",
-        alignItems: "flex-end",
         justifyContent: "space-between",
-        alignSelf: "flex-end",
+        alignItems: "center",
         width: "100%",
-        padding: 20,
-        flex: 1,
-        marginBottom: 50
-    }
+        padding: 10,
+        paddingLeft: 20,
+        marginBottom: 30,
+        position: "absolute",
+        bottom: 0,
+    },
+
+
 })

@@ -56,12 +56,15 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginBottom: 20,
         textAlign: 'center',
+        color: Theme.colors.primary
+
 
     },
     message: {
         fontSize: 16,
         textAlign: 'center',
         marginBottom: 30,
+        color: Theme.colors.secondary
     },
 
 });

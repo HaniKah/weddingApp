@@ -45,12 +45,14 @@ const styles = StyleSheet.create({
         fontSize: 22,
         fontWeight: 'bold',
         marginTop: 20,
+        color: Theme.colors.primary
     },
     message: {
         fontSize: 16,
-        color: '#666',
+        color: Theme.colors.secondary,
         marginTop: 10,
         textAlign: 'center',
+
     },
     progressContainer: {
         marginTop: 40,

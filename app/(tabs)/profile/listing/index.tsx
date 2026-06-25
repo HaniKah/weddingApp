@@ -44,8 +44,8 @@ export default function Index() {
 
 
     const reloadPlaces = useCallback(() => {
-        setIsLoading(true);
         setTimeout(async () => {
+            setIsLoading(true);
             await getPlaces();
             setIsLoading(false);
         }, REFRESH_DELAY);
@@ -54,7 +54,7 @@ export default function Index() {
 
     useEffect(() => {
         reloadPlaces();
-    }, []);
+    }, [reloadPlaces]);
 
 
     function SectionHeaderItem({title}: { title: string | null; }) {

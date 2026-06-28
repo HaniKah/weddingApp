@@ -12,7 +12,8 @@
     "swagger-axios": "swagger-typescript-api generate -p http://localhost:3000/swagger/json -o ./types -n open-api.ts --http-client axios",
     "test": "jest",
     "test:watch": "jest --watchAll",
-    "test:ci": "jest --ci --runInBand"
+    "test:ci": "jest --ci --runInBand",
+    "update:preview": "eas update --branch preview --environment preview"
   },
   "jest": {
     "preset": "jest-expo",

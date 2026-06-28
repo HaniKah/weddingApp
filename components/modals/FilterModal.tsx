@@ -128,7 +128,7 @@ export default function FilterModal({
                                                 header={<Text style={styles.label}>Budget</Text>}>
                                     <View style={styles.priceTextContainer}>
                                         <View style={styles.priceInput}>
-                                            <Text style={{color: Theme.colors.primary}}>Max. price: </Text>
+                                            <Text style={{color: Theme.colors.primary}}>max. price :</Text>
                                             <TextInput
                                                 style={styles.input}
                                                 value={priceInput}
@@ -281,12 +281,14 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",
+        gap: 10
     },
     input: {
         color: Theme.colors.primary,
         fontWeight: "bold",
         borderRadius: Theme.radius.full,
-        boxShadow: Theme.shadow.lg,
+        borderColor: Theme.colors.border,
+        borderWidth: 1,
         paddingVertical: 5,
         paddingHorizontal: 10,
         minWidth: 70,

@@ -54,7 +54,9 @@ const MAPPING = {
     "rectangle.portrait.and.arrow.right": "logout",
     "line.3.horizontal.decrease": "filter-list",
     "mail": "mail-outline",
-    "apple.logo": "apple"
+    "apple.logo": "apple",
+    "crown": "star-outline",
+    "crown.fill": "star"
 } as IconMapping;
 
 /**

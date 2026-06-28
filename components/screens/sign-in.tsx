@@ -4,7 +4,6 @@ import Animated, {FadeInDown} from 'react-native-reanimated';
 import {useAuth} from '@/contexts/auth-context';
 import AppButton from '@/components/appComponents/AppButton';
 import {ButtonType} from '@/styles/Button';
-import AppSafeAreaView from '@/components/appComponents/AppSafeAreaView';
 import AppKeyboardAvoidingView from '@/components/appComponents/AppKeyboardAvoidingView';
 import AuthForm from '@/components/auth/AuthForm';
 import {Theme} from '@/styles/Theme';
@@ -12,6 +11,7 @@ import Google from '@/assets/icons/social-media/google.svg';
 
 
 import {useTranslation} from 'react-i18next';
+import AppSafeAreaView from "@/components/appComponents/AppSafeAreaView";
 
 
 export default function SignIn() {
@@ -84,7 +84,7 @@ export default function SignIn() {
             )}
 
             {showEmailForm && (
-                <AppSafeAreaView transparentBackground>
+                <AppSafeAreaView style={{backgroundColor: 'transparent'}}>
                     <Pressable onPress={closeForm} style={{flex: 1}}>
                         <AppKeyboardAvoidingView>
                             <Animated.View

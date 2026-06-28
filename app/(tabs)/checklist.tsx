@@ -4,7 +4,6 @@ import {Theme} from '@/styles/Theme';
 import {useChecklistStore} from '@/utils/checklistStore';
 import AppView from '@/components/appComponents/AppView';
 import {Stack} from 'expo-router';
-import AppSafeAreaView from '@/components/appComponents/AppSafeAreaView';
 import TodoItem from '@/components/items/TodoItem';
 import AppKeyboardAvoidingView from '@/components/appComponents/AppKeyboardAvoidingView';
 import {IconButton} from '@/components/symbols/IconButton';
@@ -12,6 +11,7 @@ import AppTextInput from '@/components/appComponents/AppTextInput';
 
 
 import {useTranslation} from 'react-i18next';
+import AppSafeAreaView from "@/components/appComponents/AppSafeAreaView";
 
 
 export default function Checklist() {
@@ -32,7 +32,7 @@ export default function Checklist() {
     return (
         <>
             <Stack.Screen options={{headerShown: false}}/>
-            <AppSafeAreaView>
+            <AppSafeAreaView edges={["top"]}>
                 <AppKeyboardAvoidingView>
                     <AppView isLoading={todosHydrating} extraStyles={{backgroundColor: Theme.colors.background}}
                              withPadding>

@@ -7,13 +7,13 @@ import MenuItem from '@/components/items/MenuItem';
 import {Stack, useRouter} from 'expo-router';
 import {IconSymbol} from '@/components/symbols/IconSymbol';
 import {COUNTRIES} from '@/constants/countries';
-import AppSafeAreaView from '@/components/appComponents/AppSafeAreaView';
 
 import {useAuthStore} from '@/utils/authStore';
 import SignIn from '@/components/screens/sign-in';
 
 import {useTranslation} from 'react-i18next';
 import LineSeparator from "@/components/LineSeparator";
+import AppSafeAreaView from "@/components/appComponents/AppSafeAreaView";
 
 
 export default function Index() {
@@ -51,9 +51,12 @@ export default function Index() {
         return (
             <>
                 <Stack.Screen options={{headerShown: false, contentStyle: {backgroundColor: Theme.colors.background}}}/>
-                <View style={styles.blankScreen}>
-                    <ActivityIndicator/>
-                </View>
+                <AppSafeAreaView>
+                    <View style={styles.blankScreen}>
+                        <ActivityIndicator/>
+                    </View>
+                </AppSafeAreaView>
+
             </>
         );
     }
@@ -62,7 +65,9 @@ export default function Index() {
         return (
             <>
                 <Stack.Screen options={{headerShown: false, contentStyle: {backgroundColor: Theme.colors.background}}}/>
-                <SignIn/>
+                <AppSafeAreaView>
+                    <SignIn/>
+                </AppSafeAreaView>
             </>
         );
     }
@@ -70,10 +75,9 @@ export default function Index() {
     return (
         <>
             <Stack.Screen options={{headerShown: false, contentStyle: {backgroundColor: Theme.colors.background}}}/>
-            <AppSafeAreaView>
+            <AppSafeAreaView edges={["top"]}>
                 <ScrollView style={styles.container}>
                     <AppView withPadding>
-
                         <View style={styles.info}>
                             <Text style={styles.name}>{t('profile.welcomeBack')}</Text>
                             <View style={styles.location}>

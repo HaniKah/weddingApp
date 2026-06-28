@@ -11,7 +11,6 @@ import LocationAccessDenied from '@/components/errors/LocationAccessDenied';
 import {REFRESH_DELAY} from '@/constants/general';
 import {Theme} from '@/styles/Theme';
 import {IconSymbol} from '@/components/symbols/IconSymbol';
-import AppSafeAreaView from '@/components/appComponents/AppSafeAreaView';
 
 
 import {useTranslation} from 'react-i18next';
@@ -20,6 +19,7 @@ import {isAxiosError} from "axios";
 import {NestError} from "@/types/errors";
 import {OptionalUpdateBanner} from "@/components/update/OptionalUpdateBanner";
 import {useAppUpdate} from "@/hooks/useAppUpdate";
+import AppSafeAreaView from "@/components/appComponents/AppSafeAreaView";
 
 function EmptyPlaceholder() {
     const {t} = useTranslation();
@@ -145,11 +145,11 @@ export default function Index() {
     return (
         <>
             <Stack.Screen options={{headerShown: false}}/>
-            <AppSafeAreaView>
-                {config && isUpdateAvailable && <OptionalUpdateBanner
-                    onDismiss={dismissOptionalUpdate}
-                    onUpdate={() => Platform.OS === 'ios' ? Linking.openURL(config.storeUrls.ios) : Linking.openURL(config.storeUrls.android)}
-                />}
+            {config && isUpdateAvailable && <OptionalUpdateBanner
+                onDismiss={dismissOptionalUpdate}
+                onUpdate={() => Platform.OS === 'ios' ? Linking.openURL(config.storeUrls.ios) : Linking.openURL(config.storeUrls.android)}
+            />}
+            <AppSafeAreaView edges={["top"]}>
                 <AppView>
                     {isoCountry ? <FlatList
                             ListHeaderComponent={
@@ -176,8 +176,6 @@ export default function Index() {
                     }
                 </AppView>
             </AppSafeAreaView>
-
-
         </>
     );
 }

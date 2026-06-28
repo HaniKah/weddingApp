@@ -6,10 +6,10 @@ import AppView from "@/components/appComponents/AppView";
 import {FlatList, StyleSheet, Text, View} from "react-native";
 import CountryItem from "@/components/items/CountryItem";
 import {CountryCode} from "@/types/open-api";
-import AppSafeAreaView from "@/components/appComponents/AppSafeAreaView";
 import {useLocationStore} from "@/utils/locationStore";
 
 import {useTranslation} from "react-i18next";
+import AppSafeAreaView from "@/components/appComponents/AppSafeAreaView";
 
 
 export default function PickLocation() {

@@ -80,9 +80,9 @@ export default function RootLayout() {
 
 
     return (
-        <AuthProvider>
-            <SafeAreaProvider>
-                <GestureHandlerRootView>
+        <SafeAreaProvider>
+            <GestureHandlerRootView>
+                <AuthProvider>
                     <LocationProvider>
                         <Stack screenOptions={{headerShown: false}}>
                             <Stack.Screen name="(tabs)"/>
@@ -93,9 +93,9 @@ export default function RootLayout() {
                     </LocationProvider>
                     <StatusBar style="dark"/>
                     <Snackbar ref={snackbarRef}/>
-                </GestureHandlerRootView>
-            </SafeAreaProvider>
-        </AuthProvider>
+                </AuthProvider>
+            </GestureHandlerRootView>
+        </SafeAreaProvider>
 
 
     );

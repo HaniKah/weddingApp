@@ -3,6 +3,7 @@ import AppButton from '@/components/appComponents/AppButton';
 import {ButtonType} from '@/styles/Button';
 import {Theme} from '@/styles/Theme';
 import {useImperativeHandle, useState} from 'react';
+import AppSafeAreaView from "@/components/appComponents/AppSafeAreaView";
 
 export interface AppModalRef {
     open: () => void;
@@ -18,6 +19,7 @@ export default function AppModal({
                                      animationType = 'slide',
                                      beforeCancel,
                                      ref,
+                                     transparent,
                                  }: {
     presentationStyle?: | 'fullScreen' | 'pageSheet' | 'formSheet' | 'overFullScreen' | undefined;
     children: React.ReactNode
@@ -25,10 +27,12 @@ export default function AppModal({
     animationType?: 'slide' | 'fade' | 'none'
     beforeCancel?: () => void
     ref: any
+    transparent?: boolean
 }) {
     const isFullScreen = presentationStyle === 'fullScreen' || presentationStyle === 'overFullScreen';
 
     const [isVisible, setIsVisible] = useState<boolean>(false);
+
 
     function handleCancel() {
         beforeCancel?.();
@@ -46,7 +50,7 @@ export default function AppModal({
 
     return (
         <Modal
-
+            transparent={transparent}
             allowSwipeDismissal={allowSwipeDismissal}
             presentationStyle={presentationStyle}
             animationType={animationType}
@@ -55,24 +59,26 @@ export default function AppModal({
 
 
         >
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-                <View style={styles.wrapper}>
-                    <View
-                        style={[styles.header, isFullScreen && styles.headerFullScreen]}>
-                        <AppButton
-                            extraStylesBtn={{justifyContent: 'flex-start'}}
-                            extraStylesTxt={{color: Theme.colors.secondary}}
-                            buttonType={ButtonType.PLAIN}
-                            onPress={handleCancel}>
-                            cancel
-                        </AppButton>
-                        <View style={[styles.handle, isFullScreen && styles.handleFullScreen]}></View>
-                        <View style={{flex: 1}}></View>
-                    </View>
+            <AppSafeAreaView edges={["bottom", "top"]}>
+                <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+                    <View style={styles.wrapper}>
+                        <View
+                            style={[styles.header, isFullScreen && styles.headerFullScreen]}>
+                            <AppButton
+                                extraStylesBtn={{justifyContent: 'flex-start'}}
+                                extraStylesTxt={{color: Theme.colors.secondary}}
+                                buttonType={ButtonType.PLAIN}
+                                onPress={handleCancel}>
+                                cancel
+                            </AppButton>
+                            <View style={[styles.handle, isFullScreen && styles.handleFullScreen]}></View>
+                            <View style={{flex: 1}}></View>
+                        </View>
 
-                    {children}
-                </View>
-            </TouchableWithoutFeedback>
+                        {children}
+                    </View>
+                </TouchableWithoutFeedback>
+            </AppSafeAreaView>
         </Modal>
     );
 }

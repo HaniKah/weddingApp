@@ -15,6 +15,7 @@ import AppView from '@/components/appComponents/AppView';
 import PriceTag from '@/components/tags/PriceTag';
 import ScrollableImages from "@/components/ScrollableImages";
 import FeaturesTag from "@/components/tags/FeaturesTag";
+import AppSafeAreaView from "@/components/appComponents/AppSafeAreaView";
 
 
 export default function PlaceId() {
@@ -70,82 +71,87 @@ export default function PlaceId() {
                     headerBackButtonDisplayMode: "minimal"
                 }}
             />
-            <AppView isLoading={!placeDetails && isLoading}>
+            <AppSafeAreaView edges={["bottom"]}>
 
-                <ScrollView
-                    contentInsetAdjustmentBehavior="never"
-                    contentContainerStyle={styles.scrollContent}
-                    showsVerticalScrollIndicator
-                    refreshControl={<RefreshControl progressViewOffset={50} refreshing={isRefreshing}
-                                                    onRefresh={getPlaceDetails}/>}
-                >
 
-                    {placeDetails?.photos && placeDetails?.photos?.length > 0 ?
-                        <Link
-                            push
-                            href={{
-                                pathname: '/listing/[id]/images',
-                                params: {id: params.id, step: params.step},
-                            }}
-                        >
-                            <ScrollableImages
-                                onPress={() => router.push({
+                <AppView isLoading={!placeDetails && isLoading}>
+
+                    <ScrollView
+                        contentInsetAdjustmentBehavior="never"
+                        contentContainerStyle={styles.scrollContent}
+                        showsVerticalScrollIndicator
+                        refreshControl={<RefreshControl progressViewOffset={50} refreshing={isRefreshing}
+                                                        onRefresh={getPlaceDetails}/>}
+                    >
+
+                        {placeDetails?.photos && placeDetails?.photos?.length > 0 ?
+                            <Link
+                                push
+                                href={{
                                     pathname: '/listing/[id]/images',
                                     params: {id: params.id, step: params.step},
-                                })} images={placeDetails.photos}/>
-                        </Link>
-                        :
+                                }}
+                            >
+                                <ScrollableImages
+                                    onPress={() => router.push({
+                                        pathname: '/listing/[id]/images',
+                                        params: {id: params.id, step: params.step},
+                                    })} images={placeDetails.photos}/>
+                            </Link>
+                            :
 
-                        <View style={styles.imagePlaceHolder}>
-                            <View style={styles.iconWrapper}>
-                                <IconCategory size={100} color={Theme.colors.secondary}
-                                              category={placeDetails?.category}/>
+                            <View style={styles.imagePlaceHolder}>
+                                <View style={styles.iconWrapper}>
+                                    <IconCategory size={100} color={Theme.colors.secondary}
+                                                  category={placeDetails?.category}/>
+                                </View>
                             </View>
-                        </View>
-                    }
+                        }
 
 
-                    <View style={styles.infosContainer}>
+                        <View style={styles.infosContainer}>
 
-                        <View style={styles.infoHeaderContainer}>
-                            <View style={styles.titleContainer}>
-                                <Text style={styles.title}>{placeDetails?.name}</Text>
-                                {
-                                    isFavorite(id) ?
-                                        <IconButton onPress={() => toggleFavorite(id)} removeBackground
-                                                    name="heart.fill"/> :
-                                        <IconButton onPress={() => toggleFavorite(id)} removeBackground name="heart"/>}
+                            <View style={styles.infoHeaderContainer}>
+                                <View style={styles.titleContainer}>
+                                    <Text style={styles.title}>{placeDetails?.name}</Text>
+                                    {
+                                        isFavorite(id) ?
+                                            <IconButton onPress={() => toggleFavorite(id)} removeBackground
+                                                        name="heart.fill"/> :
+                                            <IconButton onPress={() => toggleFavorite(id)} removeBackground
+                                                        name="heart"/>}
+                                </View>
+                                <LocationTag city={placeDetails?.city}/>
+                                <AppIf value={placeDetails?.features}>
+                                    <FeaturesTag features={placeDetails?.features}/>
+                                </AppIf>
+
+                                <PriceTag minPrice={placeDetails?.minPrice}
+                                          maxPrice={placeDetails?.maxPrice}
+                                          priceType={placeDetails?.priceType}
+                                          countryCode={placeDetails?.countryCode}/>
                             </View>
-                            <LocationTag city={placeDetails?.city}/>
-                            <AppIf value={placeDetails?.features}>
-                                <FeaturesTag features={placeDetails?.features}/>
+
+                            <AppIf value={placeDetails?.description}>
+                                <View style={styles.descriptionContainer}>
+                                    <Text
+                                        style={[styles.description, isArabic && styles.arabicText]}>{placeDetails?.description}</Text>
+                                </View>
                             </AppIf>
 
-                            <PriceTag minPrice={placeDetails?.minPrice}
-                                      maxPrice={placeDetails?.maxPrice}
-                                      priceType={placeDetails?.priceType}
-                                      countryCode={placeDetails?.countryCode}/>
+
                         </View>
+                    </ScrollView>
+                </AppView>
 
-                        <AppIf value={placeDetails?.description}>
-                            <View style={styles.descriptionContainer}>
-                                <Text
-                                    style={[styles.description, isArabic && styles.arabicText]}>{placeDetails?.description}</Text>
-                            </View>
-                        </AppIf>
-
-
-                    </View>
-                </ScrollView>
-            </AppView>
-
-            <View style={styles.callForActionContainer}>
-                <Link asChild href={`tel:${placeDetails?.phoneNumber}`}>
-                    <AppButton icon="phone" fullWidth buttonType={ButtonType.PRIMARY}>
-                        Call Now
-                    </AppButton>
-                </Link>
-            </View>
+                <View style={styles.callForActionContainer}>
+                    <Link asChild href={`tel:${placeDetails?.phoneNumber}`}>
+                        <AppButton icon="phone" fullWidth buttonType={ButtonType.PRIMARY}>
+                            Call Now
+                        </AppButton>
+                    </Link>
+                </View>
+            </AppSafeAreaView>
         </>
     );
 }

@@ -153,7 +153,7 @@ export default function FilterModal({
                                 <AppCollapsible onToggle={() => handleToggle("CATEGORIES")}
                                                 expanded={activeCollapsible === "CATEGORIES"}
                                                 containerStyle={[styles.collapsibleContainer]}
-                                                header={<Text style={styles.label}>Categories</Text>}>
+                                                header={<Text style={styles.label}>Category</Text>}>
 
                                     <CategoryTileList categoryFilter={filters.category}
                                                       setCategoryFilter={handleCategoryChange}/>

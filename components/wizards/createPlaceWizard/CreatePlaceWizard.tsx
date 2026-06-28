@@ -15,7 +15,7 @@ export type ImageUploadModel = {
     name?: string | null
 }
 
-export default function CreatePlaceWizard({id, onFinish, initialStep}: {
+export default function ACreatePlaceWizard({id, onFinish, initialStep}: {
     id?: number,
     onFinish: () => void
     initialStep: UpdateStep

@@ -12,7 +12,7 @@ export default function AppSafeAreaView({edges = ["top", "bottom"], children, st
     return (
         <>
             <SafeAreaView edges={edges}
-                          style={styles.container}>
+                          style={[styles.container, style]}>
                 {children}
             </SafeAreaView>
         </>
@@ -21,7 +21,6 @@ export default function AppSafeAreaView({edges = ["top", "bottom"], children, st
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Theme.colors.background,
-
+        backgroundColor: Theme.colors.background
     },
 });

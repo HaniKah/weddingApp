@@ -1,9 +1,9 @@
-import {Keyboard, Modal, StyleSheet, TouchableWithoutFeedback, View} from 'react-native';
+import {Keyboard, Modal, Platform, StyleSheet, TouchableWithoutFeedback, View} from 'react-native';
 import AppButton from '@/components/appComponents/AppButton';
 import {ButtonType} from '@/styles/Button';
 import {Theme} from '@/styles/Theme';
 import {useImperativeHandle, useState} from 'react';
-import AppSafeAreaView from "@/components/appComponents/AppSafeAreaView";
+import {useSafeAreaInsets} from "react-native-safe-area-context";
 
 export interface AppModalRef {
     open: () => void;
@@ -32,6 +32,7 @@ export default function AppModal({
     const isFullScreen = presentationStyle === 'fullScreen' || presentationStyle === 'overFullScreen';
 
     const [isVisible, setIsVisible] = useState<boolean>(false);
+    const inset = useSafeAreaInsets()
 
 
     function handleCancel() {
@@ -59,26 +60,25 @@ export default function AppModal({
 
 
         >
-            <AppSafeAreaView edges={["bottom", "top"]}>
-                <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-                    <View style={styles.wrapper}>
-                        <View
-                            style={[styles.header, isFullScreen && styles.headerFullScreen]}>
-                            <AppButton
-                                extraStylesBtn={{justifyContent: 'flex-start'}}
-                                extraStylesTxt={{color: Theme.colors.secondary}}
-                                buttonType={ButtonType.PLAIN}
-                                onPress={handleCancel}>
-                                cancel
-                            </AppButton>
-                            <View style={[styles.handle, isFullScreen && styles.handleFullScreen]}></View>
-                            <View style={{flex: 1}}></View>
-                        </View>
-
-                        {children}
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+                <View
+                    style={[styles.wrapper, Platform.OS === "android" ? {paddingBottom: inset.bottom} : {paddingBottom: 0}]}>
+                    <View
+                        style={[styles.header, isFullScreen && styles.headerFullScreen]}>
+                        <AppButton
+                            extraStylesBtn={{justifyContent: 'flex-start'}}
+                            extraStylesTxt={{color: Theme.colors.secondary}}
+                            buttonType={ButtonType.PLAIN}
+                            onPress={handleCancel}>
+                            cancel
+                        </AppButton>
+                        <View style={[styles.handle, isFullScreen && styles.handleFullScreen]}></View>
+                        <View style={{flex: 1}}></View>
                     </View>
-                </TouchableWithoutFeedback>
-            </AppSafeAreaView>
+
+                    {children}
+                </View>
+            </TouchableWithoutFeedback>
         </Modal>
     );
 }
@@ -86,6 +86,7 @@ const styles = StyleSheet.create({
     wrapper: {
         flex: 1,
         backgroundColor: Theme.colors.background,
+        paddingTop: 70
 
     },
     header: {
@@ -94,11 +95,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         paddingHorizontal: 20,
-        paddingTop: 20,
     },
-    headerFullScreen: {
-        paddingTop: 70,
-    },
+    headerFullScreen: {},
     handle: {
         flex: 1,
         height: 3,

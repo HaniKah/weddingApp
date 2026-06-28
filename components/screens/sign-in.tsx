@@ -11,7 +11,7 @@ import Google from '@/assets/icons/social-media/google.svg';
 
 
 import {useTranslation} from 'react-i18next';
-import AppSafeAreaView from "@/components/appComponents/AppSafeAreaView";
+import {SafeAreaView} from "react-native-safe-area-context";
 
 
 export default function SignIn() {
@@ -84,7 +84,7 @@ export default function SignIn() {
             )}
 
             {showEmailForm && (
-                <AppSafeAreaView style={{backgroundColor: 'transparent'}}>
+                <SafeAreaView style={{backgroundColor: 'transparent'}}>
                     <Pressable onPress={closeForm} style={{flex: 1}}>
                         <AppKeyboardAvoidingView>
                             <Animated.View
@@ -94,7 +94,7 @@ export default function SignIn() {
                             </Animated.View>
                         </AppKeyboardAvoidingView>
                     </Pressable>
-                </AppSafeAreaView>
+                </SafeAreaView>
             )}
         </View>
     );

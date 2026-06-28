@@ -97,7 +97,7 @@ export default function FilterModal({
     function content() {
         return (
             <>
-                <AppSafeAreaView transparentBackground edges={["top", "bottom"]}>
+                <AppSafeAreaView style={styles.safeAreaView} edges={["bottom"]}>
                     <View style={styles.header}>
 
                         <IconButton extraStylesBtn={styles.xIcon}
@@ -214,7 +214,9 @@ export default function FilterModal({
     )
 }
 const styles = StyleSheet.create({
-
+    safeAreaView: {
+        backgroundColor: "transparent"
+    },
     container: {
         flex: 1,
         padding: Theme.global.appPadding,

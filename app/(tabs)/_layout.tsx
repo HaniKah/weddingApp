@@ -23,7 +23,7 @@ export default function TabsLayout() {
                                  tabBarIcon: ({color}) => <IconSymbol size={28} name="checklist"
                                                                       color={color}/>,
                              }}/>
-                
+
                 <Tabs.Screen name="profile"
                              options={{
                                  title: 'profile',

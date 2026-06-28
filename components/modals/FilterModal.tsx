@@ -3,7 +3,6 @@ import {Theme} from "@/styles/Theme";
 import {IconButton} from "@/components/symbols/IconButton";
 import {Host, Slider} from '@expo/ui';
 import {Dispatch, SetStateAction, useMemo, useRef, useState} from "react";
-import Animated, {Easing, SlideInDown} from "react-native-reanimated";
 import AppTextInput from "@/components/appComponents/AppTextInput";
 import {COUNTRIES} from "@/constants/countries";
 import {useLocationContext} from "@/contexts/location-context";
@@ -15,6 +14,8 @@ import {AppCollapsible} from "@/components/appComponents/AppCollapsible";
 import {CategoryTileList} from "@/components/CategoryTileList";
 import {Categories, SearchFilter} from "@/types/open-api";
 import {BlurView} from "expo-blur";
+import AppSafeAreaView from "@/components/appComponents/AppSafeAreaView";
+import * as Haptics from "expo-haptics";
 
 export type CollapsibleFilters = "BUDGET" | "CATEGORIES" | "CITY"
 export default function FilterModal({
@@ -55,6 +56,7 @@ export default function FilterModal({
             category: undefined,
             city: undefined
         });
+        Haptics.selectionAsync()
     }
 
 
@@ -95,107 +97,104 @@ export default function FilterModal({
     function content() {
         return (
             <>
-                <Animated.View entering={SlideInDown.duration(350).easing(Easing.out(Easing.cubic))}
-                               style={styles.header}>
+                <AppSafeAreaView transparentBackground edges={["top", "bottom"]}>
+                    <View style={styles.header}>
 
-                    <IconButton extraStylesBtn={styles.xIcon}
-                                color={Theme.colors.black}
-                                size={18}
-                                onPress={() => setVisible(false)}
-                                name="xmark"/>
-                    <Text style={styles.headerText}>Filters</Text>
-                </Animated.View>
+                        <IconButton extraStylesBtn={styles.xIcon}
+                                    color={Theme.colors.black}
+                                    size={18}
+                                    onPress={() => setVisible(false)}
+                                    name="xmark"/>
+                        <Text style={styles.headerText}>Filters</Text>
+                    </View>
 
-                <AppForm ref={formRef} onSubmit={handleShowResult}>
-                    <View style={styles.filtersContainer}>
-                        <Animated.View style={styles.searchBar}
-                                       entering={SlideInDown.duration(450).easing(Easing.out(Easing.cubic))}>
-                            <AppTextInput
-                                name="search"
-                                placeholder="Search what you are looking for..."
-                                value={searchText}
-                                onChange={setSearchText}
-                                design={2}
-                                extraStyles={styles.searchBar}
-                            />
-                        </Animated.View>
-                        <Animated.View
-                            entering={SlideInDown.duration(550).easing(Easing.out(Easing.cubic))}>
-                            <AppCollapsible onToggle={() => handleToggle("BUDGET")}
-                                            expanded={activeCollapsible === "BUDGET"}
-                                            containerStyle={styles.collapsibleContainer}
-                                            header={<Text style={styles.label}>Budget</Text>}>
-                                <View style={styles.priceTextContainer}>
-                                    <View style={styles.priceInput}>
-                                        <Text style={{color: Theme.colors.primary}}>Max. price: </Text>
-                                        <TextInput
-                                            style={styles.input}
-                                            value={priceInput}
-                                            keyboardType="numeric"
-                                            onChangeText={handleInputPriceChange}/>
+                    <AppForm ref={formRef} onSubmit={handleShowResult}>
+                        <View style={styles.filtersContainer}>
+                            <View style={styles.searchBar}
+                            >
+                                <AppTextInput
+                                    name="search"
+                                    placeholder="Search what you are looking for..."
+                                    value={searchText}
+                                    onChange={setSearchText}
+                                    design={2}
+                                    extraStyles={styles.searchBar}
+                                />
+                            </View>
+                            <View>
+                                <AppCollapsible onToggle={() => handleToggle("BUDGET")}
+                                                expanded={activeCollapsible === "BUDGET"}
+                                                containerStyle={styles.collapsibleContainer}
+                                                header={<Text style={styles.label}>Budget</Text>}>
+                                    <View style={styles.priceTextContainer}>
+                                        <View style={styles.priceInput}>
+                                            <Text style={{color: Theme.colors.primary}}>Max. price: </Text>
+                                            <TextInput
+                                                style={styles.input}
+                                                value={priceInput}
+                                                keyboardType="numeric"
+                                                onChangeText={handleInputPriceChange}/>
+                                        </View>
+
+
                                     </View>
 
+                                    <Host style={styles.sliderHost}>
+                                        <Slider
+                                            step={10}
+                                            max={10000}
+                                            value={Number(filters.price) || 0}
+                                            onValueChange={handleSliderPriceChange}/>
+                                    </Host>
+                                </AppCollapsible>
+                            </View>
 
-                                </View>
+                            <View>
+                                <AppCollapsible onToggle={() => handleToggle("CATEGORIES")}
+                                                expanded={activeCollapsible === "CATEGORIES"}
+                                                containerStyle={[styles.collapsibleContainer]}
+                                                header={<Text style={styles.label}>Categories</Text>}>
 
-                                <Host style={styles.sliderHost}>
-                                    <Slider
-                                        step={10}
-                                        max={10000}
-                                        value={Number(filters.price) || 0}
-                                        onValueChange={handleSliderPriceChange}/>
-                                </Host>
-                            </AppCollapsible>
-                        </Animated.View>
-
-                        <Animated.View
-                            entering={SlideInDown.duration(650).easing(Easing.out(Easing.cubic))}>
-                            <AppCollapsible onToggle={() => handleToggle("CATEGORIES")}
-                                            expanded={activeCollapsible === "CATEGORIES"}
-                                            containerStyle={[styles.collapsibleContainer]}
-                                            header={<Text style={styles.label}>Categories</Text>}>
-
-                                <CategoryTileList categoryFilter={filters.category}
-                                                  setCategoryFilter={handleCategoryChange}/>
-                            </AppCollapsible>
-                        </Animated.View>
-                        <Animated.View
-                            entering={SlideInDown.duration(750).easing(Easing.out(Easing.cubic))}>
-                            <AppCollapsible onToggle={() => handleToggle("CITY")}
-                                            expanded={activeCollapsible === "CITY"}
-                                            containerStyle={styles.collapsibleContainer}
-                                            header={<Text style={styles.label}>City</Text>}>
-                                <AppDropDown
-                                    name="city"
-                                    title="Select City"
-                                    itemList={citiesPickerItems}
-                                    value={filters.city}
-                                    onChange={handleCityChange}
-                                />
-                            </AppCollapsible>
-                        </Animated.View>
+                                    <CategoryTileList categoryFilter={filters.category}
+                                                      setCategoryFilter={handleCategoryChange}/>
+                                </AppCollapsible>
+                            </View>
+                            <View>
+                                <AppCollapsible onToggle={() => handleToggle("CITY")}
+                                                expanded={activeCollapsible === "CITY"}
+                                                containerStyle={styles.collapsibleContainer}
+                                                header={<Text style={styles.label}>City</Text>}>
+                                    <AppDropDown
+                                        name="city"
+                                        title="Select City"
+                                        itemList={citiesPickerItems}
+                                        value={filters.city}
+                                        onChange={handleCityChange}
+                                    />
+                                </AppCollapsible>
+                            </View>
 
 
-                        <Animated.View style={styles.footerContainer}
-                                       entering={SlideInDown.duration(850).easing(Easing.out(Easing.cubic))}>
-                            <AppButton buttonType={ButtonType.PLAIN}
-                                       onPress={resetFilters}>
-                                Reset
-                            </AppButton>
-                            <AppButton fullWidth
-                                       isSubmit
-                                       buttonType={ButtonType.PRIMARY}>
-                                Show Results
-                            </AppButton>
-                        </Animated.View>
-                    </View>
-                </AppForm>
+                            <View style={styles.footerContainer}>
+                                <AppButton buttonType={ButtonType.PLAIN}
+                                           onPress={resetFilters}>
+                                    Reset
+                                </AppButton>
+                                <AppButton fullWidth
+                                           isSubmit
+                                           buttonType={ButtonType.PRIMARY}>
+                                    Show Results
+                                </AppButton>
+                            </View>
+                        </View>
+                    </AppForm>
+                </AppSafeAreaView>
             </>
         )
     }
 
     return (
-        <Modal animationType="fade"
+        <Modal animationType="slide"
                transparent={Platform.OS === "ios"}
                visible={isVisible}
                onRequestClose={() => setVisible(false)}>
@@ -314,7 +313,7 @@ const styles = StyleSheet.create({
         width: "100%",
         padding: 10,
         paddingLeft: 20,
-        marginBottom: 30,
+        marginBottom: 0,
         position: "absolute",
         bottom: 0,
     },

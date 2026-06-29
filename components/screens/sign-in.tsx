@@ -85,7 +85,7 @@ export default function SignIn() {
 
             {showEmailForm && (
                 <AppSafeAreaView style={styles.safeArea}>
-                    <Pressable onPress={closeForm} style={styles.flex1}>
+                    <Pressable onPress={closeForm} style={styles.pressable}>
                         <AppKeyboardAvoidingView>
                             <Animated.View
                                 entering={FadeInDown.duration(400)}
@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         flex: 1,
     },
-    flex1: {
+    pressable: {
         flex: 1,
     },
 });

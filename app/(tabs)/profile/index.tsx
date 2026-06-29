@@ -75,7 +75,7 @@ export default function Index() {
     return (
         <>
             <Stack.Screen options={{headerShown: false, contentStyle: {backgroundColor: Theme.colors.background}}}/>
-            <AppSafeAreaView edges={["top"]}>
+            <AppSafeAreaView>
                 <ScrollView style={styles.container}>
                     <AppView withPadding>
                         <View style={styles.info}>

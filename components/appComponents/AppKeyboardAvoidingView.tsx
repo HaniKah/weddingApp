@@ -15,6 +15,8 @@ export default function AppKeyboardAvoidingView({children}: { children: ReactNod
     );
 }
 const styles = StyleSheet.create({
-    container: {flex: 1},
+    container: {
+        flex: 1,
+    },
 
 });

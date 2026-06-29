@@ -11,7 +11,6 @@ import Google from '@/assets/icons/social-media/google.svg';
 
 
 import {useTranslation} from 'react-i18next';
-import AppSafeAreaView from "@/components/appComponents/AppSafeAreaView";
 
 
 export default function SignIn() {
@@ -84,17 +83,15 @@ export default function SignIn() {
             )}
 
             {showEmailForm && (
-                <AppSafeAreaView style={styles.safeArea} edges={['top']}>
-                    <AppKeyboardAvoidingView>
-                        <Pressable onPress={closeForm} style={styles.pressable}>
-                            <Animated.View
-                                entering={FadeInDown.duration(400)}
-                                style={styles.signInFormContainer}>
-                                <AuthForm/>
-                            </Animated.View>
-                        </Pressable>
-                    </AppKeyboardAvoidingView>
-                </AppSafeAreaView>
+                <AppKeyboardAvoidingView>
+                    <Pressable onPress={closeForm} style={styles.pressable}>
+                        <Animated.View
+                            entering={FadeInDown.duration(400)}
+                            style={styles.signInFormContainer}>
+                            <AuthForm/>
+                        </Animated.View>
+                    </Pressable>
+                </AppKeyboardAvoidingView>
             )}
         </View>
     );

@@ -63,7 +63,8 @@ export default function AuthForm() {
 
     return (
 
-        <View onStartShouldSetResponder={() => true} style={styles.container}>
+        <View onStartShouldSetResponder={() => true}
+              style={[styles.container]}>
             <View style={styles.tabContainer}>
                 <TouchableOpacity
                     style={[styles.tab, activeTab === AuthTabs.SignIn && styles.activeTab]}
@@ -82,7 +83,12 @@ export default function AuthForm() {
             </View>
 
             <AppForm ref={formRef} onSubmit={handleSubmit}>
-                <ScrollView contentContainerStyle={styles.scrollContent}>
+                <ScrollView
+                    contentContainerStyle={styles.scrollContent}
+                    keyboardShouldPersistTaps="handled"
+                    showsVerticalScrollIndicator={false}
+
+                >
                     <View style={styles.formFields}>
                         {activeTab === AuthTabs.SignUp && (
                             <AppTextInput
@@ -157,11 +163,15 @@ export default function AuthForm() {
 const styles = StyleSheet.create({
     container: {
         width: '100%',
+        // Never let the form grow past the space the keyboard leaves; the
+        // ScrollView inside takes over once the content is taller than this.
+        maxHeight: '80%',
         backgroundColor: 'white',
         borderRadius: 20,
         padding: 20,
         opacity: 0.85,
         boxShadow: Theme.shadow.lg,
+
     },
     tabContainer: {
         flexDirection: 'row',
@@ -198,6 +208,8 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     scrollContent: {
-        flexGrow: 1,
+        // No flexGrow: 1 here — that would stretch the content to fill the
+        // ScrollView and prevent it from ever scrolling to the submit button.
+        paddingBottom: 4,
     },
 });

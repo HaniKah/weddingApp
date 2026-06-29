@@ -319,7 +319,7 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
         marginBottom: 0,
         position: "absolute",
-        bottom: 0,
+        bottom: 20,
     },
 
 

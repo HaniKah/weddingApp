@@ -11,7 +11,7 @@ import Google from '@/assets/icons/social-media/google.svg';
 
 
 import {useTranslation} from 'react-i18next';
-import {SafeAreaView} from "react-native-safe-area-context";
+import AppSafeAreaView from "@/components/appComponents/AppSafeAreaView";
 
 
 export default function SignIn() {
@@ -84,8 +84,8 @@ export default function SignIn() {
             )}
 
             {showEmailForm && (
-                <SafeAreaView style={{backgroundColor: 'transparent'}}>
-                    <Pressable onPress={closeForm} style={{flex: 1}}>
+                <AppSafeAreaView style={styles.safeArea}>
+                    <Pressable onPress={closeForm} style={styles.flex1}>
                         <AppKeyboardAvoidingView>
                             <Animated.View
                                 entering={FadeInDown.duration(400)}
@@ -94,7 +94,7 @@ export default function SignIn() {
                             </Animated.View>
                         </AppKeyboardAvoidingView>
                     </Pressable>
-                </SafeAreaView>
+                </AppSafeAreaView>
             )}
         </View>
     );
@@ -137,10 +137,10 @@ const styles = StyleSheet.create({
         paddingHorizontal: 30,
     },
     signInFormContainer: {
-        justifyContent: 'flex-end',
+        justifyContent: 'center',
         flex: 1,
         paddingVertical: 60,
-        paddingHorizontal: 30,
+        paddingHorizontal: 20,
     },
     googleButtonPrimary: {
         backgroundColor: Theme.colors.white,
@@ -169,5 +169,12 @@ const styles = StyleSheet.create({
     emailSignInText: {
         color: 'black',
         fontWeight: '600',
+    },
+    safeArea: {
+        backgroundColor: 'transparent',
+        flex: 1,
+    },
+    flex1: {
+        flex: 1,
     },
 });

@@ -10,11 +10,11 @@ export default function AppView({isLoading, withPadding, children, extraStyles}:
     if (isLoading) {
         return (
             <View style={styles.container}>
-                <ActivityIndicator style={{marginVertical: "auto"}} size={"large"}/>
+                <ActivityIndicator style={styles.loadingIndicator} size={"large"}/>
             </View>
         )
     } else return (
-        <View style={[styles.container, withPadding && {padding: Theme.global.appPadding}, extraStyles]}>
+        <View style={[styles.container, withPadding && styles.withPadding, extraStyles]}>
             {children}
         </View>
     )
@@ -23,5 +23,11 @@ export default function AppView({isLoading, withPadding, children, extraStyles}:
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-    }
+    },
+    loadingIndicator: {
+        marginVertical: "auto",
+    },
+    withPadding: {
+        padding: Theme.global.appPadding,
+    },
 })

@@ -82,7 +82,7 @@ export default function AuthForm() {
             </View>
 
             <AppForm ref={formRef} onSubmit={handleSubmit}>
-                <ScrollView>
+                <ScrollView contentContainerStyle={styles.scrollContent}>
                     <View style={styles.formFields}>
                         {activeTab === AuthTabs.SignUp && (
                             <AppTextInput
@@ -157,6 +157,7 @@ export default function AuthForm() {
 const styles = StyleSheet.create({
     container: {
         width: '100%',
+        maxHeight: '90%',
         backgroundColor: 'white',
         borderRadius: 20,
         padding: 20,
@@ -198,5 +199,8 @@ const styles = StyleSheet.create({
     errorTextMessage: {
         color: Theme.colors.red.S500,
         marginBottom: 20,
+    },
+    scrollContent: {
+        flexGrow: 1,
     },
 });

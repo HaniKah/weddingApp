@@ -7,6 +7,7 @@ import {SignInDto, SignUpDto, VerifyEmailDto} from '@/types/open-api';
 import {showSnackbar} from "@/components/Snackbar";
 import {AxiosError} from "axios";
 import {router} from "expo-router";
+import {Platform} from "react-native";
 
 interface AuthContextType {
     signInWithApple: () => void,
@@ -58,7 +59,7 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
     // this is just for performance
     useEffect(() => {
         WebBrowser.maybeCompleteAuthSession();
-        
+
         WebBrowser.warmUpAsync();
 
         return () => {
@@ -181,14 +182,14 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
             const result = await promptAsync();
             if (result.type === "success") {
                 await exchangeWithToken(result.params.exchangeToken)
-            } else {
+            }
+            if (result.type === "error") {
                 throw new AxiosError()
             }
         } catch {
-            setTimeout(() => {
-                router.dismissTo("/profile")
-                showSnackbar("login was not successful, please try again later", "error")
-            }, 3000)
+
+            router.dismissTo("/profile")
+            showSnackbar("login was not successful, please try again later", "error")
 
         }
     }
@@ -202,14 +203,14 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
             const result = await promptAsyncIOS();
             if (result.type === "success") {
                 await exchangeWithToken(result.params.exchangeToken)
-            } else {
+            }
+            if (result.type === "error") {
                 throw new AxiosError()
             }
         } catch {
-            setTimeout(() => {
-                router.dismissTo("/profile")
-                showSnackbar("login was not successful", "error")
-            }, 3000)
+
+            router.dismissTo("/profile")
+            showSnackbar("login was not successful, please try again later", "error")
         }
     };
 
@@ -246,15 +247,21 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
                 },
             });
             await logIn(res.data.accessToken, res.data.refreshToken, res.data.user.firstName, res.data.user.lastName, res.data.user.email);
-            setTimeout(() => {
-                router.dismissTo("/profile")
-                showSnackbar("Logged in successfully", "success")
-            }, 3000)
+            if (Platform.OS === "android") {
+                setTimeout(() => {
+                    router.dismissTo("/profile")
+                    showSnackbar("Logged in successfully", "success")
+                }, 3000)
+            }
+            showSnackbar("Logged in successfully", "success")
         } catch {
-            setTimeout(() => {
-                router.dismissTo("/profile")
-                showSnackbar("couldn't login, please try again later", "error")
-            }, 3000)
+            if (Platform.OS === "android") {
+                setTimeout(() => {
+                    router.dismissTo("/profile")
+                    showSnackbar("couldn't login, please try again later", "error")
+                }, 3000)
+            }
+            showSnackbar("couldn't login, please try again later", "error")
         }
     };
 

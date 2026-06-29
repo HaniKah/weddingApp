@@ -85,6 +85,7 @@ export default ({config}: ConfigContext): ExpoConfig => {
         'ios': {
             'infoPlist': {
                 'ITSAppUsesNonExemptEncryption': false,
+                'UIViewControllerBasedStatusBarAppearance': true,
             },
             'supportsTablet': false,
             'bundleIdentifier': bundleIdentifier,

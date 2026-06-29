@@ -252,16 +252,20 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
                     router.dismissTo("/profile")
                     showSnackbar("Logged in successfully", "success")
                 }, 3000)
+            } else {
+
+                showSnackbar("Logged in successfully", "success")
             }
-            showSnackbar("Logged in successfully", "success")
         } catch {
             if (Platform.OS === "android") {
                 setTimeout(() => {
                     router.dismissTo("/profile")
                     showSnackbar("couldn't login, please try again later", "error")
                 }, 3000)
+            } else {
+
+                showSnackbar("couldn't login, please try again later", "error")
             }
-            showSnackbar("couldn't login, please try again later", "error")
         }
     };
 

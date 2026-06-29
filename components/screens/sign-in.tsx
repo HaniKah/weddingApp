@@ -84,16 +84,16 @@ export default function SignIn() {
             )}
 
             {showEmailForm && (
-                <AppSafeAreaView style={styles.safeArea}>
-                    <Pressable onPress={closeForm} style={styles.pressable}>
-                        <AppKeyboardAvoidingView>
+                <AppSafeAreaView style={styles.safeArea} edges={['top']}>
+                    <AppKeyboardAvoidingView>
+                        <Pressable onPress={closeForm} style={styles.pressable}>
                             <Animated.View
                                 entering={FadeInDown.duration(400)}
                                 style={styles.signInFormContainer}>
                                 <AuthForm/>
                             </Animated.View>
-                        </AppKeyboardAvoidingView>
-                    </Pressable>
+                        </Pressable>
+                    </AppKeyboardAvoidingView>
                 </AppSafeAreaView>
             )}
         </View>
@@ -139,7 +139,6 @@ const styles = StyleSheet.create({
     signInFormContainer: {
         justifyContent: 'center',
         flex: 1,
-        paddingVertical: 60,
         paddingHorizontal: 20,
     },
     googleButtonPrimary: {

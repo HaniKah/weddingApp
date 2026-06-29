@@ -157,14 +157,11 @@ export default function AuthForm() {
 const styles = StyleSheet.create({
     container: {
         width: '100%',
-        maxHeight: '90%',
         backgroundColor: 'white',
         borderRadius: 20,
         padding: 20,
-
         opacity: 0.85,
         boxShadow: Theme.shadow.lg,
-
     },
     tabContainer: {
         flexDirection: 'row',

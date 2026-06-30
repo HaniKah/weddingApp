@@ -27,7 +27,7 @@ export const getDynamicAppConfig = (environment: Environments): Configurations =
                 bundleIdentifier: 'com.hanikah.ghamrah.dev',
                 packageName: 'com.hanikah.ghamrah.dev',
                 icon: './assets/images/icons/icon-dev.png',
-                adaptiveIcon: './assets/images/icons/icon-dev.png',
+                adaptiveIcon: './assets/images/icons/icon-dev-android.png',
                 scheme: 'app-scheme-dev',
             };
         case 'preview':
@@ -36,7 +36,7 @@ export const getDynamicAppConfig = (environment: Environments): Configurations =
                 bundleIdentifier: 'com.hanikah.ghamrah.preview',
                 packageName: 'com.hanikah.ghamrah.preview',
                 icon: './assets/images/icons/icon-preview.png',
-                adaptiveIcon: './assets/images/icons/icon-preview.png',
+                adaptiveIcon: './assets/images/icons/icon-prev-android.png',
                 scheme: 'app-scheme-preview',
             };
         case 'production':
@@ -45,7 +45,7 @@ export const getDynamicAppConfig = (environment: Environments): Configurations =
                 bundleIdentifier: 'com.hanikah.ghamrah',
                 packageName: 'com.hanikah.ghamrah',
                 icon: './assets/images/icons/icon-prod.png',
-                adaptiveIcon: './assets/images/icons/icon-prod.png',
+                adaptiveIcon: './assets/images/icons/icon-prod-android.png',
                 scheme: 'app-scheme',
             };
     }
@@ -99,7 +99,7 @@ export default ({config}: ConfigContext): ExpoConfig => {
         'android': {
             'adaptiveIcon': {
                 'foregroundImage': adaptiveIcon,
-                'backgroundColor': '#ffffff',
+                'backgroundColor': '#8B1A3A',
             },
             'package': packageName,
             'config': {

@@ -14,6 +14,7 @@
     "test:watch": "jest --watchAll",
     "test:ci": "jest --ci --runInBand",
     "update:preview": "eas update --branch preview --environment preview",
+    "update:production": "eas update --branch production --environment production",
     "build:preview": "eas build --profile preview",
     "build:production": "eas build --profile production"
   },

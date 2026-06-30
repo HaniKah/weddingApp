@@ -1,4 +1,4 @@
-import {KeyboardAvoidingView, Platform, StyleSheet} from 'react-native';
+import {KeyboardAvoidingView, StyleSheet} from 'react-native';
 import {ReactNode} from 'react';
 
 export default function AppKeyboardAvoidingView({children}: { children: ReactNode }) {
@@ -6,7 +6,7 @@ export default function AppKeyboardAvoidingView({children}: { children: ReactNod
     return (
         <KeyboardAvoidingView
             style={styles.container}
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            behavior="padding"
             keyboardVerticalOffset={30}
 
         >

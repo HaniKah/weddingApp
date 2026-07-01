@@ -9,6 +9,7 @@ import {Link} from 'expo-router';
 import CategoryTag from '@/components/tags/CategoryTag';
 import AppPressable from '@/components/appComponents/AppPressable';
 import PriceTag from '@/components/tags/PriceTag';
+import IconCategory from "@/components/symbols/IconCategory";
 
 type VendorPlaceItemProps = {
     data: VendorPlaceDto;
@@ -31,7 +32,8 @@ export default function VendorPlaceItem({data, setTrigger}: VendorPlaceItemProps
                             </AppIf>
                             <AppIf value={!data.thumbnail}>
                                 <View style={styles.imagePlaceholder}>
-                                    <IconSymbol size={30} color={Theme.colors.textDisabled} name="plus"/>
+                                    {/*<IconSymbol size={30} color={Theme.colors.textDisabled} name="plus"/>*/}
+                                    <IconCategory color={Theme.colors.placeholder} category={data.category} size={30}/>
                                 </View>
                             </AppIf>
                         </View>
@@ -95,7 +97,7 @@ const styles = StyleSheet.create({
     },
     infoContainer: {
         display: 'flex',
-        gap: 10,
+        gap: 5,
         flex: 1,
         paddingVertical: 8,
         overflow: 'hidden',

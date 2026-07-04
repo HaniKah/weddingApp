@@ -69,7 +69,7 @@ export default ({config}: ConfigContext): ExpoConfig => {
         ...config,
         'name': name,
         'slug': 'weddingApp',
-        'version': '1.1.1',
+        'version': '1.1.2',
         'orientation': 'portrait',
         'icon': icon,
         'scheme': scheme,
@@ -85,7 +85,7 @@ export default ({config}: ConfigContext): ExpoConfig => {
         'ios': {
             'infoPlist': {
                 'ITSAppUsesNonExemptEncryption': false,
-                'UIViewControllerBasedStatusBarAppearance': true,
+                'UIViewControllerBasedStatusBarAppearance': false,
             },
             'supportsTablet': false,
             'bundleIdentifier': bundleIdentifier,

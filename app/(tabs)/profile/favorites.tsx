@@ -2,7 +2,6 @@ import {useCallback, useEffect, useState} from 'react';
 import {useApi} from '@/utils/api';
 import {FavoritePlaceDto} from '@/types/open-api';
 import {FlatList, StyleSheet, Text, View} from 'react-native';
-import AppView from '@/components/appComponents/AppView';
 import {Stack} from 'expo-router';
 import {Theme} from '@/styles/Theme';
 import FavoriteItem from '@/components/items/FavoriteItem';
@@ -82,7 +81,7 @@ export default function Favorites() {
                     headerTitle: t('profile.favorites'),
                 }}
             />
-            <AppView withPadding>
+            <View style={styles.container}>
                 <FlatList
                     data={favoritePlaces}
                     renderItem={({item}) => <FavoriteItem data={item}/>}
@@ -91,7 +90,7 @@ export default function Favorites() {
                     refreshing={isLoading}
                     onRefresh={getFavoritesData}
                     ListEmptyComponent={EmptyData}
-                    contentContainerStyle={{gap: 10}}
+                    contentContainerStyle={styles.contentContainerStyle}
                 />
 
                 {notFoundFavorites.length > 0 &&
@@ -106,11 +105,17 @@ export default function Favorites() {
                     </View>
                 }
 
-            </AppView>
+            </View>
         </>
     );
 }
 const styles = StyleSheet.create({
+    container: {
+        flex: 1
+    },
+    contentContainerStyle: {
+        gap: 0
+    },
     notFoundContainer: {
         display: 'flex',
         justifyContent: 'space-between',

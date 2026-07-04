@@ -15,7 +15,8 @@ type FavoriteItemProps = {
 export default function FavoriteItem({data}: FavoriteItemProps) {
 
     return (
-        <Link href={`/listing/${data.id}`}>
+
+        <Link style={styles.link} href={`/listing/${data.id}`}>
             <View style={styles.container}>
                 <View style={styles.imageContainer}>
                     {data.thumbnail ?
@@ -44,6 +45,11 @@ export default function FavoriteItem({data}: FavoriteItemProps) {
 }
 
 const styles = StyleSheet.create({
+    link: {
+        paddingTop: 15,
+        paddingHorizontal: 15,
+
+    },
     container: {
         display: 'flex',
         flexDirection: 'row',
@@ -55,8 +61,8 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         padding: 5,
         position: 'relative',
-        borderWidth: 1,
-        borderColor: Theme.colors.border,
+        boxShadow: Theme.shadow.lg
+
     },
     imageContainer: {
         height: 95,

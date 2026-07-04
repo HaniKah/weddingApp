@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     },
     connectingLine: {
         width: 1,
-        height: 15,
+        flex: 1,
         backgroundColor: Theme.colors.border,
     },
     lineHidden: {

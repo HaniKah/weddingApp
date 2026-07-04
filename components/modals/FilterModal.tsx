@@ -125,10 +125,11 @@ export default function FilterModal({
                                 <AppCollapsible onToggle={() => handleToggle("BUDGET")}
                                                 expanded={activeCollapsible === "BUDGET"}
                                                 containerStyle={styles.collapsibleContainer}
-                                                header={<Text style={styles.label}>Budget</Text>}>
+                                                header={<Text
+                                                    style={[styles.label, {color: filters.price !== undefined && filters.price !== "0" ? Theme.colors.primary : Theme.colors.gray.S800}]}>Budget</Text>}>
                                     <View style={styles.priceTextContainer}>
                                         <View style={styles.priceInput}>
-                                            <Text style={{color: Theme.colors.primary}}>max. price :</Text>
+                                            <Text style={{color: Theme.colors.black}}>max. price :</Text>
                                             <TextInput
                                                 style={styles.input}
                                                 value={priceInput}
@@ -153,7 +154,8 @@ export default function FilterModal({
                                 <AppCollapsible onToggle={() => handleToggle("CATEGORIES")}
                                                 expanded={activeCollapsible === "CATEGORIES"}
                                                 containerStyle={[styles.collapsibleContainer]}
-                                                header={<Text style={styles.label}>Category</Text>}>
+                                                header={<Text
+                                                    style={[styles.label, {color: filters.category !== undefined ? Theme.colors.primary : Theme.colors.gray.S800}]}>Category</Text>}>
 
                                     <CategoryTileList categoryFilter={filters.category}
                                                       setCategoryFilter={handleCategoryChange}/>
@@ -163,7 +165,8 @@ export default function FilterModal({
                                 <AppCollapsible onToggle={() => handleToggle("CITY")}
                                                 expanded={activeCollapsible === "CITY"}
                                                 containerStyle={styles.collapsibleContainer}
-                                                header={<Text style={styles.label}>City</Text>}>
+                                                header={<Text
+                                                    style={[styles.label, {color: filters.city !== undefined ? Theme.colors.primary : Theme.colors.gray.S800}]}>City</Text>}>
                                     <AppDropDown
                                         name="city"
                                         title="Select City"
@@ -208,8 +211,6 @@ export default function FilterModal({
                     {content()}
                 </View>
             }
-
-
         </Modal>
     )
 }
@@ -286,7 +287,7 @@ const styles = StyleSheet.create({
         gap: 10
     },
     input: {
-        color: Theme.colors.primary,
+        color: Theme.colors.black,
         fontWeight: "bold",
         borderRadius: Theme.radius.full,
         borderColor: Theme.colors.border,

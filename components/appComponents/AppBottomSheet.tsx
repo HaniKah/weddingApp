@@ -3,6 +3,7 @@ import Animated, {useAnimatedStyle, useSharedValue, withSpring} from 'react-nati
 import {Theme} from "@/styles/Theme";
 import {Gesture, GestureDetector} from "react-native-gesture-handler";
 import {RefObject, useEffect, useImperativeHandle, useState} from "react";
+import {IconButton} from "@/components/symbols/IconButton";
 
 export interface AppBottomSheetRef {
     open: () => void;
@@ -16,7 +17,7 @@ export default function AppBottomSheet({ref, children}: {
 }) {
 
     const [isVisible, setIsVisible] = useState(false);
-    
+
     useImperativeHandle(ref, () => {
         return {
             open: () => setIsVisible(true),
@@ -72,9 +73,14 @@ export default function AppBottomSheet({ref, children}: {
 
                     <GestureDetector gesture={PanVertical}>
                         <View style={styles.handlerContainer}>
-                            {/*<IconButton size={Theme.sizes.md} name="xmark" onPress={() => setIsVisible(false)}/>*/}
+                            <View
+                                style={styles.space}/>
                             <View style={styles.handler}/>
-                            {/*<View style={{width: 30}}></View>*/}
+                            <IconButton size={Theme.sizes.md}
+                                        color={Theme.colors.black}
+                                        extraStylesBtn={styles.xButton}
+                                        name="xmark"
+                                        onPress={() => setIsVisible(false)}/>
                         </View>
                     </GestureDetector>
 
@@ -91,6 +97,10 @@ export default function AppBottomSheet({ref, children}: {
 }
 
 const styles = StyleSheet.create({
+    space: {
+        width: Theme.sizes.lg,
+        height: Theme.sizes.md,
+    },
     container: {
         position: "absolute",
         width: "100%",
@@ -128,5 +138,8 @@ const styles = StyleSheet.create({
         position: "absolute",
         backgroundColor: "rgba(0,0,0,0.5)",
 
+    },
+    xButton: {
+        backgroundColor: Theme.colors.gray.S100
     }
 })

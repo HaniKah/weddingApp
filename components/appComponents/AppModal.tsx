@@ -66,7 +66,7 @@ export default function AppModal({
                     <View
                         style={[styles.header, isFullScreen && styles.headerFullScreen]}>
                         <AppButton
-                            extraStylesBtn={{justifyContent: 'flex-start'}}
+                            extraStylesBtn={{justifyContent: 'flex-start', paddingLeft: 0}}
                             extraStylesTxt={{color: Theme.colors.secondary}}
                             buttonType={ButtonType.PLAIN}
                             onPress={handleCancel}>

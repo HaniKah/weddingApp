@@ -2,7 +2,7 @@ import {Modal, Platform, StyleSheet, Text, TextInput, View} from "react-native";
 import {Theme} from "@/styles/Theme";
 import {IconButton} from "@/components/symbols/IconButton";
 import {Host, Slider} from '@expo/ui';
-import {Dispatch, SetStateAction, useMemo, useRef, useState} from "react";
+import {Dispatch, RefObject, SetStateAction, useMemo, useRef, useState} from "react";
 import AppTextInput from "@/components/appComponents/AppTextInput";
 import {COUNTRIES} from "@/constants/countries";
 import {useLocationContext} from "@/contexts/location-context";
@@ -25,7 +25,8 @@ export default function FilterModal({
                                         setSearchText,
                                         filters,
                                         setFilters,
-                                        onShowResult
+                                        onShowResult,
+                                        blurTargetRef
 
                                     }: {
     isVisible: boolean,
@@ -35,6 +36,7 @@ export default function FilterModal({
     filters: SearchFilter,
     setFilters: Dispatch<SetStateAction<SearchFilter>>
     onShowResult: () => void
+    blurTargetRef: RefObject<View | null>
 }) {
     const {isoCountry} = useLocationContext();
     const formRef = useRef<any>(null);
@@ -203,13 +205,14 @@ export default function FilterModal({
                onRequestClose={() => setVisible(false)}>
             {Platform.OS === "ios" ?
                 <BlurView
-                    intensity={80}
+                    intensity={40}
                     style={styles.container}>
                     {content()}
                 </BlurView> :
-                <View style={styles.container}>
+                <BlurView
+                    blurMethod="dimezisBlurView" intensity={40} blurTarget={blurTargetRef} style={styles.container}>
                     {content()}
-                </View>
+                </BlurView>
             }
         </Modal>
     )

@@ -1,6 +1,6 @@
 import {useCallback, useEffect, useState} from 'react';
 import WizardStep from '@/components/wizards/WizardStep';
-import {Categories, PhotosDto, PhotoSize, UpdateStep, VendorPlaceDetailsDto} from '@/types/open-api';
+import {Categories, PhotosDto, PhotoSize, UpdateStep, VendorPlaceDetailsDto, VideosDto} from '@/types/open-api';
 import UploadImages from '@/components/wizards/createPlaceWizard/UploadImages';
 import AddDescription from '@/components/wizards/createPlaceWizard/AddDescription';
 import {Wizard} from '@/components/wizards/Wizard';
@@ -24,6 +24,7 @@ export default function ACreatePlaceWizard({id, onFinish, initialStep}: {
     const {api} = useApi();
     const [data, setData] = useState<VendorPlaceDetailsDto>();
     const [images, setImages] = useState<PhotosDto[]>([])
+    const [videos, setVideos] = useState<VideosDto[]>([])
 
     const getPlace = useCallback(async () => {
         if (!id) return;
@@ -45,12 +46,23 @@ export default function ACreatePlaceWizard({id, onFinish, initialStep}: {
         }
     }, [id])
 
+    const getVideos = useCallback(async () => {
+        if (!id) return;
+        try {
+            const res = await api.videosControllerGetAllVideos(id);
+            setVideos(res.data.result);
+        } catch (error) {
+            console.error(error);
+        }
+    }, [id])
+
     useEffect(() => {
 
         getPlace();
         getPhotos();
+        getVideos();
 
-    }, [getPlace, getPhotos]);
+    }, [getPlace, getPhotos, getVideos]);
 
     const categoryFeatures = [Categories.Host, Categories.Dress]
 
@@ -82,7 +94,9 @@ export default function ACreatePlaceWizard({id, onFinish, initialStep}: {
 
                 {data?.id &&
                     <WizardStep step={UpdateStep.UploadImages}>
-                        <UploadImages setImages={setImages} images={images} onFinish={onFinish} placeId={data?.id}/>
+                        <UploadImages setImages={setImages} images={images}
+                                      setVideos={setVideos} videos={videos}
+                                      onFinish={onFinish} placeId={data?.id}/>
                     </WizardStep>
                 }
 

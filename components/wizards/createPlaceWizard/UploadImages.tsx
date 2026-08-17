@@ -2,7 +2,7 @@ import {ActivityIndicator, Dimensions, FlatList, StyleSheet, Text, View} from 'r
 import {Image} from 'expo-image';
 import {Dispatch, SetStateAction, useState} from 'react';
 import {useApi} from '@/utils/api';
-import {PhotosDto} from '@/types/open-api';
+import {PhotosDto, VideosDto} from '@/types/open-api';
 import WizardController from '@/components/wizards/WizardController';
 import {Theme} from '@/styles/Theme';
 import {IconButton} from '@/components/symbols/IconButton';
@@ -10,16 +10,23 @@ import AppView from '@/components/appComponents/AppView';
 import {CommonStyles} from '@/styles/Common';
 import AppPressable from "@/components/appComponents/AppPressable";
 import AppImageViewer from "@/components/appComponents/AppImageViewer";
-import {useUploadImage} from "@/utils/uploadImages";
+import AppVideoViewer from "@/components/appComponents/AppVideoViewer";
+import {useUploadMedia} from "@/utils/uploadMedia";
 import {showSnackbar} from "@/components/Snackbar";
 import {isAxiosError} from "axios";
 import {NestError} from "@/types/errors";
 import {IconSymbol} from "@/components/symbols/IconSymbol";
 import {useTranslation} from 'react-i18next';
 
-export default function UploadImages({images, setImages, onFinish, placeId}: {
+type MediaItem =
+    | {kind: 'photo', item: PhotosDto}
+    | {kind: 'video', item: VideosDto}
+
+export default function UploadImages({images, setImages, videos, setVideos, onFinish, placeId}: {
     images: PhotosDto[]
     setImages: Dispatch<SetStateAction<PhotosDto[]>>
+    videos: VideosDto[]
+    setVideos: Dispatch<SetStateAction<VideosDto[]>>
     onFinish: () => void,
     placeId: number,
 }) {
@@ -28,12 +35,13 @@ export default function UploadImages({images, setImages, onFinish, placeId}: {
     const [refresh, setRefresh] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
-    const [activeId, setActiveId] = useState<number>();
+    const [activeImageId, setActiveImageId] = useState<number>();
+    const [activeVideo, setActiveVideo] = useState<VideosDto>();
 
 
-    const IMAGE_GAP = 5;
+    const ITEM_GAP = 5;
     const COLUMN_PER_ROW = 3;
-    const IMAGE_SIZE = (Dimensions.get('window').width - IMAGE_GAP * (COLUMN_PER_ROW - 1) - (Theme.global.appPadding * 2)) / COLUMN_PER_ROW;
+    const ITEM_SIZE = (Dimensions.get('window').width - ITEM_GAP * (COLUMN_PER_ROW - 1) - (Theme.global.appPadding * 2)) / COLUMN_PER_ROW;
 
 
     async function deleteImage(id: number) {
@@ -51,44 +59,94 @@ export default function UploadImages({images, setImages, onFinish, placeId}: {
         }
     }
 
+    async function deleteVideo(id: number) {
+        try {
+            setIsLoading(true);
+            await api.videosControllerDeleteVideo({id: id});
+            setVideos(prev => prev.filter(v => v.id !== id));
+            setActiveVideo(undefined);
+            showSnackbar("video deleted successfully", "success");
 
-    function ImageItem({item}: { item: PhotosDto }) {
-        return (
-            <>
-                <AppPressable onPress={() => setActiveId(item.id)}>
+        } catch (err) {
+            if (isAxiosError<NestError>(err))
+                showSnackbar("Error deleting video" + err?.response?.data.message, "error");
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    const mediaItems: MediaItem[] = [
+        ...images.map((item): MediaItem => ({kind: 'photo', item})),
+        ...videos.map((item): MediaItem => ({kind: 'video', item})),
+    ];
+
+    function MediaTile({item}: { item: MediaItem }) {
+        if (item.kind === 'photo') {
+            const photo = item.item;
+            return (
+                <AppPressable onPress={() => setActiveImageId(photo.id)}>
                     <View style={styles.imageContainer}>
-                        {item.isMain &&
+                        {photo.isMain &&
                             <IconSymbol style={styles.mainSymbol}
                                         name="crown.fill"
                                         size={25}
                                         color={Theme.colors.white}
                             />}
                         <View style={styles.xButton}>
-                            <IconButton onPress={() => deleteImage(item.id)} size={10} name="xmark" color="black"/>
+                            <IconButton onPress={() => deleteImage(photo.id)} size={10} name="xmark" color="black"/>
                         </View>
-                        <Image source={{uri: item.uri}} style={[styles.image, {
-                            width: IMAGE_SIZE,
-                            height: IMAGE_SIZE
+                        <Image source={{uri: photo.uri}} style={[styles.image, {
+                            width: ITEM_SIZE,
+                            height: ITEM_SIZE
                         }]}
-                               placeholder={item.blurhash}
+                               placeholder={photo.blurhash}
                                cachePolicy="memory-disk"
                                transition={200}
                                contentFit="cover"/>
                     </View>
                 </AppPressable>
-            </>
+            );
+        }
 
+        const video = item.item;
+        return (
+            <AppPressable onPress={() => setActiveVideo(video)}>
+                <View style={styles.imageContainer}>
+                    {video.isMain &&
+                        <IconSymbol style={styles.mainSymbol}
+                                    name="crown.fill"
+                                    size={25}
+                                    color={Theme.colors.white}
+                        />}
+                    <View style={styles.xButton}>
+                        <IconButton onPress={() => deleteVideo(video.id)} size={10} name="xmark" color="black"/>
+                    </View>
+                    <Image source={video.posterUri ? {uri: video.posterUri} : undefined}
+                           style={[styles.image, {
+                               width: ITEM_SIZE,
+                               height: ITEM_SIZE
+                           }]}
+                           placeholder={video.blurhash}
+                           cachePolicy="memory-disk"
+                           transition={200}
+                           contentFit="cover"/>
+                    <View style={styles.playBadge}>
+                        <IconSymbol name="play.fill" size={12} color={Theme.colors.white}/>
+                    </View>
+                </View>
+            </AppPressable>
         );
     }
 
-    const {pickImage} = useUploadImage()
+    const {pickMedia} = useUploadMedia()
 
-    async function uploadPhoto() {
+    async function uploadMedia() {
         setIsLoading(true);
-        const uploadedImages = await pickImage(placeId)
-        if (uploadedImages) {
-            // in case the user cancels the image selection it returns null
-            setImages(prev => [...prev, ...uploadedImages])
+        const result = await pickMedia(placeId)
+        if (result) {
+            // in case the user cancels the media selection it returns null
+            setImages(prev => [...prev, ...result.photos])
+            setVideos(prev => [...prev, ...result.videos])
         }
         setIsLoading(false);
     }
@@ -97,6 +155,16 @@ export default function UploadImages({images, setImages, onFinish, placeId}: {
         try {
             await api.photosControllerSetMain(photoId, placeId)
             setImages((prev) => prev.map((i) => ({...i, isMain: i.id === photoId})))
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    async function setMainVideo(videoId: number) {
+        try {
+            await api.videosControllerSetMain(videoId, placeId)
+            setVideos((prev) => prev.map((v) => ({...v, isMain: v.id === videoId})))
+            setActiveVideo((prev) => prev && {...prev, isMain: prev.id === videoId})
         } catch (err) {
             console.error(err);
         }
@@ -114,9 +182,10 @@ export default function UploadImages({images, setImages, onFinish, placeId}: {
 
                 <FlatList
                     numColumns={3}
-                    columnWrapperStyle={{gap: IMAGE_GAP}}
-                    data={images}
-                    renderItem={ImageItem}
+                    columnWrapperStyle={{gap: ITEM_GAP}}
+                    data={mediaItems}
+                    keyExtractor={(m) => `${m.kind}-${m.item.id}`}
+                    renderItem={MediaTile}
                     contentContainerStyle={{gap: 10, paddingBottom: 200}}
                     ListEmptyComponent={<Text style={CommonStyles.dataNotFound}>{t('wizard.noImagesYetHint')}</Text>}
 
@@ -129,16 +198,25 @@ export default function UploadImages({images, setImages, onFinish, placeId}: {
 
                 <IconButton color={Theme.colors.white}
                             extraStylesBtn={styles.addButton}
-                            onPress={uploadPhoto}
+                            onPress={uploadMedia}
                             name="plus"></IconButton>
-                {activeId && placeId &&
+                {activeImageId && placeId &&
                     <AppImageViewer
-                        visible={!!activeId}
-                        activeImageId={activeId}
-                        setActiveImageId={setActiveId}
+                        visible={!!activeImageId}
+                        activeImageId={activeImageId}
+                        setActiveImageId={setActiveImageId}
                         onDeleteImage={deleteImage}
                         placeId={placeId}
                         onSetMainImage={setMainImage}
+                    />
+                }
+                {activeVideo &&
+                    <AppVideoViewer
+                        visible={!!activeVideo}
+                        video={activeVideo}
+                        onClose={() => setActiveVideo(undefined)}
+                        onDeleteVideo={deleteVideo}
+                        onSetMainVideo={setMainVideo}
                     />
                 }
 
@@ -180,6 +258,15 @@ const styles = StyleSheet.create({
         top: 5,
         start: 5,
         zIndex: 10,
+    },
+    playBadge: {
+        position: 'absolute',
+        bottom: 5,
+        right: 5,
+        zIndex: 10,
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        borderRadius: Theme.radius.full,
+        padding: 5,
     },
     title: {
         fontSize: Theme.sizes.xl,

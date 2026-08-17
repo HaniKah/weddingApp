@@ -84,7 +84,7 @@ export default function PlaceId() {
                                                         onRefresh={getPlaceDetails}/>}
                     >
 
-                        {placeDetails?.photos && placeDetails?.photos?.length > 0 ?
+                        {placeDetails?.heroMedia && placeDetails?.heroMedia?.length > 0 ?
                             <Link
                                 push
                                 href={{
@@ -96,7 +96,7 @@ export default function PlaceId() {
                                     onPress={() => router.push({
                                         pathname: '/listing/[id]/images',
                                         params: {id: params.id, step: params.step},
-                                    })} images={placeDetails.photos}/>
+                                    })} heroMedia={placeDetails.heroMedia}/>
                             </Link>
                             :
 

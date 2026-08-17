@@ -137,6 +137,16 @@ export interface PlaceDetailsPhotos {
   blurhash: string;
 }
 
+export interface HeroMediaItemDto {
+  id: number;
+  type: "Photo" | "Video";
+  uri: string;
+  posterUri: string | null;
+  blurhash: string | null;
+  ratio: number | null;
+  isMain: boolean;
+}
+
 export interface PlaceDetailsDto {
   category: Categories;
   countryCode: CountryCode;
@@ -150,6 +160,7 @@ export interface PlaceDetailsDto {
   instagram?: string;
   phoneNumber: string;
   photos: PlaceDetailsPhotos[];
+  heroMedia: HeroMediaItemDto[];
   maxPrice: string;
   minPrice: string;
   description: string;
@@ -184,6 +195,24 @@ export interface PhotosViewModel {
 }
 
 export interface DeletePhotoRequest {
+  id: number;
+}
+
+export interface VideosDto {
+  id: number;
+  uri: string;
+  posterUri: string | null;
+  ratio: number | null;
+  blurhash: string | null;
+  durationMs: number | null;
+  isMain: boolean;
+}
+
+export interface VideosViewModel {
+  result: VideosDto[];
+}
+
+export interface DeleteVideoRequest {
   id: number;
 }
 
@@ -813,6 +842,97 @@ export class Api<
     ) =>
       this.request<void, any>({
         path: `/api/photos/toggleMain/${placeId}/${photoId}`,
+        method: "POST",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Videos
+     * @name VideosControllerUploadFile
+     * @request POST:/api/videos/upload/{placeId}
+     */
+    videosControllerUploadFile: (
+      placeId: number,
+      data: any,
+      params: RequestParams = {},
+    ) =>
+      this.request<VideosDto, any>({
+        path: `/api/videos/upload/${placeId}`,
+        method: "POST",
+        body: data,
+        type: ContentType.FormData,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Videos
+     * @name VideosControllerGetAllVideos
+     * @request GET:/api/videos/getAll/{placeId}
+     */
+    videosControllerGetAllVideos: (
+      placeId: number,
+      params: RequestParams = {},
+    ) =>
+      this.request<VideosViewModel, any>({
+        path: `/api/videos/getAll/${placeId}`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Videos
+     * @name VideosControllerGetVideo
+     * @request GET:/api/videos/getVideo/{id}
+     */
+    videosControllerGetVideo: (id: number, params: RequestParams = {}) =>
+      this.request<VideosDto, any>({
+        path: `/api/videos/getVideo/${id}`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Videos
+     * @name VideosControllerDeleteVideo
+     * @request POST:/api/videos/delete
+     */
+    videosControllerDeleteVideo: (
+      data: DeleteVideoRequest,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/videos/delete`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Videos
+     * @name VideosControllerSetMain
+     * @request POST:/api/videos/toggleMain/{placeId}/{videoId}
+     */
+    videosControllerSetMain: (
+      videoId: number,
+      placeId: number,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/api/videos/toggleMain/${placeId}/${videoId}`,
         method: "POST",
         ...params,
       }),

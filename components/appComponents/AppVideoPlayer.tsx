@@ -10,7 +10,9 @@ import {Theme} from '@/styles/Theme';
 // off-screen carousel page doesn't keep decoding in the background.
 //
 // expo-video's VideoView has no built-in poster prop, so the poster frame is
-// layered on top with expo-image and faded out once playback actually starts.
+// layered on top with expo-image until playback first starts. It stays hidden
+// after that (even while paused) so it never blocks touches to the native
+// play/pause controls underneath.
 export default function AppVideoPlayer({
                                             uri,
                                             posterUri,
@@ -32,7 +34,7 @@ export default function AppVideoPlayer({
     nativeControls?: boolean
     extraStyles?: StyleProp<ViewStyle>
 }) {
-    const [isPlaying, setIsPlaying] = useState(false);
+    const [hasStartedPlaying, setHasStartedPlaying] = useState(false);
 
     // muted/loop are fixed per call site (hero carousel vs. full-screen
     // viewer) and don't change over a player's lifetime here, so they're only
@@ -46,7 +48,9 @@ export default function AppVideoPlayer({
     });
 
     useEffect(() => {
-        const sub = player.addListener('playingChange', ({isPlaying}) => setIsPlaying(isPlaying));
+        const sub = player.addListener('playingChange', ({isPlaying}) => {
+            if (isPlaying) setHasStartedPlaying(true);
+        });
         return () => sub.remove();
     }, [player]);
 
@@ -69,8 +73,9 @@ export default function AppVideoPlayer({
                 nativeControls={nativeControls}
                 contentFit="cover"
             />
-            {!isPlaying && (posterUri || blurhash) &&
+            {!hasStartedPlaying && (posterUri || blurhash) &&
                 <Image
+                    pointerEvents="none"
                     source={posterUri ? {uri: posterUri} : undefined}
                     placeholder={blurhash}
                     style={StyleSheet.absoluteFill}

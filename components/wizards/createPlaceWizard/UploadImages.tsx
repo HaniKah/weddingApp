@@ -9,18 +9,13 @@ import {IconButton} from '@/components/symbols/IconButton';
 import AppView from '@/components/appComponents/AppView';
 import {CommonStyles} from '@/styles/Common';
 import AppPressable from "@/components/appComponents/AppPressable";
-import AppImageViewer from "@/components/appComponents/AppImageViewer";
-import AppVideoViewer from "@/components/appComponents/AppVideoViewer";
+import AppMediaViewer, {MediaItem} from "@/components/appComponents/AppMediaViewer";
 import {useUploadMedia} from "@/utils/uploadMedia";
 import {showSnackbar} from "@/components/Snackbar";
 import {isAxiosError} from "axios";
 import {NestError} from "@/types/errors";
 import {IconSymbol} from "@/components/symbols/IconSymbol";
 import {useTranslation} from 'react-i18next';
-
-type MediaItem =
-    | {kind: 'photo', item: PhotosDto}
-    | {kind: 'video', item: VideosDto}
 
 export default function UploadImages({images, setImages, videos, setVideos, onFinish, placeId}: {
     images: PhotosDto[]
@@ -35,8 +30,7 @@ export default function UploadImages({images, setImages, videos, setVideos, onFi
     const [refresh, setRefresh] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
-    const [activeImageId, setActiveImageId] = useState<number>();
-    const [activeVideo, setActiveVideo] = useState<VideosDto>();
+    const [activeKey, setActiveKey] = useState<string>();
 
 
     const ITEM_GAP = 5;
@@ -64,7 +58,7 @@ export default function UploadImages({images, setImages, videos, setVideos, onFi
             setIsLoading(true);
             await api.videosControllerDeleteVideo({id: id});
             setVideos(prev => prev.filter(v => v.id !== id));
-            setActiveVideo(undefined);
+            setActiveKey(undefined);
             showSnackbar("video deleted successfully", "success");
 
         } catch (err) {
@@ -84,7 +78,7 @@ export default function UploadImages({images, setImages, videos, setVideos, onFi
         if (item.kind === 'photo') {
             const photo = item.item;
             return (
-                <AppPressable onPress={() => setActiveImageId(photo.id)}>
+                <AppPressable onPress={() => setActiveKey(`photo-${photo.id}`)}>
                     <View style={styles.imageContainer}>
                         {photo.isMain &&
                             <IconSymbol style={styles.mainSymbol}
@@ -110,7 +104,7 @@ export default function UploadImages({images, setImages, videos, setVideos, onFi
 
         const video = item.item;
         return (
-            <AppPressable onPress={() => setActiveVideo(video)}>
+            <AppPressable onPress={() => setActiveKey(`video-${video.id}`)}>
                 <View style={styles.imageContainer}>
                     {video.isMain &&
                         <IconSymbol style={styles.mainSymbol}
@@ -164,7 +158,6 @@ export default function UploadImages({images, setImages, videos, setVideos, onFi
         try {
             await api.videosControllerSetMain(videoId, placeId)
             setVideos((prev) => prev.map((v) => ({...v, isMain: v.id === videoId})))
-            setActiveVideo((prev) => prev && {...prev, isMain: prev.id === videoId})
         } catch (err) {
             console.error(err);
         }
@@ -200,25 +193,16 @@ export default function UploadImages({images, setImages, videos, setVideos, onFi
                             extraStylesBtn={styles.addButton}
                             onPress={uploadMedia}
                             name="plus"></IconButton>
-                {activeImageId && placeId &&
-                    <AppImageViewer
-                        visible={!!activeImageId}
-                        activeImageId={activeImageId}
-                        setActiveImageId={setActiveImageId}
-                        onDeleteImage={deleteImage}
-                        placeId={placeId}
-                        onSetMainImage={setMainImage}
-                    />
-                }
-                {activeVideo &&
-                    <AppVideoViewer
-                        visible={!!activeVideo}
-                        video={activeVideo}
-                        onClose={() => setActiveVideo(undefined)}
-                        onDeleteVideo={deleteVideo}
-                        onSetMainVideo={setMainVideo}
-                    />
-                }
+                <AppMediaViewer
+                    visible={!!activeKey}
+                    mediaItems={mediaItems}
+                    activeKey={activeKey}
+                    setActiveKey={setActiveKey}
+                    onDeletePhoto={deleteImage}
+                    onDeleteVideo={deleteVideo}
+                    onSetMainPhoto={setMainImage}
+                    onSetMainVideo={setMainVideo}
+                />
 
             </AppView>
         </>

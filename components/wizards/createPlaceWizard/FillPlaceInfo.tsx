@@ -71,7 +71,7 @@ export default function FillPlaceInfo({data, setData}: {
         if (city && !cities?.includes(city)) {
             setCity(undefined)
         }
-        return cities?.map((c: string) => ({value: c, name: c}));
+        return cities?.map((c: string) => ({value: c, name: t(`cities.${c}`)}));
     }, [isoCountry]);
 
 
@@ -188,10 +188,10 @@ export default function FillPlaceInfo({data, setData}: {
             return {error: undefined}
         }
         if (Number(maximumPrice) < Number(minPrice)) {
-            return {error: "Max price must be greater than min price"}
+            return {error: t('wizard.maxPriceMustBeGreater')}
         }
         return {error: undefined}
-    }, [minPrice])
+    }, [minPrice, t])
 
 
     return isLoading ? (<ActivityIndicator size="large" style={{flex: 1}}/>) :
@@ -207,8 +207,8 @@ export default function FillPlaceInfo({data, setData}: {
                                                   design={2}
                                                   onChange={(s) => setPlaceName(s)}
                                                   name="name"
-                                                  label="Business name"
-                                                  placeholder="e.g. Royal Wedding Hall"
+                                                  label={t('wizard.businessName')}
+                                                  placeholder={t('wizard.businessNamePlaceholder')}
                                     />
                                 </View>
 
@@ -216,7 +216,7 @@ export default function FillPlaceInfo({data, setData}: {
                                     <AppTagsSelect
                                         name="category"
                                         list={categoriesPickerItems}
-                                        label="Categories"
+                                        label={t('wizard.categories')}
                                         value={category}
                                         onChange={setCategory}
                                         required
@@ -238,7 +238,7 @@ export default function FillPlaceInfo({data, setData}: {
                                 <View style={styles.input}>
                                     <AppDropDown name="city"
                                                  required
-                                                 label="City"
+                                                 label={t('wizard.city')}
                                                  onChange={setCity}
                                                  value={city}
                                                  itemList={citiesPickerItem}
@@ -250,8 +250,8 @@ export default function FillPlaceInfo({data, setData}: {
                                     <AppTextInput name="phoneNumber"
                                                   required
                                                   design={2}
-                                                  label="Phone number"
-                                                  placeholder="e.g. +962xxxxxx"
+                                                  label={t('wizard.phoneNumber')}
+                                                  placeholder={t('wizard.phoneNumberPlaceholder')}
                                                   keyboardType="phone-pad"
                                                   onChange={(s) => setPhoneNumber(s)}
                                                   value={phoneNumber}
@@ -262,7 +262,7 @@ export default function FillPlaceInfo({data, setData}: {
                                     <AppTagsSelect
                                         name="priceKind"
                                         list={priceKindPickerItems}
-                                        label="Price"
+                                        label={t('wizard.price')}
                                         value={priceKind}
                                         onChange={onPriceKindChange}
                                         borders="rectangle"
@@ -274,8 +274,8 @@ export default function FillPlaceInfo({data, setData}: {
                                 {priceKind === PriceKind.Single && isoCountry &&
                                     <View style={styles.input}>
                                         <AppTextInput onChange={(s) => enterFixedPrice(s)} name="singlePrice"
-                                                      label="Single price"
-                                                      placeholder="Add your price here"
+                                                      label={t('wizard.singlePrice')}
+                                                      placeholder={t('wizard.singlePricePlaceholder')}
                                                       value={minPrice}
                                                       keyboardType={'decimal-pad'}
                                                       unit={COUNTRIES.get(isoCountry)?.currency}
@@ -288,20 +288,20 @@ export default function FillPlaceInfo({data, setData}: {
                                 {priceKind === PriceKind.Range && isoCountry &&
                                     <View style={[styles.input, styles.priceRangeContainer]}>
                                         <AppTextInput onChange={(s) => setMinPrice(s)} name="minPrice"
-                                                      label="Min. price"
+                                                      label={t('wizard.minPrice')}
                                                       design={2}
                                                       containerStyle={{flex: 1}}
-                                                      placeholder="Minimum price"
+                                                      placeholder={t('wizard.minPricePlaceholder')}
                                                       value={minPrice}
                                                       keyboardType={'decimal-pad'}
                                                       unit={COUNTRIES.get(isoCountry)?.currency}
                                                       required
                                         />
                                         <AppTextInput onChange={(s) => setMaxPrice(s)} name="maxPrice"
-                                                      label="Max. price"
+                                                      label={t('wizard.maxPrice')}
                                                       design={2}
                                                       containerStyle={{flex: 1}}
-                                                      placeholder="Maximum price"
+                                                      placeholder={t('wizard.maxPricePlaceholder')}
                                                       value={maxPrice}
                                                       keyboardType={'decimal-pad'}
                                                       unit={COUNTRIES.get(isoCountry)?.currency}
@@ -314,11 +314,11 @@ export default function FillPlaceInfo({data, setData}: {
                                 {minPrice !== null && minPrice !== undefined && maxPrice !== null && maxPrice !== undefined &&
                                     <View style={styles.input}>
                                         <AppDropDown
-                                            label="Price type"
+                                            label={t('wizard.priceType')}
                                             itemList={priceTypeList}
                                             value={priceType}
                                             onChange={setPriceType}
-                                            title="Select price type"
+                                            title={t('wizard.selectPriceType')}
                                             name="priceType"
                                             required
                                         />

@@ -7,6 +7,7 @@ import {useApi} from '@/utils/api';
 import WizardController from '@/components/wizards/WizardController';
 import {useWizardContext} from '@/components/wizards/Wizard';
 import AppView from '@/components/appComponents/AppView';
+import {useTranslation} from 'react-i18next';
 
 export default function AddDescription({data, setData}: {
     data: VendorPlaceDetailsDto | undefined
@@ -17,6 +18,7 @@ export default function AddDescription({data, setData}: {
     const [description, setDescription] = useState<string | undefined>(data?.description);
     const API = useApi().api;
     const wizard = useWizardContext();
+    const {t} = useTranslation();
 
     const updatePlace = async () => {
         if (data?.id) {
@@ -43,14 +45,14 @@ export default function AddDescription({data, setData}: {
             <AppView withPadding>
 
                 <ScrollView>
-                    <Text style={styles.title}>Add Description</Text>
+                    <Text style={styles.title}>{t('wizard.addDescriptionTitle')}</Text>
                     <AppTextInput name="description"
                                   value={description}
                                   onChange={(text) => setDescription(text)}
                                   design={1}
                                   textArea
-                                  label="Description"
-                                  placeholder="Add your description to your place"
+                                  label={t('wizard.description')}
+                                  placeholder={t('wizard.descriptionPlaceholder')}
 
 
                     />

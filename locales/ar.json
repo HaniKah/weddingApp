@@ -205,7 +205,8 @@
     "error": "خطأ",
     "success": "نجاح",
     "warning": "تحذير",
-    "info": "معلومات"
+    "info": "معلومات",
+    "unknownError": "حدث خطأ غير معروف"
   },
   "planner": {
     "noVendorsFound": "لم يتم العثور على موردين",
@@ -348,7 +349,10 @@
   "common": {
     "cancel": "إلغاء",
     "clear": "مسح",
-    "selectAnOption": "اختر خياراً"
+    "selectAnOption": "اختر خياراً",
+    "previous": "السابق",
+    "next": "التالي",
+    "finish": "إنهاء"
   },
   "form": {
     "fieldRequired": "هذا الحقل مطلوب",
@@ -365,7 +369,39 @@
     "FillPlaceInfo": "معلومات المكان",
     "AddFeatures": "إضافة الميزات",
     "AddDescription": "إضافة الوصف",
-    "UploadImages": "تحميل الصور"
+    "UploadImages": "تحميل الصور",
+    "businessName": "اسم النشاط التجاري",
+    "businessNamePlaceholder": "مثال: قاعة الأفراح الملكية",
+    "categories": "الفئات",
+    "city": "المدينة",
+    "phoneNumber": "رقم الهاتف",
+    "phoneNumberPlaceholder": "مثال: ‎+962xxxxxx",
+    "price": "السعر",
+    "singlePrice": "سعر ثابت",
+    "singlePricePlaceholder": "أضف سعرك هنا",
+    "minPrice": "الحد الأدنى للسعر",
+    "minPricePlaceholder": "الحد الأدنى للسعر",
+    "maxPrice": "الحد الأقصى للسعر",
+    "maxPricePlaceholder": "الحد الأقصى للسعر",
+    "priceType": "نوع السعر",
+    "selectPriceType": "اختر نوع السعر",
+    "maxPriceMustBeGreater": "يجب أن يكون الحد الأقصى للسعر أكبر من الحد الأدنى",
+    "venueCapacityQuestion": "كم عدد الضيوف الذين يمكن أن يستوعبهم مكانك؟",
+    "capacityPlaceholder": "مثال: 500",
+    "venueSetupQuestion": "طريقة الإعداد؟",
+    "addDescriptionTitle": "إضافة وصف",
+    "description": "الوصف",
+    "descriptionPlaceholder": "أضف وصفاً لمكانك",
+    "uploadPhotos": "رفع الصور",
+    "imageDeletedSuccessfully": "تم حذف الصورة بنجاح",
+    "errorDeletingImage": "حدث خطأ أثناء حذف الصورة",
+    "noImagesYetHint": "لم تقم بتحميل أي صور بعد، اضغط على زر الإضافة لإضافة صور جديدة",
+    "couldntConvertToNumber": "تعذر تحويل القيمة إلى رقم",
+    "yesWeDo": "نعم، متوفر",
+    "noNotYet": "لا، ليس بعد"
   },
-  "Do you rent dresses ?": "هل تاجير الفساتين متاح ؟"
+  "Do you rent dresses ?": "هل تاجير الفساتين متاح ؟",
+  "Do you offer dress rentals ?": "هل تقدمون خدمة تأجير الفساتين؟",
+  "Customers love knowing what’s available before they visit your boutique.": "يحب العملاء معرفة ما هو متاح قبل زيارة متجرك.",
+  "Quick question about your listing.": "سؤال سريع حول قائمتك."
 }

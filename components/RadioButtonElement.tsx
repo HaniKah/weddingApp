@@ -50,14 +50,14 @@ const styles = StyleSheet.create({
         height: 10,
         width: 10,
         position: "absolute",
-        right: 10,
+        end: 10,
         top: 10,
         borderRadius: Theme.radius.full,
         backgroundColor: Theme.colors.primary,
     },
     icon: {
         position: "absolute",
-        left: 10,
+        start: 10,
         top: 10,
     },
     label: {

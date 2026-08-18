@@ -56,16 +56,16 @@ export default function AddFeaturesHost({data, setData}: {
                 <AppForm onSubmit={updateFeatures} ref={refForm}>
                     <View style={styles.formContainer}>
                         <View>
-                            <Text style={styles.question}>How many guests can your venue accommodate ?</Text>
+                            <Text style={styles.question}>{t('wizard.venueCapacityQuestion')}</Text>
                             <AppNumberInput design={2}
                                             name="capacity"
                                             value={capacity}
-                                            placeholder="e.g. 500"
+                                            placeholder={t('wizard.capacityPlaceholder')}
                                             onTextChange={setCapacity}
                             />
                         </View>
                         <View style={styles.questionContainer}>
-                            <Text style={styles.question}>Venue setup?</Text>
+                            <Text style={styles.question}>{t('wizard.venueSetupQuestion')}</Text>
                             <View style={styles.checkboxesContainer}>
                                 <AppCheckbox label={t("feature.outdoor")} value={outdoor} onChange={setOutdoor}/>
                                 <AppCheckbox label={t("feature.indoor")} value={indoor} onChange={setIndoor}/>

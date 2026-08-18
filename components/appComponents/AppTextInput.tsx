@@ -1,4 +1,5 @@
 import {
+    I18nManager,
     InputModeOptions,
     KeyboardTypeOptions,
     StyleProp,
@@ -120,10 +121,12 @@ export default function AppTextInput({
 
     }, [form.submitting, runChecks, value, name]);
 
+    const isNumericField = keyboardType === 'phone-pad' || keyboardType === 'decimal-pad' || keyboardType === 'number-pad';
+
     const isArabic = useMemo(() => {
-        if (!value) return
+        if (!value) return I18nManager.isRTL && !isNumericField;
         return /[\u0600-\u06FF]/.test(value);
-    }, [value])
+    }, [value, isNumericField])
 
     return (
         <View style={[styles.container, containerStyle]}>

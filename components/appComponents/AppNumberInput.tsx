@@ -2,6 +2,7 @@ import AppTextInput from '@/components/appComponents/AppTextInput';
 import {StyleProp, ViewStyle} from 'react-native';
 import {Dispatch, SetStateAction} from "react";
 import {showSnackbar} from "@/components/Snackbar";
+import {useTranslation} from 'react-i18next';
 
 export default function AppNumberInput({
                                            name,
@@ -29,6 +30,7 @@ export default function AppNumberInput({
     containerStyle?: StyleProp<ViewStyle>,
 }) {
 
+    const {t} = useTranslation();
 
 //if the coming value wasn't number ( from database )
     function checkValue() {
@@ -54,7 +56,7 @@ export default function AppNumberInput({
         const convert = parseFloat(clean);
 
         if (isNaN(convert)) {
-            showSnackbar("couldn't convert to number", "error")
+            showSnackbar(t('wizard.couldntConvertToNumber'), "error")
             return
         }
         onTextChange(convert);

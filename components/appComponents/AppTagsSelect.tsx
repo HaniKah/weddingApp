@@ -3,6 +3,7 @@ import {useEffect, useState} from 'react';
 import {Theme} from '@/styles/Theme';
 import {useFormContext} from '@/contexts/form-context';
 import {PickerItem} from '@/components/appComponents/AppPicker';
+import {useTranslation} from 'react-i18next';
 
 export default function AppTagsSelect<T>({
                                              name,
@@ -28,6 +29,7 @@ export default function AppTagsSelect<T>({
 
     const [error, setError] = useState<string | undefined>();
     const form = useFormContext();
+    const {t} = useTranslation();
 
     useEffect(() => {
         if (form.submitting) {
@@ -37,7 +39,7 @@ export default function AppTagsSelect<T>({
                 if (valid) {
                     form.addValue({[name]: valid});
                 } else {
-                    setError('Please check this field');
+                    setError(t('form.checkThisField'));
                     form.setSubmitting(false);
                 }
             } else {
@@ -48,7 +50,7 @@ export default function AppTagsSelect<T>({
         if (value !== undefined && value !== null) {
             setError(undefined);
         }
-    }, [form.submitting, value, required, name, form]);
+    }, [form.submitting, value, required, name, form, t]);
 
     return (
         <>

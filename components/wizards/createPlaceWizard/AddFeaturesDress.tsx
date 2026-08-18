@@ -37,7 +37,7 @@ export default function AddFeaturesDress({data, setData}: {
             })
             setData(res.data)
         } catch {
-            showSnackbar("unknown error", "error")
+            showSnackbar(t('snackbar.unknownError'), "error")
         } finally {
             setIsLoading(false)
         }
@@ -62,13 +62,13 @@ export default function AddFeaturesDress({data, setData}: {
                     <RadioButtonElement
                         icon="checkmark"
                         value={rent}
-                        item={{value: true, name: "Yes, we do"}}
+                        item={{value: true, name: t('wizard.yesWeDo')}}
                         onChange={setRent}/>
 
                     <RadioButtonElement
                         icon="xmark"
                         value={rent}
-                        item={{value: false, name: "No, not yet"}}
+                        item={{value: false, name: t('wizard.noNotYet')}}
                         onChange={setRent}/>
                 </View>
             </AppView>

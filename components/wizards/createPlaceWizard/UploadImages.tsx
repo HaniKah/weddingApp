@@ -15,6 +15,7 @@ import {showSnackbar} from "@/components/Snackbar";
 import {isAxiosError} from "axios";
 import {NestError} from "@/types/errors";
 import {IconSymbol} from "@/components/symbols/IconSymbol";
+import {useTranslation} from 'react-i18next';
 
 export default function UploadImages({images, setImages, onFinish, placeId}: {
     images: PhotosDto[]
@@ -23,6 +24,7 @@ export default function UploadImages({images, setImages, onFinish, placeId}: {
     placeId: number,
 }) {
     const {api} = useApi();
+    const {t} = useTranslation();
     const [refresh, setRefresh] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -39,11 +41,11 @@ export default function UploadImages({images, setImages, onFinish, placeId}: {
             setIsLoading(true);
             await api.photosControllerDeletePhoto({id: id});
             setImages(prev => prev.filter(i => i.id !== id));
-            showSnackbar("image deleted successfully", "success");
+            showSnackbar(t('wizard.imageDeletedSuccessfully'), "success");
 
         } catch (err) {
             if (isAxiosError<NestError>(err))
-                showSnackbar("Error deleting image" + err?.response?.data.message, "error");
+                showSnackbar(t('wizard.errorDeletingImage') + err?.response?.data.message, "error");
         } finally {
             setIsLoading(false);
         }
@@ -103,7 +105,7 @@ export default function UploadImages({images, setImages, onFinish, placeId}: {
     return (
         <>
             <AppView withPadding extraStyles={styles.appView}>
-                <Text style={styles.title}>Upload photos</Text>
+                <Text style={styles.title}>{t('wizard.uploadPhotos')}</Text>
                 {
                     isLoading && <ActivityIndicator
                         style={styles.loadingOverlay}
@@ -116,10 +118,7 @@ export default function UploadImages({images, setImages, onFinish, placeId}: {
                     data={images}
                     renderItem={ImageItem}
                     contentContainerStyle={{gap: 10, paddingBottom: 200}}
-                    ListEmptyComponent={<Text style={CommonStyles.dataNotFound}>You haven&#39;t uploaded any images yet,
-                        click on
-                        the plus button to add new
-                        images</Text>}
+                    ListEmptyComponent={<Text style={CommonStyles.dataNotFound}>{t('wizard.noImagesYetHint')}</Text>}
 
                 />
 
@@ -173,13 +172,13 @@ const styles = StyleSheet.create({
     xButton: {
         position: 'absolute',
         top: 5,
-        right: 5,
+        end: 5,
         zIndex: 10,
     },
     mainSymbol: {
         position: 'absolute',
         top: 5,
-        left: 5,
+        start: 5,
         zIndex: 10,
     },
     title: {
@@ -195,7 +194,7 @@ const styles = StyleSheet.create({
         backgroundColor: Theme.colors.primary,
         boxShadow: Theme.shadow.lg,
         position: 'absolute',
-        right: 10,
+        end: 10,
         bottom: 120,
     },
     loadingOverlay: {

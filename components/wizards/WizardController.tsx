@@ -37,7 +37,7 @@ export default function WizardController({isFirstStep = false, isLastStep = fals
                             buttonType={ButtonType.PLAIN}
                             onPress={wizard.previousStep}
                             inactive={isFirstStep}>
-                            previous
+                            {t("common.previous")}
                         </AppButton>
                     </View>
                     <View>
@@ -45,7 +45,7 @@ export default function WizardController({isFirstStep = false, isLastStep = fals
                             fullRound
                             onPress={onNext}
                         >
-                            {isLastStep ? "Finish" : "Next"}
+                            {isLastStep ? t("common.finish") : t("common.next")}
                         </AppButton>
                     </View>
                 </View>

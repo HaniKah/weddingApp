@@ -184,8 +184,8 @@
   },
   "priceKind": {
     "NoPrice": "بدون سعر",
-    "Range": "نطاق",
-    "Single": "فردي"
+    "Range": "متغير",
+    "Single": "ثابت"
   },
   "timeframe": {
     "Year": "سنة واحدة",

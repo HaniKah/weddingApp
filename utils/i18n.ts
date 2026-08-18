@@ -1,7 +1,7 @@
 import i18n from 'i18next';
 import {initReactI18next} from 'react-i18next';
 import * as Localization from 'expo-localization';
-import {I18nManager} from 'react-native';
+import {DevSettings, I18nManager} from 'react-native';
 import * as Updates from 'expo-updates';
 import en from '@/locales/en.json';
 import ar from '@/locales/ar.json';
@@ -24,6 +24,11 @@ export async function applyRTL(language: string): Promise<void> {
 
     if (Updates.isEnabled) {
         await Updates.reloadAsync();
+    } else if (__DEV__) {
+        // Updates.reloadAsync() is rejected in Expo Go / dev builds, but the native
+        // layout direction (e.g. header back button side) still needs a real reload
+        // to pick up I18nManager.forceRTL — DevSettings.reload() does that in dev.
+        DevSettings.reload();
     }
 }
 

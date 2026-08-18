@@ -4,6 +4,178 @@
     "checklist": "Checklist",
     "profile": "Profile"
   },
+  "countries": {
+    "BH": "Bahrain",
+    "EG": "Egypt",
+    "IQ": "Iraq",
+    "JO": "Jordan",
+    "KW": "Kuwait",
+    "LB": "Lebanon",
+    "OM": "Oman",
+    "PS": "Palestine",
+    "QA": "Qatar",
+    "SA": "Saudi Arabia",
+    "SY": "Syria",
+    "AE": "United Arabs of Emirates",
+    "YE": "Yemen",
+    "SD": "Sudan"
+  },
+  "cities": {
+    "BH": {
+      "Manama": "Manama",
+      "Riffa": "Riffa",
+      "Muharraq": "Muharraq",
+      "Isa Town": "Isa Town",
+      "Hamad Town": "Hamad Town",
+      "Sitra": "Sitra",
+      "Budaiya": "Budaiya"
+    },
+    "EG": {
+      "Cairo": "Cairo",
+      "Alexandria": "Alexandria",
+      "Giza": "Giza",
+      "Sharm El Sheikh": "Sharm El Sheikh",
+      "Hurghada": "Hurghada",
+      "Luxor": "Luxor",
+      "Aswan": "Aswan",
+      "Mansoura": "Mansoura",
+      "Tanta": "Tanta"
+    },
+    "IQ": {
+      "Baghdad": "Baghdad",
+      "Basra": "Basra",
+      "Erbil": "Erbil",
+      "Mosul": "Mosul",
+      "Najaf": "Najaf",
+      "Karbala": "Karbala",
+      "Sulaymaniyah": "Sulaymaniyah",
+      "Kirkuk": "Kirkuk"
+    },
+    "JO": {
+      "Amman": "Amman",
+      "Irbid": "Irbid",
+      "Zarqa": "Zarqa",
+      "Mafraq": "Mafraq",
+      "Ajloun": "Ajloun",
+      "Jerash": "Jerash",
+      "Madaba": "Madaba",
+      "Balqa": "Balqa",
+      "Karak": "Karak",
+      "Tafilah": "Tafilah",
+      "Ma'an": "Ma'an",
+      "Aqaba": "Aqaba"
+    },
+    "KW": {
+      "Kuwait City": "Kuwait City",
+      "Hawalli": "Hawalli",
+      "Salmiya": "Salmiya",
+      "Ahmadi": "Ahmadi",
+      "Farwaniya": "Farwaniya",
+      "Jahra": "Jahra",
+      "Mangaf": "Mangaf",
+      "Sabah Al Salem": "Sabah Al Salem",
+      "Fahaheel": "Fahaheel",
+      "Rumaithiya": "Rumaithiya"
+    },
+    "LB": {
+      "Beirut": "Beirut",
+      "Tripoli": "Tripoli",
+      "Sidon": "Sidon",
+      "Tyre": "Tyre",
+      "Jounieh": "Jounieh",
+      "Byblos": "Byblos",
+      "Zahle": "Zahle"
+    },
+    "OM": {
+      "Muscat": "Muscat",
+      "Salalah": "Salalah",
+      "Sohar": "Sohar",
+      "Nizwa": "Nizwa",
+      "Sur": "Sur",
+      "Ibri": "Ibri",
+      "Buraimi": "Buraimi"
+    },
+    "PS": {
+      "Gaza": "Gaza",
+      "Ramallah": "Ramallah",
+      "Nablus": "Nablus",
+      "Hebron": "Hebron",
+      "Jenin": "Jenin",
+      "Tulkarm": "Tulkarm",
+      "Qalqilya": "Qalqilya",
+      "Jericho": "Jericho",
+      "Bethlehem": "Bethlehem",
+      "Rafah": "Rafah"
+    },
+    "QA": {
+      "Doha": "Doha",
+      "Al Rayyan": "Al Rayyan",
+      "Al Wakra": "Al Wakra",
+      "Al Khor": "Al Khor",
+      "Umm Salal": "Umm Salal",
+      "Al Daayen": "Al Daayen",
+      "Al Shamal": "Al Shamal",
+      "Al Shahaniya": "Al Shahaniya"
+    },
+    "SA": {
+      "Riyadh": "Riyadh",
+      "Makkah": "Makkah",
+      "Madinah": "Madinah",
+      "Eastern Province": "Eastern Province",
+      "Asir": "Asir",
+      "Tabuk": "Tabuk",
+      "Hail": "Hail",
+      "Northern Borders": "Northern Borders",
+      "Jizan": "Jizan",
+      "Najran": "Najran",
+      "Al Bahah": "Al Bahah",
+      "Al Jawf": "Al Jawf",
+      "Qassim": "Qassim"
+    },
+    "SY": {
+      "Damascus": "Damascus",
+      "Aleppo": "Aleppo",
+      "Homs": "Homs",
+      "Latakia": "Latakia",
+      "Hama": "Hama",
+      "Deir ez-Zor": "Deir ez-Zor",
+      "Raqqa": "Raqqa",
+      "Idlib": "Idlib",
+      "Tartus": "Tartus",
+      "Daraa": "Daraa"
+    },
+    "AE": {
+      "Abu Dhabi": "Abu Dhabi",
+      "Dubai": "Dubai",
+      "Sharjah": "Sharjah",
+      "Ajman": "Ajman",
+      "Umm Al Quwain": "Umm Al Quwain",
+      "Ras Al Khaimah": "Ras Al Khaimah",
+      "Fujairah": "Fujairah"
+    },
+    "YE": {
+      "Sanaa": "Sanaa",
+      "Aden": "Aden",
+      "Taiz": "Taiz",
+      "Hodeidah": "Hodeidah",
+      "Mukalla": "Mukalla",
+      "Ibb": "Ibb",
+      "Dhamar": "Dhamar",
+      "Amran": "Amran",
+      "Sayoun": "Sayoun"
+    },
+    "SD": {
+      "Khartoum": "Khartoum",
+      "Omdurman": "Omdurman",
+      "Khartoum North": "Khartoum North",
+      "Port Sudan": "Port Sudan",
+      "Kassala": "Kassala",
+      "El Obeid": "El Obeid",
+      "Wad Madani": "Wad Madani",
+      "Atbara": "Atbara",
+      "Gedaref": "Gedaref"
+    }
+  },
   "categories": {
     "All": "All",
     "Host": "Halls & Venues",

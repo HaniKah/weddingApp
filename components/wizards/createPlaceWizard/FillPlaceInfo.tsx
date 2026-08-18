@@ -278,7 +278,7 @@ export default function FillPlaceInfo({data, setData}: {
                                                       placeholder={t('wizard.singlePricePlaceholder')}
                                                       value={minPrice}
                                                       keyboardType={'decimal-pad'}
-                                                      unit={COUNTRIES.get(isoCountry)?.currency}
+                                                      unit={t('currency.' + COUNTRIES.get(isoCountry)?.currency)}
                                                       required
                                                       design={2}
                                         />
@@ -294,7 +294,7 @@ export default function FillPlaceInfo({data, setData}: {
                                                       placeholder={t('wizard.minPricePlaceholder')}
                                                       value={minPrice}
                                                       keyboardType={'decimal-pad'}
-                                                      unit={COUNTRIES.get(isoCountry)?.currency}
+                                                      unit={t('currency.' + COUNTRIES.get(isoCountry)?.currency)}
                                                       required
                                         />
                                         <AppTextInput onChange={(s) => setMaxPrice(s)} name="maxPrice"
@@ -304,7 +304,7 @@ export default function FillPlaceInfo({data, setData}: {
                                                       placeholder={t('wizard.maxPricePlaceholder')}
                                                       value={maxPrice}
                                                       keyboardType={'decimal-pad'}
-                                                      unit={COUNTRIES.get(isoCountry)?.currency}
+                                                      unit={t('currency.' + COUNTRIES.get(isoCountry)?.currency)}
                                                       required
                                                       customChecks={[checkMaxPrice]}
                                         />

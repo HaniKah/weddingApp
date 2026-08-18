@@ -187,6 +187,22 @@
     "Range": "Range",
     "Single": "Single"
   },
+  "currency": {
+    "BHD": "BHD",
+    "EGP": "EGP",
+    "IQD": "IQD",
+    "JOD": "JOD",
+    "KWD": "KWD",
+    "LBP": "LBP",
+    "OMR": "OMR",
+    "ILS": "ILS",
+    "QAR": "QAR",
+    "SAR": "SAR",
+    "SYP": "SYP",
+    "AED": "AED",
+    "YER": "YER",
+    "SDG": "SDG"
+  },
   "timeframe": {
     "Year": "1 Year",
     "NineMonths": "9 Months",

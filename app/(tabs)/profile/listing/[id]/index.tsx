@@ -189,7 +189,7 @@ export default function Place() {
                                     info={`${placeDetails?.city}, ${COUNTRIES.get(placeDetails?.countryCode)?.countryName}`}/>
                         <SingleInfo icon="phone" info={placeDetails?.phoneNumber}/>
                         <SingleInfo icon="tag"
-                                    info={!placeDetails.minPrice ? t('priceKind.NoPrice') : placeDetails?.minPrice === placeDetails?.maxPrice ? `${placeDetails?.minPrice} ${COUNTRIES.get(placeDetails?.countryCode)?.currency} / ${t('priceType.' + placeDetails?.priceType)} ` : `${placeDetails?.minPrice} - ${placeDetails?.maxPrice} ${COUNTRIES.get(placeDetails?.countryCode)?.currency} / ${t('priceType.' + placeDetails?.priceType)}`}/>
+                                    info={!placeDetails.minPrice ? t('priceKind.NoPrice') : placeDetails?.minPrice === placeDetails?.maxPrice ? `${placeDetails?.minPrice} ${t('currency.' + COUNTRIES.get(placeDetails?.countryCode)?.currency)} / ${t('priceType.' + placeDetails?.priceType)} ` : `${placeDetails?.minPrice} - ${placeDetails?.maxPrice} ${t('currency.' + COUNTRIES.get(placeDetails?.countryCode)?.currency)} / ${t('priceType.' + placeDetails?.priceType)}`}/>
                         {placeDetails.description &&
                             <SingleInfo icon="text.justify.left" info={placeDetails?.description}/>
                         }

@@ -26,7 +26,7 @@ export default function PriceTag({minPrice, maxPrice, countryCode, priceType}: {
                                   style={styles.priceText}>{minPrice} - {maxPrice}</Text>
                     }
                     <Text
-                        style={styles.currency}>  {COUNTRIES.get(countryCode)?.currency} / {t('priceType.' + priceType)}</Text>
+                        style={styles.currency}>  {t('currency.' + COUNTRIES.get(countryCode)?.currency)} / {t('priceType.' + priceType)}</Text>
                 </View>
 
             </AppIf>

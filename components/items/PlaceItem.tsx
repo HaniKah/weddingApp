@@ -160,9 +160,6 @@ const styles = StyleSheet.create({
     name: {
         fontWeight: 'bold',
         fontSize: Theme.sizes.md,
-        width: 220,
-
-
     },
 
 

@@ -83,7 +83,8 @@ export default function Index() {
                             <View style={styles.location}>
                                 <IconSymbol name="location" size={14} color={Theme.colors.secondary}/>
                                 {isoCountry &&
-                                    <Text style={styles.address}>{COUNTRIES.get(isoCountry)?.countryName}</Text>
+                                    <Text
+                                        style={styles.address}>{t(`countries.${COUNTRIES.get(isoCountry)?.countryCode}`)}</Text>
                                 }
                             </View>
                         </View>

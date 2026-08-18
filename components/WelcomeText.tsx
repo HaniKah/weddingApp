@@ -18,7 +18,7 @@ export default function WelcomeText() {
                         {t('planner.discoverTitle')}
                     </Text>
                     <Text style={styles.weddingTitle}>
-                        {t('planner.weddingMarketplace')}
+                        {t('planner.ghamrah')}
                     </Text>
 
                     {isoCountry ?

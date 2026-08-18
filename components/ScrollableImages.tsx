@@ -1,5 +1,5 @@
 import React, {useEffect, useRef} from "react";
-import {Dimensions, FlatList, Pressable, StyleSheet, Text, View} from "react-native";
+import {Dimensions, FlatList, I18nManager, Pressable, StyleSheet, Text, View} from "react-native";
 import {Image} from "expo-image"
 import {PlaceDetailsPhotos} from "@/types/open-api";
 import {IconSymbol} from "@/components/symbols/IconSymbol";
@@ -34,7 +34,8 @@ function Footer({count, activeIndex}: { count: number, activeIndex: number }) {
 
     useEffect(() => {
         if (count > VISIBLE_DOTS && flatListRef.current) {
-            const offset = Math.max(0, (activeIndex - Math.floor(VISIBLE_DOTS / 2)) * (DOT_SIZE + DOT_GAP));
+            const targetIndex = I18nManager.isRTL ? count - 1 - activeIndex : activeIndex;
+            const offset = Math.max(0, (targetIndex - Math.floor(VISIBLE_DOTS / 2)) * (DOT_SIZE + DOT_GAP));
             flatListRef.current.scrollToOffset({
                 offset,
                 animated: true,
@@ -56,7 +57,7 @@ function Footer({count, activeIndex}: { count: number, activeIndex: number }) {
                             <View
                                 style={[
                                     styles.footerDot,
-                                    activeIndex === index && styles.footerDotActive
+                                    activeIndex === (I18nManager.isRTL ? count - 1 - index : index) && styles.footerDotActive
                                 ]}
                             />
                         </View>

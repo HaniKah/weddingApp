@@ -16,7 +16,7 @@ export default function LocationTag({countryCode, city, removeBackground, textCo
         <View style={[styles.container, removeBackground && styles.removeBackground]}>
             <IconSymbol name="location" size={14} color={textColor ?? Theme.colors.primary}/>
             <Text style={[styles.text, textColor && {color: textColor}]}>{
-                countryCode ? t(`countries.${COUNTRIES.get(countryCode)?.countryName}`) : t(`cities.${city}`)
+                countryCode ? t(`countries.${COUNTRIES.get(countryCode)?.countryCode}`) : t(`cities.${city}`)
             }
 
             </Text>
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         gap: 5,
-        paddingHorizontal: 12,
+        paddingHorizontal: 8,
         paddingVertical: 5,
         borderRadius: Theme.radius.full,
 

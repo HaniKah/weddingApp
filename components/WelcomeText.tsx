@@ -1,9 +1,8 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {I18nManager, StyleSheet, Text, View} from 'react-native';
 import {Theme} from '@/styles/Theme';
 import {useLocationContext} from '@/contexts/location-context';
-import {IconSymbol} from "@/components/symbols/IconSymbol";
-import {COUNTRIES} from "@/constants/countries";
 import {useTranslation} from 'react-i18next';
+import {COUNTRIES} from "@/constants/countries";
 
 
 export default function WelcomeText() {
@@ -14,23 +13,19 @@ export default function WelcomeText() {
         <>
             <View style={styles.container}>
                 <View style={styles.title}>
-                    <Text style={styles.discoverTitle}>
-                        {t('planner.discoverTitle')}
-                    </Text>
-                    <Text style={styles.weddingTitle}>
+                    <Text style={[styles.weddingTitle, {
+                        fontFamily: I18nManager.isRTL ? Theme.typographies.cairo.black : Theme.typographies.poppins.black
+                    }]}>
                         {t('planner.ghamrah')}
                     </Text>
-
-                    {isoCountry ?
-                        <View style={styles.location}>
-                            <IconSymbol name="location" size={14} color={Theme.colors.primary}/>
-                            <Text
-                                style={styles.locationText}>{t(`countries.${COUNTRIES.get(isoCountry)?.countryCode}`)}</Text>
-                        </View> :
-                        <Text>
-                            {t('planner.locationNotFound')}
-                        </Text>
+                    {isoCountry && <Text style={styles.locationText}>
+                        {t(`countries.${COUNTRIES.get(isoCountry)?.countryCode}`)}
+                    </Text>
                     }
+
+                    {/*{isoCountry && <LocationTag countryCode={COUNTRIES.get(isoCountry)?.countryCode}/>*/}
+
+                    {/*}*/}
 
 
                 </View>
@@ -44,8 +39,19 @@ const styles = StyleSheet.create({
     },
     title: {
         display: 'flex',
-        flexDirection: 'column',
-        gap: 3,
+        flexDirection: "row",
+        alignItems: "flex-end",
+        gap: 5
+    },
+    weddingTitle: {
+        fontSize: Theme.sizes.md,
+        color: Theme.colors.primary,
+        fontWeight: "black"
+    },
+    locationText: {
+        fontSize: Theme.sizes.xxs,
+        color: Theme.colors.secondary,
+        marginBottom: 3,
     },
 
     location: {
@@ -62,20 +68,12 @@ const styles = StyleSheet.create({
         marginTop: 5,
         borderRadius: Theme.radius.full,
     },
-    locationText: {
-        fontSize: Theme.sizes.xxs,
-        color: Theme.colors.primary,
-    },
 
     discoverTitle: {
         fontSize: Theme.sizes.xs,
         color: Theme.colors.secondary
     },
-    weddingTitle: {
-        fontSize: Theme.sizes.xl,
-        fontWeight: 'bold',
-        color: Theme.colors.primary,
-    },
+
 
     note: {
         color: Theme.colors.primary,

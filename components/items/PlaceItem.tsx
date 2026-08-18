@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     label: {
         position: 'absolute',
         top: 10,
-        left: 10,
+        start: 10,
         backgroundColor: Theme.colors.red.S500,
         color: Theme.colors.white,
         paddingHorizontal: 15,

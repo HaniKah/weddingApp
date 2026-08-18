@@ -1,4 +1,9 @@
 {
+  "tabs": {
+    "planner": "Planner",
+    "checklist": "Checklist",
+    "profile": "Profile"
+  },
   "categories": {
     "All": "All",
     "Host": "Halls & Venues",
@@ -60,7 +65,30 @@
   },
   "planner": {
     "noVendorsFound": "No vendors found",
-    "tryDifferentSearch": "Try different search or category"
+    "tryDifferentSearch": "Try different search or category",
+    "discoverTitle": "DISCOVER YOUR PERFECT",
+    "weddingMarketplace": "Wedding Marketplace",
+    "locationNotFound": "location is not found",
+    "categories": "Categories",
+    "allVendors": "All Vendors",
+    "search": "Search",
+    "errorLoadingPlaces": "Error loading places"
+  },
+  "filter": {
+    "title": "Filters",
+    "searchPlaceholder": "Search what you are looking for...",
+    "budget": "Budget",
+    "maxPrice": "max. price :",
+    "category": "Category",
+    "city": "City",
+    "selectCity": "Select City",
+    "reset": "Reset",
+    "showResults": "Show Results"
+  },
+  "update": {
+    "newVersionAvailable": "A new version is available!",
+    "update": "Update",
+    "later": "Later"
   },
   "profile": {
     "create": "Create new listing",
@@ -101,7 +129,9 @@
   },
   "location": {
     "pickTitle": "Where are you planning your wedding?",
-    "pickSubtitle": "Please select a country to see available vendors and services."
+    "pickSubtitle": "Please select a country to see available vendors and services.",
+    "notFoundTitle": "Location not found",
+    "notFoundMsg": "We were unable to get your location, please check your settings"
   },
   "checklist": {
     "header": "Wedding Checklist",
@@ -161,7 +191,13 @@
   },
   "common": {
     "cancel": "Cancel",
-    "clear": "clear"
+    "clear": "clear",
+    "selectAnOption": "Select an option"
+  },
+  "form": {
+    "fieldRequired": "This field is required",
+    "invalidPhoneNumber": "Invalid phone number",
+    "checkThisField": "Please check this field"
   },
   "feature": {
     "capacity": "Capacity",

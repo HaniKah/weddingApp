@@ -85,7 +85,7 @@ export default function CategoryList({activeStep, setActiveStep}: {
             <Animated.View
                 onLayout={(event) => setHeaderWidth(event.nativeEvent.layout.width)}>
                 <Text style={styles.categoriesText}>
-                    Categories
+                    {t('planner.categories')}
                 </Text>
                 <FlatList
                     ref={flatListRef}

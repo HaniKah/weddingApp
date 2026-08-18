@@ -16,6 +16,7 @@ import {Categories, SearchFilter} from "@/types/open-api";
 import {BlurView} from "expo-blur";
 import AppSafeAreaView from "@/components/appComponents/AppSafeAreaView";
 import * as Haptics from "expo-haptics";
+import {useTranslation} from 'react-i18next';
 
 export type CollapsibleFilters = "BUDGET" | "CATEGORIES" | "CITY"
 export default function FilterModal({
@@ -40,6 +41,7 @@ export default function FilterModal({
 }) {
     const {isoCountry} = useLocationContext();
     const formRef = useRef<any>(null);
+    const {t} = useTranslation();
 
 
     const [activeCollapsible, setActiveCollapsible] = useState<CollapsibleFilters | undefined>()
@@ -107,7 +109,7 @@ export default function FilterModal({
                                     size={18}
                                     onPress={() => setVisible(false)}
                                     name="xmark"/>
-                        <Text style={styles.headerText}>Filters</Text>
+                        <Text style={styles.headerText}>{t('filter.title')}</Text>
                     </View>
 
                     <AppForm ref={formRef} onSubmit={handleShowResult}>
@@ -116,7 +118,7 @@ export default function FilterModal({
                             >
                                 <AppTextInput
                                     name="search"
-                                    placeholder="Search what you are looking for..."
+                                    placeholder={t('filter.searchPlaceholder')}
                                     value={searchText}
                                     onChange={setSearchText}
                                     design={2}
@@ -128,10 +130,10 @@ export default function FilterModal({
                                                 expanded={activeCollapsible === "BUDGET"}
                                                 containerStyle={styles.collapsibleContainer}
                                                 header={<Text
-                                                    style={[styles.label, {color: filters.price !== undefined && filters.price !== "0" ? Theme.colors.primary : Theme.colors.gray.S800}]}>Budget</Text>}>
+                                                    style={[styles.label, {color: filters.price !== undefined && filters.price !== "0" ? Theme.colors.primary : Theme.colors.gray.S800}]}>{t('filter.budget')}</Text>}>
                                     <View style={styles.priceTextContainer}>
                                         <View style={styles.priceInput}>
-                                            <Text style={{color: Theme.colors.black}}>max. price :</Text>
+                                            <Text style={{color: Theme.colors.black}}>{t('filter.maxPrice')}</Text>
                                             <TextInput
                                                 style={styles.input}
                                                 value={priceInput}
@@ -157,7 +159,7 @@ export default function FilterModal({
                                                 expanded={activeCollapsible === "CATEGORIES"}
                                                 containerStyle={[styles.collapsibleContainer]}
                                                 header={<Text
-                                                    style={[styles.label, {color: filters.category !== undefined ? Theme.colors.primary : Theme.colors.gray.S800}]}>Category</Text>}>
+                                                    style={[styles.label, {color: filters.category !== undefined ? Theme.colors.primary : Theme.colors.gray.S800}]}>{t('filter.category')}</Text>}>
 
                                     <CategoryTileList categoryFilter={filters.category}
                                                       setCategoryFilter={handleCategoryChange}/>
@@ -168,10 +170,10 @@ export default function FilterModal({
                                                 expanded={activeCollapsible === "CITY"}
                                                 containerStyle={styles.collapsibleContainer}
                                                 header={<Text
-                                                    style={[styles.label, {color: filters.city !== undefined ? Theme.colors.primary : Theme.colors.gray.S800}]}>City</Text>}>
+                                                    style={[styles.label, {color: filters.city !== undefined ? Theme.colors.primary : Theme.colors.gray.S800}]}>{t('filter.city')}</Text>}>
                                     <AppDropDown
                                         name="city"
-                                        title="Select City"
+                                        title={t('filter.selectCity')}
                                         itemList={citiesPickerItems}
                                         value={filters.city}
                                         onChange={handleCityChange}
@@ -183,12 +185,12 @@ export default function FilterModal({
                             <View style={styles.footerContainer}>
                                 <AppButton buttonType={ButtonType.PLAIN}
                                            onPress={resetFilters}>
-                                    Reset
+                                    {t('filter.reset')}
                                 </AppButton>
                                 <AppButton fullWidth
                                            isSubmit
                                            buttonType={ButtonType.PRIMARY}>
-                                    Show Results
+                                    {t('filter.showResults')}
                                 </AppButton>
                             </View>
                         </View>
@@ -240,7 +242,7 @@ const styles = StyleSheet.create({
         borderRadius: Theme.radius.xl
     },
     header: {
-        flexDirection: "row-reverse",
+        flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
         marginBottom: 10
@@ -248,7 +250,7 @@ const styles = StyleSheet.create({
     headerText: {
         fontSize: Theme.sizes.xl,
         fontWeight: "bold",
-        paddingLeft: 10
+        paddingStart: 10
     },
     xIcon: {
         padding: 12,
@@ -320,7 +322,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         width: "100%",
         padding: 10,
-        paddingLeft: 20,
+        paddingStart: 20,
         marginBottom: 0,
         position: "absolute",
         bottom: 20,

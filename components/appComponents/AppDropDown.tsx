@@ -5,6 +5,7 @@ import { IconSymbol } from '@/components/symbols/IconSymbol';
 import AppBottomSheet, { AppBottomSheetRef } from '@/components/appComponents/AppBottomSheet';
 import { useFormContext } from '@/contexts/form-context';
 import { PickerItem } from '@/components/appComponents/AppPicker';
+import { useTranslation } from 'react-i18next';
 
 export default function AppDropDown<T>({ itemList, label, value, onChange, style, title, required, name, disabled }: {
   style?: StyleProp<ViewStyle>,
@@ -19,6 +20,7 @@ export default function AppDropDown<T>({ itemList, label, value, onChange, style
 }) {
 
   const form = useFormContext();
+  const { t } = useTranslation();
   const [error, setError] = useState<string | undefined>();
 
   const bottomSheetRef = useRef<AppBottomSheetRef>(null);
@@ -45,7 +47,7 @@ export default function AppDropDown<T>({ itemList, label, value, onChange, style
         if (valid) {
           form.addValue({ [name]: valid });
         } else {
-          setError('Please check this field');
+          setError(t('form.checkThisField'));
           form.setSubmitting(false);
         }
       } else {
@@ -56,7 +58,7 @@ export default function AppDropDown<T>({ itemList, label, value, onChange, style
     if (value !== undefined && value !== null) {
       setError(undefined);
     }
-  }, [form.submitting, value, required, name, form]);
+  }, [form.submitting, value, required, name, form, t]);
 
   return (
     <View style={style}>
@@ -64,7 +66,7 @@ export default function AppDropDown<T>({ itemList, label, value, onChange, style
       <Pressable disabled={disabled} style={[styles.pressable, disabled && styles.disabledPressable]}
                  onPress={() => bottomSheetRef.current?.open()}>
         <Text style={[styles.selectedText, disabled && styles.disabledText]}>
-          {itemList?.find(item => item.value === value)?.name ?? 'Select an option'}
+          {itemList?.find(item => item.value === value)?.name ?? t('common.selectAnOption')}
         </Text>
         <IconSymbol name="chevron.down" size={20} color={Theme.colors.border} />
       </Pressable>

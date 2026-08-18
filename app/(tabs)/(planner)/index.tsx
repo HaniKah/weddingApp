@@ -41,6 +41,7 @@ function EmptyPlaceholder() {
 
 export default function Index() {
 
+    const {t} = useTranslation();
     const API = useApi().api;
 
 
@@ -99,7 +100,7 @@ export default function Index() {
             // console.log(data)
         } catch (err) {
             if (isAxiosError<NestError>(err))
-                showSnackbar("Error loading places" + err?.response?.data.message, "error");
+                showSnackbar(t('planner.errorLoadingPlaces') + err?.response?.data.message, "error");
             console.error(err);
         } finally {
         }

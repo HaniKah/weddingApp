@@ -15,6 +15,7 @@ import {Dispatch, SetStateAction, useCallback, useEffect, useMemo, useRef, useSt
 import {IconButton} from '@/components/symbols/IconButton';
 import {parsePhoneNumber} from "libphonenumber-js";
 import {useLocationContext} from "@/contexts/location-context";
+import {useTranslation} from 'react-i18next';
 
 export type CheckResult = { error: string | undefined }
 
@@ -67,6 +68,7 @@ export default function AppTextInput({
 
     const form = useFormContext();
     const {isoCountry} = useLocationContext()
+    const {t} = useTranslation();
 
 
     function preTextChange(text: string | undefined) {
@@ -76,22 +78,22 @@ export default function AppTextInput({
 
     const checkRequired = useCallback((text: string | undefined): CheckResult => {
         if (required && !text) {
-            return {error: 'This field is required'}
+            return {error: t('form.fieldRequired')}
         } else {
             return {error: undefined}
         }
-    }, [required])
+    }, [required, t])
 
     const checkPhoneNumber = useCallback((text: string | undefined): CheckResult => {
             if (keyboardType === "phone-pad" && text && isoCountry) {
                 const phoneNumber = parsePhoneNumber(text, isoCountry)
                 if (!phoneNumber.isValid() || phoneNumber.country !== isoCountry) {
-                    return {error: 'Invalid phone number'}
+                    return {error: t('form.invalidPhoneNumber')}
                 }
             }
             return {error: undefined}
         }
-        , [keyboardType, isoCountry])
+        , [keyboardType, isoCountry, t])
 
     const runChecks = useCallback((text: string | undefined): CheckResult => {
         const checksToRun = [checkRequired, checkPhoneNumber, ...(customChecks ?? [])]
@@ -158,7 +160,7 @@ export default function AppTextInput({
                                 testID="clear-icon"
                                 size={24}
                                 name="x.circle.fill"
-                                extraStylesBtn={{marginLeft: 5}}
+                                extraStylesBtn={{marginStart: 5}}
                                 removeBackground/>
                 }
             </View>
@@ -195,13 +197,13 @@ const design1: TextInputType = StyleSheet.create({
 
         },
         input: {
-            paddingRight: 10,
+            paddingEnd: 10,
             height: 50,
             color: Theme.colors.primary,
             fontSize: Theme.sizes.md,
             width: '100%',
             flex: 1,
-            paddingLeft: 5,
+            paddingStart: 5,
         },
         label: {
             color: Theme.colors.primary,
@@ -239,7 +241,7 @@ const design2: TextInputType = StyleSheet.create({
         borderColor: Theme.colors.border,
         borderRadius: Theme.radius.md,
         overflow: 'hidden',
-        paddingRight: 10,
+        paddingEnd: 10,
         borderWidth: 1,
     },
     input: {
@@ -248,7 +250,7 @@ const design2: TextInputType = StyleSheet.create({
         fontSize: Theme.sizes.sm,
         width: '100%',
         flex: 1,
-        paddingLeft: 14,
+        paddingStart: 14,
         borderRadius: Theme.radius.sm,
 
 

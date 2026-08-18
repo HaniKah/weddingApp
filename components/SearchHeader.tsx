@@ -7,6 +7,7 @@ import WelcomeText from '@/components/WelcomeText';
 import AppView from '@/components/appComponents/AppView';
 import FilterModal from "@/components/modals/FilterModal";
 import {SearchFilter} from "@/types/open-api";
+import {useTranslation} from 'react-i18next';
 
 export default function SearchHeader({
 
@@ -27,6 +28,7 @@ export default function SearchHeader({
 
 }) {
     const [filterVisible, setFilterVisible] = useState<boolean>(false);
+    const {t} = useTranslation();
 
     return (
         <>
@@ -42,7 +44,7 @@ export default function SearchHeader({
                     activeStep={filters?.category}
                     setActiveStep={setFilters}/>
                 <Text style={styles.allVendors}>
-                    All Vendors
+                    {t('planner.allVendors')}
                 </Text>
             </AppView>
             <FilterModal setVisible={setFilterVisible}

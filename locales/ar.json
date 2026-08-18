@@ -1,4 +1,9 @@
 {
+  "tabs": {
+    "planner": "الموردين",
+    "checklist": "المهام",
+    "profile": "الحساب"
+  },
   "categories": {
     "All": "الكل",
     "Host": "قاعات ومناسبات",
@@ -60,7 +65,30 @@
   },
   "planner": {
     "noVendorsFound": "لم يتم العثور على موردين",
-    "tryDifferentSearch": "حاول البحث بكلمات أخرى أو اختيار فئة مختلفة"
+    "tryDifferentSearch": "حاول البحث بكلمات أخرى أو اختيار فئة مختلفة",
+    "discoverTitle": "اكتشف الأفضل لحفل زفافك",
+    "weddingMarketplace": "سوق الأعراس",
+    "locationNotFound": "لم يتم العثور على الموقع",
+    "categories": "الفئات",
+    "allVendors": "جميع الموردين",
+    "search": "بحث",
+    "errorLoadingPlaces": "حدث خطأ أثناء تحميل الأماكن"
+  },
+  "filter": {
+    "title": "الفلاتر",
+    "searchPlaceholder": "ابحث عمّا تريد...",
+    "budget": "الميزانية",
+    "maxPrice": "الحد الأقصى للسعر :",
+    "category": "الفئة",
+    "city": "المدينة",
+    "selectCity": "اختر المدينة",
+    "reset": "إعادة تعيين",
+    "showResults": "عرض النتائج"
+  },
+  "update": {
+    "newVersionAvailable": "يتوفر إصدار جديد!",
+    "update": "تحديث",
+    "later": "لاحقاً"
   },
   "profile": {
     "publish": "نشر",
@@ -103,7 +131,9 @@
   },
   "location": {
     "pickTitle": "أين تخطط لحفل زفافك؟",
-    "pickSubtitle": "يرجى اختيار دولة لرؤية البائعين والخدمات المتاحة."
+    "pickSubtitle": "يرجى اختيار دولة لرؤية البائعين والخدمات المتاحة.",
+    "notFoundTitle": "لم يتم العثور على الموقع",
+    "notFoundMsg": "لم نتمكن من تحديد موقعك، يرجى التحقق من الإعدادات"
   },
   "checklist": {
     "header": "قائمة مهام الزفاف",
@@ -163,7 +193,13 @@
   },
   "common": {
     "cancel": "إلغاء",
-    "clear": "مسح"
+    "clear": "مسح",
+    "selectAnOption": "اختر خياراً"
+  },
+  "form": {
+    "fieldRequired": "هذا الحقل مطلوب",
+    "invalidPhoneNumber": "رقم الهاتف غير صالح",
+    "checkThisField": "يرجى التحقق من هذا الحقل"
   },
   "feature": {
     "capacity": "الاستيعاب",

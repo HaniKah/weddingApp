@@ -3,20 +3,22 @@ import {Theme} from '@/styles/Theme';
 import {useLocationContext} from '@/contexts/location-context';
 import {IconSymbol} from "@/components/symbols/IconSymbol";
 import {COUNTRIES} from "@/constants/countries";
+import {useTranslation} from 'react-i18next';
 
 
 export default function WelcomeText() {
 
     const {isoCountry} = useLocationContext();
+    const {t} = useTranslation();
     return (
         <>
             <View style={styles.container}>
                 <View style={styles.title}>
                     <Text style={styles.discoverTitle}>
-                        DISCOVER YOUR PERFECT
+                        {t('planner.discoverTitle')}
                     </Text>
                     <Text style={styles.weddingTitle}>
-                        Wedding Marketplace
+                        {t('planner.weddingMarketplace')}
                     </Text>
 
                     {isoCountry ?
@@ -25,7 +27,7 @@ export default function WelcomeText() {
                             <Text style={styles.locationText}>{COUNTRIES.get(isoCountry)?.countryName}</Text>
                         </View> :
                         <Text>
-                            location is not found
+                            {t('planner.locationNotFound')}
                         </Text>
                     }
 

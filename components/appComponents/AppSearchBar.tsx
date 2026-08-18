@@ -3,6 +3,7 @@ import {Theme} from "@/styles/Theme";
 import {IconButton} from "@/components/symbols/IconButton";
 import {Dispatch, SetStateAction, useMemo} from "react";
 import {SearchFilter} from "@/types/open-api";
+import {useTranslation} from 'react-i18next';
 
 export default function AppSearchBar({searchText, setSearchText, setFilterVisible, filters}: {
     searchText: string | undefined,
@@ -16,10 +17,12 @@ export default function AppSearchBar({searchText, setSearchText, setFilterVisibl
         return filters.city !== undefined || (filters.price !== undefined && filters?.price !== "0")
     }, [filters])
 
+    const {t} = useTranslation();
+
     return (
         <>
             <View style={styles.container}>
-                <TextInput placeholder="Search"
+                <TextInput placeholder={t('planner.search')}
                            placeholderTextColor={Theme.colors.placeholder}
                            value={searchText}
                            onChangeText={setSearchText}
@@ -52,7 +55,7 @@ const styles = StyleSheet.create({
     input: {
         borderBottomWidth: 0,
         flex: 1,
-        paddingLeft: 20,
+        paddingStart: 20,
 
     },
     filterButton: {

@@ -7,6 +7,7 @@ import { useRouter } from 'expo-router';
 import { useLocationStore } from '@/utils/locationStore';
 import { COUNTRIES } from '@/constants/countries';
 import { useAuthStore } from '@/utils/authStore';
+import i18n from '@/utils/i18n';
 
 type LocationContextType = {
   isLocationGranted: boolean,
@@ -85,8 +86,8 @@ export function LocationProvider({ children }: { children: React.ReactNode }) {
         }
       } catch (e) {
         setErrorMsg({
-          title: 'Location not found',
-          msg: 'We were unable to get your location, please check your settings',
+          title: i18n.t('location.notFoundTitle'),
+          msg: i18n.t('location.notFoundMsg'),
         });
       }
 

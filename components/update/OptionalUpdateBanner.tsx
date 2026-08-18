@@ -3,6 +3,7 @@ import {StyleSheet, Text, View} from 'react-native';
 import AppButton from "@/components/appComponents/AppButton";
 import {ButtonType} from "@/styles/Button";
 import {Theme} from "@/styles/Theme";
+import {useTranslation} from 'react-i18next';
 
 interface OptionalUpdateBannerProps {
     onDismiss: () => void;
@@ -10,17 +11,18 @@ interface OptionalUpdateBannerProps {
 }
 
 export const OptionalUpdateBanner: React.FC<OptionalUpdateBannerProps> = ({onDismiss, onUpdate}) => {
+    const {t} = useTranslation();
     return (
         <View style={styles.container}>
-            <Text style={styles.text}>A new version is available!</Text>
+            <Text style={styles.text}>{t('update.newVersionAvailable')}</Text>
             <View style={styles.actions}>
                 <AppButton extraStylesTxt={styles.buttonText} extraStylesBtn={styles.button} onPress={onUpdate}
                            buttonSize={"SM"}>
-                    Update
+                    {t('update.update')}
                 </AppButton>
                 <AppButton extraStylesTxt={{color: Theme.colors.white}} buttonType={ButtonType.PLAIN}
                            onPress={onDismiss} buttonSize={"SM"}>
-                    Later
+                    {t('update.later')}
                 </AppButton>
             </View>
         </View>

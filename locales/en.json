@@ -143,6 +143,11 @@
   "guests": {
     "title": "Guest list"
   },
+  "listing": {
+    "callNow": "Call Now",
+    "photos_one": "{{count}} Photo",
+    "photos_other": "{{count}} Photos"
+  },
   "promotion": {
     "months": "months",
     "promotions": "Promotions",

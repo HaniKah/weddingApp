@@ -145,6 +145,15 @@
   "guests": {
     "title": "قائمة الضيوف"
   },
+  "listing": {
+    "callNow": "اتصل الآن",
+    "photos_zero": "لا توجد صور",
+    "photos_one": "صورة واحدة",
+    "photos_two": "صورتان",
+    "photos_few": "{{count}} صور",
+    "photos_many": "{{count}} صورة",
+    "photos_other": "{{count}} صورة"
+  },
   "promotion": {
     "months": "أشهر",
     "promotions": "العروض الترويجية",

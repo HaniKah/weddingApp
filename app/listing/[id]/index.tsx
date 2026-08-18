@@ -16,9 +16,11 @@ import PriceTag from '@/components/tags/PriceTag';
 import ScrollableImages from "@/components/ScrollableImages";
 import FeaturesTag from "@/components/tags/FeaturesTag";
 import AppSafeAreaView from "@/components/appComponents/AppSafeAreaView";
+import {useTranslation} from 'react-i18next';
 
 
 export default function PlaceId() {
+    const {t} = useTranslation();
     const API = useApi().api;
     const id = Number(useLocalSearchParams<{ id: string }>().id);
 
@@ -85,19 +87,11 @@ export default function PlaceId() {
                     >
 
                         {placeDetails?.photos && placeDetails?.photos?.length > 0 ?
-                            <Link
-                                push
-                                href={{
+                            <ScrollableImages
+                                onPress={() => router.push({
                                     pathname: '/listing/[id]/images',
                                     params: {id: params.id, step: params.step},
-                                }}
-                            >
-                                <ScrollableImages
-                                    onPress={() => router.push({
-                                        pathname: '/listing/[id]/images',
-                                        params: {id: params.id, step: params.step},
-                                    })} images={placeDetails.photos}/>
-                            </Link>
+                                })} images={placeDetails.photos}/>
                             :
 
                             <View style={styles.imagePlaceHolder}>
@@ -147,7 +141,7 @@ export default function PlaceId() {
                 <View style={styles.callForActionContainer}>
                     <Link asChild href={`tel:${placeDetails?.phoneNumber}`}>
                         <AppButton icon="phone" fullWidth buttonType={ButtonType.PRIMARY}>
-                            Call Now
+                            {t('listing.callNow')}
                         </AppButton>
                     </Link>
                 </View>

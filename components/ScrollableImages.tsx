@@ -5,6 +5,7 @@ import {PlaceDetailsPhotos} from "@/types/open-api";
 import {IconSymbol} from "@/components/symbols/IconSymbol";
 import {Theme} from "@/styles/Theme";
 import {useSafeAreaInsets} from "react-native-safe-area-context";
+import {useTranslation} from 'react-i18next';
 
 // interface ImageType {
 //     url: string
@@ -13,11 +14,12 @@ import {useSafeAreaInsets} from "react-native-safe-area-context";
 
 function Header({count}: { count: number }) {
     const insets = useSafeAreaInsets()
+    const {t} = useTranslation();
     return (
         <View style={[{marginTop: insets.top}, styles.HeaderPhotosFound]}>
             <IconSymbol color={Theme.colors.black} name="photo.on.rectangle"/>
             <Text>
-                {count} Photos
+                {t('listing.photos', {count})}
             </Text>
         </View>
     )
@@ -144,7 +146,7 @@ const styles = StyleSheet.create({
         backgroundColor: "rgba(255,255,255,0.8)",
         position: 'absolute',
         top: 10,
-        right: 10,
+        end: 10,
         zIndex: 20,
         paddingHorizontal: 10,
         paddingVertical: 5,

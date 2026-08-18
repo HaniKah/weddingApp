@@ -30,9 +30,10 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
-        gap: 5
+        gap: 6
     },
     textContent: {
+        fontSize: Theme.sizes.xs,
         color: Theme.colors.secondary,
     }
 })

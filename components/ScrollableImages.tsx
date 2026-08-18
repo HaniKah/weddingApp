@@ -7,10 +7,7 @@ import {Theme} from "@/styles/Theme";
 import {useSafeAreaInsets} from "react-native-safe-area-context";
 import {useTranslation} from 'react-i18next';
 
-// interface ImageType {
-//     url: string
-//     blurhash: string
-// }
+export const LISTING_MEDIA_HEIGHT = 500;
 
 function Header({count}: { count: number }) {
     const insets = useSafeAreaInsets()
@@ -136,21 +133,21 @@ const styles = StyleSheet.create({
         position: 'relative',
     },
     image: {
-        height: 500,
+        height: LISTING_MEDIA_HEIGHT,
         // resizeMode: "cover",
     },
     HeaderPhotosFound: {
         display: "flex",
         flexDirection: 'row',
         alignItems: 'center',
-        gap: 5,
+        gap: 6,
         backgroundColor: "rgba(255,255,255,0.8)",
         position: 'absolute',
         top: 10,
         end: 10,
         zIndex: 20,
         paddingHorizontal: 10,
-        paddingVertical: 5,
+        paddingVertical: 6,
         borderRadius: Theme.radius.full
     },
     footerContainer: {

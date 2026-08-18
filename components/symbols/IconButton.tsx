@@ -50,7 +50,8 @@ export function IconButton(
             </Link>
         );
     } else return (
-        <Pressable onPressIn={(e) => {
+        <Pressable hitSlop={removeBackground ? 14 : 4}
+                   onPressIn={(e) => {
             scale.value = withSpring(0.90);
         }}
                    onPressOut={(e) => {

@@ -13,7 +13,7 @@ import LocationTag from '@/components/tags/LocationTag';
 import IconCategory from '../../../components/symbols/IconCategory';
 import AppView from '@/components/appComponents/AppView';
 import PriceTag from '@/components/tags/PriceTag';
-import ScrollableImages from "@/components/ScrollableImages";
+import ScrollableImages, {LISTING_MEDIA_HEIGHT} from "@/components/ScrollableImages";
 import FeaturesTag from "@/components/tags/FeaturesTag";
 import AppSafeAreaView from "@/components/appComponents/AppSafeAreaView";
 import {useTranslation} from 'react-i18next';
@@ -38,7 +38,6 @@ export default function PlaceId() {
             setIsLoading(true)
             const response = await API.plannerControllerGetPlaceById({placeId: Number(id)});
             setPlaceDetails(response.data);
-            // setPhotosOrder(response.data?.photos?.map((p) => p.photoRef))
         } catch (err) {
             console.error(err);
         } finally {
@@ -50,11 +49,6 @@ export default function PlaceId() {
         getPlaceDetails();
     }, [getPlaceDetails]);
 
-
-    // async function toggleFavorites() {
-    //   if (!placeDetails) return;
-    //   toggleFavorite(placeDetails.id);
-    // }
 
     const isArabic = useMemo(() => {
         if (!placeDetails?.description) return
@@ -106,19 +100,21 @@ export default function PlaceId() {
                         <View style={styles.infosContainer}>
 
                             <View style={styles.infoHeaderContainer}>
-                                <View style={styles.titleContainer}>
-                                    <Text style={styles.title}>{placeDetails?.name}</Text>
-                                    {
-                                        isFavorite(id) ?
-                                            <IconButton onPress={() => toggleFavorite(id)} removeBackground
-                                                        name="heart.fill"/> :
-                                            <IconButton onPress={() => toggleFavorite(id)} removeBackground
-                                                        name="heart"/>}
+                                <View style={styles.metaGroup}>
+                                    <View style={styles.titleContainer}>
+                                        <Text style={styles.title}>{placeDetails?.name}</Text>
+                                        {
+                                            isFavorite(id) ?
+                                                <IconButton onPress={() => toggleFavorite(id)} removeBackground
+                                                            name="heart.fill"/> :
+                                                <IconButton onPress={() => toggleFavorite(id)} removeBackground
+                                                            name="heart"/>}
+                                    </View>
+                                    <LocationTag city={placeDetails?.city}/>
+                                    <AppIf value={placeDetails?.features}>
+                                        <FeaturesTag features={placeDetails?.features}/>
+                                    </AppIf>
                                 </View>
-                                <LocationTag city={placeDetails?.city}/>
-                                <AppIf value={placeDetails?.features}>
-                                    <FeaturesTag features={placeDetails?.features}/>
-                                </AppIf>
 
                                 <PriceTag minPrice={placeDetails?.minPrice}
                                           maxPrice={placeDetails?.maxPrice}
@@ -161,10 +157,9 @@ const styles = StyleSheet.create({
         paddingBottom: 100, // enough space so content isn't hidden behind the bottom bar
     },
     callForActionContainer: {
-        padding: 20,
-        paddingBottom: 30,
-
-
+        paddingHorizontal: 20,
+        paddingTop: 20,
+        paddingBottom: 10
     },
     infosContainer: {
         padding: 20,
@@ -175,7 +170,7 @@ const styles = StyleSheet.create({
     },
 
     imagePlaceHolder: {
-        height: 250,
+        height: LISTING_MEDIA_HEIGHT,
         width: "100%",
         backgroundColor: Theme.colors.iconBackground,
 
@@ -191,6 +186,10 @@ const styles = StyleSheet.create({
     },
     infoHeaderContainer: {
         display: 'flex',
+        gap: 16,
+    },
+    metaGroup: {
+        display: 'flex',
         gap: 10,
     },
     titleContainer: {
@@ -198,46 +197,19 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
+        gap: 10
     },
     title: {
         fontSize: Theme.sizes.xl,
         flexShrink: 1,
         fontWeight: 'bold',
     },
-
-    priceContainer: {
-        display: 'flex',
-        alignItems: 'center',
-        flexDirection: 'row',
-        gap: 10,
-        marginTop: 5,
-    },
-    price: {
-        fontSize: Theme.sizes.md,
-        color: Theme.colors.primary,
-        fontWeight: 'bold',
-    },
-    noPrice: {
-        color: Theme.colors.secondary,
-        marginTop: 5,
-    },
-    currency: {
-        color: Theme.colors.secondary,
-    },
     descriptionContainer: {
         marginTop: 20,
 
     },
     description: {
-        fontSize: Theme.sizes.md,
-    },
-    contactInfoContainer: {
-        marginTop: 20,
-    },
-
-    pickedText: {
-        textDecorationLine: 'underline',
-        marginBottom: 20,
+        fontSize: Theme.sizes.sm,
     },
     arabicText: {
         textAlign: 'right',

@@ -31,9 +31,9 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        gap: 5,
-        paddingHorizontal: 8,
-        paddingVertical: 5,
+        gap: 6,
+        paddingHorizontal: 10,
+        paddingVertical: 6,
         borderRadius: Theme.radius.full,
 
     },

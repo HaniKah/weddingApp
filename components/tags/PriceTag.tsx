@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        gap: 5,
+        gap: 6,
         flex: 1,
     },
     priceText: {

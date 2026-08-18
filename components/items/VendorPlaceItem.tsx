@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {I18nManager, StyleSheet, Text, View} from 'react-native';
 import {Image} from 'expo-image';
 import {VendorPlaceDto} from '@/types/open-api';
 import {Theme} from '@/styles/Theme';
@@ -48,7 +48,8 @@ export default function VendorPlaceItem({data, setTrigger}: VendorPlaceItemProps
                                       priceType={data.priceType}
                                       countryCode={data.country}/>
                         </View>
-                        <IconSymbol name="chevron.right" size={20} color={Theme.colors.border}/>
+                        <IconSymbol name={I18nManager.isRTL ? 'chevron.left' : 'chevron.right'} size={20}
+                                    color={Theme.colors.border}/>
                     </View>
                 </AppPressable>
             </Link>

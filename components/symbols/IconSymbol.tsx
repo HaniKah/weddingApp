@@ -35,6 +35,7 @@ const MAPPING = {
     'checkmark.circle.fill': 'check-circle',
     'location': 'location-on',
     'chevron.right': 'chevron-right',
+    'chevron.left': 'chevron-left',
     'mappin.and.ellipse': 'location-pin',
     'magnifyingglass': 'search',
     'checkmark': 'check',

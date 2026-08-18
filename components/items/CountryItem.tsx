@@ -1,4 +1,4 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {I18nManager, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Theme} from '@/styles/Theme';
 import {CountryCode, CountryInfo} from '@/types/open-api';
 import {IconSymbol} from '@/components/symbols/IconSymbol';
@@ -21,7 +21,8 @@ export default function CountryItem({country, onPress}: CountryItemProps) {
                 </View>
                 <Text style={styles.countryName}>{country.countryName}</Text>
             </View>
-            <IconSymbol name="chevron.right" size={20} color={Theme.colors.gray.S400}/>
+            <IconSymbol name={I18nManager.isRTL ? 'chevron.left' : 'chevron.right'} size={20}
+                        color={Theme.colors.gray.S400}/>
         </TouchableOpacity>
     );
 }

@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {I18nManager, StyleSheet, Text, View} from 'react-native';
 import {Theme} from '@/styles/Theme';
 import {IconSymbol, IconSymbolName} from '@/components/symbols/IconSymbol';
 import AppPressable from '@/components/appComponents/AppPressable';
@@ -23,7 +23,8 @@ export default function MenuItem({
                 >
                     {label}
                 </Text>
-                <IconSymbol name="chevron.right" size={16} color={Theme.colors.primary}/>
+                <IconSymbol name={I18nManager.isRTL ? 'chevron.left' : 'chevron.right'} size={16}
+                            color={Theme.colors.primary}/>
             </View>
         </AppPressable>
     );

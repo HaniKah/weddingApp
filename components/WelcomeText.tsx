@@ -24,7 +24,8 @@ export default function WelcomeText() {
                     {isoCountry ?
                         <View style={styles.location}>
                             <IconSymbol name="location" size={14} color={Theme.colors.primary}/>
-                            <Text style={styles.locationText}>{COUNTRIES.get(isoCountry)?.countryName}</Text>
+                            <Text
+                                style={styles.locationText}>{t(`countries.${COUNTRIES.get(isoCountry)?.countryCode}`)}</Text>
                         </View> :
                         <Text>
                             {t('planner.locationNotFound')}
@@ -57,6 +58,7 @@ const styles = StyleSheet.create({
         backgroundColor: Theme.colors.iconBackground,
         paddingVertical: 2,
         paddingHorizontal: 5,
+        paddingEnd: 8,
         marginTop: 5,
         borderRadius: Theme.radius.full,
     },

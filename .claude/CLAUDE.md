@@ -111,3 +111,11 @@ of truth for location selection.
   Button/Pressable component with `AppButton` in order give more structured and specification of how we use buttons in
   our app. use it when you know that a component is reusable and its has to always defined in a way that corresponds to
   our app 
+
+## Design Context
+
+Strategic and visual design decisions are captured in root-level `PRODUCT.md` (register, users, positioning, brand
+personality, anti-references) and `DESIGN.md` (color, typography, elevation, component specs). Register is
+`product`, platform is `android` (Material 3 as a loose baseline; the app renders one consistent custom design
+language on both iOS and Android rather than adapting per-OS). Read both before any UI/UX design work — the
+`impeccable` skill loads them automatically.

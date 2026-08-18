@@ -1,0 +1,145 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-18T00:00:00Z",
+  "title": "Design System: Ghamrah",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "Wine",
+        "canonical": "#8B1A3A",
+        "tonalRamp": ["#2E0812", "#4A0F1E", "#66162A", "#8B1A3A", "#B0405F", "#CC7089", "#E0A6B7", "#F5E1E6"]
+      },
+      "secondary": {
+        "role": "secondary",
+        "displayName": "Mocha",
+        "canonical": "#9A7060",
+        "tonalRamp": ["#2E1F1A", "#4A322A", "#66453A", "#9A7060", "#B4917F", "#CBAFA0", "#E2CEC4", "#F3E9E3"]
+      },
+      "neutral-bg": {
+        "role": "neutral",
+        "displayName": "Warm Cream",
+        "canonical": "#FDF8F5",
+        "tonalRamp": ["#3A302B", "#5C4E46", "#8A776C", "#C9B7AC", "#E8D9CF", "#F3E9E1", "#FAF3EE", "#FDF8F5"]
+      },
+      "surface-white": {
+        "role": "neutral",
+        "displayName": "Surface White",
+        "canonical": "#FFFFFF"
+      },
+      "border": {
+        "role": "neutral",
+        "displayName": "Border Blush",
+        "canonical": "#E8D8CF"
+      },
+      "placeholder": {
+        "role": "neutral",
+        "displayName": "Placeholder Rose",
+        "canonical": "#c9b1a7"
+      },
+      "danger-500": {
+        "role": "semantic",
+        "displayName": "Danger Red",
+        "canonical": "#D02727"
+      },
+      "success-500": {
+        "role": "semantic",
+        "displayName": "Success Green",
+        "canonical": "#27D027"
+      },
+      "info-500": {
+        "role": "semantic",
+        "displayName": "Info Blue",
+        "canonical": "#277FD0"
+      },
+      "warning-500": {
+        "role": "semantic",
+        "displayName": "Warning Orange",
+        "canonical": "#D46E00"
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display (Aboreto)", "purpose": "Screen titles and ceremonial moments." },
+      "accent": { "displayName": "Accent (SendFlowers)", "purpose": "One sparing decorative flourish per screen." },
+      "body": { "displayName": "Body", "purpose": "Default reading text and form values." },
+      "label": { "displayName": "Label", "purpose": "Field labels, tags, medium-size buttons." }
+    },
+    "shadows": [
+      { "name": "ambient-low", "value": "0px 0px 5px rgba(154, 112, 96, 0.3)", "purpose": "Default ambient lift for small floating elements." },
+      { "name": "ambient-high", "value": "0px 0px 10px rgba(154, 112, 96, 0.3)", "purpose": "Listing cards and clearly-raised surfaces." }
+    ],
+    "motion": [],
+    "breakpoints": []
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Default call-to-action button: wine background, white bold centered text, rounded corners.",
+      "html": "<button class=\"ds-btn-primary\">Book now</button>",
+      "css": ".ds-btn-primary { display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 8px; background: #8B1A3A; color: #FFFFFF; font-weight: 700; text-align: center; border: none; border-radius: 12px; padding: 14px 24px; transition: opacity 0.2s ease-out; } .ds-btn-primary:hover { opacity: 0.9; } .ds-btn-primary:focus-visible { outline: 2px solid #8B1A3A; outline-offset: 2px; } .ds-btn-primary:active { opacity: 0.8; }"
+    },
+    {
+      "name": "Outlined Button",
+      "kind": "button",
+      "refersTo": "button-outlined",
+      "description": "Secondary action: transparent background, wine border and text.",
+      "html": "<button class=\"ds-btn-outlined\">View details</button>",
+      "css": ".ds-btn-outlined { display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 8px; background: transparent; color: #8B1A3A; font-weight: 700; text-align: center; border: 1.5px solid #8B1A3A; border-radius: 12px; padding: 14px 24px; transition: background 0.2s ease-out; } .ds-btn-outlined:hover { background: rgba(139, 26, 58, 0.06); } .ds-btn-outlined:focus-visible { outline: 2px solid #8B1A3A; outline-offset: 2px; }"
+    },
+    {
+      "name": "Bordered Input",
+      "kind": "input",
+      "refersTo": "input-bordered",
+      "description": "Contained text field: white background, full border, rounded corners.",
+      "html": "<div class=\"ds-input-bordered-wrap\"><input class=\"ds-input-bordered\" placeholder=\"Wedding date\" /></div>",
+      "css": ".ds-input-bordered-wrap { display: flex; flex-direction: row; align-items: center; background: #FFFFFF; border: 1px solid #E8D8CF; border-radius: 12px; overflow: hidden; padding-right: 10px; } .ds-input-bordered { height: 50px; color: #8B1A3A; font-size: 14px; width: 100%; flex: 1; padding-left: 14px; border: none; background: transparent; } .ds-input-bordered::placeholder { color: #c9b1a7; } .ds-input-bordered:focus { outline: none; } .ds-input-bordered-wrap:focus-within { border-color: #8B1A3A; }"
+    },
+    {
+      "name": "Underline Input",
+      "kind": "input",
+      "refersTo": "input-underline",
+      "description": "Lightweight text field: transparent background, bottom border only.",
+      "html": "<div class=\"ds-input-underline-wrap\"><input class=\"ds-input-underline\" placeholder=\"Full name\" /></div>",
+      "css": ".ds-input-underline-wrap { display: flex; flex-direction: row; align-items: center; border-bottom: 2px solid #E8D8CF; transition: border-color 0.2s ease-out; } .ds-input-underline { height: 50px; color: #8B1A3A; font-size: 16px; width: 100%; flex: 1; padding-left: 5px; padding-right: 10px; border: none; background: transparent; } .ds-input-underline::placeholder { color: #c9b1a7; } .ds-input-underline:focus { outline: none; } .ds-input-underline-wrap:focus-within { border-color: #8B1A3A; }"
+    },
+    {
+      "name": "Listing Card",
+      "kind": "card",
+      "refersTo": "card-listing",
+      "description": "Vendor listing preview: image, promoted badge, name, tags, price — the app's signature content unit.",
+      "html": "<div class=\"ds-card-listing\"><div class=\"ds-card-listing-image-wrap\"><span class=\"ds-card-listing-badge\">Promoted</span><img class=\"ds-card-listing-image\" src=\"https://placehold.co/400x200\" alt=\"\" /></div><div class=\"ds-card-listing-info\"><p class=\"ds-card-listing-name\">Al Waha Wedding Hall</p><p class=\"ds-card-listing-meta\">Riyadh · 15,000 – 40,000 SAR</p></div></div>",
+      "css": ".ds-card-listing { width: 100%; border-radius: 24px; background: #FFFFFF; overflow: hidden; box-shadow: 0px 0px 10px rgba(154, 112, 96, 0.3); } .ds-card-listing-image-wrap { height: 200px; overflow: hidden; position: relative; } .ds-card-listing-image { width: 100%; height: 100%; object-fit: cover; } .ds-card-listing-badge { position: absolute; top: 10px; left: 10px; z-index: 1; background: #D02727; color: #FFFFFF; font-weight: 700; font-size: 12px; padding: 7px 15px; border-radius: 9999px; box-shadow: 0px 0px 8px rgba(255, 255, 255, 0.7); } .ds-card-listing-info { display: flex; flex-direction: column; align-items: flex-start; padding: 15px; gap: 5px; } .ds-card-listing-name { font-weight: 700; font-size: 16px; color: #202020; margin: 0; } .ds-card-listing-meta { font-size: 12px; color: #9A7060; margin: 0; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Wedding Ledger",
+    "overview": "Ghamrah reads like a well-kept planning book: wine-red ink on cream pages, unhurried and considered, with one elegant script flourish reserved for the moments that matter most. The system is warm and personal rather than transactional — every screen is designed to lower the anxiety of a high-stakes, emotional task, not add to it. Confidence comes from restraint: generous whitespace, a single confident accent color used deliberately, and soft, ambient depth rather than decoration. This system explicitly rejects the sterile, corporate booking-tool look and the wedding-industry clichés of pastel gradients, script-everywhere typography, and cluttered Pinterest-board density — warmth lives in the palette and in a few deliberate typographic gestures, not in ornament.",
+    "keyCharacteristics": [
+      "One confident wine-red primary against a warm cream base — restrained, not saturated everywhere",
+      "A ceremonial display face (Aboreto) for structure, a script accent (SendFlowers) used sparingly for warmth",
+      "Soft, rounded, ambient-shadow surfaces — nothing sharp, nothing harsh",
+      "RTL-first: every component mirrors correctly for Arabic before English is checked"
+    ],
+    "rules": [
+      { "name": "The One Ink Rule", "body": "Wine is the only color allowed to carry emphasis or call-to-action weight. Semantic colors signal state and state alone.", "section": "colors" },
+      { "name": "The Sparing Script Rule", "body": "SendFlowers appears at most once per screen, reserved for a single emotional highlight.", "section": "typography" },
+      { "name": "The Ambient-Only Rule", "body": "Shadows are warm-tinted and diffused in every direction — never a hard drop shadow, never used to imply directional light or interactivity.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do keep Wine (#8B1A3A) as the only color that carries call-to-action or emphasis weight; everything else is neutral or semantic.",
+      "Do use the warm cream base (#FDF8F5) for every screen background — never pure white as the page background.",
+      "Do keep shadows soft, warm-tinted, and ambient (rgba(154, 112, 96, 0.3)) — a consistent lift, not a state-driven effect.",
+      "Do verify RTL mirroring (text alignment, icon direction, layout flow) on every new component before shipping it.",
+      "Do reserve SendFlowers script type for one sparing emotional highlight per screen, at most."
+    ],
+    "donts": [
+      "Don't default to a cold, corporate booking-tool layout — no sterile SaaS card grids, no generic e-commerce checkout patterns.",
+      "Don't reach for wedding-industry clichés: script fonts throughout, pastel gradients, stock bridal imagery, or cluttered Pinterest-board density.",
+      "Don't use a hard black drop shadow or increase shadow intensity to signal a pressed/focused state.",
+      "Don't use semantic colors (green/red/blue/orange) for anything but state and feedback.",
+      "Don't mix the underline and bordered input designs on the same screen or form."
+    ]
+  }
+}

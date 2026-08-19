@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import {Theme} from '@/styles/Theme';
 import {useFormContext} from '@/contexts/form-context';
-import {Dispatch, SetStateAction, useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import {Dispatch, SetStateAction, useCallback, useEffect, useRef, useState} from 'react';
 import {IconButton} from '@/components/symbols/IconButton';
 import {parsePhoneNumber} from "libphonenumber-js";
 import {useLocationContext} from "@/contexts/location-context";
@@ -123,13 +123,13 @@ export default function AppTextInput({
 
     const isNumericField = keyboardType === 'phone-pad' || keyboardType === 'decimal-pad' || keyboardType === 'number-pad';
 
-    const isArabic = useMemo(() => {
-        if (!value) {
-            if (isNumericField) return placeholder ? /[\u0600-\u06FF]/.test(placeholder) : false;
-            return I18nManager.isRTL;
-        }
-        return /[\u0600-\u06FF]/.test(value);
-    }, [value, isNumericField, placeholder])
+    // const isArabic = useMemo(() => {
+    //     if (!value) {
+    //         if (isNumericField) return placeholder ? /[\u0600-\u06FF]/.test(placeholder) : false;
+    //         return I18nManager.isRTL;
+    //     }
+    //     return /[\u0600-\u06FF]/.test(value);
+    // }, [value, isNumericField, placeholder])
 
     return (
         <View style={[styles.container, containerStyle]}>
@@ -148,7 +148,7 @@ export default function AppTextInput({
                     // onFocus={() => setIsFocused(true)}
                            secureTextEntry={secureTextEntry && !showPassword}
                            inputMode={inputMode}
-                           textAlign={isArabic !== I18nManager.isRTL ? 'right' : 'left'}
+                           textAlign={I18nManager.isRTL ? 'right' : 'left'}
 
 
                 />

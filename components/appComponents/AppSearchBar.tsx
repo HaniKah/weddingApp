@@ -20,12 +20,7 @@ export default function AppSearchBar({searchText, setSearchText, setFilterVisibl
     const {t} = useTranslation();
 
     const placeholder = t('planner.search');
-
-    const isArabic = useMemo(() => {
-        if (!searchText) return /[؀-ۿ]/.test(placeholder);
-        return /[؀-ۿ]/.test(searchText);
-    }, [searchText, placeholder])
-
+    
     return (
         <>
             <View style={styles.container}>
@@ -33,7 +28,7 @@ export default function AppSearchBar({searchText, setSearchText, setFilterVisibl
                            placeholderTextColor={Theme.colors.placeholder}
                            value={searchText}
                            onChangeText={setSearchText}
-                           textAlign={isArabic !== I18nManager.isRTL ? 'right' : 'left'}
+                           textAlign={I18nManager.isRTL ? 'right' : 'left'}
                            style={styles.input}/>
                 <IconButton onPress={() => setFilterVisible(true)}
                             extraStylesBtn={[styles.filterButton, hasFilters && styles.filterButtonHasFilters]}

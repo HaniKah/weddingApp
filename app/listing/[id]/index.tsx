@@ -238,9 +238,10 @@ const styles = StyleSheet.create({
         gap: 10
     },
     title: {
-        fontSize: Theme.sizes.xl,
+        fontSize: Theme.sizes.lg,
         flexShrink: 1,
         fontWeight: 'bold',
+        textAlign: 'left',
     },
     descriptionContainer: {
         marginTop: 20,

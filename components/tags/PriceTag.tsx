@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
         fontWeight: 'normal',
         color: Theme.colors.secondary,
         fontSize: Theme.sizes.xs,
+        textAlign: "left",
 
     },
     priceContainer: {

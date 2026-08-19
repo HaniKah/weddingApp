@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         gap: 10,
-        borderRadius: Theme.radius.md,
+        borderRadius: Theme.radius.lg,
         backgroundColor: Theme.colors.white,
         overflow: 'hidden',
         padding: 5,
@@ -80,9 +80,9 @@ const styles = StyleSheet.create({
     //     borderColor: Theme.colors.gray.S300
     // },
     imageContainer: {
-        height: 95,
-        width: 95,
-        borderRadius: Theme.radius.xs,
+        height: 90,
+        width: 90,
+        borderRadius: Theme.radius.md,
         overflow: 'hidden',
     },
 
@@ -98,15 +98,16 @@ const styles = StyleSheet.create({
     },
     infoContainer: {
         display: 'flex',
-        gap: 5,
+        gap: 8,
         flex: 1,
         paddingVertical: 8,
         overflow: 'hidden',
+        textAlign: 'left',
     },
     placeName: {
         fontWeight: 'bold',
         fontSize: Theme.sizes.md,
-
+        textAlign: 'left',
     },
     // placeNameUncompleted: {
     //     color: Theme.colors.gray.S400

@@ -23,10 +23,6 @@ export default function WelcomeText() {
                     </Text>
                     }
 
-                    {/*{isoCountry && <LocationTag countryCode={COUNTRIES.get(isoCountry)?.countryCode}/>*/}
-
-                    {/*}*/}
-
 
                 </View>
             </View>

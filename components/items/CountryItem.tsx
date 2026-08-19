@@ -2,6 +2,7 @@ import {I18nManager, StyleSheet, Text, TouchableOpacity, View} from 'react-nativ
 import {Theme} from '@/styles/Theme';
 import {CountryCode, CountryInfo} from '@/types/open-api';
 import {IconSymbol} from '@/components/symbols/IconSymbol';
+import {useTranslation} from "react-i18next";
 
 interface CountryItemProps {
     country: CountryInfo;
@@ -9,6 +10,7 @@ interface CountryItemProps {
 }
 
 export default function CountryItem({country, onPress}: CountryItemProps) {
+    const {t} = useTranslation();
     return (
         <TouchableOpacity
             style={styles.container}
@@ -19,7 +21,7 @@ export default function CountryItem({country, onPress}: CountryItemProps) {
                 <View style={styles.flagPlaceholder}>
                     <IconSymbol name="mappin.and.ellipse" size={20} color={Theme.colors.primary}/>
                 </View>
-                <Text style={styles.countryName}>{country.countryName}</Text>
+                <Text style={styles.countryName}>{t(`countries.${country.countryCode}`)}</Text>
             </View>
             <IconSymbol name={I18nManager.isRTL ? 'chevron.left' : 'chevron.right'} size={20}
                         color={Theme.colors.gray.S400}/>
@@ -54,5 +56,6 @@ const styles = StyleSheet.create({
         fontSize: Theme.sizes.md,
         color: Theme.colors.gray.S800,
         fontWeight: '500',
+        textAlign: 'left',
     },
 });

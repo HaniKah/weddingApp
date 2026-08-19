@@ -95,6 +95,7 @@ const styles = StyleSheet.create({
     label: {
         marginBottom: 5,
         color: Theme.colors.primary,
+        textAlign: 'left',
     },
     disabledLabel: {
         color: Theme.colors.textDisabled,
@@ -140,6 +141,7 @@ const styles = StyleSheet.create({
         fontSize: Theme.sizes.xs,
         color: Theme.colors.red.S500,
         marginTop: 5,
+        textAlign: 'left',
     },
 
 

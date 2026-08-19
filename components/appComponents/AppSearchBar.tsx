@@ -1,4 +1,4 @@
-import {StyleSheet, TextInput, View} from 'react-native';
+import {I18nManager, StyleSheet, TextInput, View} from 'react-native';
 import {Theme} from "@/styles/Theme";
 import {IconButton} from "@/components/symbols/IconButton";
 import {Dispatch, SetStateAction, useMemo} from "react";
@@ -19,13 +19,21 @@ export default function AppSearchBar({searchText, setSearchText, setFilterVisibl
 
     const {t} = useTranslation();
 
+    const placeholder = t('planner.search');
+
+    const isArabic = useMemo(() => {
+        if (!searchText) return /[؀-ۿ]/.test(placeholder) || I18nManager.isRTL;
+        return /[؀-ۿ]/.test(searchText);
+    }, [searchText, placeholder])
+
     return (
         <>
             <View style={styles.container}>
-                <TextInput placeholder={t('planner.search')}
+                <TextInput placeholder={placeholder}
                            placeholderTextColor={Theme.colors.placeholder}
                            value={searchText}
                            onChangeText={setSearchText}
+                           textAlign={isArabic ? 'right' : 'left'}
                            style={styles.input}/>
                 <IconButton onPress={() => setFilterVisible(true)}
                             extraStylesBtn={[styles.filterButton, hasFilters && styles.filterButtonHasFilters]}

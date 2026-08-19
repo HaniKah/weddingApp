@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
         flex: 1,
         fontSize: 15,
         color: Theme.colors.primary,
+        textAlign: 'left',
     },
     menuCard: {},
 });

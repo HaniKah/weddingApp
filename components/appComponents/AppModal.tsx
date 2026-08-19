@@ -4,6 +4,7 @@ import {ButtonType} from '@/styles/Button';
 import {Theme} from '@/styles/Theme';
 import {useImperativeHandle, useState} from 'react';
 import {useSafeAreaInsets} from "react-native-safe-area-context";
+import {useTranslation} from "react-i18next";
 
 export interface AppModalRef {
     open: () => void;
@@ -47,7 +48,7 @@ export default function AppModal({
             isOpen: isVisible,
         };
     });
-
+    const {t} = useTranslation();
 
     return (
         <Modal
@@ -70,7 +71,7 @@ export default function AppModal({
                             extraStylesTxt={{color: Theme.colors.secondary}}
                             buttonType={ButtonType.PLAIN}
                             onPress={handleCancel}>
-                            cancel
+                            {t("common.exit")}
                         </AppButton>
                         <View style={[styles.handle, isFullScreen && styles.handleFullScreen]}></View>
                         <View style={{flex: 1}}></View>

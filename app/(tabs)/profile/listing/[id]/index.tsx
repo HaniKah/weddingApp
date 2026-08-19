@@ -348,6 +348,7 @@ const styles = StyleSheet.create({
     placeName: {
         fontWeight: 'bold',
         fontSize: Theme.sizes.lg,
+        textAlign: 'left',
     },
 
 

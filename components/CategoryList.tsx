@@ -105,6 +105,7 @@ const styles = StyleSheet.create({
     categoriesText: {
         fontWeight: 'bold',
         marginBottom: 10,
+        textAlign: 'left',
 
     },
     category: {

@@ -214,6 +214,7 @@ const styles = StyleSheet.create({
         letterSpacing: 0.8,
         marginBottom: 8,
         paddingHorizontal: 4,
+        textAlign: 'left',
     },
     menuItemContainer: {
         backgroundColor: Theme.colors.white,

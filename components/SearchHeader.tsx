@@ -67,6 +67,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: Theme.sizes.md,
         height: 'auto',
+        textAlign: 'left',
     },
 
 });

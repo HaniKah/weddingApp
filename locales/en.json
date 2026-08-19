@@ -357,7 +357,8 @@
   },
   "common": {
     "cancel": "Cancel",
-    "clear": "clear",
+    "exit": "Exit",
+    "clear": "Clear",
     "selectAnOption": "Select an option",
     "previous": "Previous",
     "next": "Next",

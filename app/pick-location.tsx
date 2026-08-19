@@ -72,11 +72,13 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: Theme.colors.primary,
         marginBottom: 8,
+        textAlign: 'left',
     },
     subtitle: {
         fontSize: Theme.sizes.sm,
         color: Theme.colors.secondary,
         lineHeight: 20,
+        textAlign: 'left',
     },
     listContent: {
         paddingBottom: 20,

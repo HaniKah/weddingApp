@@ -124,13 +124,18 @@ export default function AppTextInput({
     const isNumericField = keyboardType === 'phone-pad' || keyboardType === 'decimal-pad' || keyboardType === 'number-pad';
 
     const isArabic = useMemo(() => {
-        if (!value) return I18nManager.isRTL && !isNumericField;
+        if (!value) {
+            if (isNumericField) return placeholder ? /[\u0600-\u06FF]/.test(placeholder) : false;
+            return I18nManager.isRTL;
+        }
         return /[\u0600-\u06FF]/.test(value);
-    }, [value, isNumericField])
+    }, [value, isNumericField, placeholder])
+
+    const textAlignStyle = {textAlign: I18nManager.isRTL ? 'right' as const : 'left' as const};
 
     return (
         <View style={[styles.container, containerStyle]}>
-            {label && <Text style={[styles.label]}>{label}</Text>}
+            {label && <Text style={[styles.label, textAlignStyle]}>{label}</Text>}
             <View style={[styles.inputContainer, extraStyles]}>
                 <TextInput value={value || undefined}
                            autoCorrect={false}
@@ -169,7 +174,7 @@ export default function AppTextInput({
             </View>
 
             {error &&
-                <Text style={styles.error}>{error}</Text>
+                <Text style={[styles.error, textAlignStyle]}>{error}</Text>
             }
         </View>
     );

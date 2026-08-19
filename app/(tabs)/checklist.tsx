@@ -90,6 +90,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: Theme.colors.primary,
         marginVertical: 15,
+        textAlign: 'center',
     },
     inputContainer: {
         flexDirection: 'row',

@@ -1,7 +1,7 @@
 import {RefreshControl, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {useCallback, useEffect, useMemo, useState} from 'react';
 import {Link, router, Stack, useLocalSearchParams} from 'expo-router';
-import {Categories, PlaceDetailsDto} from '@/types/open-api';
+import {Categories, PhotoSize, PlaceDetailsDto} from '@/types/open-api';
 import AppButton from '@/components/appComponents/AppButton';
 import {ButtonType} from '@/styles/Button';
 import AppIf from '@/components/appComponents/AppIf';
@@ -17,6 +17,7 @@ import ScrollableImages, {LISTING_MEDIA_HEIGHT} from "@/components/ScrollableIma
 import FeaturesTag from "@/components/tags/FeaturesTag";
 import AppSafeAreaView from "@/components/appComponents/AppSafeAreaView";
 import {useTranslation} from 'react-i18next';
+import AppMediaViewer, {MediaItem} from '@/components/appComponents/AppMediaViewer';
 
 
 export default function PlaceId() {
@@ -29,6 +30,7 @@ export default function PlaceId() {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
     const [placeDetails, setPlaceDetails] = useState<PlaceDetailsDto>();
+    const [activeKey, setActiveKey] = useState<string>();
 
 
     const params = useLocalSearchParams<{ id: string, step: Categories }>();
@@ -54,6 +56,40 @@ export default function PlaceId() {
         if (!placeDetails?.description) return
         return /[\u0600-\u06FF]/.test(placeDetails?.description);
     }, [placeDetails?.description])
+
+    const heroMediaItems: MediaItem[] = useMemo(() => (placeDetails?.heroMedia ?? []).map((media): MediaItem =>
+        media.type === 'Video'
+            ? {
+                kind: 'video',
+                item: {
+                    id: media.id,
+                    uri: media.uri,
+                    posterUri: media.posterUri,
+                    ratio: media.ratio,
+                    blurhash: media.blurhash,
+                    durationMs: null,
+                    isMain: media.isMain,
+                },
+            }
+            : {
+                kind: 'photo',
+                item: {
+                    photoSize: PhotoSize.Image,
+                    id: media.id,
+                    uri: media.uri,
+                    ratio: media.ratio ?? 1,
+                    blurhash: media.blurhash ?? '',
+                    isMain: media.isMain,
+                },
+            }
+    ), [placeDetails?.heroMedia]);
+
+    const goToGallery = useCallback(() => {
+        router.push({
+            pathname: '/listing/[id]/images',
+            params: {id: params.id, step: params.step},
+        });
+    }, [params.id, params.step]);
 
 
     return (
@@ -82,10 +118,11 @@ export default function PlaceId() {
 
                         {placeDetails?.heroMedia && placeDetails?.heroMedia?.length > 0 ?
                             <ScrollableImages
-                                onPress={() => router.push({
-                                    pathname: '/listing/[id]/images',
-                                    params: {id: params.id, step: params.step},
-                                })}heroMedia={placeDetails.heroMedia}/>
+                                onMediaPress={(index) => setActiveKey(
+                                    `${heroMediaItems[index].kind}-${heroMediaItems[index].item.id}`
+                                )}
+                                onHeaderPress={goToGallery}
+                                heroMedia={placeDetails.heroMedia}/>
                             :
 
                             <View style={styles.imagePlaceHolder}>
@@ -142,6 +179,13 @@ export default function PlaceId() {
                     </Link>
                 </View>
             </AppSafeAreaView>
+
+            <AppMediaViewer
+                visible={!!activeKey}
+                mediaItems={heroMediaItems}
+                activeKey={activeKey}
+                setActiveKey={setActiveKey}
+            />
         </>
     );
 }

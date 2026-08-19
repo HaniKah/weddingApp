@@ -137,13 +137,14 @@ export default function AppMediaViewer({
                                 </View>
                             );
                         }
+                        const videoHeight = DEVICE_WIDTH * (item.item.ratio || 9 / 16);
                         return (
-                            <View style={{width: DEVICE_WIDTH}}>
+                            <View style={[styles.videoSlide, {width: DEVICE_WIDTH}]}>
                                 <AppVideoPlayer
                                     uri={item.item.uri}
                                     posterUri={item.item.posterUri}
                                     blurhash={item.item.blurhash}
-                                    extraStyles={styles.media}
+                                    extraStyles={{width: DEVICE_WIDTH, height: videoHeight}}
                                     active={mediaKey(item) === activeKey}
                                     autoplay
                                     nativeControls
@@ -185,6 +186,10 @@ const styles = StyleSheet.create({
     media: {
         flex: 1,
         height: '100%',
+    },
+    videoSlide: {
+        flex: 1,
+        justifyContent: 'center',
     },
     headerContainer: {
         display: 'flex',

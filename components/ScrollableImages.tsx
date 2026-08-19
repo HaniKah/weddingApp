@@ -10,16 +10,16 @@ import {useTranslation} from 'react-i18next';
 
 export const LISTING_MEDIA_HEIGHT = 500;
 
-function Header({count}: { count: number }) {
+function Header({count, onPress}: { count: number, onPress: () => void }) {
     const insets = useSafeAreaInsets()
     const {t} = useTranslation();
     return (
-        <View style={[{marginTop: insets.top}, styles.HeaderPhotosFound]}>
+        <Pressable style={[{marginTop: insets.top}, styles.HeaderPhotosFound]} onPress={onPress}>
             <IconSymbol color={Theme.colors.black} name="photo.on.rectangle"/>
             <Text>
                 {t('listing.photos', {count})}
             </Text>
-        </View>
+        </Pressable>
     )
 }
 
@@ -71,7 +71,7 @@ function Footer({count, activeIndex}: { count: number, activeIndex: number }) {
     )
 }
 
-export default function ScrollableImages({heroMedia, onPress}: { heroMedia: HeroMediaItemDto[], onPress: () => void }) {
+export default function ScrollableImages({heroMedia, onMediaPress, onHeaderPress}: { heroMedia: HeroMediaItemDto[], onMediaPress: (index: number) => void, onHeaderPress: () => void }) {
     const DEVICE_WIDTH = Dimensions.get('window').width
     const [activeIndex, setActiveIndex] = React.useState(0);
     const isDragging = useRef(false);
@@ -84,15 +84,15 @@ export default function ScrollableImages({heroMedia, onPress}: { heroMedia: Hero
         }
     };
 
-    function handlePress() {
+    function handlePress(index: number) {
         if (isDragging.current) return;
-        onPress?.();
+        onMediaPress?.(index);
     }
 
     return (
         <>
             <View style={styles.container}>
-                <Header count={heroMedia.length}/>
+                <Header count={heroMedia.length} onPress={onHeaderPress}/>
                 <FlatList data={heroMedia}
                           horizontal={true}
                           showsHorizontalScrollIndicator={false}
@@ -101,7 +101,7 @@ export default function ScrollableImages({heroMedia, onPress}: { heroMedia: Hero
                           snapToInterval={DEVICE_WIDTH}
                           decelerationRate="fast"
                           renderItem={({item, index}) =>
-                              <Pressable onPress={handlePress}>
+                              <Pressable onPress={() => handlePress(index)}>
                                   {item.type === 'Video' ?
                                       <AppVideoPlayer
                                           uri={item.uri}
@@ -109,7 +109,7 @@ export default function ScrollableImages({heroMedia, onPress}: { heroMedia: Hero
                                           blurhash={item.blurhash}
                                           extraStyles={[styles.image, {width: DEVICE_WIDTH}]}
                                           active={index === activeIndex}
-                                          autoplay
+                                          autoplay={false}
                                           muted
                                           loop
                                       />

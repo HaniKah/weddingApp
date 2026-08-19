@@ -379,7 +379,7 @@
     "FillPlaceInfo": "Fill Place Info",
     "AddFeatures": "Add Features",
     "AddDescription": "Add Description",
-    "UploadImages": "Upload Images",
+    "UploadImages": "Upload Media",
     "businessName": "Business name",
     "businessNamePlaceholder": "e.g. Royal Wedding Hall",
     "categories": "Categories",
@@ -410,7 +410,7 @@
     "yesWeDo": "Yes, we do",
     "noNotYet": "No, not yet"
   },
-  "Do you offer dress rentals ?": "هل تقدمون خدمة تأجير الفساتين؟",
-  "Customers love knowing what’s available before they visit your boutique.": "يحب العملاء معرفة ما هو متاح قبل زيارة متجرك.",
-  "Quick question about your listing.": "سؤال سريع حول قائمتك."
+  "Do you offer dress rentals ?": "Do you offer dresses rentals ?",
+  "Customers love knowing what’s available before they visit your boutique.": "Customers love knowing what’s available before they visit your boutique.",
+  "Quick question about your listing.": "Quick question about your listing."
 }

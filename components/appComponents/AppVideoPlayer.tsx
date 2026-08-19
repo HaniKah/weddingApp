@@ -1,6 +1,6 @@
 import {StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
 import {useEffect, useState} from 'react';
-import {VideoView, useVideoPlayer} from 'expo-video';
+import {VideoView, useVideoPlayer, VideoContentFit} from 'expo-video';
 import {Image} from 'expo-image';
 import {Theme} from '@/styles/Theme';
 
@@ -22,6 +22,7 @@ export default function AppVideoPlayer({
                                             muted = false,
                                             loop = false,
                                             nativeControls = false,
+                                            contentFit = 'cover',
                                             extraStyles,
                                         }: {
     uri: string
@@ -32,6 +33,7 @@ export default function AppVideoPlayer({
     muted?: boolean
     loop?: boolean
     nativeControls?: boolean
+    contentFit?: VideoContentFit
     extraStyles?: StyleProp<ViewStyle>
 }) {
     const [hasStartedPlaying, setHasStartedPlaying] = useState(false);
@@ -71,7 +73,7 @@ export default function AppVideoPlayer({
                 style={styles.video}
                 player={player}
                 nativeControls={nativeControls}
-                contentFit="cover"
+                contentFit={contentFit}
             />
             {!hasStartedPlaying && (posterUri || blurhash) &&
                 <Image

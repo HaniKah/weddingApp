@@ -21,15 +21,15 @@ function mediaKey(media: MediaItem) {
 // the header can show "index/total" across every file rather than each media
 // type having its own separate, independently-indexed viewer.
 export default function AppMediaViewer({
-                                            mediaItems,
-                                            activeKey,
-                                            setActiveKey,
-                                            onDeletePhoto,
-                                            onDeleteVideo,
-                                            onSetMainPhoto,
-                                            onSetMainVideo,
-                                            visible,
-                                        }: {
+                                           mediaItems,
+                                           activeKey,
+                                           setActiveKey,
+                                           onDeletePhoto,
+                                           onDeleteVideo,
+                                           onSetMainPhoto,
+                                           onSetMainVideo,
+                                           visible,
+                                       }: {
     mediaItems: MediaItem[]
     activeKey: string | undefined
     setActiveKey: (key: string | undefined) => void
@@ -137,17 +137,20 @@ export default function AppMediaViewer({
                                 </View>
                             );
                         }
-                        const videoHeight = DEVICE_WIDTH * (item.item.ratio || 9 / 16);
+
                         return (
-                            <View style={[styles.videoSlide, {width: DEVICE_WIDTH}]}>
+                            <View style={[styles.videoSlide,]}>
                                 <AppVideoPlayer
                                     uri={item.item.uri}
                                     posterUri={item.item.posterUri}
                                     blurhash={item.item.blurhash}
-                                    extraStyles={{width: DEVICE_WIDTH, height: videoHeight}}
+                                    extraStyles={{
+                                        width: DEVICE_WIDTH,
+                                    }}
                                     active={mediaKey(item) === activeKey}
                                     autoplay
                                     nativeControls
+                                    contentFit="contain"
                                 />
                             </View>
                         );
@@ -189,6 +192,8 @@ const styles = StyleSheet.create({
     },
     videoSlide: {
         flex: 1,
+        display: "flex",
+        alignItems: "center",
         justifyContent: 'center',
     },
     headerContainer: {

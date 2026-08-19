@@ -7,14 +7,23 @@ import {Theme} from "@/styles/Theme";
 import {useSafeAreaInsets} from "react-native-safe-area-context";
 import AppVideoPlayer from "@/components/appComponents/AppVideoPlayer";
 import {useTranslation} from 'react-i18next';
+import {router} from "expo-router";
 
 export const LISTING_MEDIA_HEIGHT = 500;
 
-function Header({count, onPress}: { count: number, onPress: () => void }) {
+function Header({count, listingId}: { count: number, listingId: number }) {
     const insets = useSafeAreaInsets()
     const {t} = useTranslation();
+
+    function handlePress() {
+        router.push({
+            pathname: "/listing/[id]/images",
+            params: {id: listingId}
+        })
+    }
+
     return (
-        <Pressable style={[{marginTop: insets.top}, styles.HeaderPhotosFound]} onPress={onPress}>
+        <Pressable style={[{marginTop: insets.top}, styles.HeaderPhotosFound]} onPress={handlePress}>
             <IconSymbol color={Theme.colors.black} name="photo.on.rectangle"/>
             <Text>
                 {t('listing.photos', {count})}
@@ -71,7 +80,11 @@ function Footer({count, activeIndex}: { count: number, activeIndex: number }) {
     )
 }
 
-export default function ScrollableImages({heroMedia, onMediaPress, onHeaderPress}: { heroMedia: HeroMediaItemDto[], onMediaPress: (index: number) => void, onHeaderPress: () => void }) {
+export default function ScrollableImages({heroMedia, onMediaPress, listingId}: {
+    heroMedia: HeroMediaItemDto[],
+    onMediaPress: (index: number) => void,
+    listingId: number
+}) {
     const DEVICE_WIDTH = Dimensions.get('window').width
     const [activeIndex, setActiveIndex] = React.useState(0);
     const isDragging = useRef(false);
@@ -92,7 +105,6 @@ export default function ScrollableImages({heroMedia, onMediaPress, onHeaderPress
     return (
         <>
             <View style={styles.container}>
-                <Header count={heroMedia.length} onPress={onHeaderPress}/>
                 <FlatList data={heroMedia}
                           horizontal={true}
                           showsHorizontalScrollIndicator={false}
@@ -136,6 +148,7 @@ export default function ScrollableImages({heroMedia, onMediaPress, onHeaderPress
                               }, 100);
                           }}
                 />
+                <Header count={heroMedia.length} listingId={listingId}/>
                 <Footer count={heroMedia.length} activeIndex={activeIndex}/>
             </View>
 
@@ -159,7 +172,8 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 10,
         end: 10,
-        zIndex: 20,
+        zIndex: 50,
+        elevation: 20,
         paddingHorizontal: 10,
         paddingVertical: 6,
         borderRadius: Theme.radius.full

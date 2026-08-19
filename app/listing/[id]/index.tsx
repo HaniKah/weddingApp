@@ -1,6 +1,6 @@
 import {RefreshControl, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {useCallback, useEffect, useMemo, useState} from 'react';
-import {Link, router, Stack, useLocalSearchParams} from 'expo-router';
+import {Link, Stack, useLocalSearchParams} from 'expo-router';
 import {Categories, PhotoSize, PlaceDetailsDto} from '@/types/open-api';
 import AppButton from '@/components/appComponents/AppButton';
 import {ButtonType} from '@/styles/Button';
@@ -84,13 +84,6 @@ export default function PlaceId() {
             }
     ), [placeDetails?.heroMedia]);
 
-    const goToGallery = useCallback(() => {
-        router.push({
-            pathname: '/listing/[id]/images',
-            params: {id: params.id, step: params.step},
-        });
-    }, [params.id, params.step]);
-
 
     return (
         <>
@@ -118,10 +111,11 @@ export default function PlaceId() {
 
                         {placeDetails?.heroMedia && placeDetails?.heroMedia?.length > 0 ?
                             <ScrollableImages
+                                listingId={id}
                                 onMediaPress={(index) => setActiveKey(
                                     `${heroMediaItems[index].kind}-${heroMediaItems[index].item.id}`
                                 )}
-                                onHeaderPress={goToGallery}
+                                // onHeaderPress={goToGallery}
                                 heroMedia={placeDetails.heroMedia}/>
                             :
 

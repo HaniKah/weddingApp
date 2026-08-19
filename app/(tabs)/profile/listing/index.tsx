@@ -11,6 +11,7 @@ import {REFRESH_DELAY} from '@/constants/general';
 import {AppModalRef} from '@/components/appComponents/AppModal';
 import {IconButton} from '@/components/symbols/IconButton';
 import {Stack} from 'expo-router';
+import {useTranslation} from "react-i18next";
 
 export default function Index() {
 
@@ -19,6 +20,7 @@ export default function Index() {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
 
+    const {t} = useTranslation();
 
     const createPlaceModalRef = useRef<AppModalRef>(null);
 
@@ -62,7 +64,7 @@ export default function Index() {
             <View style={styles.sectionHeaderContainer}>
                 {title &&
                     <Text
-                        style={[styles.sectionHeader, title === 'Published' ? styles.publishedSectionHeader : styles.unpublishedSectionHeader]}>{title}</Text>
+                        style={[styles.sectionHeader, title === 'Published' ? styles.publishedSectionHeader : styles.unpublishedSectionHeader]}>{t(`common.${title}`)}</Text>
                 }
             </View>
 

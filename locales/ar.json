@@ -369,7 +369,9 @@
     "selectAnOption": "اختر خياراً",
     "previous": "السابق",
     "next": "التالي",
-    "finish": "إنهاء"
+    "finish": "إنهاء",
+    "Published": "فعّال",
+    "Unpublished": "غير فعّال"
   },
   "form": {
     "fieldRequired": "هذا الحقل مطلوب",

@@ -362,7 +362,9 @@
     "selectAnOption": "Select an option",
     "previous": "Previous",
     "next": "Next",
-    "finish": "Finish"
+    "finish": "Finish",
+    "Published": "Published",
+    "Unpublished": "Unpublished"
   },
   "form": {
     "fieldRequired": "This field is required",

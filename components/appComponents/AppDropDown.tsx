@@ -1,5 +1,5 @@
 import {useEffect, useRef, useState} from 'react';
-import {FlatList, I18nManager, Pressable, StyleProp, StyleSheet, Text, View, ViewStyle} from 'react-native';
+import {FlatList, Pressable, StyleProp, StyleSheet, Text, View, ViewStyle} from 'react-native';
 import {Theme} from '@/styles/Theme';
 import {IconSymbol} from '@/components/symbols/IconSymbol';
 import AppBottomSheet, {AppBottomSheetRef} from '@/components/appComponents/AppBottomSheet';
@@ -24,8 +24,6 @@ export default function AppDropDown<T>({itemList, label, value, onChange, style,
     const [error, setError] = useState<string | undefined>();
 
     const bottomSheetRef = useRef<AppBottomSheetRef>(null);
-
-    const textAlignStyle = {textAlign: I18nManager.isRTL ? 'right' as const : 'left' as const};
 
     const onSelect = (selectedValue: T) => {
         onChange(selectedValue);
@@ -65,7 +63,7 @@ export default function AppDropDown<T>({itemList, label, value, onChange, style,
     return (
         <View style={style}>
             {label &&
-                <Text style={[styles.label, textAlignStyle, disabled && styles.disabledText]}>{label}</Text>}
+                <Text style={[styles.label, disabled && styles.disabledText]}>{label}</Text>}
             <Pressable disabled={disabled} style={[styles.pressable, disabled && styles.disabledPressable]}
                        onPress={() => bottomSheetRef.current?.open()}>
                 <Text style={[styles.selectedText, disabled && styles.disabledText]}>
@@ -73,7 +71,7 @@ export default function AppDropDown<T>({itemList, label, value, onChange, style,
                 </Text>
                 <IconSymbol name="chevron.down" size={20} color={Theme.colors.border}/>
             </Pressable>
-            {error && <Text style={[styles.error, textAlignStyle]}>{error}</Text>}
+            {error && <Text style={styles.error}>{error}</Text>}
 
             <AppBottomSheet ref={bottomSheetRef}>
                 <View style={styles.viewContainer}>
@@ -98,6 +96,7 @@ const styles = StyleSheet.create({
     },
     label: {
         color: Theme.colors.primary,
+        textAlign: "left"
     },
     flatListContainer: {
         marginTop: 0,
@@ -138,6 +137,7 @@ const styles = StyleSheet.create({
     error: {
         fontSize: Theme.sizes.xs,
         color: Theme.colors.red['S500'],
+        textAlign: 'left',
 
     },
 

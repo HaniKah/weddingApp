@@ -131,11 +131,9 @@ export default function AppTextInput({
         return /[\u0600-\u06FF]/.test(value);
     }, [value, isNumericField, placeholder])
 
-    const textAlignStyle = {textAlign: I18nManager.isRTL ? 'right' as const : 'left' as const};
-
     return (
         <View style={[styles.container, containerStyle]}>
-            {label && <Text style={[styles.label, textAlignStyle]}>{label}</Text>}
+            {label && <Text style={[styles.label]}>{label}</Text>}
             <View style={[styles.inputContainer, extraStyles]}>
                 <TextInput value={value || undefined}
                            autoCorrect={false}
@@ -150,7 +148,7 @@ export default function AppTextInput({
                     // onFocus={() => setIsFocused(true)}
                            secureTextEntry={secureTextEntry && !showPassword}
                            inputMode={inputMode}
-                           textAlign={isArabic ? 'right' : 'left'}
+                           textAlign={isArabic !== I18nManager.isRTL ? 'right' : 'left'}
 
 
                 />
@@ -174,7 +172,7 @@ export default function AppTextInput({
             </View>
 
             {error &&
-                <Text style={[styles.error, textAlignStyle]}>{error}</Text>
+                <Text style={styles.error}>{error}</Text>
             }
         </View>
     );
@@ -217,12 +215,14 @@ const design1: TextInputType = StyleSheet.create({
             color: Theme.colors.primary,
             fontWeight: 'semibold',
             fontSize: Theme.sizes.sm,
+            textAlign: 'left',
         },
 
         error: {
             fontSize: Theme.sizes.xs,
             color: Theme.colors.red['S500'],
             marginTop: 5,
+            textAlign: 'left',
         },
         onFocus: {
             borderColor: Theme.colors.primary,
@@ -268,12 +268,14 @@ const design2: TextInputType = StyleSheet.create({
         fontWeight: 'semibold',
         margin: 5,
         fontSize: Theme.sizes.sm,
+        textAlign: 'left',
     },
 
     error: {
         fontSize: Theme.sizes.xs,
         color: Theme.colors.red['S500'],
         marginTop: 5,
+        textAlign: 'left',
     },
     onFocus: {
         borderColor: Theme.colors.primary,

@@ -1,6 +1,8 @@
 import {createJSONStorage, persist} from 'zustand/middleware';
 import {deleteItemAsync, getItemAsync, setItemAsync} from 'expo-secure-store';
 import {create} from 'zustand';
+import axios from 'axios';
+import {Platform} from 'react-native';
 import {UserType} from '@/types/user-type';
 
 type UserInfo = {
@@ -82,17 +84,44 @@ export const useAuthStore = create(persist<userState, [], [], PersistedAuthState
     })),
 
     onRehydrateStorage: () => {
-        return (rehydratedState, error) => {
+        return async (rehydratedState, error) => {
             if (error) {
                 console.error('Failed to rehydrate auth store:', error);
             }
-            // Only the tokens are persisted, so `isLoggedIn` must be derived from
-            // the rehydrated token rather than read from storage. The token is the
-            // source of truth; the boolean is computed state.
-            useAuthStore.setState({
-                isLoggedIn: !!rehydratedState?.accessToken,
-                hasHydrated: true,
-            });
+
+            const refreshToken = rehydratedState?.refreshToken;
+            if (!refreshToken) {
+                useAuthStore.setState({isLoggedIn: false, hasHydrated: true});
+                return;
+            }
+
+            // A persisted refresh token only proves a session existed on this
+            // device, not that it's still valid server-side (it may have been
+            // revoked, expired, or rotated elsewhere). Confirm it against the
+            // backend before optimistically rendering any authenticated screen -
+            // otherwise a dead token flips `isLoggedIn` true until some unrelated
+            // API call happens to 401 later.
+            try {
+                const baseURL = process.env.NODE_ENV === 'development' && Platform.OS === 'android'
+                    ? process.env.EXPO_PUBLIC_API_URL_ANDROID
+                    : process.env.EXPO_PUBLIC_API_URL;
+                const res = await axios.post(`${baseURL}/api/auth/refresh`, null, {
+                    headers: {Authorization: `Bearer ${refreshToken}`},
+                });
+                useAuthStore.setState({
+                    isLoggedIn: true,
+                    accessToken: res.data.accessToken,
+                    refreshToken: res.data.refreshToken,
+                    hasHydrated: true,
+                });
+            } catch {
+                useAuthStore.setState({
+                    isLoggedIn: false,
+                    accessToken: null,
+                    refreshToken: null,
+                    hasHydrated: true,
+                });
+            }
         };
     },
 

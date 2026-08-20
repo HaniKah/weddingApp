@@ -1,6 +1,6 @@
 import '@/utils/i18n';
 import {useFonts} from 'expo-font';
-import {SplashScreen, Stack} from 'expo-router';
+import {router, SplashScreen, Stack} from 'expo-router';
 import {StatusBar} from 'expo-status-bar';
 import 'react-native-reanimated';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
@@ -14,6 +14,7 @@ import {ForceUpdateScreen} from '@/components/update/ForceUpdateScreen';
 import {OTAUpdateScreen} from '@/components/update/OTAUpdateScreen';
 import {StyleSheet, Text, View} from 'react-native';
 import AppButton from "@/components/appComponents/AppButton";
+import {useAuthStore} from '@/utils/authStore';
 
 export default function RootLayout() {
 
@@ -31,6 +32,21 @@ export default function RootLayout() {
     useEffect(() => {
         registerSnackBar(snackbarRef);
     }, []);
+
+    const {isLoggedIn, hasHydrated} = useAuthStore();
+    const wasLoggedIn = useRef(isLoggedIn);
+
+    useEffect(() => {
+        // Bounce to the profile tab (which renders sign-in inline once logged
+        // out) the moment the session becomes invalid, no matter which screen
+        // is currently focused. Without this, a screen deep in the profile
+        // stack - or a completely different tab - can keep showing
+        // authenticated content until the user happens to revisit /profile.
+        if (hasHydrated && wasLoggedIn.current && !isLoggedIn) {
+            router.replace('/profile');
+        }
+        wasLoggedIn.current = isLoggedIn;
+    }, [isLoggedIn, hasHydrated]);
 
     const {
         loading: configLoading,

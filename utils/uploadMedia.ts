@@ -31,7 +31,7 @@ export function useUploadMedia() {
     const pickMedia = async (placeId: number): Promise<MediaUploadResult | null> => {
         // No permissions request is necessary for launching the media library
         let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ['images', 'videos'],
+            mediaTypes: ['images',],
             allowsEditing: false,
             allowsMultipleSelection: true,
             aspect: [4, 3],

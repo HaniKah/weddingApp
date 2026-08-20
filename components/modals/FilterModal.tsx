@@ -1,8 +1,8 @@
-import {Modal, Platform, StyleSheet, Text, TextInput, View} from "react-native";
+import {Modal, StyleSheet, Text, TextInput, View} from "react-native";
 import {Theme} from "@/styles/Theme";
 import {IconButton} from "@/components/symbols/IconButton";
 import {Host, Slider} from '@expo/ui';
-import {Dispatch, RefObject, SetStateAction, useMemo, useRef, useState} from "react";
+import {Dispatch, SetStateAction, useMemo, useRef, useState} from "react";
 import AppTextInput from "@/components/appComponents/AppTextInput";
 import {COUNTRIES} from "@/constants/countries";
 import {useLocationContext} from "@/contexts/location-context";
@@ -13,7 +13,6 @@ import {ButtonType} from "@/styles/Button";
 import {AppCollapsible} from "@/components/appComponents/AppCollapsible";
 import {CategoryTileList} from "@/components/CategoryTileList";
 import {Categories, SearchFilter} from "@/types/open-api";
-import {BlurView} from "expo-blur";
 import AppSafeAreaView from "@/components/appComponents/AppSafeAreaView";
 import * as Haptics from "expo-haptics";
 import {useTranslation} from 'react-i18next';
@@ -26,8 +25,7 @@ export default function FilterModal({
                                         setSearchText,
                                         filters,
                                         setFilters,
-                                        onShowResult,
-                                        blurTargetRef
+                                        onShowResult
 
                                     }: {
     isVisible: boolean,
@@ -37,7 +35,6 @@ export default function FilterModal({
     filters: SearchFilter,
     setFilters: Dispatch<SetStateAction<SearchFilter>>
     onShowResult: () => void
-    blurTargetRef: RefObject<View | null>
 }) {
     const {isoCountry} = useLocationContext();
     const formRef = useRef<any>(null);
@@ -202,20 +199,12 @@ export default function FilterModal({
 
     return (
         <Modal animationType="slide"
-               transparent={Platform.OS === "ios"}
+               transparent
                visible={isVisible}
                onRequestClose={() => setVisible(false)}>
-            {Platform.OS === "ios" ?
-                <BlurView
-                    intensity={40}
-                    style={styles.container}>
-                    {content()}
-                </BlurView> :
-                <BlurView
-                    blurMethod="dimezisBlurView" intensity={40} blurTarget={blurTargetRef} style={styles.container}>
-                    {content()}
-                </BlurView>
-            }
+            <View style={styles.container}>
+                {content()}
+            </View>
         </Modal>
     )
 }
@@ -227,7 +216,7 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: Theme.global.appPadding,
         marginTop: 50,
-        backgroundColor: "transparent",
+        backgroundColor: Theme.colors.background,
         position: "relative"
     },
     filtersContainer: {

@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {CountryCode, PlacesDto, SearchFilter} from '@/types/open-api';
 import {Stack, useRouter} from 'expo-router';
 import AppView from '@/components/appComponents/AppView';
@@ -20,7 +20,6 @@ import {NestError} from "@/types/errors";
 import {OptionalUpdateBanner} from "@/components/update/OptionalUpdateBanner";
 import {useAppUpdate} from "@/hooks/useAppUpdate";
 import AppSafeAreaView from "@/components/appComponents/AppSafeAreaView";
-import {BlurTargetView} from "expo-blur";
 
 function EmptyPlaceholder() {
     const {t} = useTranslation();
@@ -143,8 +142,6 @@ export default function Index() {
 
     const {dismissOptionalUpdate, config, isUpdateAvailable} = useAppUpdate()
 
-    const blurTargetRef = useRef<View>(null);
-
     return (
         <>
             <Stack.Screen options={{headerShown: false}}/>
@@ -154,32 +151,29 @@ export default function Index() {
             />}
             <AppSafeAreaView edges={["top"]}>
                 <AppView>
-                    <BlurTargetView ref={blurTargetRef}>
-                        {isoCountry ? <FlatList
-                                ListHeaderComponent={
-                                    <SearchHeader
-                                        blurTargetRef={blurTargetRef}
-                                        filters={filters}
-                                        setFilters={setFilters}
-                                        searchText={searchText}
-                                        setSearchText={setSearchText}
-                                        onShowResult={getInitialPlaces}
-                                    />}
-                                refreshing={isRefreshing}
-                                onRefresh={handleRefresh}
-                                data={places}
-                                renderItem={PlaceItem}
-                                scrollEventThrottle={100}
-                                onEndReached={handleEndReached}
-                                keyExtractor={(item, index) => index.toString()}
-                                ListEmptyComponent={
-                                    <EmptyPlaceholder/>
-                                }
-                            /> :
+                    {isoCountry ? <FlatList
+                            ListHeaderComponent={
+                                <SearchHeader
+                                    filters={filters}
+                                    setFilters={setFilters}
+                                    searchText={searchText}
+                                    setSearchText={setSearchText}
+                                    onShowResult={getInitialPlaces}
+                                />}
+                            refreshing={isRefreshing}
+                            onRefresh={handleRefresh}
+                            data={places}
+                            renderItem={PlaceItem}
+                            scrollEventThrottle={100}
+                            onEndReached={handleEndReached}
+                            keyExtractor={(item, index) => index.toString()}
+                            ListEmptyComponent={
+                                <EmptyPlaceholder/>
+                            }
+                        /> :
 
-                            <LocationAccessDenied errorMsg={errorMsg}/>
-                        }
-                    </BlurTargetView>
+                        <LocationAccessDenied errorMsg={errorMsg}/>
+                    }
                 </AppView>
             </AppSafeAreaView>
         </>

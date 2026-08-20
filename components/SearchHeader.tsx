@@ -1,7 +1,7 @@
 import CategoryList from '@/components/CategoryList';
 import AppSearchBar from '@/components/appComponents/AppSearchBar';
-import {Dispatch, RefObject, SetStateAction, useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Dispatch, SetStateAction, useState} from 'react';
+import {StyleSheet, Text} from 'react-native';
 import {Theme} from '@/styles/Theme';
 import WelcomeText from '@/components/WelcomeText';
 import AppView from '@/components/appComponents/AppView';
@@ -15,17 +15,13 @@ export default function SearchHeader({
                                          setFilters,
                                          searchText,
                                          setSearchText,
-                                         onShowResult,
-                                         blurTargetRef
+                                         onShowResult
                                      }: {
     filters: SearchFilter
     setFilters: Dispatch<SetStateAction<SearchFilter>>
     searchText: string | undefined,
     setSearchText: Dispatch<SetStateAction<string | undefined>>
     onShowResult: () => void
-    blurTargetRef: RefObject<View | null>
-
-
 }) {
     const [filterVisible, setFilterVisible] = useState<boolean>(false);
     const {t} = useTranslation();
@@ -54,7 +50,6 @@ export default function SearchHeader({
                          filters={filters}
                          setFilters={setFilters}
                          onShowResult={onShowResult}
-                         blurTargetRef={blurTargetRef}
             />
 
         </>

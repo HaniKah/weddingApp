@@ -9,6 +9,8 @@ import {AxiosError} from "axios";
 import {router} from "expo-router";
 import {Platform} from "react-native";
 
+WebBrowser.maybeCompleteAuthSession();
+
 interface AuthContextType {
     signInWithApple: () => void,
     signInWithGoogle: () => void,
@@ -58,8 +60,6 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
 
     // this is just for performance
     useEffect(() => {
-        WebBrowser.maybeCompleteAuthSession();
-
         WebBrowser.warmUpAsync();
 
         return () => {
@@ -72,6 +72,7 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
     const discovery: DiscoveryDocument = {
         authorizationEndpoint: `${API.instance.getUri()}/api/auth/google/login`,
         // tokenEndpoint: `${process.env.EXPO_PUBLIC_API_URL}/api/auth/google/token`,
+
 
     };
     const config: AuthRequestConfig = {

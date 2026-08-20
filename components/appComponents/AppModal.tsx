@@ -1,4 +1,4 @@
-import {Keyboard, Modal, Platform, StyleSheet, TouchableWithoutFeedback, View} from 'react-native';
+import {Modal, Platform, StyleSheet, View} from 'react-native';
 import AppButton from '@/components/appComponents/AppButton';
 import {ButtonType} from '@/styles/Button';
 import {Theme} from '@/styles/Theme';
@@ -61,25 +61,25 @@ export default function AppModal({
 
 
         >
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+            {/*<TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>*/}
+            <View
+                style={[styles.wrapper, Platform.OS === "android" ? {paddingBottom: inset.bottom} : {paddingBottom: 0}]}>
                 <View
-                    style={[styles.wrapper, Platform.OS === "android" ? {paddingBottom: inset.bottom} : {paddingBottom: 0}]}>
-                    <View
-                        style={[styles.header, isFullScreen && styles.headerFullScreen]}>
-                        <AppButton
-                            extraStylesBtn={{justifyContent: 'flex-start', paddingLeft: 0}}
-                            extraStylesTxt={{color: Theme.colors.secondary}}
-                            buttonType={ButtonType.PLAIN}
-                            onPress={handleCancel}>
-                            {t("common.exit")}
-                        </AppButton>
-                        <View style={[styles.handle, isFullScreen && styles.handleFullScreen]}></View>
-                        <View style={{flex: 1}}></View>
-                    </View>
-
-                    {children}
+                    style={[styles.header, isFullScreen && styles.headerFullScreen]}>
+                    <AppButton
+                        extraStylesBtn={{justifyContent: 'flex-start', paddingLeft: 0}}
+                        extraStylesTxt={{color: Theme.colors.secondary}}
+                        buttonType={ButtonType.PLAIN}
+                        onPress={handleCancel}>
+                        {t("common.exit")}
+                    </AppButton>
+                    <View style={[styles.handle, isFullScreen && styles.handleFullScreen]}></View>
+                    <View style={{flex: 1}}></View>
                 </View>
-            </TouchableWithoutFeedback>
+
+                {children}
+            </View>
+            {/*</TouchableWithoutFeedback>*/}
         </Modal>
     );
 }

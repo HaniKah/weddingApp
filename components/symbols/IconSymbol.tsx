@@ -57,7 +57,8 @@ const MAPPING = {
     "mail": "mail-outline",
     "apple.logo": "apple",
     "crown": "star-outline",
-    "crown.fill": "star"
+    "crown.fill": "star",
+    "play.fill": "play-arrow"
 } as IconMapping;
 
 /**

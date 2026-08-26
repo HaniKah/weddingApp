@@ -115,6 +115,7 @@ export default function AppMediaViewer({
 
                 <FlatList
                     ref={listRef}
+                    style={styles.list}
                     data={mediaItems}
                     horizontal
                     pagingEnabled
@@ -190,6 +191,12 @@ const styles = StyleSheet.create({
         flex: 1,
         height: '100%',
     },
+    // Force LTR so swiping/paging behaves the same in every locale — the app's
+    // global RTL setting would otherwise mirror the FlatList's scroll direction
+    // and item layout, causing it to fight the index math and flicker.
+    list: {
+        direction: 'ltr',
+    },
     videoSlide: {
         flex: 1,
         display: "flex",
@@ -225,6 +232,7 @@ const styles = StyleSheet.create({
     footerContainer: {
         width: '100%',
         display: 'flex',
+        direction: 'ltr',
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',

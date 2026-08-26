@@ -139,7 +139,7 @@ export default function AppMediaViewer({
                         }
 
                         return (
-                            <View style={[styles.videoSlide,]}>
+                            <View style={styles.videoSlide}>
                                 <AppVideoPlayer
                                     uri={item.item.uri}
                                     posterUri={item.item.posterUri}

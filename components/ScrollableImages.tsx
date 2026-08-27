@@ -1,5 +1,5 @@
 import React, {useEffect, useRef} from "react";
-import {Dimensions, FlatList, I18nManager, Pressable, StyleSheet, Text, View} from "react-native";
+import {Dimensions, FlatList, Pressable, StyleSheet, Text, View} from "react-native";
 import {Image} from "expo-image"
 import {HeroMediaItemDto} from "@/types/open-api";
 import {IconSymbol} from "@/components/symbols/IconSymbol";
@@ -41,8 +41,7 @@ function Footer({count, activeIndex}: { count: number, activeIndex: number }) {
 
     useEffect(() => {
         if (count > VISIBLE_DOTS && flatListRef.current) {
-            const targetIndex = I18nManager.isRTL ? count - 1 - activeIndex : activeIndex;
-            const offset = Math.max(0, (targetIndex - Math.floor(VISIBLE_DOTS / 2)) * (DOT_SIZE + DOT_GAP));
+            const offset = Math.max(0, (activeIndex - Math.floor(VISIBLE_DOTS / 2)) * (DOT_SIZE + DOT_GAP));
             flatListRef.current.scrollToOffset({
                 offset,
                 animated: true,
@@ -64,7 +63,7 @@ function Footer({count, activeIndex}: { count: number, activeIndex: number }) {
                             <View
                                 style={[
                                     styles.footerDot,
-                                    activeIndex === (I18nManager.isRTL ? count - 1 - index : index) && styles.footerDotActive
+                                    activeIndex === index && styles.footerDotActive
                                 ]}
                             />
                         </View>
@@ -106,6 +105,7 @@ export default function ScrollableImages({heroMedia, onMediaPress, listingId}: {
         <>
             <View style={styles.container}>
                 <FlatList data={heroMedia}
+                          style={styles.list}
                           horizontal={true}
                           showsHorizontalScrollIndicator={false}
                           keyExtractor={(item) => `${item.type}-${item.id}`}
@@ -159,6 +159,12 @@ const styles = StyleSheet.create({
     container: {
         position: 'relative',
     },
+    // Force LTR so swiping/paging behaves the same in every locale — the app's
+    // global RTL setting would otherwise mirror the FlatList's scroll direction
+    // and item layout. Matches the same override in AppMediaViewer.tsx.
+    list: {
+        direction: 'ltr',
+    },
     image: {
         height: LISTING_MEDIA_HEIGHT,
         // resizeMode: "cover",
@@ -180,6 +186,7 @@ const styles = StyleSheet.create({
     },
     footerContainer: {
         flexDirection: 'row',
+        direction: 'ltr',
         position: 'absolute',
         bottom: 20,
         alignSelf: 'center',

@@ -1,5 +1,5 @@
 import React, {useEffect, useRef} from "react";
-import {Dimensions, FlatList, Pressable, StyleSheet, Text, View} from "react-native";
+import {Dimensions, FlatList, I18nManager, Pressable, StyleSheet, Text, View} from "react-native";
 import {Image} from "expo-image"
 import {HeroMediaItemDto} from "@/types/open-api";
 import {IconSymbol} from "@/components/symbols/IconSymbol";
@@ -41,7 +41,8 @@ function Footer({count, activeIndex}: { count: number, activeIndex: number }) {
 
     useEffect(() => {
         if (count > VISIBLE_DOTS && flatListRef.current) {
-            const offset = Math.max(0, (activeIndex - Math.floor(VISIBLE_DOTS / 2)) * (DOT_SIZE + DOT_GAP));
+            const targetIndex = I18nManager.isRTL ? count - 1 - activeIndex : activeIndex
+            const offset = Math.max(0, (targetIndex - Math.floor(VISIBLE_DOTS / 2)) * (DOT_SIZE + DOT_GAP));
             flatListRef.current.scrollToOffset({
                 offset,
                 animated: true,
@@ -63,7 +64,7 @@ function Footer({count, activeIndex}: { count: number, activeIndex: number }) {
                             <View
                                 style={[
                                     styles.footerDot,
-                                    activeIndex === index && styles.footerDotActive
+                                    activeIndex === (I18nManager.isRTL ? count - 1 - index : index) && styles.footerDotActive
                                 ]}
                             />
                         </View>
@@ -88,9 +89,16 @@ export default function ScrollableImages({heroMedia, onMediaPress, listingId}: {
     const [activeIndex, setActiveIndex] = React.useState(0);
     const isDragging = useRef(false);
 
+    // onScroll hands us the raw native contentOffset.x, which RN never
+    // RTL-corrects (VirtualizedList only applies that correction to its own
+    // internal bookkeeping and to scrollToIndex) — reproduce the same
+    // correction manually so this agrees with the dots' RTL-flipped index.
     const onScroll = (event: any) => {
-        const contentOffset = event.nativeEvent.contentOffset.x;
-        const index = Math.round(contentOffset / DEVICE_WIDTH);
+        const {contentOffset, contentSize, layoutMeasurement} = event.nativeEvent;
+        const offset = I18nManager.isRTL
+            ? contentSize.width - (contentOffset.x + layoutMeasurement.width)
+            : contentOffset.x;
+        const index = Math.round(offset / DEVICE_WIDTH);
         if (index !== activeIndex) {
             setActiveIndex(index);
         }
@@ -105,7 +113,6 @@ export default function ScrollableImages({heroMedia, onMediaPress, listingId}: {
         <>
             <View style={styles.container}>
                 <FlatList data={heroMedia}
-                          style={styles.list}
                           horizontal={true}
                           showsHorizontalScrollIndicator={false}
                           keyExtractor={(item) => `${item.type}-${item.id}`}
@@ -159,12 +166,6 @@ const styles = StyleSheet.create({
     container: {
         position: 'relative',
     },
-    // Force LTR so swiping/paging behaves the same in every locale — the app's
-    // global RTL setting would otherwise mirror the FlatList's scroll direction
-    // and item layout. Matches the same override in AppMediaViewer.tsx.
-    list: {
-        direction: 'ltr',
-    },
     image: {
         height: LISTING_MEDIA_HEIGHT,
         // resizeMode: "cover",
@@ -186,7 +187,6 @@ const styles = StyleSheet.create({
     },
     footerContainer: {
         flexDirection: 'row',
-        direction: 'ltr',
         position: 'absolute',
         bottom: 20,
         alignSelf: 'center',

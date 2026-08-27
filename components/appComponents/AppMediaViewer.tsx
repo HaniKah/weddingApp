@@ -1,4 +1,4 @@
-import {Dimensions, FlatList, Modal, Pressable, StyleSheet, Text, View} from 'react-native';
+import {Dimensions, FlatList, I18nManager, Modal, Pressable, StyleSheet, Text, View} from 'react-native';
 import {Image} from 'expo-image';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {IconSymbol} from '@/components/symbols/IconSymbol';
@@ -61,8 +61,17 @@ export default function AppMediaViewer({
         }
     }, [visible, currentIndex]);
 
+    // FlatList hands onMomentumScrollEnd the raw native contentOffset.x,
+    // which is never RTL-corrected (RN's own VirtualizedList applies that
+    // correction only to its internal bookkeeping and to scrollToIndex, not
+    // to the event it passes through) — so under RTL this has to be
+    // reproduced manually to get the same index VirtualizedList itself sees.
     const onScrollEnd = useCallback((event: any) => {
-        const index = Math.round(event.nativeEvent.contentOffset.x / DEVICE_WIDTH);
+        const {contentOffset, contentSize, layoutMeasurement} = event.nativeEvent;
+        const offset = I18nManager.isRTL
+            ? contentSize.width - (contentOffset.x + layoutMeasurement.width)
+            : contentOffset.x;
+        const index = Math.round(offset / DEVICE_WIDTH);
         const item = mediaItems[index];
         if (item && mediaKey(item) !== activeKey) {
             setActiveKey(mediaKey(item));
@@ -115,7 +124,6 @@ export default function AppMediaViewer({
 
                 <FlatList
                     ref={listRef}
-                    style={styles.list}
                     data={mediaItems}
                     horizontal
                     pagingEnabled
@@ -191,12 +199,6 @@ const styles = StyleSheet.create({
         flex: 1,
         height: '100%',
     },
-    // Force LTR so swiping/paging behaves the same in every locale — the app's
-    // global RTL setting would otherwise mirror the FlatList's scroll direction
-    // and item layout, causing it to fight the index math and flicker.
-    list: {
-        direction: 'ltr',
-    },
     videoSlide: {
         flex: 1,
         display: "flex",
@@ -232,7 +234,6 @@ const styles = StyleSheet.create({
     footerContainer: {
         width: '100%',
         display: 'flex',
-        direction: 'ltr',
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',

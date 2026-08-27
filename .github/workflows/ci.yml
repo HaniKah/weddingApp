@@ -67,4 +67,4 @@ jobs:
           fi
 
       - name: EAS Build
-        run: eas build --platform all --profile ${{ steps.profile.outputs.profile }} --non-interactive --no-wait
+        run: eas build --platform all --profile ${{ steps.profile.outputs.profile }} --non-interactive --no-wait --auto-submit

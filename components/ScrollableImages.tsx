@@ -41,10 +41,8 @@ function Footer({count, activeIndex}: { count: number, activeIndex: number }) {
 
     useEffect(() => {
         if (count > VISIBLE_DOTS && flatListRef.current) {
-            const targetIndex = I18nManager.isRTL ? count - 1 - activeIndex : activeIndex
-            const offset = Math.max(0, (targetIndex - Math.floor(VISIBLE_DOTS / 2)) * (DOT_SIZE + DOT_GAP));
-            flatListRef.current.scrollToOffset({
-                offset,
+            flatListRef.current.scrollToIndex({
+                index: activeIndex,
                 animated: true,
             });
         }
@@ -53,7 +51,9 @@ function Footer({count, activeIndex}: { count: number, activeIndex: number }) {
     if (count <= 1) return null;
 
     return (
-        <View style={[styles.footerContainer, {width: CONTAINER_WIDTH}]}>
+        <View style={[styles.footerContainer, {
+            width: CONTAINER_WIDTH,
+        }]}>
             <View>
                 <FlatList
                     ref={flatListRef}
@@ -64,7 +64,7 @@ function Footer({count, activeIndex}: { count: number, activeIndex: number }) {
                             <View
                                 style={[
                                     styles.footerDot,
-                                    activeIndex === (I18nManager.isRTL ? count - 1 - index : index) && styles.footerDotActive
+                                    activeIndex === index && styles.footerDotActive
                                 ]}
                             />
                         </View>

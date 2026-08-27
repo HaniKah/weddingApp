@@ -104,7 +104,7 @@ export default function AppMediaViewer({
                         <IconSymbol color="white" size={25} name="xmark"/>
                     </Pressable>
                     <Text style={styles.counterText}>{currentIndex + 1}/{mediaItems.length}</Text>
-                    {current.item.isMain ?
+                    {canSetMain && current.item.isMain ?
                         <View style={styles.mainContainer}>
                             <IconSymbol color={Theme.colors.white} name="crown.fill"/>
                             <Text style={styles.mainText}>{t('profile.mainPhoto')}</Text>

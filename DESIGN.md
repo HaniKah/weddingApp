@@ -34,11 +34,13 @@ typography:
     fontSize: 32
     fontWeight: "400"
     lineHeight: 1.15
-  accent:
-    fontFamily: "SendFlowers-Regular"
-    fontSize: 24
+  wordmark:
+    fontFamily:
+      en: "Poppins-Black"
+      ar: "Cairo-Black"
+    fontSize: 34
     fontWeight: "400"
-    lineHeight: 1.2
+    lineHeight: 1.15
   body:
     fontFamily: "System"
     fontSize: 16
@@ -102,17 +104,18 @@ components:
 
 **Creative North Star: "The Wedding Ledger"**
 
-Ghamrah reads like a well-kept planning book: wine-red ink on cream pages, unhurried and considered, with one
-elegant script flourish reserved for the moments that matter most. The system is warm and personal rather than
-transactional — every screen is designed to lower the anxiety of a high-stakes, emotional task, not add to it.
-Confidence comes from restraint: generous whitespace, a single confident accent color used deliberately, and soft,
-ambient depth rather than decoration. This system explicitly rejects the sterile, corporate booking-tool look and
-the wedding-industry clichés of pastel gradients, script-everywhere typography, and cluttered Pinterest-board
-density — warmth lives in the palette and in a few deliberate typographic gestures, not in ornament.
+Ghamrah reads like a well-kept planning book: wine-red ink on cream pages, unhurried and considered. The system is
+warm and personal rather than transactional — every screen is designed to lower the anxiety of a high-stakes,
+emotional task, not add to it. Confidence comes from restraint: generous whitespace, a single confident accent color
+used deliberately, and soft, ambient depth rather than decoration. This system explicitly rejects the sterile,
+corporate booking-tool look and the wedding-industry clichés of pastel gradients, script-everywhere typography, and
+cluttered Pinterest-board density — warmth lives in the palette and in a few deliberate typographic gestures, not in
+ornament.
 
 **Key Characteristics:**
 - One confident wine-red primary against a warm cream base — restrained, not saturated everywhere
-- A ceremonial display face (Aboreto) for structure, a script accent (SendFlowers) used sparingly for warmth
+- A ceremonial display face (Aboreto) for structure; the wordmark itself pairs Poppins-Black (English) with
+  Cairo-Black (Arabic) — each language's own confident, geometric weight, not a shared script
 - Soft, rounded, ambient-shadow surfaces — nothing sharp, nothing harsh
 - RTL-first: every component mirrors correctly for Arabic before English is checked
 
@@ -158,24 +161,27 @@ substitutes for a semantic meaning (don't use wine for a destructive action).
 
 **Display Font:** Aboreto-Regular (with serif fallback)
 **Body Font:** System default (San Francisco / Roboto, per platform)
-**Accent Font:** SendFlowers-Regular (script, with System fallback)
+**Wordmark Font:** Poppins-Black for the English wordmark "Ghamrah", Cairo-Black for the Arabic wordmark "غَمرة" —
+switched by active locale, never rendered in a single shared typeface across languages.
 
 **Character:** A formal, slightly ceremonial display face paired with an unadorned system body creates contrast
-between moments of significance and everyday reading. The script accent is a rare flourish, not a voice used in
-running text.
+between moments of significance and everyday reading. The wordmark is the one place per screen that carries a
+heavier, bespoke weight — set in each language's own confident sans, not a decorative script.
 
 ### Hierarchy
 - **Display** (Aboreto-Regular, 32px, line-height 1.15): Screen titles and moments the app wants to feel
   ceremonial — the planner hub, key milestones.
-- **Accent** (SendFlowers-Regular, 24px, line-height 1.2): A sparing decorative flourish — a welcome message, a
-  celebratory moment. Never for body copy, labels, or anything that must stay legible at a glance.
+- **Wordmark** (Poppins-Black / Cairo-Black by locale, 34px, line-height 1.15): The "Ghamrah" / "غَمرة" brand mark
+  itself — sign-in, splash, and any other moment the brand name appears standalone. Never for body copy, labels, or
+  anything that must stay legible at a glance.
 - **Body** (System, 16px / 400, line-height 1.4): Default reading text, descriptions, form values.
 - **Label** (System, 14px / 600): Field labels, tags, buttons at medium size.
 - **Small** (System, 12px): Secondary metadata — city tags, prices, timestamps.
 
 ### Named Rules
-**The Sparing Script Rule.** SendFlowers appears at most once per screen, reserved for a single emotional
-highlight. If more than one element on a screen uses it, the flourish has become noise.
+**The Locale-Matched Wordmark Rule.** The "Ghamrah" wordmark always renders in the font native to its own script —
+Poppins-Black in English, Cairo-Black in Arabic. Never force one language's wordmark face onto the other's
+characters.
 
 ## 4. Elevation
 
@@ -244,7 +250,8 @@ Two interchangeable designs, chosen per context rather than mixed on the same sc
   state-driven effect.
 - **Do** verify RTL mirroring (text alignment, icon direction, layout flow) on every new component before shipping
   it, per PRODUCT.md's accessibility principle that RTL is not an afterthought.
-- **Do** reserve SendFlowers script type for one sparing emotional highlight per screen, at most.
+- **Do** keep the Ghamrah wordmark locale-matched — Poppins-Black in English, Cairo-Black in Arabic — never one
+  face forced onto both scripts.
 
 ### Don't:
 - **Don't** default to a cold, corporate booking-tool layout — no sterile SaaS card grids, no generic e-commerce

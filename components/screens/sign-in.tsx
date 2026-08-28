@@ -27,7 +27,8 @@ function staggeredEntrance(index: number) {
 export default function SignIn() {
     const {signInWithGoogle, signInWithApple} = useAuth();
     const [showEmailForm, setShowEmailForm] = useState(false);
-    const {t} = useTranslation();
+    const {t, i18n} = useTranslation();
+    const wordmarkFont = i18n.language === 'ar' ? Theme.typographies.cairo.black : Theme.typographies.poppins.black;
 
 
     function closeForm() {
@@ -43,7 +44,10 @@ export default function SignIn() {
                         entering={FadeInDown.duration(500).easing(EASE_OUT_QUART).reduceMotion(ReduceMotion.System)}
                         style={styles.welcomeContainer}
                     >
-                        <Text style={styles.appTitle}>{t('common.appName')}</Text>
+                        <Text
+                            style={[styles.appTitle, {fontFamily: wordmarkFont, letterSpacing: i18n.language === 'ar' ? 0 : -0.5}]}>
+                            {t('common.appName')}
+                        </Text>
                         <Text style={styles.subtitle}>{t('auth.welcomeSubtitle')}</Text>
                     </Animated.View>
 
@@ -116,22 +120,20 @@ const styles = StyleSheet.create({
         flex: 1,
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
+        justifyContent: 'flex-end',
     },
 
     welcomeContainer: {
         justifyContent: 'center',
         alignItems: 'center',
         paddingHorizontal: 20,
-        marginBottom: 48,
+        marginBottom: 40,
     },
     appTitle: {
         fontSize: 34,
-        letterSpacing: -0.5,
         color: Theme.colors.primary,
         textAlign: 'center',
         marginBottom: 10,
-        fontFamily: Theme.typographies.poppins.black,
     },
     subtitle: {
         fontSize: Theme.sizes.md,
@@ -142,7 +144,7 @@ const styles = StyleSheet.create({
     },
     signInContainer: {
         gap: 12,
-        paddingBottom: 48,
+        paddingBottom: 16,
         paddingHorizontal: 24,
     },
     signInFormContainer: {

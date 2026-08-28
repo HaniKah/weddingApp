@@ -11,32 +11,8 @@ on:
       - main
 
 jobs:
-  #  test:
-  #    name: Lint & Test
-  #    runs-on: ubuntu-latest
-  #
-  #    steps:
-  #      - name: Checkout Repository
-  #        uses: actions/checkout@v4
-  #
-  #      - name: Setup Node.js
-  #        uses: actions/setup-node@v4
-  #        with:
-  #          node-version: '22'
-  #
-  #      - name: Install Dependencies
-  #        run: npm ci --legacy-peer-deps
-  #
-  #      - name: Run TypeScript Checks
-  #        run: npx tsc --noEmit
-  #
-  #      - name: Run Unit Tests
-  #        run: npm run test -- --watchAll=false
-
-  build:
-    name: EAS Build
-    #    needs: test
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/live')
+  test:
+    name: Lint & Test
     runs-on: ubuntu-latest
 
     steps:
@@ -51,20 +27,44 @@ jobs:
       - name: Install Dependencies
         run: npm ci --legacy-peer-deps
 
-      - name: Setup EAS
-        uses: expo/expo-github-action@v8
-        with:
-          eas-version: latest
-          token: ${{ secrets.EXPO_TOKEN }}
+      - name: Run TypeScript Checks
+        run: npx tsc --noEmit
 
-      - name: Determine build profile
-        id: profile
-        run: |
-          if [ "${{ github.ref }}" = "refs/heads/live" ]; then
-            echo "profile=production" >> "$GITHUB_OUTPUT"
-          else
-            echo "profile=preview" >> "$GITHUB_OUTPUT"
-          fi
+      - name: Run Unit Tests
+        run: npm run test -- --watchAll=false
 
-      - name: EAS Build
-        run: eas build --platform all --profile ${{ steps.profile.outputs.profile }} --non-interactive --no-wait --auto-submit
+#  build:
+#    name: EAS Build
+#    #    needs: test
+#    if: github.event_name == 'push' && (github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/live')
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - name: Checkout Repository
+#        uses: actions/checkout@v4
+
+#      - name: Setup Node.js
+#        uses: actions/setup-node@v4
+#        with:
+#          node-version: '22'
+#
+#      - name: Install Dependencies
+#        run: npm ci --legacy-peer-deps
+#
+#      - name: Setup EAS
+#        uses: expo/expo-github-action@v8
+#        with:
+#          eas-version: latest
+#          token: ${{ secrets.EXPO_TOKEN }}
+#
+#      - name: Determine build profile
+#        id: profile
+#        run: |
+#          if [ "${{ github.ref }}" = "refs/heads/live" ]; then
+#            echo "profile=production" >> "$GITHUB_OUTPUT"
+#          else
+#            echo "profile=preview" >> "$GITHUB_OUTPUT"
+#          fi
+#
+#      - name: EAS Build
+#        run: eas build --platform all --profile ${{ steps.profile.outputs.profile }} --non-interactive --no-wait --auto-submit

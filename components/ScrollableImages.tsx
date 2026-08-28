@@ -9,7 +9,7 @@ import AppVideoPlayer from "@/components/appComponents/AppVideoPlayer";
 import {useTranslation} from 'react-i18next';
 import {router} from "expo-router";
 
-export const LISTING_MEDIA_HEIGHT = 500;
+export const LISTING_MEDIA_HEIGHT = 550;
 
 function Header({count, listingId}: { count: number, listingId: number }) {
     const insets = useSafeAreaInsets()
@@ -89,10 +89,6 @@ export default function ScrollableImages({heroMedia, onMediaPress, listingId}: {
     const [activeIndex, setActiveIndex] = React.useState(0);
     const isDragging = useRef(false);
 
-    // onScroll hands us the raw native contentOffset.x, which RN never
-    // RTL-corrects (VirtualizedList only applies that correction to its own
-    // internal bookkeeping and to scrollToIndex) — reproduce the same
-    // correction manually so this agrees with the dots' RTL-flipped index.
     const onScroll = (event: any) => {
         const {contentOffset, contentSize, layoutMeasurement} = event.nativeEvent;
         const offset = I18nManager.isRTL
@@ -112,6 +108,7 @@ export default function ScrollableImages({heroMedia, onMediaPress, listingId}: {
     return (
         <>
             <View style={styles.container}>
+                <Header count={heroMedia.length} listingId={listingId}/>
                 <FlatList data={heroMedia}
                           horizontal={true}
                           showsHorizontalScrollIndicator={false}
@@ -155,8 +152,8 @@ export default function ScrollableImages({heroMedia, onMediaPress, listingId}: {
                               }, 100);
                           }}
                 />
-                <Header count={heroMedia.length} listingId={listingId}/>
                 <Footer count={heroMedia.length} activeIndex={activeIndex}/>
+
             </View>
 
         </>
@@ -177,12 +174,12 @@ const styles = StyleSheet.create({
         gap: 6,
         backgroundColor: "rgba(255,255,255,0.8)",
         position: 'absolute',
-        top: 10,
+        top: 20,
         end: 10,
         zIndex: 50,
         elevation: 20,
         paddingHorizontal: 10,
-        paddingVertical: 6,
+        paddingVertical: 8,
         borderRadius: Theme.radius.full
     },
     footerContainer: {

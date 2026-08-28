@@ -197,7 +197,6 @@ const styles = StyleSheet.create({
     callForActionContainer: {
         paddingHorizontal: 20,
         paddingTop: 20,
-        paddingBottom: 10
     },
     infosContainer: {
         padding: 20,

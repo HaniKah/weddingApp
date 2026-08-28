@@ -100,13 +100,12 @@ export default function FilterModal({
             <>
                 <AppSafeAreaView style={styles.safeAreaView} edges={["bottom"]}>
                     <View style={styles.header}>
-
+                        <Text style={styles.headerText}>{t('filter.title')}</Text>
                         <IconButton extraStylesBtn={styles.xIcon}
                                     color={Theme.colors.black}
                                     size={18}
                                     onPress={() => setVisible(false)}
                                     name="xmark"/>
-                        <Text style={styles.headerText}>{t('filter.title')}</Text>
                     </View>
 
                     <AppForm ref={formRef} onSubmit={handleShowResult}>
@@ -231,6 +230,7 @@ const styles = StyleSheet.create({
         borderRadius: Theme.radius.xl
     },
     header: {
+        direction: "ltr",
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
@@ -305,6 +305,7 @@ const styles = StyleSheet.create({
         minWidth: 80,
     },
     footerContainer: {
+        direction: "ltr",
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-between",

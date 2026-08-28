@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
 
     addButtonContainer: {
         position: 'absolute',
-        start: 20,
+        right: 20,
         bottom: 20,
     },
 

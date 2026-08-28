@@ -22,7 +22,6 @@ export default function RootLayout() {
 
     const [loaded, error] = useFonts({
         'Aboreto-Regular': require('../assets/fonts/Aboreto-Regular.ttf'),
-        'SendFlowers-Regular': require('../assets/fonts/SendFlowers-Regular.ttf'),
         'Poppins-Black': require('../assets/fonts/poppins/Poppins-Black.ttf'),
         "Cairo-Black": require('../assets/fonts/cairo/Cairo-Black.ttf'),
     });

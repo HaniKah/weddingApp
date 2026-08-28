@@ -74,7 +74,6 @@ export const Theme = {
     },
     typographies: {
         aboreto: 'Aboreto-Regular',
-        sendFlowers: 'SendFlowers-Regular',
         poppins: {
             black: "Poppins-Black"
         },

@@ -342,7 +342,7 @@
     "signInButton": "Sign in",
     "signUpButton": "Sign up",
     "passwordsDontMatch": "Passwords don't match",
-    "welcomeSubtitle": "Sign in in order to create listing, manage favorites and get more features",
+    "welcomeSubtitle": "Sign in to save favorites, track your checklist, and manage your listings",
     "signInWithGoogle": "Sign In with Google",
     "signInWithApple": "Sign In with Apple",
     "continueWithEmail": "Continue with Email",
@@ -356,6 +356,8 @@
     "backToSignIn": "Back to sign in"
   },
   "common": {
+    "appName": "Ghamrah",
+    "or": "or",
     "cancel": "Cancel",
     "exit": "Exit",
     "clear": "Clear",

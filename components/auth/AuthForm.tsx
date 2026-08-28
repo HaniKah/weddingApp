@@ -166,18 +166,16 @@ const styles = StyleSheet.create({
         // Never let the form grow past the space the keyboard leaves; the
         // ScrollView inside takes over once the content is taller than this.
         maxHeight: '80%',
-        backgroundColor: 'white',
-        borderRadius: 20,
+        backgroundColor: Theme.colors.white,
+        borderRadius: Theme.radius.xl,
         padding: 20,
-        opacity: 0.85,
         boxShadow: Theme.shadow.lg,
-
     },
     tabContainer: {
         flexDirection: 'row',
         marginBottom: 20,
         borderBottomWidth: 1,
-        borderBottomColor: Theme.colors.gray.S300,
+        borderBottomColor: Theme.colors.border,
     },
     tab: {
         flex: 1,
@@ -186,14 +184,14 @@ const styles = StyleSheet.create({
     },
     activeTab: {
         borderBottomWidth: 2,
-        borderBottomColor: 'black',
+        borderBottomColor: Theme.colors.primary,
     },
     tabText: {
         fontSize: 16,
-        color: Theme.colors.gray.S500,
+        color: Theme.colors.secondary,
     },
     activeTabText: {
-        color: 'black',
+        color: Theme.colors.primary,
         fontWeight: 'bold',
     },
     formFields: {
@@ -201,7 +199,7 @@ const styles = StyleSheet.create({
         gap: 20,
     },
     submitButton: {
-        backgroundColor: 'black',
+        marginTop: 4,
     },
     errorTextMessage: {
         color: Theme.colors.red.S500,

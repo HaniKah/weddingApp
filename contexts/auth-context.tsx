@@ -3,7 +3,7 @@ import React, {useEffect} from 'react';
 import * as WebBrowser from 'expo-web-browser';
 import {useApi} from '@/utils/api';
 import {useAuthStore} from '@/utils/authStore';
-import {SignInDto, SignUpDto, VerifyEmailDto} from '@/types/open-api';
+import {ForgotPasswordDto, ResetPasswordDto, SignInDto, SignUpDto, VerifyEmailDto} from '@/types/open-api';
 import {showSnackbar} from "@/components/Snackbar";
 import {AxiosError} from "axios";
 import {router} from "expo-router";
@@ -18,6 +18,8 @@ interface AuthContextType {
     signUpWithEmail: (data: SignUpDto) => void,
     verifyEmail: (data: VerifyEmailDto) => void,
     resendVerification: (email: string) => void,
+    forgotPassword: (email: string) => Promise<boolean>,
+    resetPassword: (data: ResetPasswordDto) => Promise<boolean>,
     clearPendingVerification: () => void,
     pendingVerificationEmail: string | null,
     signOut: () => void,
@@ -41,6 +43,8 @@ const AuthContext = React.createContext<AuthContextType>({
     },
     resendVerification: () => {
     },
+    forgotPassword: async () => false,
+    resetPassword: async () => false,
     clearPendingVerification: () => {
     },
     pendingVerificationEmail: null,
@@ -165,6 +169,34 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
             await API.api.authControllerResendVerification({email});
         } catch (err: any) {
             setErrorMessage(err?.response?.data?.message);
+        }
+    };
+
+    const forgotPassword = async (email: string): Promise<boolean> => {
+        try {
+            setIsLoading(true);
+            setErrorMessage(null);
+            await API.api.authControllerForgotPassword({email});
+            return true;
+        } catch (err: any) {
+            setErrorMessage(err?.response?.data?.message);
+            return false;
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const resetPassword = async (data: ResetPasswordDto): Promise<boolean> => {
+        try {
+            setIsLoading(true);
+            setErrorMessage(null);
+            await API.api.authControllerResetPassword(data);
+            return true;
+        } catch (err: any) {
+            setErrorMessage(err?.response?.data?.message);
+            return false;
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -301,6 +333,8 @@ export const AuthProvider = ({children}: { children: React.ReactNode }) => {
             signUpWithEmail,
             verifyEmail,
             resendVerification,
+            forgotPassword,
+            resetPassword,
             clearPendingVerification,
             pendingVerificationEmail,
             signOut,

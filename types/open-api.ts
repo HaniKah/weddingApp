@@ -287,6 +287,22 @@ export interface ResendVerificationDto {
   email: string;
 }
 
+export interface ForgotPasswordDto {
+  /** @format email */
+  email: string;
+}
+
+export interface ResetPasswordDto {
+  /** @format email */
+  email: string;
+  /**
+   * @minLength 6
+   * @maxLength 6
+   */
+  code: string;
+  newPassword: string;
+}
+
 export interface CountryInfo {
   countryCode: CountryCode;
   countryName: string;
@@ -1106,6 +1122,46 @@ export class Api<
         method: "POST",
         body: data,
         type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Auth
+     * @name AuthControllerForgotPassword
+     * @request POST:/api/auth/forgot-password
+     */
+    authControllerForgotPassword: (
+      data: ForgotPasswordDto,
+      params: RequestParams = {},
+    ) =>
+      this.request<{ message: string }, any>({
+        path: `/api/auth/forgot-password`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Auth
+     * @name AuthControllerResetPassword
+     * @request POST:/api/auth/reset-password
+     */
+    authControllerResetPassword: (
+      data: ResetPasswordDto,
+      params: RequestParams = {},
+    ) =>
+      this.request<{ message: string }, any>({
+        path: `/api/auth/reset-password`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
         ...params,
       }),
 

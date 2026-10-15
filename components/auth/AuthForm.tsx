@@ -7,6 +7,7 @@ import {ButtonType} from '@/styles/Button';
 import {Theme} from '@/styles/Theme';
 import {useAuth} from '@/contexts/auth-context';
 import OtpForm from '@/components/auth/OtpForm';
+import ForgotPasswordForm from '@/components/auth/ForgotPasswordForm';
 
 import {useTranslation} from 'react-i18next';
 
@@ -18,6 +19,7 @@ enum AuthTabs {
 
 export default function AuthForm() {
     const [activeTab, setActiveTab] = useState<AuthTabs>(AuthTabs.SignIn);
+    const [isForgotPassword, setIsForgotPassword] = useState(false);
     const {t} = useTranslation();
     const [email, setEmail] = useState<string>();
     const [password, setPassword] = useState<string>();
@@ -52,6 +54,7 @@ export default function AuthForm() {
         setPassword(undefined);
         setConfirmPassword(undefined);
         setErrorMessage(null);
+        setIsForgotPassword(false);
         setActiveTab(activeTab);
     }
 
@@ -59,6 +62,18 @@ export default function AuthForm() {
     // the OTP step until the user verifies or backs out.
     if (pendingVerificationEmail) {
         return <OtpForm/>;
+    }
+
+    if (isForgotPassword) {
+        return (
+            <ForgotPasswordForm
+                initialEmail={email}
+                onBackToSignIn={() => {
+                    setIsForgotPassword(false);
+                    setErrorMessage(null);
+                }}
+            />
+        );
     }
 
     return (
@@ -130,6 +145,20 @@ export default function AuthForm() {
                             secureTextEntry
                         />
 
+                        {activeTab === AuthTabs.SignIn && (
+                            <TouchableOpacity
+                                style={styles.forgotPasswordButton}
+                                onPress={() => {
+                                    setErrorMessage(null);
+                                    setIsForgotPassword(true);
+                                }}
+                            >
+                                <Text style={styles.forgotPasswordText}>
+                                    {t('auth.forgotPassword')}
+                                </Text>
+                            </TouchableOpacity>
+                        )}
+
                         {activeTab === AuthTabs.SignUp && (
                             <AppTextInput
                                 name="confirmPassword"
@@ -197,6 +226,16 @@ const styles = StyleSheet.create({
     formFields: {
         marginBottom: 20,
         gap: 20,
+    },
+    forgotPasswordButton: {
+        alignSelf: 'flex-end',
+        marginTop: -10,
+        marginBottom: 4,
+    },
+    forgotPasswordText: {
+        fontSize: Theme.sizes.sm,
+        color: Theme.colors.secondary,
+        textDecorationLine: 'underline',
     },
     submitButton: {
         marginTop: 4,
